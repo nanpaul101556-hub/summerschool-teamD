@@ -10,6 +10,7 @@ import { SITE } from '../data/site'
 import { areaLadder, buildOptions, recommend } from '../lib/options'
 import { interpolate } from '../lib/timeline'
 import AppFrame from './AppFrame'
+import ForkTree from './ForkTree'
 
 export default function OptionsView({ site, picked, onPick, onStep, onReset, onNext }) {
   const options = buildOptions(SITE.plannedArea)
@@ -151,11 +152,19 @@ export default function OptionsView({ site, picked, onPick, onStep, onReset, onN
         })}
       </div>
 
-      <p className="note">
-        2031·2036 은 공표된 인구추계가 정하므로 세 안이 같습니다. 2046 은 예측할 수
-        없어 각 안이 서로 다른 베팅을 합니다. 전제를 적어 둔 것은 그 전제를 공격할 수
-        있게 하기 위해서입니다 — 검증되지 않는 안은 대안이 아닙니다.
-      </p>
+      <section className="fork-sec">
+        <div className="rg-h">
+          <h3 className="lab">대안은 어디서 갈라지는가</h3>
+          <span className="rg-tag">두 번의 판단</span>
+        </div>
+        <ForkTree options={options} />
+        <p className="note">
+          2031 은 세 안이 같습니다 — 공표된 인구추계가 정하기 때문입니다. 첫 갈림은
+          2036 에 커뮤니티 수요를 <b>건물이 받을지 인근에 넘길지</b>에서 생기고,
+          두 번째 갈림은 자료가 끊기는 2046 의 <b>베팅</b>에서 생깁니다. 세 안은
+          고른 것이 아니라 이 두 판단에서 남은 경로입니다.
+        </p>
+      </section>
     </AppFrame>
   )
 }
