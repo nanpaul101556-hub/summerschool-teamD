@@ -1,27 +1,28 @@
-/** 첫 화면 — 대상지 입력 하나. 여기서 시작한다. */
+/** 첫 화면 — 대상지 주소 하나. 여기서 시작한다. */
 
 import { useState } from 'react'
 
-import { CATALOG, findSite } from '../data/search'
+import { SAMPLE, resolveSite } from '../data/search'
+import { hasKey } from '../lib/vworld'
 import Arrow from './Arrow'
 
 export default function Landing({ onFound }) {
   const [q, setQ] = useState('')
-  const [miss, setMiss] = useState(false)
+  const [busy, setBusy] = useState(false)
+  const [err, setErr] = useState(null)
 
-  const change = (v) => {
-    setQ(v)
-    if (miss) setMiss(false)
+  const go = async (address) => {
+    if (!address.trim() || busy) return
+    setBusy(true)
+    setErr(null)
+    try {
+      onFound(await resolveSite(address))
+    } catch (e) {
+      setErr(e.message)
+    } finally {
+      setBusy(false)
+    }
   }
-
-  const submit = (e) => {
-    e.preventDefault()
-    const hit = findSite(q)
-    if (hit) onFound(hit)
-    else setMiss(true)
-  }
-
-  const sample = CATALOG[0]
 
   return (
     <div className="page">
@@ -29,30 +30,45 @@ export default function Landing({ onFound }) {
         <div className="brand">적응형 건축 사전판정</div>
         <h1 className="q">대상지를 입력하십시오</h1>
 
-        <form className="field" onSubmit={submit}>
+        <form
+          className="field"
+          onSubmit={(e) => {
+            e.preventDefault()
+            go(q)
+          }}
+        >
           <input
             value={q}
-            onChange={(e) => change(e.target.value)}
-            placeholder="예 · 중계문화공원"
-            aria-label="대상지"
+            onChange={(e) => {
+              setQ(e.target.value)
+              if (err) setErr(null)
+            }}
+            placeholder="도로명 또는 지번 주소"
+            aria-label="대상지 주소"
+            disabled={busy}
             autoFocus
           />
-          <button type="submit" className="go" disabled={!q.trim()} aria-label="이동">
+          <button type="submit" className="go" disabled={!q.trim() || busy} aria-label="이동">
             <Arrow />
           </button>
         </form>
 
-        {miss ? (
-          <p className="miss">
-            「{q}」의 자료가 없습니다. 현재 판정 가능한 대상지는{' '}
-            <b>{CATALOG.length}곳</b>입니다.
-          </p>
+        {busy ? (
+          <p className="hint">찾는 중…</p>
+        ) : err ? (
+          <p className="miss">{err}</p>
         ) : (
           <p className="hint">
-            자료 확보 대상지 ·{' '}
-            <button type="button" onClick={() => onFound(sample)}>
-              {sample.name}
+            자료가 정리된 대상지 ·{' '}
+            <button type="button" onClick={() => go(SAMPLE.query)}>
+              {SAMPLE.label}
             </button>
+          </p>
+        )}
+
+        {!hasKey && (
+          <p className="miss">
+            V-World 인증키가 없어 주소를 찾을 수 없습니다. .env 의 VITE_VWORLD_KEY 를 확인하십시오.
           </p>
         )}
       </div>

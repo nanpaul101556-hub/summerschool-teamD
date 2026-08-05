@@ -1,17 +1,16 @@
 /**
- * 03 · Rhino 연결 — 역산한 사양을 그대로 모델로 보낸다.
+ * 04 · 모델링 — 고른 대안을 그대로 Rhino 로 보낸다.
  * 상태는 실제 응답으로만 바뀐다. 연결이 없으면 없다고 표시한다.
  */
 
 import { useCallback, useEffect, useRef, useState } from 'react'
 
-import { PHASES, USES } from '../data/requirements'
-import { backCalculate } from '../lib/adaptability'
+import { SITE } from '../data/site'
+import { buildOptions } from '../lib/options'
 import {
   BRIDGE, captureView, command, exportModel, health, mb, supportScript,
 } from '../lib/rhino'
-
-const USE_KEYS = PHASES.map((p) => p.use)
+import AppFrame from './AppFrame'
 
 const STATE = {
   idle: { tone: '', text: '확인 전' },
@@ -21,21 +20,24 @@ const STATE = {
   down: { tone: 'off', text: '브리지 미실행' },
 }
 
-/** 뷰 캡처 자동 갱신 주기. 캡처+전송이 있어 이보다 짧게 잡아도 빨라지지 않는다. */
+/** 캡처+전송에 시간이 걸려 이보다 짧게 잡아도 빨라지지 않는다. */
 const REFRESH_MS = 2000
 
-export default function RhinoView({ onBack }) {
+export default function RhinoView({ site, picked, onStep, onReset, onNext }) {
   const [status, setStatus] = useState('idle')
   const [busy, setBusy] = useState(false)
   const [log, setLog] = useState([])
-  const [shot, setShot] = useState(null) // { href, bytes, v }
+  const [shot, setShot] = useState(null)
   const [live, setLive] = useState(false)
-  const [file, setFile] = useState(null) // { href, bytes }
+  const [file, setFile] = useState(null)
 
   const alive = useRef(true)
   const probed = useRef(false)
 
-  const calc = backCalculate(USES, USE_KEYS)
+  // 03 에서 고른 대안이 그대로 모델링 입력이 된다
+  const options = buildOptions(SITE.plannedArea)
+  const option = options.find((o) => o.key === picked) ?? options[options.length - 1]
+  const calc = option.calc
 
   const push = useCallback((msg, err = false) => {
     const t = new Date().toLocaleTimeString('ko-KR', { hour12: false })
@@ -68,7 +70,7 @@ export default function RhinoView({ onBack }) {
     }
   }, [probe])
 
-  /** 캡처 한 장. 자동 갱신 중에는 기록을 남기지 않는다 — 로그가 도배된다. */
+  /** 자동 갱신 중에는 기록을 남기지 않는다 — 로그가 도배된다. */
   const grab = useCallback(
     async (quiet = false) => {
       try {
@@ -86,7 +88,7 @@ export default function RhinoView({ onBack }) {
     [push],
   )
 
-  /** 자동 갱신 — 이전 캡처가 끝난 뒤에 다음을 건다 (겹치면 Rhino가 밀린다). */
+  /** 이전 캡처가 끝난 뒤 다음을 건다 — 겹치면 Rhino 가 밀린다. */
   useEffect(() => {
     if (!live) return undefined
     let stop = false
@@ -109,7 +111,6 @@ export default function RhinoView({ onBack }) {
     }
   }, [live, grab])
 
-  /** 로그 한 줄이 화면을 덮지 않도록 자른다. */
   const brief = (v) => {
     const s = typeof v === 'string' ? v : JSON.stringify(v)
     return s.length > 240 ? `${s.slice(0, 240)}…` : s
@@ -148,164 +149,136 @@ export default function RhinoView({ onBack }) {
   const s = STATE[status]
   const connected = status === 'ready'
 
-  return (
-    <div className="page">
-      <header className="head">
-        <div>
-          <h1>Rhino 연결</h1>
-          <div className="addr">역산한 사양을 모델로 보냅니다</div>
-        </div>
-        <button type="button" className="back" onClick={onBack}>
-          대상지로
-        </button>
-      </header>
-
-      <div className="conn">
-        <span className={`dot ${s.tone}`} />
-        <span className="st">{s.text}</span>
-        <span className="ep num">{BRIDGE} → 127.0.0.1:1999</span>
+  const side = (
+    <>
+      <div className="side-h">
+        <div className="n">Step 04</div>
+        <h2>대안 {option.key} 모델링</h2>
+        <p>{option.label} · {option.labels.join(' · ')}</p>
       </div>
 
-      <div className="work">
-        {/* ── 뷰포트 ── */}
-        <section>
-          <h2 className="lab">Rhino 뷰포트</h2>
-          <div className="shot">
-            {shot ? (
-              <img src={`${shot.href}?v=${shot.v}`} alt="Rhino 활성 뷰포트" />
-            ) : (
-              <div className="ph">
-                <div className="t">캡처 없음</div>
-                <div className="s">활성 뷰포트를 이미지로 가져옵니다</div>
-              </div>
-            )}
-            {live && <span className="livetag">LIVE</span>}
-          </div>
+      <section>
+        <div className="conn">
+          <span className={`dot ${s.tone}`} />
+          <span className="st">{s.text}</span>
+        </div>
+        <div className="ep num">{BRIDGE} → 127.0.0.1:1999</div>
+      </section>
 
-          <div className="act">
-            <button type="button" disabled={!connected || busy} onClick={() => grab()}>
-              뷰 가져오기
-            </button>
-            <button
-              type="button"
-              disabled={!connected}
-              onClick={() => setLive((v) => !v)}
-            >
-              {live ? '자동 갱신 중지' : `자동 갱신 (${REFRESH_MS / 1000}초)`}
-            </button>
-          </div>
-          <p className="note">
-            영상 스트림이 아니라 뷰포트를 이미지로 찍어 오는 방식입니다. 캡처와 전송에
-            시간이 걸려 회전을 실시간으로 따라오지는 않습니다.
-          </p>
-        </section>
+      <section>
+        <h3 className="lab">전송할 사양</h3>
+        <div className="kv">
+          <div><span className="k">구조 스팬</span><span className="v num">{calc.spec.span.toFixed(1)} m</span></div>
+          <div><span className="k">바닥하중</span><span className="v num">{calc.spec.load} kg/m²</span></div>
+          <div><span className="k">층고</span><span className="v num">{calc.spec.height.toFixed(1)} m</span></div>
+          <div><span className="k">전력 인입</span><span className="v num">{calc.spec.power} %</span></div>
+        </div>
+        <p className="note">
+          대안 {option.key}가 받아내는 {option.absorbs}개 용도의 최댓값입니다.
+          {option.absorbs > 1 && (
+            <> 첫 용도 대비 스팬 +{calc.premium.span} m · 하중 +{calc.premium.load} kg/m²가
+            「여유」이고, 그것이 용도 전환을 가능하게 하는 물리적 실체입니다.</>
+          )}
+          {calc.estimated && ' 현재 값은 모두 통상값 추정치입니다.'}
+        </p>
 
-        {/* ── 사양 · 명령 ── */}
-        <div className="rail">
-          <section>
-            <h2 className="lab">전송할 사양</h2>
-            <div className="kv">
-              <div>
-                <span className="k">구조 스팬</span>
-                <span className="v num">{calc.spec.span.toFixed(1)} m</span>
-              </div>
-              <div>
-                <span className="k">바닥하중</span>
-                <span className="v num">{calc.spec.load} kg/m²</span>
-              </div>
-              <div>
-                <span className="k">층고</span>
-                <span className="v num">{calc.spec.height.toFixed(1)} m</span>
-              </div>
-              <div>
-                <span className="k">전력 인입</span>
-                <span className="v num">{calc.spec.power} %</span>
-              </div>
-            </div>
-            <p className="note">
-              {USE_KEYS.length}개 용도의 최댓값입니다. 첫 용도 대비 스팬 +{calc.premium.span} m
-              · 하중 +{calc.premium.load} kg/m²가 「여유」이고, 그것이 용도 전환을 가능하게
-              하는 물리적 실체입니다.
-              {calc.estimated && ' 현재 값은 모두 통상값 추정치입니다.'}
-            </p>
+        <div className="act">
+          <button type="button" onClick={probe} disabled={busy}>연결 확인</button>
+          <button
+            type="button"
+            disabled={!connected || busy}
+            onClick={() => run('문서 요약', 'get_document_summary')}
+          >
+            문서 요약
+          </button>
+          <button
+            type="button"
+            disabled={!connected || busy}
+            onClick={() =>
+              run(`대안 ${option.key} Support 생성`, 'execute_rhinoscript_python_code', {
+                code: supportScript(calc.spec, 3, `SUPPORT_${option.key}`),
+              })
+            }
+          >
+            Support 생성
+          </button>
+        </div>
+      </section>
 
-            <div className="act">
-              <button type="button" onClick={probe} disabled={busy}>
-                연결 확인
-              </button>
-              <button
-                type="button"
-                disabled={!connected || busy}
-                onClick={() => run('문서 요약', 'get_document_summary')}
-              >
-                문서 요약
-              </button>
-              <button
-                type="button"
-                disabled={!connected || busy}
-                onClick={() =>
-                  run('Support 생성', 'execute_rhinoscript_python_code', {
-                    code: supportScript(calc.spec),
-                  })
-                }
-              >
-                Support 생성
-              </button>
-            </div>
-          </section>
-
-          <section>
-            <h2 className="lab">내려받기</h2>
-            <div className="act">
-              <button type="button" disabled={!connected || busy} onClick={save3dm}>
-                3dm 만들기
-              </button>
-              {file && (
-                <a className="dl" href={file.href} download="model.3dm">
-                  내려받기 · {mb(file.bytes)}
-                </a>
-              )}
-            </div>
-            <p className="note">
-              현재 열려 있는 문서를 그대로 저장합니다. 파일이 크면 시간이 걸립니다.
-            </p>
-          </section>
-
-          <section>
-            <h2 className="lab">기록</h2>
-            <div className="log">
-              {log.length === 0 ? (
-                <div className="empty">아직 없음</div>
-              ) : (
-                log.map((l, i) => (
-                  <div key={i}>
-                    <span className="tm">{l.t}</span>
-                    <span className={l.err ? 'er' : ''}>{l.msg}</span>
-                  </div>
-                ))
-              )}
-            </div>
-          </section>
-
-          {status === 'down' && (
-            <section>
-              <h2 className="lab">브리지 실행</h2>
-              <p className="note" style={{ marginTop: 0 }}>
-                브라우저는 TCP 소켓을 열 수 없어 중계가 필요합니다. 터미널에서
-                아래를 실행한 뒤 Rhino에서 <b>mcpstart</b>를 켜 주십시오.
-              </p>
-              <div className="log">
-                <div>node bridge/rhino-bridge.mjs</div>
-              </div>
-            </section>
+      <section>
+        <h3 className="lab">내려받기</h3>
+        <div className="act">
+          <button type="button" disabled={!connected || busy} onClick={save3dm}>
+            3dm 만들기
+          </button>
+          {file && (
+            <a className="dl" href={file.href} download="model.3dm">
+              내려받기 · {mb(file.bytes)}
+            </a>
           )}
         </div>
-      </div>
+      </section>
 
-      <div className="foot">
-        <span className="no">03</span>
-        <span className="meta">rhinomcp · 헤더 없는 JSON over TCP</span>
+      <section>
+        <h3 className="lab">기록</h3>
+        <div className="log">
+          {log.length === 0 ? (
+            <div className="empty">아직 없음</div>
+          ) : (
+            log.map((l, i) => (
+              <div key={i}>
+                <span className="tm">{l.t}</span>
+                <span className={l.err ? 'er' : ''}>{l.msg}</span>
+              </div>
+            ))
+          )}
+        </div>
+      </section>
+
+      {status === 'down' && (
+        <section>
+          <h3 className="lab">브리지 실행</h3>
+          <p className="note" style={{ marginTop: 0 }}>
+            브라우저는 TCP 소켓을 열 수 없어 중계가 필요합니다. 터미널에서 아래를
+            실행한 뒤 Rhino에서 <b>mcpstart</b>를 켜 주십시오.
+          </p>
+          <div className="log">
+            <div>node bridge/rhino-bridge.mjs</div>
+          </div>
+        </section>
+      )}
+    </>
+  )
+
+  return (
+    <AppFrame
+      stage="rhino"
+      site={site}
+      onStep={onStep}
+      onReset={onReset}
+      side={side}
+      next={{ label: '시간 변화', onClick: onNext }}
+    >
+      <div className="shot">
+        {shot ? (
+          <img src={`${shot.href}?v=${shot.v}`} alt="Rhino 활성 뷰포트" />
+        ) : (
+          <div className="ph">
+            <div className="t">캡처 없음</div>
+            <div className="s">활성 뷰포트를 이미지로 가져옵니다</div>
+          </div>
+        )}
+        {live && <span className="livetag">LIVE</span>}
+
+        <div className="shot-act">
+          <button type="button" disabled={!connected || busy} onClick={() => grab()}>
+            뷰 가져오기
+          </button>
+          <button type="button" disabled={!connected} onClick={() => setLive((v) => !v)}>
+            {live ? '자동 갱신 중지' : `자동 갱신 ${REFRESH_MS / 1000}초`}
+          </button>
+        </div>
       </div>
-    </div>
+    </AppFrame>
   )
 }

@@ -1,7 +1,29 @@
-import { defineConfig } from 'vite'
 import react from '@vitejs/plugin-react'
+import { defineConfig, loadEnv } from 'vite'
 
-// https://vite.dev/config/
-export default defineConfig({
-  plugins: [react()],
+/**
+ * V-World 의 JSON API(주소검색·지적도)는 CORS 헤더를 주지 않아서
+ * 브라우저에서 직접 부를 수 없다. dev 서버가 대신 부른다.
+ *
+ * 인증키는 발급 시 등록한 도메인에서만 동작하므로 Referer 를 붙여 보낸다.
+ * 배포할 때는 이 프록시 대신 같은 일을 하는 서버 함수가 필요하다.
+ * (타일 이미지는 <img> 로 받으므로 CORS 와 무관하다 — 프록시를 타지 않는다.)
+ */
+export default defineConfig(({ mode }) => {
+  const env = loadEnv(mode, process.cwd(), '')
+  const origin = env.VITE_VWORLD_REFERER || 'http://localhost:5180/'
+
+  return {
+    plugins: [react()],
+    server: {
+      proxy: {
+        '/vworld': {
+          target: 'https://api.vworld.kr',
+          changeOrigin: true,
+          rewrite: (p) => p.replace(/^\/vworld/, ''),
+          headers: { Referer: origin },
+        },
+      },
+    },
+  }
 })
