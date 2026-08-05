@@ -252,7 +252,7 @@ vp.SetProjection(Rhino.Display.DefinedViewportProjection.Top, "Top", False)
 _mode("Wireframe")
 _zoom(0.35)
 sc.doc.Views.Redraw()
-_cap("${pyPath(plan)}", 1600, 900)
+_cap("${pyPath(plan)}", 1200, 1500)
 
 # ③ 투시 — 음영. 방향을 먼저 잡고 그 방향에서 물러난다
 vp.SetProjection(Rhino.Display.DefinedViewportProjection.Perspective, "Perspective", False)
@@ -271,7 +271,7 @@ if _all:
         vp.SetCameraLocation(_c + _dir * _diag * 2.0, True)
 _zoom(0.45)
 sc.doc.Views.Redraw()
-_cap("${pyPath(model)}", 1600, 900)
+_cap("${pyPath(model)}", 1200, 1500)
 print("plan + model captured")
 `)
 

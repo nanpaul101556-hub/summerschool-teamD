@@ -59,6 +59,15 @@ body{
 .stp-l{font-size:13px;font-weight:600;white-space:nowrap}
 .stp:focus-visible{outline:2px solid var(--ink);outline-offset:-2px}
 
+.tb-lang{display:flex;align-items:center;gap:0;flex:none;padding:0 14px}
+.tb-lang button{font-family:var(--f);font-size:11px;font-weight:700;letter-spacing:.06em;
+  padding:4px 9px;cursor:pointer;background:transparent;color:var(--ink-3);
+  border:1px solid var(--rule);margin-right:-1px;transition:.15s}
+.tb-lang button:hover{color:var(--ink)}
+.tb-lang button.on{background:var(--ink);color:#fff;border-color:var(--ink);
+  position:relative;z-index:1}
+.tb-lang button:focus-visible{outline:2px solid var(--ink);outline-offset:2px}
+
 .tb-site{display:flex;align-items:center;gap:12px;flex:none;padding:0 18px;
   border-left:1px solid var(--rule-2);max-width:32vw}
 .tb-site .nm{font-size:12.5px;font-weight:600;white-space:nowrap;
@@ -480,11 +489,11 @@ body{
 .act button:disabled{border-color:var(--rule);color:var(--ink-3);cursor:not-allowed}
 .act button:focus-visible{outline:2px solid var(--ink);outline-offset:2px}
 
-/* 평면 · 모델 — 위아래로 쌓는다. 캡처가 가로 이미지라 폭을 다 쓴다 */
+/* 평면 · 모델 — 좌우로 나란히. 캡처도 세로 비율로 받아 칸을 꽉 채운다 */
 .split{position:relative;flex:1;min-height:0;display:grid;
-  grid-template-rows:1fr 1fr;grid-template-columns:minmax(0,1fr)}
+  grid-template-columns:1fr 1fr;grid-template-rows:minmax(0,1fr)}
 .pane{display:flex;flex-direction:column;min-width:0;min-height:0}
-.pane + .pane{border-top:1px solid var(--rule)}
+.pane + .pane{border-left:1px solid var(--rule)}
 
 /* 모델링 진행 */
 .building{position:absolute;z-index:8;left:50%;bottom:20px;transform:translateX(-50%);

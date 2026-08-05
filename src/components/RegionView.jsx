@@ -8,15 +8,17 @@
 import { AXES, EXCLUDED, STATUS, tally } from '../data/datasets'
 import { OBSERVED } from '../data/facilities'
 import { DECLINE_RANK, POPULATION, VULNERABLE } from '../data/population'
+import { useLang } from '../i18n'
 import { n } from '../lib/format'
 import { interpolate } from '../lib/timeline'
 import AppFrame from './AppFrame'
 import PopCurve from './PopCurve'
 import Skel from './Skel'
 
-const t = tally()
+const tal = tally()
 
 export default function RegionView({ site, onStep, onReset, onNext }) {
+  const { t, tx } = useLang()
   const now = interpolate(POPULATION, 2026)
   const late = interpolate(POPULATION, 2042)
 
@@ -24,20 +26,20 @@ export default function RegionView({ site, onStep, onReset, onNext }) {
     <>
       <div className="side-h">
         <div className="n">Step 02</div>
-        <h2>자료 확보 현황</h2>
-        <p>지역 축 {t.total}개 항목 · 대안은 확보한 것만으로 산출됩니다</p>
+        <h2>{t('region.title')}</h2>
+        <p>{t('region.sub', { n: tal.total })}</p>
       </div>
 
       <section>
         <div className="tal-bar">
-          <span className="have" style={{ flex: t.have }} />
-          <span className="partial" style={{ flex: t.partial }} />
-          <span className="none" style={{ flex: t.none }} />
+          <span className="have" style={{ flex: tal.have }} />
+          <span className="partial" style={{ flex: tal.partial }} />
+          <span className="none" style={{ flex: tal.none }} />
         </div>
         <div className="tal-l">
-          <span><b className="num">{t.have}</b> 확보</span>
-          <span><b className="num">{t.partial}</b> 부분</span>
-          <span><b className="num">{t.none}</b> 미연결</span>
+          <span><b className="num">{tal.have}</b> {t('region.have')}</span>
+          <span><b className="num">{tal.partial}</b> {t('region.partial')}</span>
+          <span><b className="num">{tal.none}</b> {t('region.none')}</span>
         </div>
       </section>
 
@@ -45,26 +47,26 @@ export default function RegionView({ site, onStep, onReset, onNext }) {
         <section key={ax.key}>
           <div className="ax-h">
             <span className="ax-no num">{ax.no}</span>
-            <span className="ax-l">{ax.label}</span>
+            <span className="ax-l">{tx(ax.label)}</span>
           </div>
-          <div className="ax-q">{ax.q}</div>
-          {ax.lead && <div className="ax-lead">{ax.lead}</div>}
+          <div className="ax-q">{tx(ax.q)}</div>
+          {ax.lead && <div className="ax-lead">{tx(ax.lead)}</div>}
 
           <div className="slots">
             {ax.items.map((it) => (
               <div key={it.code} className={`slot ${it.status}`}>
                 <div className="sl-h">
-                  <span className="sl-n">{it.name}</span>
-                  {it.rank && <span className="sl-r num">{it.rank}순위</span>}
+                  <span className="sl-n">{tx(it.name)}</span>
+                  {it.rank && <span className="sl-r num">#{it.rank}</span>}
                   <span className={`sl-s ${STATUS[it.status].tone}`}>
-                    {STATUS[it.status].label}
+                    {t(STATUS[it.status].key)}
                   </span>
                 </div>
                 <div className="sl-src">
-                  {it.src}
+                  {tx(it.src)}
                   {it.api && <em>API</em>}
                 </div>
-                {it.impact && <div className="sl-i">{it.impact}</div>}
+                {it.impact && <div className="sl-i">{tx(it.impact)}</div>}
               </div>
             ))}
           </div>
@@ -72,22 +74,20 @@ export default function RegionView({ site, onStep, onReset, onNext }) {
       ))}
 
       <section>
-        <h3 className="lab">일부러 쓰지 않는 자료</h3>
+        <h3 className="lab">{t('region.excluded')}</h3>
         <div className="rows">
           {EXCLUDED.map((e) => (
-            <div key={e.name}>
+            <div key={e.name.ko}>
               <span className="n">
-                {e.name}
+                {tx(e.name)}
                 <br />
-                <span className="sub">{e.why}</span>
+                <span className="sub">{tx(e.why)}</span>
               </span>
-              <span className="m">제외</span>
+              <span className="m">{t('region.excludedTag')}</span>
             </div>
           ))}
         </div>
-        <p className="note">
-          목록에서 빠진 것과 빼기로 결정한 것은 다릅니다.
-        </p>
+        <p className="note">{t('region.excludedNote')}</p>
       </section>
     </>
   )
@@ -100,33 +100,32 @@ export default function RegionView({ site, onStep, onReset, onNext }) {
       onReset={onReset}
       side={side}
       scroll
-      next={{ label: '대안 산출', onClick: onNext }}
+      next={{ label: t('step.options'), onClick: onNext }}
     >
       <div className="region">
         <section className="rg-wide">
           <div className="rg-h">
-            <h3 className="lab">인구 연령 구성</h3>
-            <span className="rg-tag">확보</span>
+            <h3 className="lab">{t('region.pop')}</h3>
+            <span className="rg-tag">{t('region.have')}</span>
           </div>
           <PopCurve />
           <p className="note">
-            16년 사이 65세 이상이 <b>{now.elder}% → {late.elder}%</b>로 올라갑니다.
-            인구 감소는 서울 <b>{DECLINE_RANK.total}개 자치구 중 {DECLINE_RANK.rank}위</b>이고,
-            2042년에는 고령인구가 유소년의 약 <b>5배</b>가 됩니다.
+            {t('region.popNote', { a: now.elder, b: late.elder,
+              total: DECLINE_RANK.total, rank: DECLINE_RANK.rank })}
           </p>
         </section>
 
         <section>
           <div className="rg-h">
-            <h3 className="lab">취약 계층</h3>
-            <span className="rg-tag">확보</span>
+            <h3 className="lab">{t('region.vulnerable')}</h3>
+            <span className="rg-tag">{t('region.have')}</span>
           </div>
           <div className="acts">
             {VULNERABLE.map((v) => (
               <div key={v.key}>
                 <span className="ac-n">
-                  {v.label}
-                  <em>{v.note}</em>
+                  {tx(v.label)}
+                  <em>{tx(v.note)}</em>
                 </span>
                 <span className="ac-b">
                   <span style={{ width: `${(v.value / 36839) * 100}%` }} />
@@ -139,13 +138,13 @@ export default function RegionView({ site, onStep, onReset, onNext }) {
 
         <section>
           <div className="rg-h">
-            <h3 className="lab">공원에서 일어나는 일</h3>
-            <span className="rg-tag">확보</span>
+            <h3 className="lab">{t('region.acts')}</h3>
+            <span className="rg-tag">{t('region.have')}</span>
           </div>
           <div className="acts">
             {OBSERVED.topActs.map((a) => (
-              <div key={a.act}>
-                <span className="ac-n">{a.act}</span>
+              <div key={a.act.ko}>
+                <span className="ac-n">{tx(a.act)}</span>
                 <span className="ac-b">
                   <span style={{ width: `${(a.n / OBSERVED.topActs[0].n) * 100}%` }} />
                 </span>
@@ -153,23 +152,21 @@ export default function RegionView({ site, onStep, onReset, onNext }) {
               </div>
             ))}
           </div>
-          <p className="note">
-            관찰 {OBSERVED.total}명 · <b>노인 이용자</b> 관찰치라 전체 규모는 알 수 없습니다.
-          </p>
+          <p className="note">{t('region.actsNote', { n: OBSERVED.total })}</p>
         </section>
 
         <section>
           <div className="rg-h">
-            <h3 className="lab">시간대별 이용</h3>
-            <span className="rg-tag">확보</span>
+            <h3 className="lab">{t('region.byTime')}</h3>
+            <span className="rg-tag">{t('region.have')}</span>
           </div>
           <div className="acts">
             {OBSERVED.byTime.map((s) => {
               const v = s.male + s.female
               const max = Math.max(...OBSERVED.byTime.map((x) => x.male + x.female))
               return (
-                <div key={s.slot}>
-                  <span className="ac-n">{s.slot}</span>
+                <div key={s.slot.ko}>
+                  <span className="ac-n">{tx(s.slot)}</span>
                   <span className="ac-b">
                     <span style={{ width: `${(v / max) * 100}%` }} />
                   </span>
@@ -184,18 +181,18 @@ export default function RegionView({ site, onStep, onReset, onNext }) {
         {AXES.filter((ax) => ax.viz).map((ax) => (
           <section key={ax.key} className="rg-ghost">
             <div className="rg-h">
-              <h3 className="lab">{ax.label}</h3>
-              <span className="rg-tag off">미연결</span>
+              <h3 className="lab">{tx(ax.label)}</h3>
+              <span className="rg-tag off">{t('region.none')}</span>
             </div>
             <Skel kind={ax.viz} />
-            <div className="gh-q">{ax.q}</div>
+            <div className="gh-q">{tx(ax.q)}</div>
             <div className="gh-list">
               {ax.items
                 .filter((i) => i.status !== 'have')
                 .map((i) => (
                   <span key={i.code}>
-                    {i.name}
-                    {i.rank && <em className="num">{i.rank}순위</em>}
+                    {tx(i.name)}
+                    {i.rank && <em className="num">#{i.rank}</em>}
                   </span>
                 ))}
             </div>

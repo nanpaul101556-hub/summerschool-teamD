@@ -10,6 +10,8 @@
 import L from 'leaflet'
 import { useEffect, useRef, useState } from 'react'
 
+import { useLang } from '../i18n'
+
 const KEY = import.meta.env.VITE_VWORLD_KEY
 
 /** V-World WMTS 는 {z}/{y}/{x} 순서다 — x,y 를 뒤집으면 엉뚱한 곳이 나온다. */
@@ -23,16 +25,17 @@ const wmts = (layer, ext = 'png') =>
  */
 const LAYERS = [
   // white 는 옅은 블록과 녹지만 있고 글자가 없다. Hybrid 를 얹어야 지명이 붙는다.
-  { key: 'white', label: '심플', layer: 'white', ext: 'png', native: 18, labels: true },
-  { key: 'base', label: '일반', layer: 'Base', ext: 'png', native: 19, muted: true },
-  { key: 'sat', label: '위성', layer: 'Satellite', ext: 'jpeg', native: 19, dark: true, labels: true },
-  { key: 'night', label: '야간', layer: 'midnight', ext: 'png', native: 18, dark: true },
+  { key: 'white', tk: 'map.simple', layer: 'white', ext: 'png', native: 18, labels: true },
+  { key: 'base', tk: 'map.base', layer: 'Base', ext: 'png', native: 19, muted: true },
+  { key: 'sat', tk: 'map.sat', layer: 'Satellite', ext: 'jpeg', native: 19, dark: true, labels: true },
+  { key: 'night', tk: 'map.night', layer: 'midnight', ext: 'png', native: 18, dark: true },
 ]
 
 /** 레이어를 바꿀 때 진행 중이던 요청이 취소되며 tileerror 가 몇 개 뜬다. */
 const FAIL_THRESHOLD = 4
 
 export default function SiteMap({ site }) {
+  const { t } = useLang()
   const box = useRef(null)
   const map = useRef(null)
   const tiles = useRef(null)
@@ -159,8 +162,8 @@ export default function SiteMap({ site }) {
     return (
       <div className="mapslot">
         <div>
-          <div className="t">인증키 없음</div>
-          <div className="s">.env 에 VITE_VWORLD_KEY 를 넣고 dev 서버를 다시 시작하십시오</div>
+          <div className="t">{t('map.noKey')}</div>
+          <div className="s">{t('map.noKeyHint')}</div>
         </div>
       </div>
     )
@@ -178,21 +181,19 @@ export default function SiteMap({ site }) {
             className={kind === l.key ? 'on' : ''}
             onClick={() => setKind(l.key)}
           >
-            {l.label}
+            {t(l.tk)}
           </button>
         ))}
       </div>
 
       {site.parcel && (
         <div className="mapbadge">
-          지번 {site.parcel.jibun} · 경계 연속지적도 {site.parcel.gosi}
+          {t('map.parcel', { jibun: site.parcel.jibun, gosi: site.parcel.gosi })}
         </div>
       )}
 
       {failed && (
-        <div className="maperr">
-          타일을 불러오지 못했습니다 — 인증키에 이 도메인이 등록되어 있는지 확인하십시오
-        </div>
+        <div className="maperr">{t('map.tileFail')}</div>
       )}
     </div>
   )

@@ -7,10 +7,12 @@ import { useEffect, useState } from 'react'
 
 import { FUTURES, KEPT } from '../data/futures'
 import { SITE } from '../data/site'
+import { useLang } from '../i18n'
 import { buildOptions } from '../lib/options'
 import AppFrame from './AppFrame'
 
 export default function FutureView({ site, picked, onStep, onReset }) {
+  const { t, tx } = useLang()
   const [open, setOpen] = useState(null)
 
   // 04 에서 고른 대안의 사양을 그대로 쓴다 — 화면끼리 어긋나지 않게
@@ -29,15 +31,15 @@ export default function FutureView({ site, picked, onStep, onReset }) {
     <>
       <div className="side-h">
         <div className="n">Step 05</div>
-        <h2>세 시점 내내 그대로</h2>
-        <p>대안 {option.key} 기준 · 이 네 값은 나중에 바꿀 수 없습니다</p>
+        <h2>{t('fu.title')}</h2>
+        <p>{t('fu.sub', { key: option.key })}</p>
       </div>
 
       <section>
         <div className="kv">
           {KEPT.map((k) => (
             <div key={k.k}>
-              <span className="k">{k.k}</span>
+              <span className="k">{t(k.k)}</span>
               <span className="v num">
                 {k.unit === 'm' ? spec[k.from].toFixed(1) : spec[k.from]}
                 <em> {k.unit}</em>
@@ -45,29 +47,24 @@ export default function FutureView({ site, picked, onStep, onReset }) {
             </div>
           ))}
         </div>
-        <p className="note">
-          그래서 처음부터 가장 무거운 용도에 맞춰 잡아 둡니다. 그 「여유」의 대가로
-          50년 뒤 무엇이 오든 받아낼 수 있습니다.
-        </p>
+        <p className="note">{t('fu.keptNote')}</p>
       </section>
 
       <section>
-        <h3 className="lab">시점별 용도</h3>
+        <h3 className="lab">{t('fu.byTime')}</h3>
         <div className="rows">
           {FUTURES.map((f) => (
             <div key={f.key}>
               <span className="n">
-                {f.after} · {f.year}
+                {tx(f.after)} · {f.year}
                 <br />
-                <span className="sub">{f.use}</span>
+                <span className="sub">{tx(f.use)}</span>
               </span>
-              <span className="m">{f.certainty === 'unknown' ? '예측 안 함' : '근거 있음'}</span>
+              <span className="m">{t(f.certainty === 'unknown' ? 'fu.notPredicted' : 'fu.grounded')}</span>
             </div>
           ))}
         </div>
-        <p className="note">
-          인구추계는 공표 자료라 단언하고, 먼 미래는 예측하지 않습니다.
-        </p>
+        <p className="note">{t('fu.byTimeNote')}</p>
       </section>
     </>
   )
@@ -81,22 +78,22 @@ export default function FutureView({ site, picked, onStep, onReset }) {
               type="button"
               className="fu-img"
               onClick={() => setOpen(f)}
-              aria-label={`${f.after} 크게 보기`}
+              aria-label={t('fu.zoom', { after: tx(f.after) })}
             >
-              <img src={f.img} alt={`${f.after} · ${f.use}`} loading="lazy" />
-              <span className="fu-yr num">{f.after}</span>
+              <img src={f.img} alt={`${tx(f.after)} · ${tx(f.use)}`} loading="lazy" />
+              <span className="fu-yr num">{tx(f.after)}</span>
             </button>
 
             <div className="fu-body">
               <div className="fu-use">
-                {f.use}
-                {f.certainty === 'unknown' && <span className="tag">예측 안 함</span>}
+                {tx(f.use)}
+                {f.certainty === 'unknown' && <span className="tag">{t('fu.notPredicted')}</span>}
               </div>
               <div className="fu-yn num">{f.year}</div>
-              <p className="fu-basis">{f.basis}</p>
+              <p className="fu-basis">{tx(f.basis)}</p>
               <div className="fu-in">
-                <span className="fu-k">바뀌는 것</span>
-                {f.infill}
+                <span className="fu-k">{t('fu.changes')}</span>
+                {tx(f.infill)}
               </div>
             </div>
           </article>
@@ -108,14 +105,14 @@ export default function FutureView({ site, picked, onStep, onReset }) {
           className="lb"
           role="dialog"
           aria-modal="true"
-          aria-label={`${open.after} · ${open.use}`}
+          aria-label={`${tx(open.after)} · ${tx(open.use)}`}
           onClick={() => setOpen(null)}
         >
-          <img src={open.img} alt={`${open.after} · ${open.use}`} />
+          <img src={open.img} alt={`${tx(open.after)} · ${tx(open.use)}`} />
           <div className="lb-cap">
-            <b>{open.after} · {open.year}</b> {open.use}
+            <b>{tx(open.after)} · {open.year}</b> {tx(open.use)}
           </div>
-          <button type="button" className="lb-x" aria-label="닫기">닫기</button>
+          <button type="button" className="lb-x" aria-label={t('fu.close')}>{t('fu.close')}</button>
         </div>
       )}
     </AppFrame>

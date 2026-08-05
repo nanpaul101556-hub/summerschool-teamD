@@ -3,10 +3,12 @@
 import { useState } from 'react'
 
 import { SAMPLE, resolveSite } from '../data/search'
+import { useLang } from '../i18n'
 import { hasKey } from '../lib/vworld'
 import Arrow from './Arrow'
 
 export default function Landing({ onFound }) {
+  const { t, lang, setLang, langs } = useLang()
   const [q, setQ] = useState('')
   const [busy, setBusy] = useState(false)
   const [err, setErr] = useState(null)
@@ -18,7 +20,7 @@ export default function Landing({ onFound }) {
     try {
       onFound(await resolveSite(address))
     } catch (e) {
-      setErr(e.message)
+      setErr(e.message === '주소를 찾지 못했습니다' ? t('landing.notFound') : e.message)
     } finally {
       setBusy(false)
     }
@@ -26,6 +28,21 @@ export default function Landing({ onFound }) {
 
   return (
     <div className="page">
+      <div className="lang-float">
+        {langs.map((l) => (
+          <button
+            key={l.key}
+            type="button"
+            className={lang === l.key ? 'on' : ''}
+            onClick={() => setLang(l.key)}
+            aria-pressed={lang === l.key}
+            title={l.label}
+          >
+            {l.short}
+          </button>
+        ))}
+      </div>
+
       <div className="center">
         <img
           className="marks"
@@ -34,8 +51,8 @@ export default function Landing({ onFound }) {
           width={383}
           height={96}
         />
-        <div className="brand">적응형 건축 사전판정</div>
-        <h1 className="q">대상지를 입력하십시오</h1>
+        <div className="brand">{t('app.brand')}</div>
+        <h1 className="q">{t('landing.title')}</h1>
 
         <form
           className="field"
@@ -50,34 +67,30 @@ export default function Landing({ onFound }) {
               setQ(e.target.value)
               if (err) setErr(null)
             }}
-            placeholder="도로명 또는 지번 주소"
-            aria-label="대상지 주소"
+            placeholder={t('landing.ph')}
+            aria-label={t('landing.aria')}
             disabled={busy}
             autoFocus
           />
-          <button type="submit" className="go" disabled={!q.trim() || busy} aria-label="이동">
+          <button type="submit" className="go" disabled={!q.trim() || busy} aria-label={t('landing.go')}>
             <Arrow />
           </button>
         </form>
 
         {busy ? (
-          <p className="hint">찾는 중…</p>
+          <p className="hint">{t('landing.searching')}</p>
         ) : err ? (
           <p className="miss">{err}</p>
         ) : (
           <p className="hint">
-            자료가 정리된 대상지 ·{' '}
+            {t('landing.curated')} ·{' '}
             <button type="button" onClick={() => go(SAMPLE.query)}>
               {SAMPLE.label}
             </button>
           </p>
         )}
 
-        {!hasKey && (
-          <p className="miss">
-            V-World 인증키가 없어 주소를 찾을 수 없습니다. .env 의 VITE_VWORLD_KEY 를 확인하십시오.
-          </p>
-        )}
+        {!hasKey && <p className="miss">{t('landing.noKey')}</p>}
       </div>
 
       <div className="foot">

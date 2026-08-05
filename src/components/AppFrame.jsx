@@ -5,14 +5,15 @@
  * 내용만 신경 쓰면 된다.
  */
 
+import { useLang } from '../i18n'
 import Arrow from './Arrow'
 
 export const STEPS = [
-  { key: 'site', no: '01', label: '대상지' },
-  { key: 'region', no: '02', label: '지역 정보' },
-  { key: 'options', no: '03', label: '대안 산출' },
-  { key: 'rhino', no: '04', label: '모델링' },
-  { key: 'future', no: '05', label: '시간 변화' },
+  { key: 'site', no: '01' },
+  { key: 'region', no: '02' },
+  { key: 'options', no: '03' },
+  { key: 'rhino', no: '04' },
+  { key: 'future', no: '05' },
 ]
 
 export default function AppFrame({
@@ -25,17 +26,18 @@ export default function AppFrame({
   scroll = false,
   next,
 }) {
+  const { t, lang, setLang, langs } = useLang()
   const i = STEPS.findIndex((s) => s.key === stage)
 
   return (
     <div className="app">
       <header className="topbar">
         <div className="tb-brand">
-          <b>적응형 건축 사전판정</b>
-          <span>Team D</span>
+          <b>{t('app.brand')}</b>
+          <span>{t('app.team')}</span>
         </div>
 
-        <nav className="steps" aria-label="단계">
+        <nav className="steps" aria-label="steps">
           {STEPS.map((s, k) => (
             <button
               key={s.key}
@@ -47,16 +49,31 @@ export default function AppFrame({
               disabled={k > i + 1}
             >
               <span className="stp-n num">{s.no}</span>
-              <span className="stp-l">{s.label}</span>
+              <span className="stp-l">{t(`step.${s.key}`)}</span>
             </button>
           ))}
         </nav>
+
+        <div className="tb-lang">
+          {langs.map((l) => (
+            <button
+              key={l.key}
+              type="button"
+              className={lang === l.key ? 'on' : ''}
+              onClick={() => setLang(l.key)}
+              aria-pressed={lang === l.key}
+              title={l.label}
+            >
+              {l.short}
+            </button>
+          ))}
+        </div>
 
         {site && (
           <div className="tb-site">
             <span className="nm">{site.name}</span>
             <button type="button" onClick={onReset}>
-              대상지 변경
+              {t('app.changeSite')}
             </button>
           </div>
         )}

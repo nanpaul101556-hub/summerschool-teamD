@@ -19,9 +19,27 @@ export const POP_SRC = { history: 'nowonPop', forecast: 'seoulProj' }
 
 /** 취약계층 — 2023 기준 */
 export const VULNERABLE = [
-  { key: 'soloElder', label: '독거노인', value: 36839, unit: '명', note: '2019→2023 +73%', src: 'nowonStat' },
-  { key: 'disabled', label: '장애인', value: 26425, unit: '명', note: '구민의 5.4% · 서울 2위', src: 'nowonStat' },
-  { key: 'basic', label: '기초생활수급', value: 32168, unit: '명', note: '6.5% · 서울평균 4.4%', src: 'nowonStat' },
+  {
+    key: 'soloElder',
+    label: { ko: '독거노인', it: 'Anziani soli' },
+    value: 36839, unit: { ko: '명', it: '' },
+    note: { ko: '2019→2023 +73%', it: '+73% fra il 2019 e il 2023' },
+    src: 'nowonStat',
+  },
+  {
+    key: 'disabled',
+    label: { ko: '장애인', it: 'Persone con disabilità' },
+    value: 26425, unit: { ko: '명', it: '' },
+    note: { ko: '구민의 5.4% · 서울 2위', it: '5,4% dei residenti · secondo distretto di Seoul' },
+    src: 'nowonStat',
+  },
+  {
+    key: 'basic',
+    label: { ko: '기초생활수급', it: 'Beneficiari del reddito minimo' },
+    value: 32168, unit: { ko: '명', it: '' },
+    note: { ko: '6.5% · 서울평균 4.4%', it: '6,5% · media di Seoul 4,4%' },
+    src: 'nowonStat',
+  },
 ]
 
 /** 인구 감소 순위 — 25개 자치구 중 */

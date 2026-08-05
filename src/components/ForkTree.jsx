@@ -9,6 +9,8 @@
  * 궤적이 바뀌면 그림도 따라 바뀐다.
  */
 
+import { useLang } from '../i18n'
+
 const W = 900
 const ROW = 62
 const PAD_T = 34
@@ -66,21 +68,18 @@ const elbow = (a, b) => {
 }
 
 export default function ForkTree({ options }) {
+  const { t, tx } = useLang()
   const { nodes, edges, leaves, height } = buildTree(options)
 
   return (
     <figure className="fork">
       <svg viewBox={`0 0 ${W} ${height}`} role="img"
-        aria-label="세 대안이 두 번의 판단에서 갈라지는 분기도">
+        aria-label={t("opt.forkTitle")}>
         {/* 자료가 끊기는 지점 */}
         <line x1={(COL[1] + COL[2]) / 2} y1="8" x2={(COL[1] + COL[2]) / 2} y2={height - 16}
           className="fk-cut" />
-        <text x={(COL[1] + COL[2]) / 2 - 8} y="16" textAnchor="end" className="fk-note">
-          공표 자료
-        </text>
-        <text x={(COL[1] + COL[2]) / 2 + 8} y="16" className="fk-note">
-          자료 없음 · 베팅
-        </text>
+        <text x={(COL[1] + COL[2]) / 2 - 8} y="16" textAnchor="end" className="fk-note">{t('opt.dataSide')}</text>
+        <text x={(COL[1] + COL[2]) / 2 + 8} y="16" className="fk-note">{t('opt.betSide')}</text>
 
         {edges.map(([a, b], i) => (
           <path key={i} d={elbow(a, b)} className="fk-edge" />
@@ -91,10 +90,10 @@ export default function ForkTree({ options }) {
             <circle cx={n.x} cy={n.y} r="5"
               className={`fk-node ${n.step.mode}`} />
             <text x={n.x} y={n.y - 13} textAnchor="middle" className="fk-use">
-              {n.step.label}
+              {tx(n.step.label)}
             </text>
             <text x={n.x} y={n.y + 23} textAnchor="middle" className="fk-mode">
-              {n.step.mode === 'own' ? '건물이 받음' : '인근에 넘김'}
+              {t(n.step.mode === 'own' ? 'opt.own' : 'opt.link')}
             </text>
           </g>
         ))}
@@ -103,10 +102,10 @@ export default function ForkTree({ options }) {
           <g key={option.key}>
             <line x1={node.x} y1={node.y} x2={LEAF_X - 10} y2={node.y} className="fk-edge" />
             <text x={LEAF_X} y={node.y + 5} className="fk-key">{option.key}</text>
-            <text x={LEAF_X + 24} y={node.y + 5} className="fk-label">{option.label}</text>
+            <text x={LEAF_X + 24} y={node.y + 5} className="fk-label">{tx(option.label)}</text>
             <text x={W - 12} y={node.y + 5} textAnchor="end"
               className={`fk-verdict ${option.ok ? 'ok' : ''}`}>
-              {option.ok ? '성립' : `−${option.shortfall.toLocaleString()} m²`}
+              {option.ok ? t('opt.verdictOk') : `−${option.shortfall.toLocaleString()} m²`}
             </text>
           </g>
         ))}
@@ -120,9 +119,9 @@ export default function ForkTree({ options }) {
       </svg>
 
       <figcaption className="fk-legend">
-        <span><i className="fk-own" />건물이 직접 받는다</span>
-        <span><i className="fk-link" />인근 시설로 넘긴다</span>
-        <span className="fk-sep">분기점 2곳 · 남은 경로 {leaves.length}개</span>
+        <span><i className="fk-own" />{t('opt.own')}</span>
+        <span><i className="fk-link" />{t('opt.link')}</span>
+        <span className="fk-sep">{t('opt.forkLegend', { n: leaves.length })}</span>
       </figcaption>
     </figure>
   )

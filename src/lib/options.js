@@ -15,46 +15,81 @@
 import { USES } from '../data/requirements'
 import { backCalculate, minAdaptableArea } from './adaptability'
 
+const K = (ko, it) => ({ ko, it })
+
 /** 건물이 직접 받는 용도(own)와 주변으로 넘기는 용도(link) */
 const PLANS = [
   {
     key: 'A',
-    label: '최소 · 연계형',
-    strategy: '건물은 돌봄만 받고, 늘어나는 커뮤니티 수요는 인근 시설로 넘긴다',
+    label: K('최소 · 연계형', 'Minima, in rete'),
+    strategy: K(
+      '건물은 돌봄만 받고, 늘어나는 커뮤니티 수요는 인근 시설로 넘긴다',
+      'L\'edificio accoglie solo l\'assistenza; la crescente domanda di spazi collettivi viene affidata alle strutture vicine',
+    ),
     track: [
       { year: 2031, use: 'welfare', mode: 'own' },
       { year: 2036, use: 'community', mode: 'link' },
       { year: 2046, use: 'welfare', mode: 'own', bet: true },
     ],
-    benefit: '초기 공사비가 가장 낮다',
-    risk: '돌봄 수요가 사라지면 건물을 다시 짓는 것 외에 방법이 없다',
-    premise: '걸어서 닿는 거리에 연계할 커뮤니티 시설이 실제로 있다',
+    benefit: K('초기 공사비가 가장 낮다', 'Costo di costruzione iniziale minimo'),
+    risk: K(
+      '돌봄 수요가 사라지면 건물을 다시 짓는 것 외에 방법이 없다',
+      'Se la domanda di assistenza si esaurisce, non resta che ricostruire',
+    ),
+    premise: K(
+      '걸어서 닿는 거리에 연계할 커뮤니티 시설이 실제로 있다',
+      'Esistono davvero strutture collettive raggiungibili a piedi con cui fare rete',
+    ),
   },
   {
     key: 'B',
-    label: '부분 적응형',
-    strategy: '돌봄에서 의료·재활까지는 건물이 받고, 대공간 용도는 넘긴다',
+    label: K('부분 적응형', 'Adattabilità parziale'),
+    strategy: K(
+      '돌봄에서 의료·재활까지는 건물이 받고, 대공간 용도는 넘긴다',
+      'L\'edificio copre dall\'assistenza fino alla riabilitazione; le funzioni che richiedono grandi luci restano fuori',
+    ),
     track: [
       { year: 2031, use: 'welfare', mode: 'own' },
       { year: 2036, use: 'community', mode: 'link' },
       { year: 2046, use: 'clinic', mode: 'own', bet: true },
     ],
-    benefit: '초고령이 심화될수록 수요가 커지는 용도로 이동할 수 있다',
-    risk: '스팬이 모자라 대공간·고하중 용도로는 전환할 수 없다',
-    premise: '2046년에 의료·재활 수요가 돌봄 수요를 넘어선다',
+    benefit: K(
+      '초고령이 심화될수록 수요가 커지는 용도로 이동할 수 있다',
+      'Consente di spostarsi verso la funzione la cui domanda cresce con l\'invecchiamento',
+    ),
+    risk: K(
+      '스팬이 모자라 대공간·고하중 용도로는 전환할 수 없다',
+      'La luce strutturale non basta per convertire verso grandi spazi o carichi elevati',
+    ),
+    premise: K(
+      '2046년에 의료·재활 수요가 돌봄 수요를 넘어선다',
+      'Nel 2046 la domanda sanitaria e riabilitativa supera quella assistenziale',
+    ),
   },
   {
     key: 'C',
-    label: '완전 적응형',
-    strategy: '확정된 두 시기를 모두 건물이 받고, 예측 못 한 용도까지 열어 둔다',
+    label: K('완전 적응형', 'Adattabilità piena'),
+    strategy: K(
+      '확정된 두 시기를 모두 건물이 받고, 예측 못 한 용도까지 열어 둔다',
+      'L\'edificio assorbe entrambe le fasi certe e resta aperto anche a destinazioni non prevedibili',
+    ),
     track: [
       { year: 2031, use: 'welfare', mode: 'own' },
       { year: 2036, use: 'community', mode: 'own' },
       { year: 2046, use: 'datacenter', mode: 'own', bet: true },
     ],
-    benefit: '확정 구간을 한 건물로 소화하고, 용도 전환의 폭이 가장 넓다',
-    risk: '초기 공사비가 가장 크고, 쓰지 않을 여유를 미리 지불한다',
-    premise: '건물 수명 안에 최소 한 번은 용도 전환이 실제로 일어난다',
+    benefit: K(
+      '확정 구간을 한 건물로 소화하고, 용도 전환의 폭이 가장 넓다',
+      'Copre in un solo edificio le fasi certe e offre il ventaglio di riconversione più ampio',
+    ),
+    risk: K(
+      '초기 공사비가 가장 크고, 쓰지 않을 여유를 미리 지불한다',
+      'Costo iniziale più alto: si paga in anticipo una riserva che potrebbe non essere usata',
+    ),
+    premise: K(
+      '건물 수명 안에 최소 한 번은 용도 전환이 실제로 일어난다',
+      'Nell\'arco di vita dell\'edificio avviene almeno una riconversione effettiva',
+    ),
   },
 ]
 
@@ -116,10 +151,16 @@ export function recommend(options, { elderNow, elderLate, declineRank, plannedAr
 
   const because = []
   if (shrinking) {
-    because.push(`인구 감소 ${declineRank}위 — 신설 시설이 유휴자산이 될 위험이 크다`)
+    because.push(K(
+      `인구 감소 ${declineRank}위 — 신설 시설이 유휴자산이 될 위험이 크다`,
+      `${declineRank}° distretto per calo demografico: alto rischio che una nuova struttura resti inutilizzata`,
+    ))
   }
   if (ageing) {
-    because.push(`고령화 ${elderNow}% → ${elderLate}% — 지금의 용도가 오래가지 않는다`)
+    because.push(K(
+      `고령화 ${elderNow}% → ${elderLate}% — 지금의 용도가 오래가지 않는다`,
+      `Invecchiamento dal ${elderNow}% al ${elderLate}%: l'attuale destinazione non reggerà a lungo`,
+    ))
   }
 
   // 자료가 가리키는 안과 규모가 허락하는 안이 다를 수 있다 — 그 차이가 결론이다
@@ -128,10 +169,13 @@ export function recommend(options, { elderNow, elderLate, declineRank, plannedAr
   const forced = viable.length === 1 ? viable[0] : null
 
   if (target && !target.ok) {
-    because.push(
-      `자료는 ${wanted}안을 가리키지만 ${target.required.toLocaleString()} m²가 필요하다 — ` +
-        `계획 ${plannedArea.toLocaleString()} m² 로는 ${target.shortfall.toLocaleString()} m² 모자란다`,
-    )
+    const need = target.required.toLocaleString()
+    const have = plannedArea.toLocaleString()
+    const gap = target.shortfall.toLocaleString()
+    because.push(K(
+      `자료는 ${wanted}안을 가리키지만 ${need} m²가 필요하다 — 계획 ${have} m² 로는 ${gap} m² 모자란다`,
+      `I dati indicano l'alternativa ${wanted}, che richiede ${need} m²: con i ${have} m² previsti ne mancano ${gap}`,
+    ))
   }
 
   return {

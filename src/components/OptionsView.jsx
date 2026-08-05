@@ -8,11 +8,13 @@
 import { DECLINE_RANK, POPULATION } from '../data/population'
 import { SITE } from '../data/site'
 import { areaLadder, buildOptions, recommend } from '../lib/options'
+import { useLang } from '../i18n'
 import { interpolate } from '../lib/timeline'
 import AppFrame from './AppFrame'
 import ForkTree from './ForkTree'
 
 export default function OptionsView({ site, picked, onPick, onStep, onReset, onNext }) {
+  const { t, tx } = useLang()
   const options = buildOptions(SITE.plannedArea)
   const ladder = areaLadder(SITE.plannedArea)
   const now = interpolate(POPULATION, 2026)
@@ -31,20 +33,20 @@ export default function OptionsView({ site, picked, onPick, onStep, onReset, onN
     <>
       <div className="side-h">
         <div className="n">Step 03</div>
-        <h2>자료가 가리키는 방향</h2>
-        <p>앞 구간은 인구추계가 정하고, 갈리는 것은 자료가 끊기는 지점부터입니다</p>
+        <h2>{t('opt.title')}</h2>
+        <p>{t('opt.sub')}</p>
       </div>
 
       <section>
         <ol className="because">
           {rec.because.map((b) => (
-            <li key={b}>{b}</li>
+            <li key={b.ko}>{tx(b)}</li>
           ))}
         </ol>
       </section>
 
       <section>
-        <h3 className="lab">규모가 선택지를 정한다</h3>
+        <h3 className="lab">{t('opt.ladder')}</h3>
         <div className="ladder">
           {ladder.map((l) => (
             <div key={l.span} className={l.reached ? 'on' : ''}>
@@ -57,30 +59,28 @@ export default function OptionsView({ site, picked, onPick, onStep, onReset, onN
           ))}
         </div>
         <p className="note">
-          계획 <b>{SITE.plannedArea} m²</b> 로 성립하는 안은{' '}
-          <b>{rec.viableKeys.length}개</b>입니다. 스팬이 커질수록 전환에 필요한
-          최소 면적이 계단식으로 올라갑니다.
+          {t('opt.ladderNote', { area: SITE.plannedArea, n: rec.viableKeys.length })}
         </p>
       </section>
 
       {sel && (
         <section>
-          <h3 className="lab">선택 · {sel.key}안</h3>
+          <h3 className="lab">{t('opt.selected', { key: sel.key })}</h3>
           <div className="kv">
-            <div><span className="k">건물이 직접</span><span className="v">{sel.absorbs}개 용도</span></div>
-            <div><span className="k">스팬</span><span className="v num">{sel.spec.span.toFixed(1)} m</span></div>
-            <div><span className="k">하중</span><span className="v num">{sel.spec.load} kg/m²</span></div>
-            <div><span className="k">층고</span><span className="v num">{sel.spec.height.toFixed(1)} m</span></div>
-            <div><span className="k">필요 연면적</span><span className="v num">{sel.required.toLocaleString()} m²</span></div>
+            <div><span className="k">{t('opt.absorbs')}</span><span className="v">{t('opt.uses', { n: sel.absorbs })}</span></div>
+            <div><span className="k">{t('opt.span')}</span><span className="v num">{sel.spec.span.toFixed(1)} m</span></div>
+            <div><span className="k">{t('opt.load')}</span><span className="v num">{sel.spec.load} kg/m²</span></div>
+            <div><span className="k">{t('opt.height')}</span><span className="v num">{sel.spec.height.toFixed(1)} m</span></div>
+            <div><span className="k">{t('opt.required')}</span><span className="v num">{sel.required.toLocaleString()} m²</span></div>
           </div>
           <p className={`note ${sel.ok ? '' : 'warn'}`}>
             {sel.ok
-              ? `계획 ${SITE.plannedArea} m² 로 성립합니다.`
-              : `계획 ${SITE.plannedArea} m² 로는 ${sel.shortfall.toLocaleString()} m² 모자랍니다. 이 안을 실행하려면 규모를 키워야 합니다.`}
+              ? t('opt.ok', { area: SITE.plannedArea })
+              : t('opt.short', { area: SITE.plannedArea, n: sel.shortfall.toLocaleString() })}
           </p>
           <p className="premise">
-            <span>전제</span>
-            {sel.premise}
+            <span>{t('opt.premise')}</span>
+            {tx(sel.premise)}
           </p>
         </section>
       )}
@@ -96,7 +96,7 @@ export default function OptionsView({ site, picked, onPick, onStep, onReset, onN
       side={side}
       scroll
       next={{
-        label: picked ? `${picked}안으로 모델링` : '대안을 고르십시오',
+        label: picked ? t('opt.next', { key: picked }) : t('opt.pick'),
         onClick: onNext,
         disabled: !picked,
       }}
@@ -114,38 +114,38 @@ export default function OptionsView({ site, picked, onPick, onStep, onReset, onN
             >
               <div className="opt-h">
                 <span className="opt-k num">{o.key}</span>
-                <span className="opt-l">{o.label}</span>
-                {rec.key === o.key && <span className="opt-r">자료 권장</span>}
+                <span className="opt-l">{tx(o.label)}</span>
+                {rec.key === o.key && <span className="opt-r">{t('opt.recommended')}</span>}
               </div>
 
-              <p className="opt-s">{o.strategy}</p>
+              <p className="opt-s">{tx(o.strategy)}</p>
 
               {/* 궤적 — 건물이 받는 것과 넘기는 것을 구분한다 */}
               <div className="track">
                 {o.track.map((s, i) => (
                   <div key={i} className={`tr ${s.mode} ${s.bet ? 'bet' : ''}`}>
                     <span className="tr-y num">{s.year}</span>
-                    <span className="tr-u">{s.label}</span>
+                    <span className="tr-u">{tx(s.label)}</span>
                     <span className="tr-m">
-                      {s.mode === 'own' ? '건물' : '연계'}
-                      {s.bet && <em>베팅</em>}
+                      {t(s.mode === 'own' ? 'opt.own' : 'opt.link')}
+                      {s.bet && <em>{t('opt.bet')}</em>}
                     </span>
                   </div>
                 ))}
               </div>
 
               <div className="opt-req">
-                <span>필요 연면적</span>
+                <span>{t('opt.required')}</span>
                 <b className="num">{o.required.toLocaleString()} m²</b>
                 <span className={`opt-v ${o.ok ? 'ok' : ''}`}>
-                  {o.ok ? '성립' : `−${o.shortfall.toLocaleString()} m²`}
+                  {o.ok ? t('opt.verdictOk') : `−${o.shortfall.toLocaleString()} m²`}
                 </span>
               </div>
 
               <dl className="opt-why">
-                <dt>이점</dt><dd>{o.benefit}</dd>
-                <dt>위험</dt><dd>{o.risk}</dd>
-                <dt>전제</dt><dd className="pm">{o.premise}</dd>
+                <dt>{t('opt.benefit')}</dt><dd>{tx(o.benefit)}</dd>
+                <dt>{t('opt.risk')}</dt><dd>{tx(o.risk)}</dd>
+                <dt>{t('opt.premise')}</dt><dd className="pm">{tx(o.premise)}</dd>
               </dl>
             </button>
           )
@@ -154,16 +154,11 @@ export default function OptionsView({ site, picked, onPick, onStep, onReset, onN
 
       <section className="fork-sec">
         <div className="rg-h">
-          <h3 className="lab">대안은 어디서 갈라지는가</h3>
-          <span className="rg-tag">두 번의 판단</span>
+          <h3 className="lab">{t('opt.forkTitle')}</h3>
+          <span className="rg-tag">{t('opt.forkTag')}</span>
         </div>
         <ForkTree options={options} />
-        <p className="note">
-          2031 은 세 안이 같습니다 — 공표된 인구추계가 정하기 때문입니다. 첫 갈림은
-          2036 에 커뮤니티 수요를 <b>건물이 받을지 인근에 넘길지</b>에서 생기고,
-          두 번째 갈림은 자료가 끊기는 2046 의 <b>베팅</b>에서 생깁니다. 세 안은
-          고른 것이 아니라 이 두 판단에서 남은 경로입니다.
-        </p>
+        <p className="note">{t('opt.forkNote')}</p>
       </section>
     </AppFrame>
   )

@@ -11,17 +11,19 @@ import { buildOptions } from '../lib/options'
 import {
   BRIDGE, buildModel, command, exportModel, health, massingScript, mb,
 } from '../lib/rhino'
+import { useLang } from '../i18n'
 import AppFrame from './AppFrame'
 
 const STATE = {
-  idle: { tone: '', text: '확인 전' },
-  checking: { tone: 'wait', text: '확인 중' },
-  ready: { tone: 'on', text: '연결됨' },
-  noRhino: { tone: 'wait', text: '브리지만 실행 중 · Rhino 응답 없음' },
-  down: { tone: 'off', text: '브리지 미실행' },
+  idle: { tone: '', key: 'rh.state.idle' },
+  checking: { tone: 'wait', key: 'rh.state.checking' },
+  ready: { tone: 'on', key: 'rh.state.ready' },
+  noRhino: { tone: 'wait', key: 'rh.state.noRhino' },
+  down: { tone: 'off', key: 'rh.state.down' },
 }
 
 export default function RhinoView({ site, picked, onStep, onReset, onNext }) {
+  const { t, tx } = useLang()
   const [status, setStatus] = useState('idle')
   const [busy, setBusy] = useState(false)
   const [building, setBuilding] = useState(false)
@@ -82,7 +84,7 @@ export default function RhinoView({ site, picked, onStep, onReset, onNext }) {
   const build = useCallback(async () => {
     setBuilding(true)
     setBusy(true)
-    push(`▶ ${option.key}안 모델링 실시`)
+    push(`▶ ${option.key} · ${t('rh.modeling')}`)
     try {
       const r = await buildModel(massingScript(mass, option.key))
       if (!alive.current) return
@@ -149,86 +151,68 @@ export default function RhinoView({ site, picked, onStep, onReset, onNext }) {
     <>
       <div className="side-h">
         <div className="n">Step 04</div>
-        <h2>대안 {option.key} 모델링</h2>
-        <p>{option.label} · {option.labels.join(' · ')}</p>
+        <h2>{t('rh.title', { key: option.key })}</h2>
+        <p>{tx(option.label)} · {option.labels.map(tx).join(' · ')}</p>
       </div>
 
       <section>
         <div className="conn">
           <span className={`dot ${s.tone}`} />
-          <span className="st">{s.text}</span>
+          <span className="st">{t(s.key)}</span>
         </div>
         <div className="ep num">{BRIDGE} → 127.0.0.1:1999</div>
       </section>
 
       <section>
-        <h3 className="lab">매싱</h3>
+        <h3 className="lab">{t('rh.massing')}</h3>
         <div className="kv">
-          <div><span className="k">그리드</span><span className="v num">{mass.gx}×{mass.gy} bay</span></div>
-          <div><span className="k">구조 스팬</span><span className="v num">{mass.span.toFixed(1)} m</span></div>
-          <div><span className="k">층고 · 층수</span><span className="v num">{mass.height.toFixed(1)} m · {mass.floors}</span></div>
-          <div><span className="k">채우는 베이</span><span className="v num">{mass.enclosed} / {mass.gx * mass.gy}</span></div>
+          <div><span className="k">{t('rh.grid')}</span><span className="v num">{mass.gx}×{mass.gy} bay</span></div>
+          <div><span className="k">{t('opt.span')}</span><span className="v num">{mass.span.toFixed(1)} m</span></div>
+          <div><span className="k">{t('rh.floors')}</span><span className="v num">{mass.height.toFixed(1)} m · {mass.floors}</span></div>
+          <div><span className="k">{t('rh.filled')}</span><span className="v num">{mass.enclosed} / {mass.gx * mass.gy}</span></div>
           <div>
-            <span className="k">비워 둔 프레임<em className="kn">여유</em></span>
+            <span className="k">{t('rh.spare')}<em className="kn">{t('rh.spareTag')}</em></span>
             <span className="v num">{mass.spareBays} bay</span>
           </div>
-          <div><span className="k">바닥하중</span><span className="v num">{calc.spec.load} kg/m²</span></div>
+          <div><span className="k">{t('opt.load')}</span><span className="v num">{calc.spec.load} kg/m²</span></div>
         </div>
-        <p className="note">
-          골조는 그리드 전체에 세우고 외피는 {mass.enclosed}개 베이에만 칩니다.
-          비워 둔 {mass.spareBays}개 베이가 전환할 때 쓸 자리입니다 — Folie N6 처럼
-          골조가 외피보다 큽니다. 1층은 슬래브를 두지 않아 열린 채로 둡니다.
-        </p>
-        <p className="note">
-          대안 {option.key}가 받아내는 {option.absorbs}개 용도의 최댓값입니다.
-          {option.absorbs > 1 && (
-            <> 첫 용도 대비 스팬 +{calc.premium.span} m · 하중 +{calc.premium.load} kg/m²가
-            「여유」이고, 그것이 용도 전환을 가능하게 하는 물리적 실체입니다.</>
-          )}
-          {calc.estimated && ' 현재 값은 모두 통상값 추정치입니다.'}
-        </p>
+        <p className="note">{t('rh.massNote', { n: mass.enclosed, s: mass.spareBays })}</p>
 
         <div className="act">
-          <button type="button" onClick={probe} disabled={busy}>연결 확인</button>
+          <button type="button" onClick={probe} disabled={busy}>{t('rh.recheck')}</button>
           <button
             type="button"
             disabled={!connected || busy}
-            onClick={() => run('문서 요약', 'get_document_summary')}
-          >
-            문서 요약
-          </button>
-          <button type="button" disabled={!connected || busy} onClick={build}>
-            다시 만들기
-          </button>
+            onClick={() => run(t('rh.model'), 'get_document_summary')}
+          >{t('rh.model')}</button>
+          <button type="button" disabled={!connected || busy} onClick={build}>{t('rh.rebuild')}</button>
           <button
             type="button"
             className={auto ? 'on' : ''}
             onClick={() => setAuto((v) => !v)}
           >
-            자동 생성 {auto ? '켜짐' : '꺼짐'}
+            {t('rh.auto')} {t(auto ? 'rh.on' : 'rh.off')}
           </button>
         </div>
       </section>
 
       <section>
-        <h3 className="lab">내려받기</h3>
+        <h3 className="lab">{t('rh.download')}</h3>
         <div className="act">
-          <button type="button" disabled={!connected || busy} onClick={save3dm}>
-            3dm 만들기
-          </button>
+          <button type="button" disabled={!connected || busy} onClick={save3dm}>{t('rh.make3dm')}</button>
           {file && (
             <a className="dl" href={file.href} download="model.3dm">
-              내려받기 · {mb(file.bytes)}
+              {t('rh.get3dm', { size: mb(file.bytes) })}
             </a>
           )}
         </div>
       </section>
 
       <section>
-        <h3 className="lab">기록</h3>
+        <h3 className="lab">{t('rh.log')}</h3>
         <div className="log">
           {log.length === 0 ? (
-            <div className="empty">아직 없음</div>
+            <div className="empty">{t('rh.empty')}</div>
           ) : (
             log.map((l, i) => (
               <div key={i}>
@@ -242,11 +226,8 @@ export default function RhinoView({ site, picked, onStep, onReset, onNext }) {
 
       {status === 'down' && (
         <section>
-          <h3 className="lab">브리지 실행</h3>
-          <p className="note" style={{ marginTop: 0 }}>
-            브라우저는 TCP 소켓을 열 수 없어 중계가 필요합니다. 터미널에서 아래를
-            실행한 뒤 Rhino에서 <b>mcpstart</b>를 켜 주십시오.
-          </p>
+          <h3 className="lab">{t('rh.bridgeTitle')}</h3>
+          <p className="note" style={{ marginTop: 0 }}>{t('rh.bridgeNote')}</p>
           <div className="log">
             <div>node bridge/rhino-bridge.mjs</div>
           </div>
@@ -262,24 +243,24 @@ export default function RhinoView({ site, picked, onStep, onReset, onNext }) {
       onStep={onStep}
       onReset={onReset}
       side={side}
-      next={{ label: '시간 변화', onClick: onNext }}
+      next={{ label: t('step.future'), onClick: onNext }}
     >
       <div className="split">
         {/* 평면 — Rhino 가 Top 와이어프레임으로 그린다 */}
         <div className="pane">
           <div className="pane-h">
-            <span>평면도</span>
+            <span>{t('rh.plan')}</span>
             <span className="pane-m num">
               {mass.gx}×{mass.gy} bay · 스팬 {mass.span.toFixed(1)} m
             </span>
           </div>
           <div className="pane-b shot">
             {shot?.plan ? (
-              <img src={`${shot.plan}?v=${shot.v}`} alt="Rhino 평면도" />
+              <img src={`${shot.plan}?v=${shot.v}`} alt={t('rh.plan')} />
             ) : (
               <div className="ph">
-                <div className="t">{building ? '도면 생성 중' : '도면 없음'}</div>
-                <div className="s">모델링을 실시하면 Rhino가 평면을 그립니다</div>
+                <div className="t">{t(building ? 'rh.planning' : 'rh.noPlan')}</div>
+                <div className="s">{t('rh.planHint')}</div>
               </div>
             )}
           </div>
@@ -288,16 +269,16 @@ export default function RhinoView({ site, picked, onStep, onReset, onNext }) {
         {/* 투시 — 같은 모델에서 나온다 */}
         <div className="pane">
           <div className="pane-h">
-            <span>모델</span>
-            <span className="pane-m">{connected ? 'Rhino 연결됨' : '연결 없음'}</span>
+            <span>{t('rh.model')}</span>
+            <span className="pane-m">{t(connected ? 'rh.connected' : 'rh.disconnected')}</span>
           </div>
           <div className="pane-b shot">
             {shot?.model ? (
-              <img src={`${shot.model}?v=${shot.v}`} alt="Rhino 투시도" />
+              <img src={`${shot.model}?v=${shot.v}`} alt={t('rh.model')} />
             ) : (
               <div className="ph">
-                <div className="t">{building ? '모델링 중' : '모델 없음'}</div>
-                <div className="s">{option.key}안 사양으로 Rhino에서 생성합니다</div>
+                <div className="t">{t(building ? 'rh.modeling' : 'rh.noModel')}</div>
+                <div className="s">{t('rh.modelHint', { key: option.key })}</div>
               </div>
             )}
           </div>
@@ -306,7 +287,7 @@ export default function RhinoView({ site, picked, onStep, onReset, onNext }) {
         {building && (
           <div className="building" role="status">
             <span className="bar" />
-            {option.key}안 모델링 중 — Rhino에서 생성하고 도면을 뽑습니다
+            {t('rh.building', { key: option.key })}
           </div>
         )}
       </div>
