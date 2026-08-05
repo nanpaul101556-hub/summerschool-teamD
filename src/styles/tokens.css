@@ -476,6 +476,7 @@ body{
   cursor:pointer;background:transparent;color:var(--ink);border:1px solid var(--ink);
   transition:.15s}
 .act button:hover:not(:disabled){background:var(--ink);color:#fff}
+.act button.on{background:var(--ink);color:#fff}
 .act button:disabled{border-color:var(--rule);color:var(--ink-3);cursor:not-allowed}
 .act button:focus-visible{outline:2px solid var(--ink);outline-offset:2px}
 

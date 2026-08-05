@@ -69,7 +69,6 @@ export const mb = (bytes) => `${(bytes / 1024 / 1024).toFixed(1)} MB`
  */
 export function massingScript(m, key = 'X') {
   const filled = m.cells.filter((c) => c.filled).map((c) => `(${c.ix},${c.iy})`).join(',')
-  const L = `MASS_${key}`
 
   return `import rhinoscriptsyntax as rs
 
@@ -79,59 +78,133 @@ SPAN = ${m.span} * S
 H = ${m.height} * S
 GX, GY, FL = ${m.gx}, ${m.gy}, ${m.floors}
 FILLED = [${filled}]
+KEY = "${key}"
 
-for name in ("${L}_FRAME", "${L}_SLAB", "${L}_SKIN"):
-    if not rs.IsLayer(name):
-        rs.AddLayer(name)
-prev = rs.CurrentLayer("${L}_FRAME")
+# 부재 치수 (m 기준)
+COL_W  = 0.45 * S      # 기둥
+BEAM_W = 0.35 * S      # 보 폭
+BEAM_D = 0.60 * S      # 보 춤
+SLAB_T = 0.30 * S      # 슬래브 두께
+EAVE   = 0.70 * S      # 슬래브 내밀기 — 선례 2 의 드러난 슬래브
+FIN_W  = 0.10 * S      # 수직 핀
+FIN_D  = 0.28 * S
+GLASS_T = 0.04 * S
+CROWN  = 0.55 * H      # 지붕 위로 솟는 프레임 — Folie N6
+
+LAYERS = [(KEY+"_FRAME", (90,90,95)), (KEY+"_SLAB", (170,170,165)),
+          (KEY+"_FIN", (120,110,100)), (KEY+"_GLASS", (150,185,205)),
+          (KEY+"_CROWN", (70,70,75))]
 
 rs.EnableRedraw(False)
+
+# 다시 만들 때 이전 것을 지운다 — 겹쳐 쌓이면 안 된다
+for (name, col) in LAYERS:
+    if rs.IsLayer(name):
+        old = rs.ObjectsByLayer(name)
+        if old:
+            rs.DeleteObjects(old)
+    else:
+        rs.AddLayer(name, col)
+
+prev = rs.CurrentLayer()
 made = []
 
-# ── 골조 — 채운 곳뿐 아니라 그리드 전체에 세운다 (여유를 남긴다)
+def box(x0, y0, z0, x1, y1, z1):
+    pts = [(x0,y0,z0),(x1,y0,z0),(x1,y1,z0),(x0,y1,z0),
+           (x0,y0,z1),(x1,y0,z1),(x1,y1,z1),(x0,y1,z1)]
+    return rs.AddBox(pts)
+
+fill = set(FILLED)
+def has(ix, iy):
+    return (ix, iy) in fill
+
+# ── 기둥 — 그리드 전체. 채우지 않은 곳에도 세운다 (여유를 남긴다)
+rs.CurrentLayer(KEY+"_FRAME")
+h = COL_W / 2.0
 for i in range(GX + 1):
     for j in range(GY + 1):
         x, y = i * SPAN, j * SPAN
-        made.append(rs.AddLine((x, y, 0), (x, y, FL * H)))
+        made.append(box(x-h, y-h, 0, x+h, y+h, FL * H))
 
+# ── 보 — 각 층 레벨, 양방향
+bw = BEAM_W / 2.0
 for f in range(1, FL + 1):
     z = f * H
     for i in range(GX + 1):
         for j in range(GY):
-            made.append(rs.AddLine((i * SPAN, j * SPAN, z), (i * SPAN, (j + 1) * SPAN, z)))
+            x, y0, y1 = i * SPAN, j * SPAN, (j + 1) * SPAN
+            made.append(box(x-bw, y0, z-BEAM_D, x+bw, y1, z))
     for j in range(GY + 1):
         for i in range(GX):
-            made.append(rs.AddLine((i * SPAN, j * SPAN, z), ((i + 1) * SPAN, j * SPAN, z)))
+            y, x0, x1 = j * SPAN, i * SPAN, (i + 1) * SPAN
+            made.append(box(x0, y-bw, z-BEAM_D, x1, y+bw, z))
 
 # ── 슬래브 — 채운 베이 위에만. 1층 바닥은 두지 않는다 (필로티)
-rs.CurrentLayer("${L}_SLAB")
-slabs = 0
+rs.CurrentLayer(KEY+"_SLAB")
 for (ix, iy) in FILLED:
     for f in range(1, FL + 1):
         z = f * H
-        pts = [(ix * SPAN, iy * SPAN, z), ((ix + 1) * SPAN, iy * SPAN, z),
-               ((ix + 1) * SPAN, (iy + 1) * SPAN, z), (ix * SPAN, (iy + 1) * SPAN, z)]
-        made.append(rs.AddSrfPt(pts)); slabs += 1
+        # 덩어리 바깥쪽으로만 내민다
+        x0 = ix * SPAN - (EAVE if not has(ix-1, iy) else 0)
+        x1 = (ix+1) * SPAN + (EAVE if not has(ix+1, iy) else 0)
+        y0 = iy * SPAN - (EAVE if not has(ix, iy-1) else 0)
+        y1 = (iy+1) * SPAN + (EAVE if not has(ix, iy+1) else 0)
+        made.append(box(x0, y0, z, x1, y1, z + SLAB_T))
 
-# ── 외피 — 채운 덩어리의 바깥 면에만, 위층에만 (1층은 열어 둔다)
-rs.CurrentLayer("${L}_SKIN")
-fill = set(FILLED)
-skins = 0
-z0, z1 = H, FL * H
+# ── 외피 — 채운 덩어리의 바깥 면, 위층에만 (1층은 열어 둔다)
+z0, z1 = H + SLAB_T, FL * H
+STEP = SPAN / 6.0
 for (ix, iy) in FILLED:
     edges = []
-    if (ix, iy - 1) not in fill: edges.append(((ix, iy), (ix + 1, iy)))
-    if (ix, iy + 1) not in fill: edges.append(((ix, iy + 1), (ix + 1, iy + 1)))
-    if (ix - 1, iy) not in fill: edges.append(((ix, iy), (ix, iy + 1)))
-    if (ix + 1, iy) not in fill: edges.append(((ix + 1, iy), (ix + 1, iy + 1)))
-    for (a, b) in edges:
-        pts = [(a[0] * SPAN, a[1] * SPAN, z0), (b[0] * SPAN, b[1] * SPAN, z0),
-               (b[0] * SPAN, b[1] * SPAN, z1), (a[0] * SPAN, a[1] * SPAN, z1)]
-        made.append(rs.AddSrfPt(pts)); skins += 1
+    if not has(ix, iy-1): edges.append(((ix,iy), (ix+1,iy), 0, -1))
+    if not has(ix, iy+1): edges.append(((ix,iy+1), (ix+1,iy+1), 0, 1))
+    if not has(ix-1, iy): edges.append(((ix,iy), (ix,iy+1), -1, 0))
+    if not has(ix+1, iy): edges.append(((ix+1,iy), (ix+1,iy+1), 1, 0))
+
+    for (a, b, nx, ny) in edges:
+        ax, ay = a[0] * SPAN, a[1] * SPAN
+        bx, by = b[0] * SPAN, b[1] * SPAN
+        # 유리면
+        rs.CurrentLayer(KEY+"_GLASS")
+        if nx != 0:
+            made.append(box(ax - GLASS_T/2, ay, z0, ax + GLASS_T/2, by, z1))
+        else:
+            made.append(box(ax, ay - GLASS_T/2, z0, bx, ay + GLASS_T/2, z1))
+        # 수직 핀 — 선례의 줄무늬 입면
+        rs.CurrentLayer(KEY+"_FIN")
+        n = int(SPAN / STEP)
+        for k in range(1, n):
+            t = k * STEP
+            if nx != 0:
+                y = ay + t
+                made.append(box(ax + nx*0 - FIN_D/2, y - FIN_W/2, z0,
+                                ax + nx*FIN_D, y + FIN_W/2, z1))
+            else:
+                x = ax + t
+                made.append(box(x - FIN_W/2, ay + ny*0 - FIN_D/2, z0,
+                                x + FIN_W/2, ay + ny*FIN_D, z1))
+
+# ── 크라운 — 지붕 위로 솟는 프레임. 골조가 프로그램보다 오래 남는다는 표시
+rs.CurrentLayer(KEY+"_CROWN")
+zt = FL * H
+for i in range(GX + 1):
+    for j in range(GY + 1):
+        x, y = i * SPAN, j * SPAN
+        made.append(box(x-h, y-h, zt, x+h, y+h, zt + CROWN))
+zc = zt + CROWN
+for i in range(GX + 1):
+    for j in range(GY):
+        x = i * SPAN
+        made.append(box(x-bw, j*SPAN, zc-BEAM_D, x+bw, (j+1)*SPAN, zc))
+for j in range(GY + 1):
+    for i in range(GX):
+        y = j * SPAN
+        made.append(box(i*SPAN, y-bw, zc-BEAM_D, (i+1)*SPAN, y+bw, zc))
 
 rs.CurrentLayer(prev)
 rs.EnableRedraw(True)
-print("${key}안 %dx%d bay, span %.1fm, 채움 %d/%d, 객체 %d (슬래브 %d, 외피 %d)"
-      % (GX, GY, ${m.span}, len(FILLED), GX * GY, len(made), slabs, skins))
+print("%s: %dx%d bay, span %.1fm, fill %d/%d, objects %d"
+      % (KEY, GX, GY, ${m.span}, len(FILLED), GX*GY, len(made)))
 `
 }
+

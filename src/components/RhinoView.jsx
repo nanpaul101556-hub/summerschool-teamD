@@ -32,6 +32,8 @@ export default function RhinoView({ site, picked, onStep, onReset, onNext }) {
   const [shot, setShot] = useState(null)
   const [live, setLive] = useState(false)
   const [file, setFile] = useState(null)
+  /** 대안을 고르면 바로 모델이 다시 서게 한다 */
+  const [auto, setAuto] = useState(true)
 
   const alive = useRef(true)
   const probed = useRef(false)
@@ -120,6 +122,40 @@ export default function RhinoView({ site, picked, onStep, onReset, onNext }) {
     return s.length > 240 ? `${s.slice(0, 240)}…` : s
   }
 
+  /** 매싱 생성 후 뷰까지 한 번에 가져온다. */
+  const build = useCallback(async () => {
+    setBusy(true)
+    push(`▶ ${option.key}안 매싱 생성`)
+    try {
+      const res = await command('execute_rhinoscript_python_code', {
+        code: massingScript(mass, option.key),
+      })
+      if (res?.status === 'error') {
+        push(res.message ?? '알 수 없는 오류', true)
+        return
+      }
+      push(brief(res?.result?.output ?? res?.result ?? res))
+      await grab(true)
+    } catch (err) {
+      push(err.message, true)
+      setStatus('down')
+    } finally {
+      setBusy(false)
+    }
+  }, [mass, option.key, grab, push])
+
+  /**
+   * 대안이 바뀌면 모델을 다시 세운다.
+   * 스크립트가 이전 MASS_<key>_* 를 지우고 시작하므로 겹쳐 쌓이지 않는다.
+   */
+  const builtFor = useRef(null)
+  useEffect(() => {
+    if (!auto || status !== 'ready') return
+    if (builtFor.current === option.key) return
+    builtFor.current = option.key
+    build()
+  }, [auto, status, option.key, build])
+
   const run = async (label, type, params) => {
     setBusy(true)
     push(`▶ ${label}`)
@@ -205,16 +241,15 @@ export default function RhinoView({ site, picked, onStep, onReset, onNext }) {
           >
             문서 요약
           </button>
+          <button type="button" disabled={!connected || busy} onClick={build}>
+            다시 만들기
+          </button>
           <button
             type="button"
-            disabled={!connected || busy}
-            onClick={() =>
-              run(`${option.key}안 매싱 생성`, 'execute_rhinoscript_python_code', {
-                code: massingScript(mass, option.key),
-              })
-            }
+            className={auto ? 'on' : ''}
+            onClick={() => setAuto((v) => !v)}
           >
-            매싱 생성
+            자동 생성 {auto ? '켜짐' : '꺼짐'}
           </button>
         </div>
       </section>
