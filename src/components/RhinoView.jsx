@@ -6,11 +6,13 @@
 import { useCallback, useEffect, useRef, useState } from 'react'
 
 import { SITE } from '../data/site'
+import { computeMassing } from '../lib/massing'
 import { buildOptions } from '../lib/options'
 import {
-  BRIDGE, captureView, command, exportModel, health, mb, supportScript,
+  BRIDGE, captureView, command, exportModel, health, massingScript, mb,
 } from '../lib/rhino'
 import AppFrame from './AppFrame'
+import PlanView from './PlanView'
 
 const STATE = {
   idle: { tone: '', text: '확인 전' },
@@ -38,6 +40,8 @@ export default function RhinoView({ site, picked, onStep, onReset, onNext }) {
   const options = buildOptions(SITE.plannedArea)
   const option = options.find((o) => o.key === picked) ?? options[options.length - 1]
   const calc = option.calc
+  // 2D 와 3D 가 같은 파라미터를 본다
+  const mass = computeMassing(option, SITE.plannedArea)
 
   const push = useCallback((msg, err = false) => {
     const t = new Date().toLocaleTimeString('ko-KR', { hour12: false })
@@ -166,13 +170,23 @@ export default function RhinoView({ site, picked, onStep, onReset, onNext }) {
       </section>
 
       <section>
-        <h3 className="lab">전송할 사양</h3>
+        <h3 className="lab">매싱</h3>
         <div className="kv">
-          <div><span className="k">구조 스팬</span><span className="v num">{calc.spec.span.toFixed(1)} m</span></div>
+          <div><span className="k">그리드</span><span className="v num">{mass.gx}×{mass.gy} bay</span></div>
+          <div><span className="k">구조 스팬</span><span className="v num">{mass.span.toFixed(1)} m</span></div>
+          <div><span className="k">층고 · 층수</span><span className="v num">{mass.height.toFixed(1)} m · {mass.floors}</span></div>
+          <div><span className="k">채우는 베이</span><span className="v num">{mass.enclosed} / {mass.gx * mass.gy}</span></div>
+          <div>
+            <span className="k">비워 둔 프레임<em className="kn">여유</em></span>
+            <span className="v num">{mass.spareBays} bay</span>
+          </div>
           <div><span className="k">바닥하중</span><span className="v num">{calc.spec.load} kg/m²</span></div>
-          <div><span className="k">층고</span><span className="v num">{calc.spec.height.toFixed(1)} m</span></div>
-          <div><span className="k">전력 인입</span><span className="v num">{calc.spec.power} %</span></div>
         </div>
+        <p className="note">
+          골조는 그리드 전체에 세우고 외피는 {mass.enclosed}개 베이에만 칩니다.
+          비워 둔 {mass.spareBays}개 베이가 전환할 때 쓸 자리입니다 — Folie N6 처럼
+          골조가 외피보다 큽니다. 1층은 슬래브를 두지 않아 열린 채로 둡니다.
+        </p>
         <p className="note">
           대안 {option.key}가 받아내는 {option.absorbs}개 용도의 최댓값입니다.
           {option.absorbs > 1 && (
@@ -195,12 +209,12 @@ export default function RhinoView({ site, picked, onStep, onReset, onNext }) {
             type="button"
             disabled={!connected || busy}
             onClick={() =>
-              run(`대안 ${option.key} Support 생성`, 'execute_rhinoscript_python_code', {
-                code: supportScript(calc.spec, 3, `SUPPORT_${option.key}`),
+              run(`${option.key}안 매싱 생성`, 'execute_rhinoscript_python_code', {
+                code: massingScript(mass, option.key),
               })
             }
           >
-            Support 생성
+            매싱 생성
           </button>
         </div>
       </section>
@@ -259,24 +273,46 @@ export default function RhinoView({ site, picked, onStep, onReset, onNext }) {
       side={side}
       next={{ label: '시간 변화', onClick: onNext }}
     >
-      <div className="shot">
-        {shot ? (
-          <img src={`${shot.href}?v=${shot.v}`} alt="Rhino 활성 뷰포트" />
-        ) : (
-          <div className="ph">
-            <div className="t">캡처 없음</div>
-            <div className="s">활성 뷰포트를 이미지로 가져옵니다</div>
+      <div className="split">
+        {/* 2D — 브라우저가 즉시 그린다 */}
+        <div className="pane">
+          <div className="pane-h">
+            <span>평면</span>
+            <span className="pane-m num">
+              {mass.gx}×{mass.gy} bay · {mass.span.toFixed(1)} m
+            </span>
           </div>
-        )}
-        {live && <span className="livetag">LIVE</span>}
+          <div className="pane-b">
+            <PlanView massing={mass} />
+          </div>
+        </div>
 
-        <div className="shot-act">
-          <button type="button" disabled={!connected || busy} onClick={() => grab()}>
-            뷰 가져오기
-          </button>
-          <button type="button" disabled={!connected} onClick={() => setLive((v) => !v)}>
-            {live ? '자동 갱신 중지' : `자동 갱신 ${REFRESH_MS / 1000}초`}
-          </button>
+        {/* 3D — Rhino 가 같은 파라미터로 만든다 */}
+        <div className="pane">
+          <div className="pane-h">
+            <span>모델</span>
+            <span className="pane-m">{connected ? 'Rhino 연결됨' : '연결 없음'}</span>
+          </div>
+          <div className="pane-b shot">
+            {shot ? (
+              <img src={`${shot.href}?v=${shot.v}`} alt="Rhino 활성 뷰포트" />
+            ) : (
+              <div className="ph">
+                <div className="t">캡처 없음</div>
+                <div className="s">모델을 만든 뒤 뷰를 가져옵니다</div>
+              </div>
+            )}
+            {live && <span className="livetag">LIVE</span>}
+
+            <div className="shot-act">
+              <button type="button" disabled={!connected || busy} onClick={() => grab()}>
+                뷰 가져오기
+              </button>
+              <button type="button" disabled={!connected} onClick={() => setLive((v) => !v)}>
+                {live ? '자동 갱신 중지' : `자동 갱신 ${REFRESH_MS / 1000}초`}
+              </button>
+            </div>
+          </div>
         </div>
       </div>
     </AppFrame>

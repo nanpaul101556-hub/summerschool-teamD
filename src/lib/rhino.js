@@ -57,44 +57,81 @@ export async function captureView() {
 export const mb = (bytes) => `${(bytes / 1024 / 1024).toFixed(1)} MB`
 
 /**
- * 역산 사양에서 Support(장수명 구조체) 생성 코드를 만든다.
- * 스팬은 그리드 간격이 되고, 층고는 기둥 높이가 된다.
+ * 매싱에서 Rhino 생성 코드를 만든다.
+ *
+ * 형태 규칙은 두 선례에서 온다 — 골조가 외피보다 크고(Folie N6),
+ * 슬래브가 드러나며 1층은 열려 있다. 규칙은 모든 안에 같고 치수와
+ * 채움만 대안에 따라 달라진다.
  *
  * 사양은 미터인데 문서 단위는 무엇이든 될 수 있다(현재 대상 문서는 mm).
  * 그대로 보내면 1000배 작게 생기므로 문서 단위로 환산한 뒤 그린다.
- * 기존 SUPPORT_* 레이어와 섞이지 않도록 전용 레이어에 올린다.
+ * 기존 SUPPORT_* 레이어와 섞이지 않도록 안별 전용 레이어에 올린다.
  */
-export function supportScript({ span, height }, bays = 3, layer = 'SUPPORT_AUTO') {
+export function massingScript(m, key = 'X') {
+  const filled = m.cells.filter((c) => c.filled).map((c) => `(${c.ix},${c.iy})`).join(',')
+  const L = `MASS_${key}`
+
   return `import rhinoscriptsyntax as rs
 
 # 미터(4) → 현재 문서 단위 환산 계수
 S = rs.UnitScale(rs.UnitSystem(), 4)
-SPAN = ${span} * S
-H = ${height} * S
-BAYS = ${bays}
+SPAN = ${m.span} * S
+H = ${m.height} * S
+GX, GY, FL = ${m.gx}, ${m.gy}, ${m.floors}
+FILLED = [${filled}]
 
-if not rs.IsLayer("${layer}"):
-    rs.AddLayer("${layer}")
-prev = rs.CurrentLayer("${layer}")
+for name in ("${L}_FRAME", "${L}_SLAB", "${L}_SKIN"):
+    if not rs.IsLayer(name):
+        rs.AddLayer(name)
+prev = rs.CurrentLayer("${L}_FRAME")
 
 rs.EnableRedraw(False)
 made = []
 
-# 기둥 — (BAYS+1)^2 격자
-for i in range(BAYS + 1):
-    for j in range(BAYS + 1):
+# ── 골조 — 채운 곳뿐 아니라 그리드 전체에 세운다 (여유를 남긴다)
+for i in range(GX + 1):
+    for j in range(GY + 1):
         x, y = i * SPAN, j * SPAN
-        made.append(rs.AddLine((x, y, 0), (x, y, H)))
+        made.append(rs.AddLine((x, y, 0), (x, y, FL * H)))
 
-# 보 — 양방향
-for i in range(BAYS + 1):
-    for j in range(BAYS):
-        a, b = i * SPAN, j * SPAN
-        made.append(rs.AddLine((a, b, H), (a, b + SPAN, H)))
-        made.append(rs.AddLine((b, a, H), (b + SPAN, a, H)))
+for f in range(1, FL + 1):
+    z = f * H
+    for i in range(GX + 1):
+        for j in range(GY):
+            made.append(rs.AddLine((i * SPAN, j * SPAN, z), (i * SPAN, (j + 1) * SPAN, z)))
+    for j in range(GY + 1):
+        for i in range(GX):
+            made.append(rs.AddLine((i * SPAN, j * SPAN, z), ((i + 1) * SPAN, j * SPAN, z)))
+
+# ── 슬래브 — 채운 베이 위에만. 1층 바닥은 두지 않는다 (필로티)
+rs.CurrentLayer("${L}_SLAB")
+slabs = 0
+for (ix, iy) in FILLED:
+    for f in range(1, FL + 1):
+        z = f * H
+        pts = [(ix * SPAN, iy * SPAN, z), ((ix + 1) * SPAN, iy * SPAN, z),
+               ((ix + 1) * SPAN, (iy + 1) * SPAN, z), (ix * SPAN, (iy + 1) * SPAN, z)]
+        made.append(rs.AddSrfPt(pts)); slabs += 1
+
+# ── 외피 — 채운 덩어리의 바깥 면에만, 위층에만 (1층은 열어 둔다)
+rs.CurrentLayer("${L}_SKIN")
+fill = set(FILLED)
+skins = 0
+z0, z1 = H, FL * H
+for (ix, iy) in FILLED:
+    edges = []
+    if (ix, iy - 1) not in fill: edges.append(((ix, iy), (ix + 1, iy)))
+    if (ix, iy + 1) not in fill: edges.append(((ix, iy + 1), (ix + 1, iy + 1)))
+    if (ix - 1, iy) not in fill: edges.append(((ix, iy), (ix, iy + 1)))
+    if (ix + 1, iy) not in fill: edges.append(((ix + 1, iy), (ix + 1, iy + 1)))
+    for (a, b) in edges:
+        pts = [(a[0] * SPAN, a[1] * SPAN, z0), (b[0] * SPAN, b[1] * SPAN, z0),
+               (b[0] * SPAN, b[1] * SPAN, z1), (a[0] * SPAN, a[1] * SPAN, z1)]
+        made.append(rs.AddSrfPt(pts)); skins += 1
 
 rs.CurrentLayer(prev)
 rs.EnableRedraw(True)
-print("layer ${layer}: %d objects, span %.0f, height %.0f" % (len(made), SPAN, H))
+print("${key}안 %dx%d bay, span %.1fm, 채움 %d/%d, 객체 %d (슬래브 %d, 외피 %d)"
+      % (GX, GY, ${m.span}, len(FILLED), GX * GY, len(made), slabs, skins))
 `
 }
