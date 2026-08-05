@@ -42,6 +42,7 @@ export const AXES = [
     no: '2.7',
     label: '상권 · 문화',
     q: '주변에서 어떤 활동이 돈이 되는가',
+    viz: 'bars',
     items: [
       {
         code: '2.7a', name: '점포 수 · 업종 구성', src: '서울시 우리마을가게', api: true,
@@ -66,6 +67,7 @@ export const AXES = [
     no: '3',
     label: '운영 조건',
     q: '이 시설은 언제 적자가 되는가',
+    viz: 'line',
     lead: '적자는 인구 변화보다 먼저 나타난다 — 전환 시점의 가장 빠른 신호다',
     items: [
       {
@@ -91,6 +93,7 @@ export const AXES = [
     no: '4',
     label: '환경 · 외부',
     q: '건물 밖의 조건이 어떻게 변하는가',
+    viz: 'curve',
     items: [
       {
         code: '4.1', name: '기후변화 시나리오(SSP)', src: '기상청 기후정보포털',

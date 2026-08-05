@@ -238,26 +238,55 @@ body{
 .dm-d{font-size:12px;color:var(--ink-2);line-height:1.5;margin-top:3px;
   padding-left:10px;border-left:2px solid var(--rule)}
 
-/* ── 03 지역 정보 ── */
-.agebar{display:flex;flex-direction:column;gap:18px}
-.ab-h{display:flex;justify-content:space-between;align-items:baseline;margin-bottom:6px}
-.ab-y{font-size:15px;font-weight:700}
-.ab-n{font-size:12px;color:var(--ink-3)}
-.ab-t{display:flex;height:22px;overflow:hidden;background:var(--fill)}
-.ab-t .seg{display:block;height:100%}
-.ab-t .elder{background:var(--ink)}
-.ab-t .mid{background:#C9C6C1}
-.ab-t .youth{background:var(--rule)}
-.ab-l{display:flex;justify-content:space-between;margin-top:5px;
-  font-size:11.5px;color:var(--ink-2)}
+/* ── 02 지역 정보 ── */
+.rg-h{display:flex;align-items:baseline;gap:9px;margin-bottom:10px}
+.rg-h .lab{margin:0}
+.rg-tag{font-size:10px;font-weight:600;letter-spacing:.06em;color:var(--ink-2);
+  background:var(--fill);padding:2px 7px}
+.rg-tag.off{color:var(--ink-3);background:transparent;border:1px dashed var(--rule)}
 
-.acts > div{display:grid;grid-template-columns:1fr 92px 34px;align-items:center;
+/* 인구 곡선 */
+.curve svg{width:100%;height:auto;display:block}
+.c-elder{fill:none;stroke:var(--ink);stroke-width:2.2;
+  stroke-linecap:round;stroke-linejoin:round}
+.c-youth{fill:none;stroke:#B4B0AA;stroke-width:2;
+  stroke-linecap:round;stroke-linejoin:round}
+.c-elder.dash,.c-youth.dash{stroke-dasharray:5 4}
+.c-dot{fill:#fff;stroke:var(--ink);stroke-width:2}
+.c-val{font-size:11px;font-weight:700;fill:var(--ink)}
+.c-ax{font-size:10.5px;fill:var(--ink-3)}
+.c-note{font-size:10px;fill:var(--ink-3)}
+.c-legend{display:flex;flex-wrap:wrap;gap:16px;margin-top:8px;
+  font-size:11.5px;color:var(--ink-2)}
+.c-legend span{display:inline-flex;align-items:center;gap:6px}
+.c-legend i{width:16px;height:0;border-top:2px solid var(--ink)}
+.c-legend i.k-youth{border-top-color:#B4B0AA}
+.c-sep{color:var(--ink-3);margin-left:auto}
+
+/* 값 막대 */
+.acts > div{display:grid;grid-template-columns:1fr 96px 46px;align-items:center;
   gap:10px;padding:7px 0;border-bottom:1px solid var(--rule-2)}
 .acts > div:last-child{border-bottom:0}
-.ac-n{font-size:13px}
+.ac-n{font-size:13px;line-height:1.35}
+.ac-n em{display:block;font-style:normal;font-size:11px;color:var(--ink-3)}
 .ac-b{display:block;height:6px;background:var(--fill)}
 .ac-b span{display:block;height:100%;background:var(--ink)}
 .ac-v{font-size:12px;color:var(--ink-2);text-align:right}
+
+/* 미연결 자리 — 채워지면 어떤 형태가 올지만 보여준다 */
+.rg-ghost{opacity:.85}
+.skel{height:74px;border:1px dashed var(--rule);background:var(--fill);
+  padding:12px 14px}
+.skel-bars{display:flex;flex-direction:column;justify-content:space-between}
+.skel-bars span{display:block;height:6px;background:var(--rule)}
+.skel-svg{width:100%;height:100%;display:block}
+.skel-svg polyline{fill:none;stroke:var(--rule);stroke-width:3;
+  vector-effect:non-scaling-stroke;stroke-linecap:round;stroke-linejoin:round}
+.gh-q{font-size:12px;color:var(--ink-2);margin-top:9px}
+.gh-list{display:flex;flex-wrap:wrap;gap:5px;margin-top:8px}
+.gh-list span{font-size:11px;color:var(--ink-3);border:1px dashed var(--rule);
+  padding:2px 8px}
+.gh-list em{font-style:normal;font-weight:700;color:var(--ink);margin-left:5px}
 
 
 .tal-bar{display:flex;height:8px;overflow:hidden;background:var(--fill)}
@@ -376,10 +405,10 @@ body{
   font-size:12px;padding:6px 14px;cursor:pointer}
 .lb-x:hover{border-color:#fff}
 
-/* ── 03 지역 정보 스테이지 ── */
-.region{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));
+/* ── 지역 정보 스테이지 ── */
+.region{display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));
   gap:var(--s5) var(--s6);align-items:start}
-.rg-pop{grid-column:1/-1}
+.rg-wide{grid-column:1/-1}
 
 /* ── Rhino 연결 ── */
 .conn{display:flex;align-items:center;gap:10px;background:var(--fill);

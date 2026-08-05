@@ -11,6 +11,8 @@ import { DECLINE_RANK, POPULATION, VULNERABLE } from '../data/population'
 import { n } from '../lib/format'
 import { interpolate } from '../lib/timeline'
 import AppFrame from './AppFrame'
+import PopCurve from './PopCurve'
+import Skel from './Skel'
 
 const t = tally()
 
@@ -101,51 +103,45 @@ export default function RegionView({ site, onStep, onReset, onNext }) {
       next={{ label: '대안 산출', onClick: onNext }}
     >
       <div className="region">
-        <section className="rg-pop">
-          <h3 className="lab">인구 연령층 · 확보</h3>
-          <div className="agebar">
-            {[{ y: 2026, d: now }, { y: 2042, d: late }].map(({ y, d }) => (
-              <div key={y} className="ab">
-                <div className="ab-h">
-                  <span className="ab-y num">{y}</span>
-                  <span className="ab-n num">{n(d.pop)}명</span>
-                </div>
-                <div className="ab-t">
-                  <span className="seg elder" style={{ width: `${d.elder}%` }} />
-                  <span className="seg mid" style={{ width: `${100 - d.elder - (d.youth ?? 0)}%` }} />
-                  <span className="seg youth" style={{ width: `${d.youth ?? 0}%` }} />
-                </div>
-                <div className="ab-l">
-                  <span>65세 이상 {d.elder}%</span>
-                  <span>유소년 {d.youth ?? '—'}%</span>
-                </div>
-              </div>
-            ))}
+        <section className="rg-wide">
+          <div className="rg-h">
+            <h3 className="lab">인구 연령 구성</h3>
+            <span className="rg-tag">확보</span>
           </div>
+          <PopCurve />
           <p className="note">
             16년 사이 65세 이상이 <b>{now.elder}% → {late.elder}%</b>로 올라갑니다.
-            인구 감소는 서울 <b>{DECLINE_RANK.total}개 자치구 중 {DECLINE_RANK.rank}위</b>입니다.
+            인구 감소는 서울 <b>{DECLINE_RANK.total}개 자치구 중 {DECLINE_RANK.rank}위</b>이고,
+            2042년에는 고령인구가 유소년의 약 <b>5배</b>가 됩니다.
           </p>
         </section>
 
         <section>
-          <h3 className="lab">취약 계층 · 확보</h3>
-          <div className="rows">
+          <div className="rg-h">
+            <h3 className="lab">취약 계층</h3>
+            <span className="rg-tag">확보</span>
+          </div>
+          <div className="acts">
             {VULNERABLE.map((v) => (
               <div key={v.key}>
-                <span className="n">
+                <span className="ac-n">
                   {v.label}
-                  <br />
-                  <span className="sub">{v.note}</span>
+                  <em>{v.note}</em>
                 </span>
-                <span className="m num">{n(v.value)} {v.unit}</span>
+                <span className="ac-b">
+                  <span style={{ width: `${(v.value / 36839) * 100}%` }} />
+                </span>
+                <span className="ac-v num">{n(v.value)}</span>
               </div>
             ))}
           </div>
         </section>
 
         <section>
-          <h3 className="lab">공원에서 일어나는 일 · 확보</h3>
+          <div className="rg-h">
+            <h3 className="lab">공원에서 일어나는 일</h3>
+            <span className="rg-tag">확보</span>
+          </div>
           <div className="acts">
             {OBSERVED.topActs.map((a) => (
               <div key={a.act}>
@@ -158,22 +154,53 @@ export default function RegionView({ site, onStep, onReset, onNext }) {
             ))}
           </div>
           <p className="note">
-            관찰 {OBSERVED.total}명 · {OBSERVED.rank}. <b>노인 이용자</b> 관찰치라
-            전체 이용 규모는 알 수 없습니다.
+            관찰 {OBSERVED.total}명 · <b>노인 이용자</b> 관찰치라 전체 규모는 알 수 없습니다.
           </p>
         </section>
 
         <section>
-          <h3 className="lab">시간대별 이용 · 확보</h3>
-          <div className="rows">
-            {OBSERVED.byTime.map((s) => (
-              <div key={s.slot}>
-                <span className="n">{s.slot}</span>
-                <span className="m num">{s.male + s.female}명</span>
-              </div>
-            ))}
+          <div className="rg-h">
+            <h3 className="lab">시간대별 이용</h3>
+            <span className="rg-tag">확보</span>
+          </div>
+          <div className="acts">
+            {OBSERVED.byTime.map((s) => {
+              const v = s.male + s.female
+              const max = Math.max(...OBSERVED.byTime.map((x) => x.male + x.female))
+              return (
+                <div key={s.slot}>
+                  <span className="ac-n">{s.slot}</span>
+                  <span className="ac-b">
+                    <span style={{ width: `${(v / max) * 100}%` }} />
+                  </span>
+                  <span className="ac-v num">{v}</span>
+                </div>
+              )
+            })}
           </div>
         </section>
+
+        {/* 아직 안 붙은 자료도 자리를 잡아 둔다 */}
+        {AXES.filter((ax) => ax.viz).map((ax) => (
+          <section key={ax.key} className="rg-ghost">
+            <div className="rg-h">
+              <h3 className="lab">{ax.label}</h3>
+              <span className="rg-tag off">미연결</span>
+            </div>
+            <Skel kind={ax.viz} />
+            <div className="gh-q">{ax.q}</div>
+            <div className="gh-list">
+              {ax.items
+                .filter((i) => i.status !== 'have')
+                .map((i) => (
+                  <span key={i.code}>
+                    {i.name}
+                    {i.rank && <em className="num">{i.rank}순위</em>}
+                  </span>
+                ))}
+            </div>
+          </section>
+        ))}
       </div>
     </AppFrame>
   )
