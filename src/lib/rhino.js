@@ -42,6 +42,20 @@ export async function command(type, params = {}) {
   })
 }
 
+/** 현재 문서를 3dm 으로 저장시키고 내려받기 주소를 받는다. 파일이 커서 넉넉히 기다린다. */
+export async function exportModel() {
+  const r = await call('/export', { method: 'POST' }, 120000)
+  return { ...r, href: `${BRIDGE}${r.url}` }
+}
+
+/** 활성 뷰포트를 캡처시키고 이미지 주소를 받는다. */
+export async function captureView() {
+  const r = await call('/capture', { method: 'POST' }, 60000)
+  return { ...r, href: `${BRIDGE}${r.url}` }
+}
+
+export const mb = (bytes) => `${(bytes / 1024 / 1024).toFixed(1)} MB`
+
 /**
  * 역산 사양에서 Support(장수명 구조체) 생성 코드를 만든다.
  * 스팬은 그리드 간격이 되고, 층고는 기둥 높이가 된다.

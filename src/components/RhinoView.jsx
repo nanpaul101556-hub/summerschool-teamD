@@ -7,7 +7,9 @@ import { useCallback, useEffect, useRef, useState } from 'react'
 
 import { PHASES, USES } from '../data/requirements'
 import { backCalculate } from '../lib/adaptability'
-import { BRIDGE, command, health, supportScript } from '../lib/rhino'
+import {
+  BRIDGE, captureView, command, exportModel, health, mb, supportScript,
+} from '../lib/rhino'
 
 const USE_KEYS = PHASES.map((p) => p.use)
 
@@ -19,11 +21,19 @@ const STATE = {
   down: { tone: 'off', text: '브리지 미실행' },
 }
 
+/** 뷰 캡처 자동 갱신 주기. 캡처+전송이 있어 이보다 짧게 잡아도 빨라지지 않는다. */
+const REFRESH_MS = 2000
+
 export default function RhinoView({ onBack }) {
   const [status, setStatus] = useState('idle')
   const [busy, setBusy] = useState(false)
   const [log, setLog] = useState([])
+  const [shot, setShot] = useState(null) // { href, bytes, v }
+  const [live, setLive] = useState(false)
+  const [file, setFile] = useState(null) // { href, bytes }
+
   const alive = useRef(true)
+  const probed = useRef(false)
 
   const calc = backCalculate(USES, USE_KEYS)
 
@@ -48,11 +58,56 @@ export default function RhinoView({ onBack }) {
 
   useEffect(() => {
     alive.current = true
-    probe()
+    // StrictMode 가 effect 를 두 번 실행해도 기록이 겹치지 않게 한 번만 확인한다
+    if (!probed.current) {
+      probed.current = true
+      probe()
+    }
     return () => {
       alive.current = false
     }
   }, [probe])
+
+  /** 캡처 한 장. 자동 갱신 중에는 기록을 남기지 않는다 — 로그가 도배된다. */
+  const grab = useCallback(
+    async (quiet = false) => {
+      try {
+        const r = await captureView()
+        if (!alive.current) return true
+        setShot({ href: r.href, bytes: r.bytes, v: Date.now() })
+        if (!quiet) push(`뷰 캡처 ${mb(r.bytes)}`)
+        return true
+      } catch (err) {
+        if (!alive.current) return false
+        push(err.message, true)
+        return false
+      }
+    },
+    [push],
+  )
+
+  /** 자동 갱신 — 이전 캡처가 끝난 뒤에 다음을 건다 (겹치면 Rhino가 밀린다). */
+  useEffect(() => {
+    if (!live) return undefined
+    let stop = false
+    let timer
+
+    const loop = async () => {
+      const ok = await grab(true)
+      if (stop) return
+      if (!ok) {
+        setLive(false)
+        return
+      }
+      timer = setTimeout(loop, REFRESH_MS)
+    }
+    loop()
+
+    return () => {
+      stop = true
+      clearTimeout(timer)
+    }
+  }, [live, grab])
 
   /** 로그 한 줄이 화면을 덮지 않도록 자른다. */
   const brief = (v) => {
@@ -71,6 +126,20 @@ export default function RhinoView({ onBack }) {
     } catch (err) {
       push(err.message, true)
       setStatus('down')
+    } finally {
+      setBusy(false)
+    }
+  }
+
+  const save3dm = async () => {
+    setBusy(true)
+    push('▶ 3dm 저장')
+    try {
+      const r = await exportModel()
+      setFile(r)
+      push(`저장 완료 ${mb(r.bytes)}`)
+    } catch (err) {
+      push(err.message, true)
     } finally {
       setBusy(false)
     }
@@ -98,59 +167,110 @@ export default function RhinoView({ onBack }) {
       </div>
 
       <div className="work">
+        {/* ── 뷰포트 ── */}
         <section>
-          <h2 className="lab">전송할 사양</h2>
-          <div className="kv">
-            <div>
-              <span className="k">구조 스팬</span>
-              <span className="v num">{calc.spec.span.toFixed(1)} m</span>
-            </div>
-            <div>
-              <span className="k">바닥하중</span>
-              <span className="v num">{calc.spec.load} kg/m²</span>
-            </div>
-            <div>
-              <span className="k">층고</span>
-              <span className="v num">{calc.spec.height.toFixed(1)} m</span>
-            </div>
-            <div>
-              <span className="k">전력 인입</span>
-              <span className="v num">{calc.spec.power} %</span>
-            </div>
+          <h2 className="lab">Rhino 뷰포트</h2>
+          <div className="shot">
+            {shot ? (
+              <img src={`${shot.href}?v=${shot.v}`} alt="Rhino 활성 뷰포트" />
+            ) : (
+              <div className="ph">
+                <div className="t">캡처 없음</div>
+                <div className="s">활성 뷰포트를 이미지로 가져옵니다</div>
+              </div>
+            )}
+            {live && <span className="livetag">LIVE</span>}
           </div>
-          <p className="note">
-            {USE_KEYS.length}개 용도의 요구 성능 중 각 항목의 최댓값입니다. 첫 용도
-            대비 스팬 +{calc.premium.span} m · 하중 +{calc.premium.load} kg/m²가 「여유」이고,
-            그것이 용도 전환을 가능하게 하는 물리적 실체입니다.
-            {calc.estimated && ' 현재 값은 모두 통상값 추정치입니다.'}
-          </p>
 
           <div className="act">
-            <button type="button" onClick={probe} disabled={busy}>
-              연결 확인
+            <button type="button" disabled={!connected || busy} onClick={() => grab()}>
+              뷰 가져오기
             </button>
             <button
               type="button"
-              disabled={!connected || busy}
-              onClick={() => run('문서 요약', 'get_document_summary')}
+              disabled={!connected}
+              onClick={() => setLive((v) => !v)}
             >
-              문서 요약
-            </button>
-            <button
-              type="button"
-              disabled={!connected || busy}
-              onClick={() =>
-                run('Support 생성', 'execute_rhinoscript_python_code', {
-                  code: supportScript(calc.spec),
-                })
-              }
-            >
-              Support 생성
+              {live ? '자동 갱신 중지' : `자동 갱신 (${REFRESH_MS / 1000}초)`}
             </button>
           </div>
+          <p className="note">
+            영상 스트림이 아니라 뷰포트를 이미지로 찍어 오는 방식입니다. 캡처와 전송에
+            시간이 걸려 회전을 실시간으로 따라오지는 않습니다.
+          </p>
         </section>
 
+        {/* ── 사양 · 명령 ── */}
         <div className="rail">
+          <section>
+            <h2 className="lab">전송할 사양</h2>
+            <div className="kv">
+              <div>
+                <span className="k">구조 스팬</span>
+                <span className="v num">{calc.spec.span.toFixed(1)} m</span>
+              </div>
+              <div>
+                <span className="k">바닥하중</span>
+                <span className="v num">{calc.spec.load} kg/m²</span>
+              </div>
+              <div>
+                <span className="k">층고</span>
+                <span className="v num">{calc.spec.height.toFixed(1)} m</span>
+              </div>
+              <div>
+                <span className="k">전력 인입</span>
+                <span className="v num">{calc.spec.power} %</span>
+              </div>
+            </div>
+            <p className="note">
+              {USE_KEYS.length}개 용도의 최댓값입니다. 첫 용도 대비 스팬 +{calc.premium.span} m
+              · 하중 +{calc.premium.load} kg/m²가 「여유」이고, 그것이 용도 전환을 가능하게
+              하는 물리적 실체입니다.
+              {calc.estimated && ' 현재 값은 모두 통상값 추정치입니다.'}
+            </p>
+
+            <div className="act">
+              <button type="button" onClick={probe} disabled={busy}>
+                연결 확인
+              </button>
+              <button
+                type="button"
+                disabled={!connected || busy}
+                onClick={() => run('문서 요약', 'get_document_summary')}
+              >
+                문서 요약
+              </button>
+              <button
+                type="button"
+                disabled={!connected || busy}
+                onClick={() =>
+                  run('Support 생성', 'execute_rhinoscript_python_code', {
+                    code: supportScript(calc.spec),
+                  })
+                }
+              >
+                Support 생성
+              </button>
+            </div>
+          </section>
+
+          <section>
+            <h2 className="lab">내려받기</h2>
+            <div className="act">
+              <button type="button" disabled={!connected || busy} onClick={save3dm}>
+                3dm 만들기
+              </button>
+              {file && (
+                <a className="dl" href={file.href} download="model.3dm">
+                  내려받기 · {mb(file.bytes)}
+                </a>
+              )}
+            </div>
+            <p className="note">
+              현재 열려 있는 문서를 그대로 저장합니다. 파일이 크면 시간이 걸립니다.
+            </p>
+          </section>
+
           <section>
             <h2 className="lab">기록</h2>
             <div className="log">

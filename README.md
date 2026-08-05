@@ -35,8 +35,18 @@ npm run dev          # http://localhost:5173
 node bridge/rhino-bridge.mjs   # 별도 터미널
 ```
 
-Rhino 명령줄에서 `mcpstart` 를 먼저 실행해 둔다. 브리지는 `127.0.0.1` 에만
-바인딩하고 루프백 오리진만 허용한다 — 로컬 전용이다.
+Rhino 명령줄에서 `mcpstart` 를 먼저 실행해 둔다.
+
+| 경로 | 하는 일 |
+|---|---|
+| `GET /health` | 브리지·Rhino 생존 확인 |
+| `POST /command` | rhinomcp 명령 중계 |
+| `POST /export` | 현재 문서를 3dm 으로 저장 → 내려받기 URL |
+| `POST /capture` | 활성 뷰포트를 PNG 로 캡처 → 이미지 URL |
+| `GET /file/<name>` | 위에서 만든 파일 전송 |
+
+뷰포트는 영상 스트림이 아니라 **캡처를 주기적으로 갱신**하는 방식이다.
+캡처와 전송에 시간이 걸려 회전을 실시간으로 따라오지 못한다(실측 2초 간격).
 
 검증된 rhinomcp 명령 (0.3.2):
 
@@ -44,6 +54,13 @@ Rhino 명령줄에서 `mcpstart` 를 먼저 실행해 둔다. 브리지는 `127.
 |---|---|
 | `get_document_summary` | — |
 | `execute_rhinoscript_python_code` | `code` |
+
+### 보안
+
+브리지는 `127.0.0.1` 에만 바인딩하고 루프백 오리진만 허용한다 — 로컬 전용이다.
+이 브리지는 Rhino 안에서 **임의의 파이썬을 실행**시킬 수 있으므로, 외부에
+노출하면 접근한 누구나 이 컴퓨터에서 코드를 돌릴 수 있게 된다. 포트포워딩이나
+`0.0.0.0` 바인딩을 하지 말 것.
 
 사양은 미터인데 문서 단위는 다를 수 있어(현재 대상 문서는 mm)
 스크립트가 `rs.UnitScale` 로 환산한 뒤 그린다. 생성물은 기존 `SUPPORT_*`

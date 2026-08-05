@@ -1,5 +1,5 @@
 /**
- * Rhino 브리지 — HTTP를 TCP로 중계한다.
+ * Rhino 브리지 — HTTP를 TCP로 중계하고, 산출 파일을 내려준다.
  *
  *   브라우저 ──HTTP :8787──▶ 이 프로세스 ──TCP :1999──▶ rhinomcp ──▶ Rhino
  *
@@ -9,16 +9,37 @@
  * 실행:  node bridge/rhino-bridge.mjs
  * 전제:  Rhino 명령줄에서 mcpstart 실행
  *
- * 로컬 전용이다. 127.0.0.1 에만 바인딩하고 로컬 오리진만 허용한다.
+ * ── 경로 ──
+ *   GET  /health          브리지·Rhino 생존 확인
+ *   POST /command         rhinomcp 명령 중계
+ *   POST /export          현재 문서를 3dm 으로 저장 → 내려받기 URL
+ *   POST /capture         활성 뷰포트를 PNG 로 캡처 → 이미지 URL
+ *   GET  /file/<name>     위에서 만든 파일 전송
+ *
+ * ── 보안 ──
+ * 로컬 전용이다. 127.0.0.1 에만 바인딩하고 루프백 오리진만 허용한다.
+ * 이 브리지는 Rhino 안에서 임의의 파이썬을 실행시킬 수 있으므로,
+ * 외부에 노출하면 접근한 누구나 이 컴퓨터에서 코드를 돌릴 수 있게 된다.
+ * 포트포워딩이나 0.0.0.0 바인딩을 하지 말 것.
  */
 
+import fs from 'node:fs/promises'
 import http from 'node:http'
 import net from 'node:net'
+import os from 'node:os'
+import path from 'node:path'
 
 const PORT = Number(process.env.BRIDGE_PORT ?? 8787)
 const RHINO_HOST = '127.0.0.1'
 const RHINO_PORT = Number(process.env.RHINO_PORT ?? 1999)
-const CALL_TIMEOUT = 60000
+const CALL_TIMEOUT = 120000
+
+const OUT_DIR = path.join(os.tmpdir(), 'rhino-bridge')
+
+const MIME = {
+  '.3dm': 'model/vnd.3dm',
+  '.png': 'image/png',
+}
 
 /** dev 서버 포트가 바뀌어도 되도록 루프백 오리진이면 허용한다. */
 function allowedOrigin(origin) {
@@ -43,9 +64,8 @@ function cors(req, res) {
 }
 
 function send(res, code, body) {
-  const payload = JSON.stringify(body)
   res.writeHead(code, { 'Content-Type': 'application/json; charset=utf-8' })
-  res.end(payload)
+  res.end(JSON.stringify(body))
 }
 
 /**
@@ -89,6 +109,13 @@ function callRhino(message) {
   })
 }
 
+/** 파이썬을 실행시키고, rhinomcp 가 status:'error' 를 주면 예외로 올린다. */
+async function runPython(code) {
+  const res = await callRhino({ type: 'execute_rhinoscript_python_code', params: { code } })
+  if (res?.status === 'error') throw new Error(res.message ?? 'Rhino 오류')
+  return res
+}
+
 /** 포트가 열려 있는지만 확인한다 — 명령은 보내지 않는다. */
 function probeRhino() {
   return new Promise((resolve) => {
@@ -119,6 +146,80 @@ function readBody(req, limit = 1_000_000) {
   })
 }
 
+/** 파이썬 리터럴에 넣기 위해 역슬래시를 슬래시로 바꾼다 (Rhino가 받아준다). */
+const pyPath = (p) => p.replace(/\\/g, '/')
+
+/** 현재 문서를 3dm 으로 저장시킨다. */
+async function exportModel() {
+  const name = 'model.3dm'
+  const file = path.join(OUT_DIR, name)
+  await runPython(`import scriptcontext as sc
+import Rhino
+
+opts = Rhino.FileIO.FileWriteOptions()
+opts.FileVersion = 7
+opts.IncludeRenderMeshes = True
+ok = sc.doc.WriteFile("${pyPath(file)}", opts)
+print("write ok" if ok else "write failed")
+`)
+  const { size } = await fs.stat(file)
+  return { url: `/file/${name}`, bytes: size }
+}
+
+/** 활성 뷰포트를 PNG 로 캡처시킨다. */
+async function captureView(width = 1600, height = 1000) {
+  const name = 'view.png'
+  const file = path.join(OUT_DIR, name)
+  await runPython(`import scriptcontext as sc
+import Rhino
+
+view = sc.doc.Views.ActiveView
+vc = Rhino.Display.ViewCapture()
+vc.Width = ${width}
+vc.Height = ${height}
+vc.ScaleScreenItems = False
+vc.DrawAxes = False
+vc.DrawGrid = False
+vc.DrawGridAxes = False
+vc.TransparentBackground = False
+bmp = vc.CaptureToBitmap(view)
+if bmp:
+    bmp.Save("${pyPath(file)}")
+    print("captured %s" % view.ActiveViewport.Name)
+else:
+    raise Exception("viewport capture failed")
+`)
+  const { size } = await fs.stat(file)
+  return { url: `/file/${name}`, bytes: size }
+}
+
+/** 경로 조작을 막기 위해 이름을 제한하고 출력 폴더 안으로만 해석한다. */
+async function serveFile(res, rawName) {
+  const name = decodeURIComponent(rawName)
+  if (!/^[\w.-]+$/.test(name) || name.includes('..')) {
+    return send(res, 400, { error: '잘못된 파일 이름' })
+  }
+  const file = path.join(OUT_DIR, name)
+  if (path.dirname(path.resolve(file)) !== path.resolve(OUT_DIR)) {
+    return send(res, 400, { error: '잘못된 경로' })
+  }
+
+  let data
+  try {
+    data = await fs.readFile(file)
+  } catch {
+    return send(res, 404, { error: '아직 생성되지 않았습니다' })
+  }
+
+  res.writeHead(200, {
+    'Content-Type': MIME[path.extname(name)] ?? 'application/octet-stream',
+    'Content-Length': data.length,
+    'Cache-Control': 'no-store',
+    'Content-Disposition': `attachment; filename="${name}"`,
+  })
+  res.end(data)
+}
+
 const server = http.createServer(async (req, res) => {
   cors(req, res)
 
@@ -127,14 +228,32 @@ const server = http.createServer(async (req, res) => {
     return res.end()
   }
 
-  if (req.method === 'GET' && req.url === '/health') {
+  const { pathname } = new URL(req.url, `http://127.0.0.1:${PORT}`)
+
+  if (req.method === 'GET' && pathname === '/health') {
     return send(res, 200, { bridge: true, rhino: await probeRhino(), port: RHINO_PORT })
   }
 
-  if (req.method === 'POST' && req.url === '/command') {
+  if (req.method === 'GET' && pathname.startsWith('/file/')) {
+    return serveFile(res, pathname.slice('/file/'.length))
+  }
+
+  if (req.method === 'POST' && (pathname === '/export' || pathname === '/capture')) {
+    const what = pathname === '/export' ? '3dm 저장' : '뷰 캡처'
     try {
-      const raw = await readBody(req)
-      const { type, params } = JSON.parse(raw || '{}')
+      console.log(`→ ${what}`)
+      const out = pathname === '/export' ? await exportModel() : await captureView()
+      console.log(`← ${what} ${(out.bytes / 1024 / 1024).toFixed(1)} MB`)
+      return send(res, 200, out)
+    } catch (err) {
+      console.error(`✕ ${err.message}`)
+      return send(res, 502, { error: err.message })
+    }
+  }
+
+  if (req.method === 'POST' && pathname === '/command') {
+    try {
+      const { type, params } = JSON.parse((await readBody(req)) || '{}')
       if (!type) return send(res, 400, { error: 'type이 필요합니다' })
 
       console.log(`→ ${type}`)
@@ -150,7 +269,10 @@ const server = http.createServer(async (req, res) => {
   send(res, 404, { error: 'not found' })
 })
 
+await fs.mkdir(OUT_DIR, { recursive: true })
+
 server.listen(PORT, '127.0.0.1', () => {
   console.log(`Rhino 브리지 http://127.0.0.1:${PORT}`)
   console.log(`중계 대상 ${RHINO_HOST}:${RHINO_PORT} — Rhino에서 mcpstart 실행 필요`)
+  console.log(`산출 폴더 ${OUT_DIR}`)
 })
