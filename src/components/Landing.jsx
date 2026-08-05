@@ -27,6 +27,13 @@ export default function Landing({ onFound }) {
   return (
     <div className="page">
       <div className="center">
+        <img
+          className="marks"
+          src="/logo-partners.png"
+          alt="상명대학교 · Università degli Studi G. d'Annunzio"
+          width={383}
+          height={96}
+        />
         <div className="brand">적응형 건축 사전판정</div>
         <h1 className="q">대상지를 입력하십시오</h1>
 
