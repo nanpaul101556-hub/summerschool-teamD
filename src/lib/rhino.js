@@ -54,6 +54,23 @@ export async function captureView() {
   return { ...r, href: `${BRIDGE}${r.url}` }
 }
 
+/**
+ * 모델링을 실시하고 평면·투시를 함께 받는다.
+ * 생성과 두 번의 캡처가 한 호출에서 끝나므로 왕복이 한 번이다.
+ */
+export async function buildModel(code) {
+  const r = await call('/build', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ code }),
+  }, 180000)
+  return {
+    output: r.output,
+    plan: { ...r.plan, href: `${BRIDGE}${r.plan.url}` },
+    model: { ...r.model, href: `${BRIDGE}${r.model.url}` },
+  }
+}
+
 export const mb = (bytes) => `${(bytes / 1024 / 1024).toFixed(1)} MB`
 
 /**
@@ -78,7 +95,9 @@ SPAN = ${m.span} * S
 H = ${m.height} * S
 GX, GY, FL = ${m.gx}, ${m.gy}, ${m.floors}
 FILLED = [${filled}]
-KEY = "${key}"
+NAME = "${key}"
+# 레이어 접두 — 아래 삭제 루프가 이 접두로 이전 매싱을 찾는다
+KEY = "MASS_${key}"
 
 # 부재 치수 (m 기준)
 COL_W  = 0.45 * S      # 기둥
@@ -97,13 +116,15 @@ LAYERS = [(KEY+"_FRAME", (90,90,95)), (KEY+"_SLAB", (170,170,165)),
 
 rs.EnableRedraw(False)
 
-# 다시 만들 때 이전 것을 지운다 — 겹쳐 쌓이면 안 된다
-for (name, col) in LAYERS:
-    if rs.IsLayer(name):
+# 고른 안만 서 있어야 한다 — 이전 매싱은 다른 안의 것까지 모두 지운다
+for name in (rs.LayerNames() or []):
+    if name.startswith("MASS_"):
         old = rs.ObjectsByLayer(name)
         if old:
             rs.DeleteObjects(old)
-    else:
+
+for (name, col) in LAYERS:
+    if not rs.IsLayer(name):
         rs.AddLayer(name, col)
 
 prev = rs.CurrentLayer()
@@ -204,7 +225,7 @@ for j in range(GY + 1):
 rs.CurrentLayer(prev)
 rs.EnableRedraw(True)
 print("%s: %dx%d bay, span %.1fm, fill %d/%d, objects %d"
-      % (KEY, GX, GY, ${m.span}, len(FILLED), GX*GY, len(made)))
+      % (NAME, GX, GY, ${m.span}, len(FILLED), GX*GY, len(made)))
 `
 }
 

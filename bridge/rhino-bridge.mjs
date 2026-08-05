@@ -12,6 +12,7 @@
  * ── 경로 ──
  *   GET  /health          브리지·Rhino 생존 확인
  *   POST /command         rhinomcp 명령 중계
+ *   POST /build           모델링 실시 → 평면·투시 캡처 → 두 이미지 URL
  *   POST /export          현재 문서를 3dm 으로 저장 → 내려받기 URL
  *   POST /capture         활성 뷰포트를 PNG 로 캡처 → 이미지 URL
  *   GET  /file/<name>     위에서 만든 파일 전송
@@ -166,31 +167,84 @@ print("write ok" if ok else "write failed")
   return { url: `/file/${name}`, bytes: size }
 }
 
+/** 캡처 공통부 — 활성 뷰를 파일로 떨군다. */
+const capFn = `
+def _cap(pathname, w, h):
+    view = sc.doc.Views.ActiveView
+    vc = Rhino.Display.ViewCapture()
+    vc.Width = w
+    vc.Height = h
+    vc.ScaleScreenItems = False
+    vc.DrawAxes = False
+    vc.DrawGrid = False
+    vc.DrawGridAxes = False
+    vc.TransparentBackground = False
+    bmp = vc.CaptureToBitmap(view)
+    if not bmp:
+        raise Exception("viewport capture failed")
+    bmp.Save(pathname)
+
+def _mode(name):
+    d = Rhino.Display.DisplayModeDescription.FindByName(name)
+    if d:
+        sc.doc.Views.ActiveView.ActiveViewport.DisplayMode = d
+`
+
 /** 활성 뷰포트를 PNG 로 캡처시킨다. */
-async function captureView(width = 1600, height = 1000) {
-  const name = 'view.png'
+async function captureView(width = 1600, height = 1000, name = 'view.png') {
   const file = path.join(OUT_DIR, name)
   await runPython(`import scriptcontext as sc
 import Rhino
-
-view = sc.doc.Views.ActiveView
-vc = Rhino.Display.ViewCapture()
-vc.Width = ${width}
-vc.Height = ${height}
-vc.ScaleScreenItems = False
-vc.DrawAxes = False
-vc.DrawGrid = False
-vc.DrawGridAxes = False
-vc.TransparentBackground = False
-bmp = vc.CaptureToBitmap(view)
-if bmp:
-    bmp.Save("${pyPath(file)}")
-    print("captured %s" % view.ActiveViewport.Name)
-else:
-    raise Exception("viewport capture failed")
+${capFn}
+_cap("${pyPath(file)}", ${width}, ${height})
+print("captured %s" % sc.doc.Views.ActiveView.ActiveViewport.Name)
 `)
   const { size } = await fs.stat(file)
   return { url: `/file/${name}`, bytes: size }
+}
+
+/**
+ * 모델링을 실시하고 도면과 투시도를 한 번에 만든다.
+ *
+ * 평면은 Rhino 가 Top 뷰 와이어프레임으로 그린다 — 브라우저가 흉내낸
+ * 그림이 아니라 실제 모델에서 나온 도면이다.
+ * 여러 번 왕복하면 느리므로 생성·평면·투시를 한 호출에서 끝낸다.
+ */
+async function buildModel(code) {
+  const plan = path.join(OUT_DIR, 'plan.png')
+  const model = path.join(OUT_DIR, 'model.png')
+
+  const out = await runPython(`import rhinoscriptsyntax as rs
+import scriptcontext as sc
+import Rhino
+${capFn}
+
+# ① 모델링 실시
+${code}
+
+# ② 평면 — Top 정사영 와이어프레임
+vp = sc.doc.Views.ActiveView.ActiveViewport
+vp.SetProjection(Rhino.Display.DefinedViewportProjection.Top, "Top", False)
+_mode("Wireframe")
+rs.ZoomExtents(None, False)
+sc.doc.Views.Redraw()
+_cap("${pyPath(plan)}", 1600, 900)
+
+# ③ 투시 — 음영
+vp.SetProjection(Rhino.Display.DefinedViewportProjection.Perspective, "Perspective", False)
+_mode("Shaded")
+rs.ZoomExtents(None, False)
+sc.doc.Views.Redraw()
+_cap("${pyPath(model)}", 1600, 900)
+print("plan + model captured")
+`)
+
+  const [p, m] = await Promise.all([fs.stat(plan), fs.stat(model)])
+  return {
+    plan: { url: '/file/plan.png', bytes: p.size },
+    model: { url: '/file/model.png', bytes: m.size },
+    output: out?.result?.output ?? '',
+  }
 }
 
 /** 경로 조작을 막기 위해 이름을 제한하고 출력 폴더 안으로만 해석한다. */
@@ -236,6 +290,21 @@ const server = http.createServer(async (req, res) => {
 
   if (req.method === 'GET' && pathname.startsWith('/file/')) {
     return serveFile(res, pathname.slice('/file/'.length))
+  }
+
+  if (req.method === 'POST' && pathname === '/build') {
+    try {
+      const { code } = JSON.parse((await readBody(req)) || '{}')
+      if (!code) return send(res, 400, { error: 'code가 필요합니다' })
+
+      console.log('→ 모델링 실시')
+      const out = await buildModel(code)
+      console.log(`← 모델링 완료 · ${out.output.trim().split('\n')[0] ?? ''}`)
+      return send(res, 200, out)
+    } catch (err) {
+      console.error(`✕ ${err.message}`)
+      return send(res, 502, { error: err.message })
+    }
   }
 
   if (req.method === 'POST' && (pathname === '/export' || pathname === '/capture')) {

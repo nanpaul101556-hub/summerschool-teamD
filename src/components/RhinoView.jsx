@@ -9,10 +9,9 @@ import { SITE } from '../data/site'
 import { computeMassing } from '../lib/massing'
 import { buildOptions } from '../lib/options'
 import {
-  BRIDGE, captureView, command, exportModel, health, massingScript, mb,
+  BRIDGE, buildModel, command, exportModel, health, massingScript, mb,
 } from '../lib/rhino'
 import AppFrame from './AppFrame'
-import PlanView from './PlanView'
 
 const STATE = {
   idle: { tone: '', text: '확인 전' },
@@ -22,17 +21,15 @@ const STATE = {
   down: { tone: 'off', text: '브리지 미실행' },
 }
 
-/** 캡처+전송에 시간이 걸려 이보다 짧게 잡아도 빨라지지 않는다. */
-const REFRESH_MS = 2000
-
 export default function RhinoView({ site, picked, onStep, onReset, onNext }) {
   const [status, setStatus] = useState('idle')
   const [busy, setBusy] = useState(false)
+  const [building, setBuilding] = useState(false)
   const [log, setLog] = useState([])
+  /** { plan, model, v } — 두 이미지는 같은 모델에서 나온다 */
   const [shot, setShot] = useState(null)
-  const [live, setLive] = useState(false)
   const [file, setFile] = useState(null)
-  /** 대안을 고르면 바로 모델이 다시 서게 한다 */
+  /** 대안을 고르고 넘어오면 그때 모델링을 실시한다 */
   const [auto, setAuto] = useState(true)
 
   const alive = useRef(true)
@@ -76,73 +73,32 @@ export default function RhinoView({ site, picked, onStep, onReset, onNext }) {
     }
   }, [probe])
 
-  /** 자동 갱신 중에는 기록을 남기지 않는다 — 로그가 도배된다. */
-  const grab = useCallback(
-    async (quiet = false) => {
-      try {
-        const r = await captureView()
-        if (!alive.current) return true
-        setShot({ href: r.href, bytes: r.bytes, v: Date.now() })
-        if (!quiet) push(`뷰 캡처 ${mb(r.bytes)}`)
-        return true
-      } catch (err) {
-        if (!alive.current) return false
-        push(err.message, true)
-        return false
-      }
-    },
-    [push],
-  )
-
-  /** 이전 캡처가 끝난 뒤 다음을 건다 — 겹치면 Rhino 가 밀린다. */
-  useEffect(() => {
-    if (!live) return undefined
-    let stop = false
-    let timer
-
-    const loop = async () => {
-      const ok = await grab(true)
-      if (stop) return
-      if (!ok) {
-        setLive(false)
-        return
-      }
-      timer = setTimeout(loop, REFRESH_MS)
-    }
-    loop()
-
-    return () => {
-      stop = true
-      clearTimeout(timer)
-    }
-  }, [live, grab])
-
   const brief = (v) => {
     const s = typeof v === 'string' ? v : JSON.stringify(v)
     return s.length > 240 ? `${s.slice(0, 240)}…` : s
   }
 
-  /** 매싱 생성 후 뷰까지 한 번에 가져온다. */
+  /** 모델링을 실시한다 — 생성·평면·투시가 한 호출에서 끝난다. */
   const build = useCallback(async () => {
+    setBuilding(true)
     setBusy(true)
-    push(`▶ ${option.key}안 매싱 생성`)
+    push(`▶ ${option.key}안 모델링 실시`)
     try {
-      const res = await command('execute_rhinoscript_python_code', {
-        code: massingScript(mass, option.key),
-      })
-      if (res?.status === 'error') {
-        push(res.message ?? '알 수 없는 오류', true)
-        return
-      }
-      push(brief(res?.result?.output ?? res?.result ?? res))
-      await grab(true)
+      const r = await buildModel(massingScript(mass, option.key))
+      if (!alive.current) return
+      push(brief(r.output.trim().split('\n')[0] ?? '완료'))
+      setShot({ plan: r.plan.href, model: r.model.href, v: Date.now() })
     } catch (err) {
+      if (!alive.current) return
       push(err.message, true)
       setStatus('down')
     } finally {
-      setBusy(false)
+      if (alive.current) {
+        setBuilding(false)
+        setBusy(false)
+      }
     }
-  }, [mass, option.key, grab, push])
+  }, [mass, option.key, push])
 
   /**
    * 대안이 바뀌면 모델을 다시 세운다.
@@ -309,46 +265,50 @@ export default function RhinoView({ site, picked, onStep, onReset, onNext }) {
       next={{ label: '시간 변화', onClick: onNext }}
     >
       <div className="split">
-        {/* 2D — 브라우저가 즉시 그린다 */}
+        {/* 평면 — Rhino 가 Top 와이어프레임으로 그린다 */}
         <div className="pane">
           <div className="pane-h">
-            <span>평면</span>
+            <span>평면도</span>
             <span className="pane-m num">
-              {mass.gx}×{mass.gy} bay · {mass.span.toFixed(1)} m
+              {mass.gx}×{mass.gy} bay · 스팬 {mass.span.toFixed(1)} m
             </span>
           </div>
-          <div className="pane-b">
-            <PlanView massing={mass} />
+          <div className="pane-b shot">
+            {shot?.plan ? (
+              <img src={`${shot.plan}?v=${shot.v}`} alt="Rhino 평면도" />
+            ) : (
+              <div className="ph">
+                <div className="t">{building ? '도면 생성 중' : '도면 없음'}</div>
+                <div className="s">모델링을 실시하면 Rhino가 평면을 그립니다</div>
+              </div>
+            )}
           </div>
         </div>
 
-        {/* 3D — Rhino 가 같은 파라미터로 만든다 */}
+        {/* 투시 — 같은 모델에서 나온다 */}
         <div className="pane">
           <div className="pane-h">
             <span>모델</span>
             <span className="pane-m">{connected ? 'Rhino 연결됨' : '연결 없음'}</span>
           </div>
           <div className="pane-b shot">
-            {shot ? (
-              <img src={`${shot.href}?v=${shot.v}`} alt="Rhino 활성 뷰포트" />
+            {shot?.model ? (
+              <img src={`${shot.model}?v=${shot.v}`} alt="Rhino 투시도" />
             ) : (
               <div className="ph">
-                <div className="t">캡처 없음</div>
-                <div className="s">모델을 만든 뒤 뷰를 가져옵니다</div>
+                <div className="t">{building ? '모델링 중' : '모델 없음'}</div>
+                <div className="s">{option.key}안 사양으로 Rhino에서 생성합니다</div>
               </div>
             )}
-            {live && <span className="livetag">LIVE</span>}
-
-            <div className="shot-act">
-              <button type="button" disabled={!connected || busy} onClick={() => grab()}>
-                뷰 가져오기
-              </button>
-              <button type="button" disabled={!connected} onClick={() => setLive((v) => !v)}>
-                {live ? '자동 갱신 중지' : `자동 갱신 ${REFRESH_MS / 1000}초`}
-              </button>
-            </div>
           </div>
         </div>
+
+        {building && (
+          <div className="building" role="status">
+            <span className="bar" />
+            {option.key}안 모델링 중 — Rhino에서 생성하고 도면을 뽑습니다
+          </div>
+        )}
       </div>
     </AppFrame>
   )
