@@ -1,91 +1,144 @@
 /**
  * 대안 산출.
  *
- * 지역 정보(인구·격차·활동)에서 대안이 나오고, 대안에서 사양이 나오고,
- * 사양에서 모델이 나온다. 이 파일은 그 사슬의 가운데 고리다.
+ * 대안을 가르는 축은 「몇 개 용도를 받는가」가 아니라
+ * 「어느 시점의 수요를 건물이 직접 받고, 어디부터 주변에 넘기는가」다.
  *
- * 대안을 가르는 축은 하나다 — 이 건물이 몇 개의 미래를 받아낼 것인가.
- * 많이 받을수록 초기 사양이 무거워지고, 그 무게가 곧 선택의 대가다.
+ * 앞 구간은 인구추계가 말해주므로 모든 안이 같다. 자료가 끊기는 지점부터
+ * 갈리고, 그 갈림이 곧 각 안의 베팅이다. 베팅에는 전제가 있고, 전제를
+ * 적어야 심사자가 그것을 공격할 수 있다.
+ *
+ * 근거 — Askar(2021) §3.2 구조는 최악 시나리오를 견디도록 설계한다,
+ *        van Ellen(2021) 적응성 차원(convertible / scalable).
  */
 
 import { USES } from '../data/requirements'
-import { backCalculate, judgeAdaptability, minAdaptableArea } from './adaptability'
+import { backCalculate, minAdaptableArea } from './adaptability'
 
-/** 대안의 뼈대 — 어떤 용도들을 소화할 것인가 */
-const SHAPES = [
+/** 건물이 직접 받는 용도(own)와 주변으로 넘기는 용도(link) */
+const PLANS = [
   {
     key: 'A',
-    label: '단일 용도',
-    uses: ['welfare'],
-    stance: '지금 필요한 것만 짓는다',
-    risk: '용도가 바뀌면 재건축 외에 방법이 없다',
+    label: '최소 · 연계형',
+    strategy: '건물은 돌봄만 받고, 늘어나는 커뮤니티 수요는 인근 시설로 넘긴다',
+    track: [
+      { year: 2031, use: 'welfare', mode: 'own' },
+      { year: 2036, use: 'community', mode: 'link' },
+      { year: 2046, use: 'welfare', mode: 'own', bet: true },
+    ],
+    benefit: '초기 공사비가 가장 낮다',
+    risk: '돌봄 수요가 사라지면 건물을 다시 짓는 것 외에 방법이 없다',
+    premise: '걸어서 닿는 거리에 연계할 커뮤니티 시설이 실제로 있다',
   },
   {
     key: 'B',
-    label: '2단계 적응',
-    uses: ['welfare', 'community'],
-    stance: '확정된 두 시기를 한 건물로 받는다',
-    risk: '고부하 용도로는 전환할 수 없다',
+    label: '부분 적응형',
+    strategy: '돌봄에서 의료·재활까지는 건물이 받고, 대공간 용도는 넘긴다',
+    track: [
+      { year: 2031, use: 'welfare', mode: 'own' },
+      { year: 2036, use: 'community', mode: 'link' },
+      { year: 2046, use: 'clinic', mode: 'own', bet: true },
+    ],
+    benefit: '초고령이 심화될수록 수요가 커지는 용도로 이동할 수 있다',
+    risk: '스팬이 모자라 대공간·고하중 용도로는 전환할 수 없다',
+    premise: '2046년에 의료·재활 수요가 돌봄 수요를 넘어선다',
   },
   {
     key: 'C',
-    label: '개방형',
-    uses: ['welfare', 'community', 'datacenter'],
-    stance: '예측하지 못한 용도까지 받아낸다',
-    risk: '초기 공사비가 가장 크다',
+    label: '완전 적응형',
+    strategy: '확정된 두 시기를 모두 건물이 받고, 예측 못 한 용도까지 열어 둔다',
+    track: [
+      { year: 2031, use: 'welfare', mode: 'own' },
+      { year: 2036, use: 'community', mode: 'own' },
+      { year: 2046, use: 'datacenter', mode: 'own', bet: true },
+    ],
+    benefit: '확정 구간을 한 건물로 소화하고, 용도 전환의 폭이 가장 넓다',
+    risk: '초기 공사비가 가장 크고, 쓰지 않을 여유를 미리 지불한다',
+    premise: '건물 수명 안에 최소 한 번은 용도 전환이 실제로 일어난다',
   },
 ]
 
+const use = (key) => USES.find((u) => u.key === key)
+
 /**
- * 대안 목록을 만든다.
+ * 대안 목록.
  * @param {number} plannedArea 계획 연면적 m²
  */
 export function buildOptions(plannedArea) {
-  return SHAPES.map((s) => {
-    const calc = backCalculate(USES, s.uses)
-    const verdict = judgeAdaptability(plannedArea, calc.spec.span)
+  return PLANS.map((p) => {
+    const ownKeys = [...new Set(p.track.filter((s) => s.mode === 'own').map((s) => s.use))]
+    const calc = backCalculate(USES, ownKeys)
+    const required = minAdaptableArea(calc.spec.span)
+    const ok = plannedArea >= required
 
     return {
-      ...s,
+      ...p,
       calc,
       spec: calc.spec,
       premium: calc.premium,
-      /** 이 대안이 받아낼 수 있는 미래의 수 */
-      absorbs: s.uses.length,
-      /** 전환에 필요한 최소 면적 — 스팬이 커질수록 커진다 */
-      minArea: minAdaptableArea(calc.spec.span),
-      verdict,
-      labels: s.uses.map((k) => USES.find((u) => u.key === k)?.label).filter(Boolean),
+      ownKeys,
+      /** 건물이 직접 받는 용도 수 — 넘긴 것은 세지 않는다 */
+      absorbs: ownKeys.length,
+      required,
+      ok,
+      shortfall: ok ? 0 : required - plannedArea,
+      track: p.track.map((s) => ({ ...s, label: use(s.use)?.label ?? s.use })),
+      labels: ownKeys.map((k) => use(k)?.label).filter(Boolean),
     }
   })
 }
 
 /**
- * 지역 정보에서 어느 대안을 권하는지 판정한다.
- * 근거를 함께 돌려준다 — 결론만 있으면 설득할 수 없다.
+ * 규모가 선택지의 개수를 정한다.
+ * 스팬이 커질수록 전환에 필요한 최소 면적이 계단식으로 올라간다.
  */
-export function recommend(options, { elderNow, elderLate, declineRank }) {
+export function areaLadder(plannedArea) {
+  const spans = [...new Set(USES.map((u) => u.span))].sort((a, b) => a - b)
+  return spans.map((span) => {
+    const area = minAdaptableArea(span)
+    return {
+      span,
+      area,
+      uses: USES.filter((u) => u.span <= span).map((u) => u.label),
+      reached: plannedArea >= area,
+    }
+  })
+}
+
+/**
+ * 자료가 어느 대안을 가리키는지 판정한다.
+ * 결론만 있으면 설득할 수 없으므로 근거를 함께 돌려준다.
+ */
+export function recommend(options, { elderNow, elderLate, declineRank, plannedArea }) {
+  const viable = options.filter((o) => o.ok)
   const shrinking = declineRank <= 3
   const ageing = elderLate - elderNow >= 8
 
-  if (shrinking && ageing) {
-    return {
-      key: 'C',
-      because: [
-        `인구 감소 ${declineRank}위 — 신설한 시설이 유휴자산이 될 위험이 크다`,
-        `고령화 ${elderNow}% → ${elderLate}% — 지금의 용도가 오래가지 않는다`,
-        '두 조건이 겹치면 「지금 용도에 맞춘 건물」이 가장 위험한 선택이 된다',
-      ],
-    }
+  const because = []
+  if (shrinking) {
+    because.push(`인구 감소 ${declineRank}위 — 신설 시설이 유휴자산이 될 위험이 크다`)
   }
   if (ageing) {
-    return {
-      key: 'B',
-      because: [`고령화 ${elderNow}% → ${elderLate}% — 확정된 두 시기는 대비해야 한다`],
-    }
+    because.push(`고령화 ${elderNow}% → ${elderLate}% — 지금의 용도가 오래가지 않는다`)
   }
+
+  // 자료가 가리키는 안과 규모가 허락하는 안이 다를 수 있다 — 그 차이가 결론이다
+  const wanted = shrinking && ageing ? 'C' : ageing ? 'B' : 'A'
+  const target = options.find((o) => o.key === wanted)
+  const forced = viable.length === 1 ? viable[0] : null
+
+  if (target && !target.ok) {
+    because.push(
+      `자료는 ${wanted}안을 가리키지만 ${target.required.toLocaleString()} m²가 필요하다 — ` +
+        `계획 ${plannedArea.toLocaleString()} m² 로는 ${target.shortfall.toLocaleString()} m² 모자란다`,
+    )
+  }
+
   return {
-    key: 'A',
-    because: ['변화 신호가 약하다 — 여유를 두는 비용이 정당화되지 않는다'],
+    key: wanted,
+    viableKeys: viable.map((o) => o.key),
+    /** 규모 때문에 선택의 여지가 없을 때 */
+    forcedKey: forced && forced.key !== wanted ? forced.key : null,
+    because,
   }
 }

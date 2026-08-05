@@ -345,22 +345,49 @@ body{
 .opt-l{font-size:15px;font-weight:700;letter-spacing:-.02em}
 .opt-r{margin-left:auto;font-size:10.5px;font-weight:600;color:var(--ink);
   border:1px solid var(--ink);padding:1px 7px}
-.opt-u{font-size:12px;color:var(--ink-2);margin-top:8px}
-.opt-s{font-size:13px;color:var(--ink);margin:6px 0 0;line-height:1.5}
+.opt-s{font-size:12.5px;color:var(--ink-2);margin:7px 0 0;line-height:1.5}
+/* 규모가 모자라는 안은 흐리게 — 못 고를 안은 아니지만 조건이 붙는다 */
+.opt.short{border-style:dashed}
 
-.opt-spec{display:grid;grid-template-columns:1fr 1fr;gap:2px 12px;
-  margin-top:12px;padding-top:10px;border-top:1px solid var(--rule-2)}
-.opt-spec > div{display:flex;justify-content:space-between;align-items:baseline}
-.opt-spec span{font-size:11.5px;color:var(--ink-3)}
-.opt-spec b{font-size:12.5px;font-weight:700}
+/* 궤적 — 건물이 받는 것과 넘기는 것 */
+.track{margin-top:14px;border-top:1px solid var(--rule-2)}
+.tr{display:grid;grid-template-columns:44px 1fr auto;align-items:baseline;gap:9px;
+  padding:8px 0;border-bottom:1px solid var(--rule-2)}
+.tr-y{font-size:11.5px;font-weight:700;color:var(--ink-2)}
+.tr-u{font-size:13px;font-weight:600}
+.tr-m{font-size:10.5px;color:var(--ink-3)}
+.tr.link .tr-u{color:var(--ink-3);font-weight:400}
+.tr.link .tr-m{border:1px dashed var(--rule);padding:1px 6px}
+.tr.own .tr-m{background:var(--fill);padding:1px 6px}
+.tr.bet .tr-m em{font-style:normal;font-weight:700;color:var(--ink);margin-left:5px}
 
-.opt-f{margin-top:10px;padding-top:10px;border-top:1px solid var(--rule-2)}
-.opt-f > div{display:flex;justify-content:space-between;align-items:baseline;padding:2px 0}
-.opt-f span{font-size:11.5px;color:var(--ink-3)}
-.opt-f b{font-size:13px;font-weight:700}
+.opt-req{display:flex;align-items:baseline;gap:8px;margin-top:12px;
+  padding-top:10px;border-top:1px solid var(--rule-2)}
+.opt-req span:first-child{font-size:11.5px;color:var(--ink-3)}
+.opt-req b{font-size:14px;font-weight:700}
+.opt-v{margin-left:auto;font-size:11px;font-weight:700;color:#B23A2F}
+.opt-v.ok{color:#2E7D46}
 
-.opt-risk{font-size:11.5px;color:var(--ink-3);line-height:1.5;margin:10px 0 0}
-.opt-risk.bad{color:var(--ink-2)}
+.opt-why{margin:12px 0 0;display:grid;grid-template-columns:38px 1fr;gap:3px 10px}
+.opt-why dt{font-size:10.5px;font-weight:600;color:var(--ink-3);padding-top:1px}
+.opt-why dd{margin:0;font-size:11.5px;color:var(--ink-2);line-height:1.5}
+.opt-why dd.pm{color:var(--ink);font-weight:500}
+
+/* 규모 사다리 */
+.ladder > div{display:grid;grid-template-columns:76px 1fr 34px;align-items:center;
+  gap:9px;padding:7px 0;border-bottom:1px solid var(--rule-2)}
+.ladder > div:last-child{border-bottom:0}
+.ld-a{font-size:12px;color:var(--ink-3)}
+.ladder .on .ld-a{color:var(--ink);font-weight:700}
+.ld-b{display:block;height:6px;background:var(--fill)}
+.ld-b i{display:block;height:100%;background:var(--rule)}
+.ladder .on .ld-b i{background:var(--ink)}
+.ld-n{font-size:11.5px;color:var(--ink-2);text-align:right}
+
+.premise{font-size:12px;color:var(--ink);line-height:1.55;margin:12px 0 0;
+  padding-left:11px;border-left:2px solid var(--ink)}
+.premise span{display:block;font-size:10.5px;font-weight:700;letter-spacing:.1em;
+  color:var(--ink-3);margin-bottom:2px}
 
 /* ── 04 시간에 따른 변화 ── */
 .futures{height:100%;display:grid;grid-template-columns:repeat(3,minmax(0,1fr));
