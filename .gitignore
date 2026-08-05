@@ -1,0 +1,21 @@
+node_modules/
+dist/
+dist-ssr/
+
+# 로컬 설정 · 비밀값
+.env
+.env.*
+!.env.example
+*.local
+
+# 에디터 · OS
+.vscode/*
+!.vscode/extensions.json
+.idea/
+.DS_Store
+Thumbs.db
+
+# 로그
+npm-debug.log*
+yarn-error.log*
+pnpm-debug.log*
