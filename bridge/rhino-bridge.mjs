@@ -188,6 +188,30 @@ def _mode(name):
     d = Rhino.Display.DisplayModeDescription.FindByName(name)
     if d:
         sc.doc.Views.ActiveView.ActiveViewport.DisplayMode = d
+
+def _zoom(margin):
+    """바운딩박스를 키워서 잡는다.
+
+    ZoomExtents 는 화면 뷰포트 비율에 맞춰 딱 맞추는데, 캡처는 1600x900 의
+    다른 비율로 렌더되므로 가장자리가 잘린다. 여백을 미리 넣어 둔다.
+    """
+    import rhinoscriptsyntax as rs
+    objs = rs.AllObjects()
+    if not objs:
+        rs.ZoomExtents(None, False)
+        return
+    bb = rs.BoundingBox(objs)
+    if not bb:
+        rs.ZoomExtents(None, False)
+        return
+    c = [(bb[0][i] + bb[6][i]) / 2.0 for i in range(3)]
+    d = [max((bb[6][i] - bb[0][i]) / 2.0, 1e-6) * (1.0 + margin) for i in range(3)]
+    corners = []
+    for sz in (-1, 1):
+        for sy in (-1, 1):
+            for sx in (-1, 1):
+                corners.append((c[0] + sx*d[0], c[1] + sy*d[1], c[2] + sz*d[2]))
+    rs.ZoomBoundingBox(corners, None, False)
 `
 
 /** 활성 뷰포트를 PNG 로 캡처시킨다. */
@@ -226,14 +250,26 @@ ${code}
 vp = sc.doc.Views.ActiveView.ActiveViewport
 vp.SetProjection(Rhino.Display.DefinedViewportProjection.Top, "Top", False)
 _mode("Wireframe")
-rs.ZoomExtents(None, False)
+_zoom(0.35)
 sc.doc.Views.Redraw()
 _cap("${pyPath(plan)}", 1600, 900)
 
-# ③ 투시 — 음영
+# ③ 투시 — 음영. 방향을 먼저 잡고 그 방향에서 물러난다
 vp.SetProjection(Rhino.Display.DefinedViewportProjection.Perspective, "Perspective", False)
 _mode("Shaded")
-rs.ZoomExtents(None, False)
+_all = rs.AllObjects()
+if _all:
+    _bb = rs.BoundingBox(_all)
+    if _bb:
+        _c = Rhino.Geometry.Point3d((_bb[0][0]+_bb[6][0])/2.0,
+                                    (_bb[0][1]+_bb[6][1])/2.0,
+                                    (_bb[0][2]+_bb[6][2])/2.0)
+        _diag = _bb[0].DistanceTo(_bb[6])
+        _dir = Rhino.Geometry.Vector3d(-1.0, -1.1, 0.62)
+        _dir.Unitize()
+        vp.SetCameraTarget(_c, False)
+        vp.SetCameraLocation(_c + _dir * _diag * 2.0, True)
+_zoom(0.45)
 sc.doc.Views.Redraw()
 _cap("${pyPath(model)}", 1600, 900)
 print("plan + model captured")
