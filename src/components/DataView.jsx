@@ -60,8 +60,15 @@ function Missing() {
   )
 }
 
-/** 소수 첫째 자리로 고정하고 빼기표는 진짜 마이너스(−)를 쓴다 — 자릿수가 흔들리면 표가 아니다 */
-const pp = (v) => `${v > 0 ? '+' : '−'}${Math.abs(v).toFixed(1)}%p`
+/**
+ * 자릿수가 흔들리면 표가 아니다 — 소수 자리를 고정하고 빼기표는 진짜 마이너스(−)를 쓴다.
+ * 만족도처럼 소수로 재는 축은 tab.scale 로 정수를 나눠 되돌린다(304 → 3.04).
+ */
+const pp = (v, unit = '%p') =>
+  `${v > 0 ? '+' : '−'}${Math.abs(v).toFixed(unit === '%p' ? 1 : 2)}${unit}`
+
+const cell = (v, scale) =>
+  scale ? (v / scale).toFixed(2) : v.toLocaleString()
 
 /**
  * 예시 표 — 자료가 없는 칸을 비워 두지 않고, 자료가 오면 어떤 표가 서는지 보인다.
@@ -86,9 +93,9 @@ function SampleTable({ tab }) {
           {tab.rows.map((r) => (
             <tr key={tx(r.label)} className={r.lead ? 'lead' : ''}>
               <td>{tx(r.label)}</td>
-              <td className="num">{r.before.toLocaleString()}</td>
-              <td className="num">{r.after.toLocaleString()}</td>
-              <td className="num d">{pp(r.d)}</td>
+              <td className="num">{cell(r.before, tab.scale)}</td>
+              <td className="num">{cell(r.after, tab.scale)}</td>
+              <td className="num d">{pp(r.d, tab.unitD)}</td>
             </tr>
           ))}
         </tbody>

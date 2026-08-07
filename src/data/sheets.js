@@ -133,32 +133,51 @@ export const SHEETS = {
   budget: {
     title: K('예산 어느 줄을 읽었는가', 'Quali righe di bilancio'),
     where: K(
-      '노원구 세출예산 4개 연도에서 사업명에 「노원문화예술회관」 또는 「구민의전당」이 '
-      + '들어간 줄만 골랐다. 두 이름은 같은 건물을 가리킨다 — 소관 부서만 다르다.',
-      'Dalle quattro annualità del bilancio di Nowon sono state estratte le righe il cui '
-      + 'progetto contiene "auditorium culturale" o "centro civico": due nomi, un solo edificio.',
+      '이름이 닮은 다른 건물을 걸러내는 것이 이 시트의 전부다. '
+      + '「노원구민의전당」(동일로 1229 · 1989년 · 시설관리공단)과 '
+      + '「노원문화예술회관」(중계로 181 · 2004년 · 문화재단)은 2 km 떨어진 별개 건물이다. '
+      + '원자료에 「노원구민의 전당」처럼 띄어 쓴 줄이 섞여 있어, 공백을 지우고 맞춘다.',
+      'Tutto il foglio serve a separare due edifici dal nome simile: l\'Auditorium di Nowon '
+      + '(Dongil-ro 1229, 1989) e il Centro culturale (Junggye-ro 181, 2004) distano 2 km. '
+      + 'Nei dati il nome compare anche spaziato: si confronta ignorando gli spazi.',
     ),
-    cols: ['연도', '부서', '사업', '편성', '지출'],
+    cols: ['연도', '구분', '부서', '사업', '지출'],
     rows: [
-      ['2022', '문화도시과', '노원문화예술회관 리모델링', '3,379', '12'],
-      ['2023', '문화도시과', '노원문화예술회관 리모델링', '3,366', '415'],
-      ['2024', '문화도시과', '노원문화예술회관 리모델링', '3,153', '9,417'],
-      ['2024', '어르신지원과', '구민의전당 내 노인회관 건립', '255', '345'],
-      ['2025', '문화도시과', '노원문화예술회관 리모델링', '0', '0'],
+      ['2022', '대상지', '행정지원과', '노원구민의 전당 사무동 리모델링', '98'],
+      ['2022', '대상지', '복지정책과', '임시선별검사소 운영(노원구민의 전당)', '41'],
+      ['2023', '대상지', '어르신복지과', '노원구민의 전당 내 노인회관 건립', '1'],
+      ['2024', '대상지', '어르신지원과', '노원구민의 전당 내 노인회관 건립', '346'],
+      ['2025', '대상지', '문화도시과', '구민의전당 문화교실 운영', '190'],
+      ['2025', '대상지', '어르신지원과', '노원구민의 전당 내 노인회관 건립', '174'],
+      ['2024', '타건물', '문화도시과', '노원문화예술회관 리모델링', '9,418'],
     ],
-    rowNote: K('단위 백만원. 2024년 지출이 편성을 넘는 것은 이월·추경이 겹쳤기 때문이다.',
-      'In milioni di won. Nel 2024 la spesa supera lo stanziamento per riporti e assestamenti.'),
+    rowNote: K(
+      '단위 백만원. 마지막 줄이 처음에 이 건물 것으로 잘못 넣었던 94.2억이다 — '
+      + '중계로 181 건물이며 2025년 1월 재개관했다.',
+      'In milioni di won. L\'ultima riga sono i 9,42 mld inizialmente attribuiti per errore: '
+      + 'riguardano l\'edificio di Junggye-ro 181, riaperto nel gennaio 2025.',
+    ),
     calc: [
-      K('이 건물 투입 합계 — 2022년 5,079 → 2025년 348 (백만원)',
-        'Totale su questo edificio: da 5.079 (2022) a 348 (2025)'),
-      K('2024년 실집행 94.2억이 생애주기 곡선의 설비 공사비 근거가 된다',
-        'I 9,42 mld spesi nel 2024 fondano il costo impiantistico della curva di ciclo di vita'),
+      K('사업명에서 공백을 지우고 「구민의전당·구민회관」과 「문화예술회관」을 갈랐다',
+        'Rimossi gli spazi, separate le due denominazioni'),
+      K('대상지 실집행 합계 — 2022년 149 → 2025년 364 (백만원 · +143%)',
+        'Spesa effettiva sul sito: da 149 a 364 milioni, +143%'),
+      K('들어간 돈은 전부 새 용도를 끼워 넣는 일이었다 — 선별검사소·노인회관·문화교실',
+        'Tutto per inserire nuovi usi: tamponi, anziani, corsi'),
+      K('설비 공사비 94.2억은 이 건물 것이 아니므로 생애주기에서 「유사 실적」으로 표시한다',
+        'I 9,42 mld restano nel ciclo di vita solo come riferimento analogo, non come spesa propria'),
     ],
     src: {
       raw: K('서울재정포털 노원구 세출예산 2022–2025', 'Portale finanziario di Seoul, bilancio di Nowon'),
-      file: 'budget/nowon_2022~2025.csv · 5,141행',
-      script: 'budget/highlight.py',
+      file: 'budget/building_lines.csv · 13행',
+      script: 'budget/building_lines.py',
     },
+    limit: K(
+      '띄어쓰기 하나로 갈린 실수였다. 사업명만으로 건물을 특정하는 방식 자체가 위험하다 — '
+      + '주소나 시설 코드가 붙은 예산 자료가 있으면 그것으로 바꿔야 한다.',
+      'L\'errore nasceva da uno spazio. Identificare un edificio dal solo nome del progetto è fragile: '
+      + 'servirebbero dati di bilancio con indirizzo o codice struttura.',
+    ),
   },
 
   // ── 미확보 둘 ───────────────────────────────────────────
@@ -219,28 +238,104 @@ export const SHEETS = {
 
   entry: {
     title: K('가장 맞는 자료가 무엇에 막혔는가', 'Che cosa blocca il dato più pertinente'),
+    sample: true,
     where: K(
-      '「서울특별시 동북권 공공도서관 이용자 현황」이 가장 가깝다 — 노원구 포함 61개관, '
-      + '2018–2023, 성별·연령별. 그런데 다운로드 버튼이 보안문자를 요구한다. '
-      + '스크립트로는 원리적으로 못 뚫는다.',
-      'Il dato più vicino è l\'utenza delle 61 biblioteche del quadrante nord-est (2018–2023, '
-      + 'per genere ed età), ma il download richiede un CAPTCHA: non automatizzabile.',
+      '이 건물은 노원구시설관리공단이 운영한다. 대관·강좌·전시 이용자 통계를 공단이 갖고 있지만 '
+      + '공개돼 있지 않고, 정보공개청구로만 얻는다. 가장 가까운 공개 자료였던 '
+      + '「동북권 공공도서관 이용자 현황」(61개관 · 2018–2023)도 다운로드가 보안문자로 막힌다. '
+      + '그래서 예산줄에서 확인된 용도 그대로 예시 파일을 만들어 두었다.',
+      'L\'edificio è gestito dall\'ente municipale, che possiede le statistiche di utenza '
+      + 'ma non le pubblica: servirebbe una richiesta di accesso agli atti. Anche il dato pubblico '
+      + 'più vicino (utenza delle biblioteche del nord-est) è protetto da CAPTCHA. '
+      + 'Abbiamo quindi predisposto un esempio con gli usi confermati dal bilancio.',
     ),
-    cols: null,
-    rows: null,
+    cols: ['연월', '이용구분', '이용건수', '이용인원'],
+    rows: [
+      ['202104', '대관', '20', '2,387'],
+      ['202104', '강좌', '92', '2,036'],
+      ['202104', '전시', '21', '990'],
+      ['202104', '단체', '184', '1,652'],
+      ['202105', '대관', '17', '2,036'],
+      ['202105', '강좌', '75', '1,657'],
+      ['202105', '전시', '18', '844'],
+      ['202105', '단체', '176', '1,580'],
+    ],
+    rowNote: K(
+      '기준 사건이 낀 두 달을 통째로 뽑았다 — 한 달에 네 줄씩, 전부 364행 · 2019.01–2026.07.',
+      'Estratti per intero i due mesi a cavallo dell\'evento: quattro righe al mese, 364 in tutto.',
+    ),
     calc: [
-      K('노원구시설관리공단에 정보공개청구하면 이 건물 자체의 대관·강좌·관람 이용자 수를 받을 수 있다',
-        'Con una richiesta di accesso agli atti si otterrebbe l\'utenza reale di questo edificio'),
-      K('그것이 채워지면 분모가 건물 하나가 되어 지금의 모든 수치보다 정확해진다',
-        'Allora il denominatore diventerebbe il singolo edificio: più preciso di ogni misura attuale'),
+      K('승하차와 같은 방식으로 전후 12개월을 잰다',
+        'Si misurano 12 mesi prima e dopo, come per i flussi'),
+      K('전체 59,273명 → 78,096명 · +31.8% (이것이 대조군이 된다)',
+        'Totale da 59.273 a 78.096: +31,8%, che funge da controllo'),
+      K('구분별 초과분 — 전시 +12.8%p · 강좌 +10.4%p · 단체 −20.4%p',
+        'Scostamenti: mostre +12,8, corsi +10,4, enti residenti −20,4 p.p.'),
+      K('이 수치는 지어낸 값이다. 실제 자료가 오면 SRC 한 줄만 바꾸면 그대로 돌아간다',
+        'I valori sono inventati: col dato reale basta cambiare una riga dello script'),
     ],
     src: {
-      raw: K('공공데이터포털 15146068 — CAPTCHA', 'Portale open data 15146068 — CAPTCHA'),
-      file: null,
-      script: null,
+      raw: K('노원구시설관리공단 — 정보공개청구 필요',
+        'Ente gestore di Nowon — serve una richiesta di accesso agli atti'),
+      file: 'signals/entry_SAMPLE.xlsx · 364행 (예시)',
+      script: 'signals/make_entry_sample.py → analyze_entry.py',
     },
     missing: true,
   },
+
+  satis: {
+    title: K('이 자료는 있다 — 받는 길만 막혀 있다',
+      'Il dato esiste: è bloccato solo il canale'),
+    sample: true,
+    where: K(
+      '앞의 둘과 사정이 다르다. 민원은 자치구 단위 자료가 애초에 없고, 출입은 공단이 안 열어 준다. '
+      + '만족도는 이미 자치구별로 공표돼 있다 — 서울서베이 도시정책지표조사의 '
+      + '「문화환경 만족도」이다. 2003년부터 매년 8월 공표하며 5점 척도, '
+      + '표본은 가구 2만 · 시민 5천이고 노원구가 따로 나온다. '
+      + '다만 통계 표가 화면 조회만 되고 파일 내려받기가 보안문자로 막혀 수치를 못 넣었다.',
+      'Qui la situazione è diversa dagli altri due assi: il dato per distretto esiste ed è pubblicato. '
+      + 'È la "soddisfazione per l\'ambiente culturale" del Seoul Survey: dal 2003, ogni agosto, '
+      + 'scala 1-5, su 20.000 famiglie e 5.000 cittadini, con Nowon separato. '
+      + 'Solo il download è protetto da CAPTCHA, quindi i valori non sono ancora inseriti.',
+    ),
+    cols: ['연도', '지역', '항목', '만족도', '표본수'],
+    rows: [
+      ['2021', '노원구', '문화환경 전반', '3.04', '800'],
+      ['2021', '서울시', '문화환경 전반', '3.13', '20000'],
+      ['2025', '노원구', '문화환경 전반', '3.42', '800'],
+      ['2025', '노원구', '문화시설', '3.50', '800'],
+      ['2025', '노원구', '문화프로그램', '3.41', '800'],
+      ['2025', '서울시', '문화환경 전반', '3.47', '20000'],
+    ],
+    rowNote: K(
+      '예시 파일 120행 · 2016–2025 · 지역 4 · 항목 3. 실제 자료도 이 다섯 컬럼이면 그대로 들어온다.',
+      'File di esempio: 120 righe, 2016–2025, quattro aree e tre voci. Il dato reale entra con le stesse colonne.',
+    ),
+    calc: [
+      K('연 1회 조사라 전후 12개월을 만들 수 없다 — 서울시 평균을 대조군으로 둔다',
+        'Indagine annuale: si usa la media cittadina come controllo'),
+      K('격차 = 노원구 − 서울시. 2021년 −0.09 → 2025년 −0.05',
+        'Divario = Nowon meno Seoul: da −0,09 (2021) a −0,05 (2025)'),
+      K('말한 만족도와 행동한 결과(승하차·이용)가 어긋나는 지점이 곧 판정 재료다',
+        'Dove il dichiarato diverge dal comportamento nasce il giudizio'),
+      K('이 수치는 지어낸 값이다. 통계 10305 에서 받으면 그대로 대체된다',
+        'I valori sono inventati: scaricando la statistica 10305 vengono sostituiti'),
+    ],
+    src: {
+      raw: K('서울 열린데이터광장 통계 10305 · 서울서베이 도시정책지표조사',
+        'Portale open data di Seoul, statistica 10305 · Seoul Survey'),
+      file: 'signals/satis_SAMPLE.xlsx · 120행 (예시)',
+      script: 'signals/make_satis_sample.py → analyze_satis.py',
+    },
+    limit: K(
+      '만족도는 구 전체를 묻는다. 이 건물 하나의 만족도가 아니므로 '
+      + '그대로 들이밀면 과장이 된다. 배경 지표로만 쓴다.',
+      'La soddisfazione riguarda l\'intero distretto, non questo singolo edificio: '
+      + 'attribuirgliela sarebbe una forzatura. Va usata solo come sfondo.',
+    ),
+    missing: true,
+  },
+
 }
 
 export const REPO = 'https://github.com/nanpaul101556-hub/summerschool-teamD-data'

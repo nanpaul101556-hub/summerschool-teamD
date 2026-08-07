@@ -1,7 +1,7 @@
 /**
  * 정량 근거 — 건물이 바뀌기 전과 후, 무엇이 달라졌는가.
  *
- * 다섯 갈래를 같은 방식으로 묻는다. 전에는 얼마였고 후에는 얼마인가,
+ * 여섯 갈래를 같은 방식으로 묻는다. 전에는 얼마였고 후에는 얼마인가,
  * 그리고 그 변화가 노원구 전체의 흐름보다 큰가 작은가.
  *
  * 확보하지 못한 갈래도 자리를 지운다. 빈칸이 보여야 결론이 어디까지
@@ -15,10 +15,10 @@ export const EVENT = {
   ym: '2021.05',
   label: K('노원구민회관 → 노원구민의전당', 'Da centro civico a Auditorium di Nowon'),
   note: K(
-    '정류장 이름이 바뀐 달이다. 뒤이어 2022년 설계, 2024년 공사 94억이 집행됐고 '
-    + '건물 안에 노인회관이 들어갔다.',
-    'È il mese in cui cambia il nome della fermata. Seguono la progettazione (2022), '
-    + 'il cantiere da 9,4 miliardi (2024) e l\'inserimento di un centro anziani.',
+    '정류장 이름이 바뀐 달이다. 뒤이어 2022년 사무동 리모델링이 시작됐고, '
+    + '2023–25년에 걸쳐 건물 안에 노인회관이 들어갔다(실집행 5.2억).',
+    'È il mese in cui cambia il nome della fermata. Seguono la ristrutturazione degli uffici (2022) '
+    + 'e l\'inserimento di un centro anziani fra 2023 e 2025 (0,52 mld effettivi).',
   ),
   why: K(
     '2024년을 기준으로 잡으면 전후 12개월을 만들 수 없다. 2023·2024·2025년은 '
@@ -123,27 +123,100 @@ export const CARDS = [
 
   // ── ③ 출입 대장 ──────────────────────────────────────────
   {
-    id: 'entry', no: '03', status: 'missing',
-    title: K('건물 출입 기록', 'Registri di accesso all\'edificio'),
+    id: 'entry', no: '03', status: 'missing', sample: true,
+    title: K('건물 출입 기록', 'Registri di accesso all’edificio'),
     ask: K('실제로 건물에 들어온 사람이 늘었는가', 'Sono davvero aumentati gli ingressi?'),
+    tab: {
+      head: K('예시 파일을 승하차와 같은 방식으로 돌리면 이 표가 선다',
+        'Elaborando il file di esempio come i flussi, si ottiene questa tabella'),
+      cols: [
+        K('이용구분', 'Tipo'),
+        K('전 12개월', '12 mesi prima'),
+        K('후 12개월', '12 mesi dopo'),
+        K('초과', 'Scost.'),
+      ],
+      rows: [
+        { label: K('전시', 'Mostre'), before: 7044, after: 10186, d: 12.8 },
+        { label: K('강좌', 'Corsi'), before: 14921, after: 21207, d: 10.4, lead: true },
+        { label: K('대관', 'Affitto sale'), before: 17191, after: 24306, d: 9.6 },
+        { label: K('단체', 'Enti residenti'), before: 20117, after: 22397, d: -20.4 },
+      ],
+      note: K(
+        '초과 = 구분 변화 − 전체 변화(+31.8%). 단체는 상주하므로 흔들리지 않는다. '
+        + '실제 자료가 오면 분모가 건물 하나가 되어 가장 정확한 축이 된다.',
+        'Scostamento = variazione del tipo meno quella complessiva (+31,8%). Gli enti residenti non oscillano. '
+        + 'Con il dato reale il denominatore diventa il singolo edificio: l’asse più preciso.',
+      ),
+    },
     facts: [
       K('정류장 통행은 건물 앞을 지나간 사람이지 건물에 들어온 사람이 아니다',
         'I flussi alla fermata contano chi passa davanti, non chi entra'),
-      K('노원구시설관리공단이 대관·강좌·전시 이용자 통계를 갖고 있을 가능성이 높다',
-        'È probabile che l\'ente gestore disponga delle statistiche di utenza'),
+      K('노원구시설관리공단이 운영하며 대관·강좌·전시 통계를 갖고 있다 — 공개는 안 한다',
+        'L’ente gestore possiede le statistiche di utenza, ma non le pubblica'),
+      K('예산줄에서 확인된 용도를 그대로 넣어 예시 파일을 만들었다 — 문화교실·노인회관·대관',
+        'Il file di esempio riprende gli usi confermati dal bilancio: corsi, centro anziani, affitti'),
     ],
     reading: K(
       '이것이 있으면 분모가 건물 하나가 되어 지금까지의 모든 수치보다 정확해진다. '
-      + '가장 먼저 구해야 할 자료다.',
+      + '가장 먼저 구해야 할 자료이며, 그때까지 자리는 예시로 채워 둔다.',
       'Con questi dati il denominatore diventa il singolo edificio: più preciso di ogni altra misura finora. '
-      + 'È il dato da procurarsi per primo.',
+      + 'È il dato da procurarsi per primo; fino ad allora il posto resta occupato da un esempio.',
     ),
-    src: K('노원구시설관리공단 — 정보공개청구', 'Ente gestore di Nowon — richiesta di accesso agli atti'),
+    src: K('노원구시설관리공단 — 정보공개청구 · 예시 make_entry_sample.py',
+      'Ente gestore di Nowon — accesso agli atti · esempio make_entry_sample.py'),
   },
 
-  // ── ④ 소비와 연령 ────────────────────────────────────────
+  // ── ④ 만족도 ─────────────────────────────────────────────
   {
-    id: 'age', no: '04', status: 'flat',
+    id: 'satis', no: '04', status: 'missing', sample: true, reachable: true,
+    title: K('말로 물은 만족도', 'La soddisfazione dichiarata'),
+    ask: K('주민은 문화환경에 만족한다고 답하는가', 'I residenti si dicono soddisfatti?'),
+    tab: {
+      head: K('서울서베이 문화환경 만족도 · 5점 척도 · 노원구와 서울시 평균',
+        'Soddisfazione culturale (Seoul Survey), scala 1-5: Nowon e media cittadina'),
+      cols: [
+        K('연도', 'Anno'),
+        K('노원구', 'Nowon'),
+        K('서울시', 'Seoul'),
+        K('격차', 'Divario'),
+      ],
+      scale: 100,
+      rows: [
+        { label: K('2021', '2021'), before: 304, after: 313, d: -0.09 },
+        { label: K('2022', '2022'), before: 316, after: 334, d: -0.18 },
+        { label: K('2023', '2023'), before: 327, after: 345, d: -0.18 },
+        { label: K('2024', '2024'), before: 337, after: 355, d: -0.18 },
+        { label: K('2025', '2025'), before: 342, after: 347, d: -0.05, lead: true },
+      ],
+      unitD: 'pt',
+      note: K(
+        '연 1회 조사라 전후 12개월을 만들 수 없다. 서울시 평균을 대조군으로 두고 격차를 본다 — '
+        + '이것이 이 자료의 원래 쓰임이다.',
+        'Indagine annuale: non si formano 12 mesi prima e dopo. Si usa la media cittadina come controllo '
+        + 'e si osserva il divario, che è l’uso proprio di questo dato.',
+      ),
+    },
+    facts: [
+      K('자료는 실재한다 — 서울서베이 도시정책지표조사, 자치구별, 5점 척도, 매년 8월 공표',
+        'Il dato esiste: Seoul Survey, per distretto, scala 1-5, pubblicato ogni agosto'),
+      K('2003년부터 있고 표본은 가구 2만·시민 5천 — 노원구가 따로 나온다',
+        'Dal 2003, su 20.000 famiglie e 5.000 cittadini; Nowon compare separatamente'),
+      K('앞의 둘과 다르다 — 없는 자료가 아니라 내려받기가 막힌 자료다',
+        'A differenza degli altri due, non manca: è solo il download a essere bloccato'),
+    ],
+    reading: K(
+      '이 축은 사람들이 「그렇다고 말한」 만족도이고, 승하차와 이용은 「그렇게 행동한」 결과다. '
+      + '둘이 어긋나는 지점이 곧 판정 재료다 — 우리 가설의 출발점이 여기였다.',
+      'Questo asse misura ciò che le persone dichiarano; flussi e ingressi misurano ciò che fanno. '
+      + 'Dove i due divergono nasce il giudizio: è da lì che parte la nostra ipotesi.',
+    ),
+    src: K('서울 열린데이터광장 통계 10305 · 예시 make_satis_sample.py',
+      'Portale open data di Seoul, statistica 10305 · esempio make_satis_sample.py'),
+  },
+
+  // ── ⑤ 소비와 연령 ────────────────────────────────────────
+  {
+    id: 'age', no: '05', status: 'flat',
     title: K('무엇에 돈을 쓰고 누가 쓰는가', 'Su che cosa e chi spende'),
     ask: K('주민이 실제로 관심 있는 것은 무엇인가', 'Che cosa interessa davvero ai residenti?'),
     unit: K('대상지 일대 상권 · 2025년', 'Area commerciale attorno al sito · 2025'),
@@ -181,43 +254,49 @@ export const CARDS = [
     src: K('서울시 상권분석 · analyze_demand.py', 'Analisi commerciale di Seoul · analyze_demand.py'),
   },
 
-  // ── ⑤ 예산 ───────────────────────────────────────────────
+  // ── ⑥ 예산 ───────────────────────────────────────────────
   {
-    id: 'budget', no: '05', status: 'have',
+    id: 'budget', no: '06', status: 'have',
     title: K('이 건물에 들어간 돈과 노원구가 가는 방향',
       'La spesa su questo edificio e la direzione del distretto'),
     ask: K('예산은 어디로 움직였는가', 'Dove si è spostato il bilancio?'),
-    unit: K('노원구 세출예산 · 백만원', 'Bilancio di spesa di Nowon · milioni di won'),
-    before: { period: '2022', v: 5079, label: K('이 건물 투입', 'Su questo edificio') },
-    after: { period: '2025', v: 348, label: K('이 건물 투입', 'Su questo edificio') },
-    pct: -93,
+    unit: K('노원구 세출예산 실집행 · 백만원', 'Spesa effettiva di Nowon · milioni di won'),
+    before: { period: '2022', v: 149, label: K('이 건물 실집행', 'Speso su questo edificio') },
+    after: { period: '2025', v: 364, label: K('이 건물 실집행', 'Speso su questo edificio') },
+    pct: 143,
     verdict: 'change',
     moves: [
-      { label: K('자전거문화센터 건립', 'Centro cultura ciclistica'), v: 3281, up: true },
-      { label: K('어르신여가 복지시설', 'Strutture ricreative per anziani'), v: 588, up: true },
-      { label: K('공원 유지관리', 'Manutenzione parchi'), v: 914, up: true },
-      { label: K('노원문화예술회관 리모델링', 'Ristrutturazione dell\'auditorium'), v: -3379 },
-      { label: K('창동·상계 신경제중심지', 'Nuovo polo economico Changdong'), v: -5007 },
+      { label: K('노인회관 건립 (2023–25)', 'Centro anziani (2023-25)'), v: 521, up: true },
+      { label: K('문화교실 운영 (2025)', 'Corsi culturali (2025)'), v: 190, up: true },
+      { label: K('앞 스마트쉼터 (2025 주민제안)', 'Pensilina smart (proposta 2025)'), v: 158, up: true },
+      { label: K('사무동 리모델링 (2022)', 'Uffici ristrutturati (2022)'), v: 98, up: true },
+      { label: K('임시선별검사소 (2022)', 'Centro tamponi (2022)'), v: 41, up: true },
     ],
     facts: [
-      K('이 건물에 2022년 50.8억, 2023년 36.2억, 2024년 34.1억이 편성됐고 2025년 3.5억으로 끝났다',
-        'Stanziati 5,08 mld (2022), 3,62 (2023), 3,41 (2024); nel 2025 scende a 0,35: il ciclo è chiuso'),
-      K('2024년 실제 집행은 94.2억 — 이월과 추경이 겹친 해다',
-        'Nel 2024 la spesa effettiva è stata di 9,42 mld: anno di riporti e assestamenti'),
-      K('노원구 시설조성 예산은 4년 사이 58% 줄고, 사업 수는 117개에서 70개가 됐다',
+      K('이 건물 실집행은 2022년 1.5억 → 2025년 3.6억으로 오히려 늘었다',
+        'La spesa su questo edificio sale da 0,15 a 0,36 mld fra 2022 e 2025'),
+      K('들어간 돈은 전부 「새 용도를 끼워 넣는」 데 쓰였다 — 선별검사소·노인회관·문화교실',
+        'Tutto speso per inserire nuovi usi: centro tamponi, centro anziani, corsi culturali'),
+      K('노원구 시설조성 예산은 4년 사이 58% 줄고 사업 수는 117개에서 70개가 됐다',
         'Il budget per nuove strutture cala del 58% in quattro anni; i progetti da 117 a 70'),
     ],
     reading: K(
-      '이 건물의 전환은 예산상 끝났다. 그리고 노원구의 돈은 자전거·공원·어르신 여가처럼 '
-      + '몸을 움직이는 쪽으로 가고, 대형 개발에서는 빠지고 있다.',
-      'Per il bilancio la riconversione di questo edificio è conclusa. E i fondi di Nowon si spostano '
-      + 'verso ciclabilità, parchi e attività per anziani, ritirandosi dai grandi sviluppi.',
+      '노원구는 새로 짓는 일을 줄이고 있는데, 이 건물에는 돈이 계속 들어간다. '
+      + '그 돈이 하는 일은 하나뿐이다 — 있는 껍데기 안에 새 용도를 끼워 넣는 것. '
+      + '이 건물은 이미 우리가 주장하는 방식으로 살아 왔다.',
+      'Nowon riduce le nuove costruzioni, ma su questo edificio continua a spendere. '
+      + 'E quella spesa fa una cosa sola: inserire nuovi usi dentro un guscio esistente. '
+      + 'L\'edificio vive già come sosteniamo debba vivere.',
     ),
     limit: K(
-      '의료·재활 −33%와 공원·녹지 −51%는 일회성 사업이 끝난 탓이라 쓰지 않는다.',
-      'I cali in sanità (−33%) e verde (−51%) derivano da progetti una tantum conclusi: non utilizzabili.',
+      '처음에는 「노원문화예술회관 리모델링」 94.2억을 이 건물 것으로 넣었다. 틀렸다 — '
+      + '그것은 중계로 181의 다른 건물(2004년 개관, 노원문화재단 운영)이고 2025년 1월 재개관했다. '
+      + '원자료에 「노원구민의 전당」처럼 띄어 쓴 줄이 있어 검색에서 갈렸던 탓이다.',
+      'Inizialmente i 9,42 mld della ristrutturazione erano attribuiti a questo edificio: errore. '
+      + 'Riguardano un altro edificio in Junggye-ro 181 (2004, Fondazione culturale di Nowon), '
+      + 'riaperto nel gennaio 2025. La confusione nasceva da una spaziatura nel nome.',
     ),
-    src: K('서울재정포털 · highlight.py', 'Portale finanziario di Seoul · highlight.py'),
+    src: K('서울재정포털 · building_lines.py', 'Portale finanziario di Seoul · building_lines.py'),
   },
 ]
 

@@ -1094,7 +1094,7 @@ body{
 /* 예시 데이터 — 색으로 경고하지 않는다. 사선 빗금이 「실물이 아님」을 말한다. */
 .samp{display:inline-block;margin-left:9px;padding:2px 6px;font-size:9px;
   letter-spacing:.1em;text-transform:uppercase;color:var(--ink-2);
-  border:1px solid var(--ink-3);vertical-align:2px}
+  border:1px solid var(--ink-3);vertical-align:2px;white-space:nowrap;flex:none}
 .samp-warn{margin-top:10px;padding:10px 12px;font-size:11px;line-height:1.65;
   color:var(--ink-2);border:1px solid var(--rule);
   background:repeating-linear-gradient(-45deg,transparent 0 7px,var(--fill) 7px 14px)}

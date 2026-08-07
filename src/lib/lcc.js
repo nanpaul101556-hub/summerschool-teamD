@@ -24,25 +24,29 @@ export const DONE = {
 }
 
 /**
- * 손대는 층별 공사비 — 전부 노원구 세출예산에서 뽑은 실제 집행·편성액이다.
+ * 손대는 층별 공사비 — 노원구 세출예산에서 뽑은 실제 집행·편성액이다.
  * 남의 단가표를 쓰지 않는다. 이 구청이 이 규모의 건물에 실제로 쓴 돈이다.
+ *
+ * 다만 출처를 두 갈래로 구분해 둔다. own 은 이 건물 예산줄에서 그대로 나온 값,
+ * comp 는 다른 건물의 실적을 규모 비교로 빌려 온 값이다. 섞으면 안 된다.
  */
 export const WORK = {
   space: {
-    cost: 800, lift: 3,
+    cost: 650, lift: 3,
     label: { ko: '내장 · 부분보수', it: 'Finiture e riparazioni' },
     src: {
-      ko: '노원구 건축물 내장·보수 사업 23건 중 최대값 — 2022년 이 건물 주변 정비·조경 8억',
-      it: 'Massimo fra 23 interventi di finitura a Nowon: 0,8 mld per gli esterni di questo edificio (2022)',
+      ko: '2022년 이 건물 사무동 리모델링 편성 6.5억 — 노인회관 건립 3년 실집행 5.2억과 같은 급',
+      it: 'Uffici di questo edificio, stanziamento 2022: 0,65 mld; in linea con i 0,52 del centro anziani',
     },
   },
   services: {
     cost: 9420, lift: 5,
     label: { ko: '설비 · 성능 개선', it: 'Impianti e prestazioni' },
     src: {
-      ko: '2024년 이 건물 리모델링 실집행 94.2억 — 추정이 아니라 집행된 금액',
-      it: 'Spesa effettiva 2024 per la ristrutturazione di questo edificio: 9,42 mld',
+      ko: '같은 노원구 문예회관(중계로 181) 전면 리모델링 실집행 94.2억 — 이 건물 것이 아니라 유사 실적',
+      it: 'Ristrutturazione integrale di un auditorium analogo a Nowon (Junggye-ro 181): 9,42 mld effettivi',
     },
+    comp: true,
   },
   structure: {
     cost: 18000, lift: 8,
