@@ -60,6 +60,44 @@ function Missing() {
   )
 }
 
+/** 소수 첫째 자리로 고정하고 빼기표는 진짜 마이너스(−)를 쓴다 — 자릿수가 흔들리면 표가 아니다 */
+const pp = (v) => `${v > 0 ? '+' : '−'}${Math.abs(v).toFixed(1)}%p`
+
+/**
+ * 예시 표 — 자료가 없는 칸을 비워 두지 않고, 자료가 오면 어떤 표가 서는지 보인다.
+ * 빗금 테두리가 「이 수치는 실물이 아니다」를 말한다. 판정에는 들어가지 않는다.
+ */
+function SampleTable({ tab }) {
+  const { t, tx } = useLang()
+  return (
+    <div className="ev2-samp">
+      <div className="cap">
+        <span className="samp">{t('ev.sample')}</span>
+        <span className="ev2-samp-h">{tx(tab.head)}</span>
+      </div>
+      <table className="ev2-tab">
+        <thead>
+          <tr>
+            <th>{tx(tab.cols[0])}</th>
+            {tab.cols.slice(1).map((c) => <th key={tx(c)}>{tx(c)}</th>)}
+          </tr>
+        </thead>
+        <tbody>
+          {tab.rows.map((r) => (
+            <tr key={tx(r.label)} className={r.lead ? 'lead' : ''}>
+              <td>{tx(r.label)}</td>
+              <td className="num">{r.before.toLocaleString()}</td>
+              <td className="num">{r.after.toLocaleString()}</td>
+              <td className="num d">{pp(r.d)}</td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
+      <p className="ev2-samp-n">{tx(tab.note)}</p>
+    </div>
+  )
+}
+
 export default function DataView({ site, onStep, onReset, onNext }) {
   const { t, tx } = useLang()
   const [sheet, setSheet] = useState(null)
@@ -128,7 +166,7 @@ export default function DataView({ site, onStep, onReset, onNext }) {
             </div>
 
             <div className="ev2-m">
-              {c.status === 'missing' && <Missing />}
+              {c.status === 'missing' && (c.tab ? <SampleTable tab={c.tab} /> : <Missing />)}
               {c.before && <BeforeAfter c={c} />}
               {c.bars && (
                 <div className="ev2-bars">

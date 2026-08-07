@@ -86,11 +86,39 @@ export const CARDS = [
       K('대신 통상 형식대로 예시 파일을 만들어 두었다 — 실제 자료가 오면 그대로 대체된다',
         'Predisposto un file di esempio nel formato consueto, sostituibile all\'arrivo del dato'),
     ],
+    // 예시 파일을 analyze_minwon.py 로 돌린 실제 출력. 수치는 지어낸 값이다.
+    tab: {
+      head: K('예시 파일을 승하차와 같은 방식으로 돌리면 이 표가 선다',
+        'Elaborando il file di esempio come i flussi, si ottiene questa tabella'),
+      cols: [
+        K('분야', 'Ambito'),
+        K('전 12개월', '12 mesi prima'),
+        K('후 12개월', '12 mesi dopo'),
+        K('초과', 'Scost.'),
+      ],
+      rows: [
+        { label: K('환경위생', 'Igiene ambientale'), before: 5342, after: 5856, d: 2.7 },
+        { label: K('복지', 'Welfare'), before: 3145, after: 3447, d: 2.7 },
+        { label: K('도로교통', 'Viabilità'), before: 6842, after: 7386, d: 1.0 },
+        { label: K('일반행정', 'Amministrazione'), before: 2233, after: 2366, d: -1.0 },
+        { label: K('문화체육', 'Cultura e sport'), before: 2752, after: 2862, d: -3.0, lead: true },
+        { label: K('주택건축', 'Edilizia'), before: 4313, after: 4422, d: -4.4 },
+      ],
+      note: K(
+        '초과 = 분야 변화 − 전체 변화(+7.0%). 전체가 대조군 역할을 한다. '
+        + '실제 자료에서도 문화체육이 음(−)으로 나와야 「불만이 줄었다」가 성립한다.',
+        'Scostamento = variazione dell\'ambito meno quella complessiva (+7,0%), che funge da controllo. '
+        + 'Solo un valore negativo nel dato reale proverebbe il calo dei reclami.',
+      ),
+    },
     reading: K(
-      '「민원이 몇 건 줄었다」는 지금 댈 수 없다. 자리를 비워 둔다.',
-      'Non possiamo ancora dire di quanto siano calati i reclami: lo spazio resta vuoto.',
+      '「민원이 몇 건 줄었다」는 지금 댈 수 없다. 대신 자료가 오면 설 표를 세워 두었다 — '
+      + '이 수치는 지어낸 값이고, 판정에는 들어가지 않는다.',
+      'Non possiamo ancora dire di quanto siano calati i reclami. Resta però pronta la tabella '
+      + 'che si popolerà: i valori sono inventati e non entrano nel giudizio.',
     ),
-    src: K('data.go.kr 15066811 — 수동 내려받기 필요', 'data.go.kr 15066811 — download manuale'),
+    src: K('예시 · make_minwon_sample.py → analyze_minwon.py',
+      'Esempio · make_minwon_sample.py → analyze_minwon.py'),
   },
 
   // ── ③ 출입 대장 ──────────────────────────────────────────

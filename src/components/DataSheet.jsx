@@ -12,6 +12,12 @@ import { PLACES, REPO, sheetOf } from '../data/sheets'
 import { useLang } from '../i18n'
 import StopMap from './StopMap'
 
+/**
+ * 자릿수를 맞출 칸만 오른쪽으로 — 부서명·분야명까지 밀리면 표가 읽히지 않는다.
+ * 첫 칸은 숫자처럼 생겼어도(202104 · 11367) 행을 여는 열쇠이므로 왼쪽에 둔다.
+ */
+const isNum = (v, i) => i > 0 && /^-?[\d,]+(\.\d+)?$/.test(String(v).trim())
+
 export default function DataSheet({ id, onClose }) {
   const { t, tx } = useLang()
   const s = sheetOf(id)
@@ -62,13 +68,17 @@ export default function DataSheet({ id, onClose }) {
               <h3 className="lab">{t('ev.raw')}</h3>
               <table className="dsh-t">
                 <thead>
-                  <tr>{s.cols.map((c) => <th key={c}>{c}</th>)}</tr>
+                  <tr>
+                    {s.cols.map((c, i) => (
+                      <th key={c} className={isNum(s.rows[0][i], i) ? 'num' : ''}>{c}</th>
+                    ))}
+                  </tr>
                 </thead>
                 <tbody>
                   {s.rows.map((r) => (
                     <tr key={r.join('|')}>
                       {r.map((c, i) => (
-                        <td key={`${r[0]}-${i}`} className={i ? 'num' : ''}>{c}</td>
+                        <td key={`${r[0]}-${i}`} className={isNum(c, i) ? 'num' : ''}>{c}</td>
                       ))}
                     </tr>
                   ))}
