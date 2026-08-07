@@ -183,6 +183,23 @@ export const DICT = {
     'ev.statusNote':
       '다섯 갈래 중 둘만 전후로 잴 수 있었습니다. 못 구한 것을 감추면 '
       + '결론이 어디까지 근거를 가진 것인지 알 수 없게 됩니다.',
+    'ev.mapCap': 'V-World 위성 · 좌표는 장소검색, 거리는 대상지에서 실측',
+    'ev.sample': '예시 데이터',
+    'ev.sampleWarn':
+      '이 표의 수치는 지어낸 값입니다. 실제 민원 통계가 아니며 판정에 반영되지 않습니다. '
+      + '실제 자료를 받으면 컬럼만 맞춰 그대로 대체됩니다.',
+    'ev.see': '근거 보기',
+    'ev.sheet': '근거 시트',
+    'ev.what': '무엇을 쟀는가',
+    'ev.raw': '원자료',
+    'ev.calc': '어떻게 계산했는가',
+    'ev.origin': '출처',
+    'ev.rawSrc': '원본',
+    'ev.fileSrc': '가공 파일',
+    'ev.scriptSrc': '스크립트',
+    'ev.repo': '데이터 저장소에서 원본 열기',
+    'ev.limit': '한계',
+    'ev.missNote': '이 갈래는 아직 채우지 못했습니다. 무엇에 막혔는지를 대신 적었습니다.',
     'ev.but': '다만',
     // 03 근거 계보
     'evidence.title': '이 결론은 어디서 나왔는가',
@@ -544,6 +561,23 @@ export const DICT = {
     'ev.statusNote':
       'Solo due voci su cinque sono misurabili prima e dopo. Nascondere le mancanti '
       + 'renderebbe impossibile capire fin dove arrivano le prove.',
+    'ev.mapCap': 'Ortofoto V-World · coordinate da ricerca luoghi, distanze misurate dal sito',
+    'ev.sample': 'dati di esempio',
+    'ev.sampleWarn':
+      'I valori di questa tabella sono inventati: non sono statistiche reali e non entrano nel giudizio. '
+      + 'All arrivo del dato reale basterà sostituire il file.',
+    'ev.see': 'Vedi la fonte',
+    'ev.sheet': 'Scheda della fonte',
+    'ev.what': 'Che cosa è stato misurato',
+    'ev.raw': 'Dato grezzo',
+    'ev.calc': 'Come è stato calcolato',
+    'ev.origin': 'Provenienza',
+    'ev.rawSrc': 'Originale',
+    'ev.fileSrc': 'File elaborato',
+    'ev.scriptSrc': 'Script',
+    'ev.repo': 'Apri l originale nel repository dati',
+    'ev.limit': 'Limiti',
+    'ev.missNote': 'Questa voce non è ancora colmata: al suo posto è indicato che cosa l ha bloccata.',
     'ev.but': 'Tuttavia',
     // 03 filiera delle prove
     'evidence.title': 'Da dove nascono queste conclusioni',

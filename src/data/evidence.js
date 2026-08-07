@@ -75,14 +75,16 @@ export const CARDS = [
 
   // ── ② 민원 ───────────────────────────────────────────────
   {
-    id: 'minwon', no: '02', status: 'missing',
+    id: 'minwon', no: '02', status: 'missing', sample: true,
     title: K('민원 건수', 'Numero di reclami'),
     ask: K('불만이 줄었는가', 'Le lamentele sono diminuite?'),
     facts: [
       K('공공데이터포털·서울 열린데이터광장 모두 다운로드가 스크립트로 뚫리지 않았다',
         'Su entrambi i portali il download non è automatizzabile via script'),
-      K('고충민원 통계 2008–2020(자료 15066811)이 유일한 후보 — 12년 시계열에 분야·지역 분해가 있다',
-        'Unico candidato: la serie 2008–2020 (dataset 15066811), per settore e territorio'),
+      K('받아서 열어 보니 전국 처리건수뿐이었다 — 노원구를 뽑을 수 없다',
+        'Scaricato e aperto: contiene solo totali nazionali, Nowon non è isolabile'),
+      K('대신 통상 형식대로 예시 파일을 만들어 두었다 — 실제 자료가 오면 그대로 대체된다',
+        'Predisposto un file di esempio nel formato consueto, sostituibile all\'arrivo del dato'),
     ],
     reading: K(
       '「민원이 몇 건 줄었다」는 지금 댈 수 없다. 자리를 비워 둔다.',

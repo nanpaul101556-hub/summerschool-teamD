@@ -1003,6 +1003,103 @@ body{
   gap:0;padding:9px 20px;border-top:1px solid var(--rule);background:var(--fill)}
 .mm-f .l{font-size:9.5px;letter-spacing:.12em;text-transform:uppercase;color:var(--ink-3)}
 
+/* 근거 시트 — 카드를 누르면 원자료와 계산이 펼쳐진다 */
+.ev2-f .see{font-family:var(--f);font-size:10.5px;padding:3px 10px;cursor:pointer;
+  background:var(--ink);color:#fff;border:1px solid var(--ink);margin-left:auto}
+.ev2-f .see:hover{background:#000}
+.ev2-f .see:focus-visible{outline:2px solid var(--ink);outline-offset:2px}
+
+.dsh{position:fixed;inset:0;z-index:60;background:var(--paper);
+  display:flex;flex-direction:column}
+.dsh header{flex:none;display:flex;align-items:center;justify-content:space-between;
+  gap:16px;padding:14px 20px;border-bottom:1px solid var(--rule)}
+.dsh header .l{display:block;font-size:9.5px;letter-spacing:.14em;
+  text-transform:uppercase;color:var(--ink-3);margin-bottom:2px}
+.dsh header b{font-size:16px;letter-spacing:-.025em}
+.dsh header button{width:34px;height:34px;font-size:20px;line-height:1;cursor:pointer;
+  background:transparent;border:1px solid var(--rule);font-family:var(--f);flex:none}
+.dsh header button:hover{border-color:var(--ink)}
+
+.dsh-b{flex:1;min-height:0;overflow:auto;display:grid;
+  grid-template-columns:minmax(0,1.25fr) minmax(0,.75fr);gap:var(--s5);
+  padding:var(--s4) var(--s5) var(--s6);max-width:1120px;margin:0 auto;width:100%}
+.dsh-l>section,.dsh-r>section{margin-bottom:var(--s5)}
+.dsh-p{margin:0;font-size:13px;line-height:1.72;color:var(--ink-2);max-width:60ch}
+
+/* 정류장 지도 — 위성 배경 위에 실제 위치 */
+.stop-map{position:relative}
+.stop-map-box{height:340px;background:var(--fill)}
+.stop-map-box .leaflet-container{height:100%;background:var(--fill)}
+.stop-map-cap{font-size:10px;color:var(--ink-3);margin-top:6px;text-align:right}
+.stop-map.none{height:340px;display:flex;align-items:center;justify-content:center;
+  background:var(--fill);color:var(--ink-3);font-size:12px}
+
+/* 마커 — 배경이 어두우니 글자는 흰색에 그림자를 준다 */
+.stop-pin-wrap{background:none;border:0}
+.stop-pin{position:absolute;left:0;top:0;transform:translate(-50%,-50%);
+  display:flex;flex-direction:column;align-items:center;gap:2px;white-space:nowrap;
+  font-family:var(--f);pointer-events:none}
+.stop-pin i{width:11px;height:11px;border-radius:50%;background:rgba(255,255,255,.9);
+  border:2px solid #1A1A1A;display:block}
+.stop-pin.stop i{border-radius:2px;width:12px;height:12px}
+.stop-pin.site i{width:15px;height:15px;background:#1A1A1A;border-color:#fff}
+.stop-pin.lead i{background:#1A1A1A;border-color:#fff;width:14px;height:14px}
+.stop-pin b{font-size:11px;font-weight:700;color:#fff;letter-spacing:-.02em;
+  text-shadow:0 0 4px rgba(0,0,0,.95),0 1px 2px rgba(0,0,0,.9)}
+.stop-pin em{font-style:normal;font-size:10px;font-weight:700;color:#fff;
+  background:rgba(26,26,26,.82);padding:1px 6px}
+.stop-pin.site b{font-size:12px}
+
+.mm-l{list-style:none;margin:var(--s3) 0 0;padding:0;display:flex;
+  flex-direction:column;gap:1px;background:var(--rule-2);border:1px solid var(--rule-2)}
+.mm-l li{background:var(--paper);padding:9px 12px;display:flex;flex-direction:column;gap:2px}
+.mm-l li.lead{background:var(--fill-2)}
+.mm-l b{font-size:12.5px;letter-spacing:-.02em}
+.mm-l .sub{font-size:10px;color:var(--ink-3)}
+.mm-l .n{font-size:11.5px;color:var(--ink-2);margin-top:2px}
+.mm-l li.lead .n{color:var(--ink);font-weight:600}
+
+/* 원자료 표 */
+.dsh-t{width:100%;border-collapse:collapse;font-size:11.5px;
+  font-family:ui-monospace,'Consolas','Menlo',monospace}
+.dsh-t th{text-align:right;font-size:9.5px;letter-spacing:.05em;color:var(--ink-3);
+  font-weight:600;padding:0 9px 6px;border-bottom:1px solid var(--rule);
+  font-family:var(--f)}
+.dsh-t th:first-child{text-align:left}
+.dsh-t td{text-align:left;padding:6px 9px;border-bottom:1px solid var(--rule-2);
+  color:var(--ink-2)}
+.dsh-t td.num{text-align:right}
+.dsh-t tr:last-child td{border-bottom:0}
+
+/* 계산 */
+.dsh-c{margin:0;padding-left:18px;font-size:12px;line-height:1.7;color:var(--ink-2)}
+.dsh-c li{margin-bottom:6px}
+.dsh-c li:last-child{color:var(--ink);font-weight:700}
+
+/* 출처 */
+.dsh-s{display:flex;flex-direction:column;gap:1px;background:var(--rule-2);
+  border:1px solid var(--rule-2)}
+.dsh-s div{background:var(--paper);padding:9px 11px;display:flex;
+  flex-direction:column;gap:2px}
+.dsh-s .k{font-size:9.5px;letter-spacing:.06em;color:var(--ink-3)}
+.dsh-s .v{font-size:11.5px;line-height:1.5;color:var(--ink-2)}
+.dsh-s .v.mono{font-family:ui-monospace,'Consolas',monospace;font-size:10.5px;
+  word-break:break-all}
+.dsh-repo{display:inline-block;margin-top:var(--s2);font-size:11px;
+  color:var(--ink);border-bottom:1px solid var(--ink);text-decoration:none}
+.dsh-repo:hover{color:#000}
+.dsh-miss{background:var(--fill);padding:11px 13px;font-size:11.5px;
+  line-height:1.65;color:var(--ink-2);border-left:2px solid var(--ink)}
+
+/* 예시 데이터 — 색으로 경고하지 않는다. 사선 빗금이 「실물이 아님」을 말한다. */
+.samp{display:inline-block;margin-left:9px;padding:2px 6px;font-size:9px;
+  letter-spacing:.1em;text-transform:uppercase;color:var(--ink-2);
+  border:1px solid var(--ink-3);vertical-align:2px}
+.samp-warn{margin-top:10px;padding:10px 12px;font-size:11px;line-height:1.65;
+  color:var(--ink-2);border:1px solid var(--rule);
+  background:repeating-linear-gradient(-45deg,transparent 0 7px,var(--fill) 7px 14px)}
+.ev2-r .samp{margin-left:0;margin-top:6px}
+
 /* ============================================================
    03 정량 근거 v2 — 전 → 후를 같은 틀로
    ============================================================ */
@@ -1476,6 +1573,7 @@ body{
 @media (max-width:900px){
   .pl-row,.ev-row{grid-template-columns:32px minmax(0,1fr)}
   .ev2-r{grid-template-columns:28px minmax(0,1fr)}
+  .dsh-b{grid-template-columns:1fr;gap:var(--s4)}
   .ev2-m,.ev2-s{grid-column:2}
   .ev2-q,.ev2-m{margin-bottom:var(--s3)}
   .fn-body{grid-template-columns:1fr}

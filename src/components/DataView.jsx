@@ -6,10 +6,14 @@
  * 근거를 가진 것인지 알 수 없게 된다.
  */
 
+import { useState } from 'react'
+
 import { CARDS, CONCLUSION, EVENT, tally } from '../data/evidence'
+import { sheetOf } from '../data/sheets'
 import { useLang } from '../i18n'
 import { n } from '../lib/format'
 import AppFrame from './AppFrame'
+import DataSheet from './DataSheet'
 import { Bars } from './MiniChart'
 
 const t3 = tally()
@@ -58,6 +62,7 @@ function Missing() {
 
 export default function DataView({ site, onStep, onReset, onNext }) {
   const { t, tx } = useLang()
+  const [sheet, setSheet] = useState(null)
 
   const side = (
     <>
@@ -119,6 +124,7 @@ export default function DataView({ site, onStep, onReset, onNext }) {
               <div className="ask">{tx(c.ask)}</div>
               {c.unit && <div className="unit">{tx(c.unit)}</div>}
               <span className={`tag ${c.status}`}>{t(`ev.st.${c.status}`)}</span>
+              {c.sample && <span className="samp">{t('ev.sample')}</span>}
             </div>
 
             <div className="ev2-m">
@@ -165,6 +171,11 @@ export default function DataView({ site, onStep, onReset, onNext }) {
                   <span className="v none">{t('ev.noVerdict')}</span>
                 )}
                 <span className="src">{tx(c.src)}</span>
+                {sheetOf(c.id) && (
+                  <button type="button" className="see" onClick={() => setSheet(c.id)}>
+                    {t('ev.see')}
+                  </button>
+                )}
               </div>
               {c.limit && <div className="lim">{tx(c.limit)}</div>}
             </div>
@@ -187,6 +198,8 @@ export default function DataView({ site, onStep, onReset, onNext }) {
           </div>
         </article>
       </div>
+
+      {sheet && <DataSheet id={sheet} onClose={() => setSheet(null)} />}
     </AppFrame>
   )
 }
