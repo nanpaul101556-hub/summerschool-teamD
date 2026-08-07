@@ -11,6 +11,8 @@ export const SOURCES = {
   nowonCarbon: { label: '노원구 제1차 탄소중립 녹색성장 기본계획', year: 2025, grade: 3 },
   seoulPlan: { label: '2040 서울도시기본계획', year: 2023, grade: 3 },
   certGuide: { label: '친환경건축물 인증제도 가이드북', year: 2025, grade: 3 },
+  repairCycle: { label: '시설물의 안전 및 유지관리 실시 등에 관한 지침 [별표15] 시설물 표준 수선주기', year: 2025, grade: 3 },
+  bldgInspect: { label: '건축물관리법 제13조 · 시설물안전법 (점검 주기)', year: 2025, grade: 3 },
   zebCost: { label: '제로에너지건축물 공사비 증가분 산출 (KAIS 22-1)', year: 2021, grade: 2 },
   parkUse: { label: '노인친화공원 이용행태 분석 (한국도시설계학회지 25-2)', year: 2024, grade: 2 },
   walkDist: { label: '노인친화형 공원 유치거리 (조현주·이순주)', year: 2019, grade: 2 },

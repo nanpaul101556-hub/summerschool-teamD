@@ -1,20 +1,22 @@
 /** 01 · 대상지 — 지도가 스테이지를 다 쓰고, 판정 결과는 패널에 붙는다. */
 
 import { SITE, TREND_DIRECTION, UPPER_PLANS } from '../data/site'
+import { SOURCE, capacity } from '../data/zoning'
 
 import { useLang } from '../i18n'
-import { computeLimits, eligibleIncentives } from '../lib/constraint'
+import { eligibleIncentives } from '../lib/constraint'
 import { m2 } from '../lib/format'
 import AppFrame from './AppFrame'
 import SiteMap from './SiteMap'
 
 export default function SiteView({ site, onStep, onReset, onNext }) {
   const { t, tx } = useLang()
-  const limits = computeLimits(SITE)
   const incentives = eligibleIncentives(SITE)
   const p = site.parcel
+  const z = site.zone
 
-  // 지적은 검색한 필지에서, 나머지는 정리된 자료에서 온다
+  // 지적과 용도지역은 검색한 필지에서, 한도는 조례 표에서 온다
+  const cap = capacity(p?.areaM2, z)
   const NA = t('site.missing')
   const or = (v) => (v == null ? NA : v)
   const specs = [
@@ -29,12 +31,21 @@ export default function SiteView({ site, onStep, onReset, onNext }) {
       v: or(p?.jiga ? `${p.jiga.toLocaleString()} ₩/m²` : null),
       note: p?.gosi,
     },
-    { k: t('site.zoning'), v: or(site.curated ? SITE.zoning : null) },
-    { k: t('site.bcr'), v: or(site.curated && SITE.bcr != null ? `${SITE.bcr}%` : null) },
-    { k: t('site.far'), v: or(site.curated && SITE.far != null ? `${SITE.far}%` : null) },
+    { k: t('site.zoning'), v: or(z?.name), note: z?.name ? SOURCE.zoneApi : null },
+    {
+      k: t('site.bcr'),
+      v: or(z?.bcr != null ? `${z.bcr}%` : null),
+      note: z?.bcr != null ? t('site.byLaw') : null,
+    },
+    {
+      k: t('site.far'),
+      v: or(z?.far != null ? `${z.far}%` : null),
+      note: z?.far != null ? t('site.byLaw') : null,
+    },
     {
       k: t('site.maxFloorArea'),
-      v: or(site.curated && limits.totalArea ? m2(limits.totalArea) : null),
+      v: or(cap ? m2(cap.base) : null),
+      note: cap?.eased ? t('site.eased', { n: cap.easedFar, a: m2(cap.eased) }) : null,
     },
   ]
 

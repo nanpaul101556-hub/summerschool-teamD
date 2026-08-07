@@ -21,9 +21,209 @@ export const DICT = {
 
     'step.site': '대상지',
     'step.region': '지역 정보',
-    'step.options': '대안 산출',
+    'step.evidence': '근거 계보',
+    'step.plan': '상위계획',
+    'step.data': '정량 근거',
+    'step.verdict': '판정',
+    'step.options': '전환 대안',
+    'step.lcc': '생애주기',
+
+    // 06 생애주기
+    'lc.title': '언제 공사하면 어떻게 되는가',
+    'lc.sub': '손대지 않으면 빠지고, 공사하면 되돌아오고, 다시 빠집니다.',
+    'lc.coefTitle': '곡선을 만든 두 계수',
+    'lc.decay': '해마다 빠지는 폭',
+    'lc.decaySrc': '2015~2019 추세 (104 → 100)',
+    'lc.lift': '공사가 되돌리는 폭',
+    'lc.liftSrc': '2024년 공사 뒤 대조군 대비',
+    'lc.coefNote':
+        '둘 다 이 건물에서 잰 값입니다. 미래 구간은 그 둘을 반복한 예측이지 사실이 아닙니다.',
+    'lc.costTitle': '공사비 근거',
+    'lc.costNote':
+        '전부 노원구 세출예산에서 뽑은 실제 집행·편성액입니다. 남의 단가표를 쓰지 않았습니다.',
+    'lc.hint': '곡선 위에 커서를 올리면 그해가 왜 그 값인지 뜹니다',
+    'lc.tip.real': '실측 · OA-12913 승하차',
+    'lc.tip.decay': '손대지 않으면 해마다 1.15%씩 빠집니다',
+    'lc.tip.floor': '바닥 · 관측 최저(63)의 보수값',
+    'lc.tip.lift': '공사로 {n}%p 반등하고 감쇠가 다시 시작됩니다',
+    'lc.tip.cost': '공사비',
+    'lc.tip.guess': '구조 공사비는 신축 사례에서 추정한 값입니다',
+    'lc.cmpTitle': '시나리오',
+    'lc.cost': '총 공사비',
+    'lc.mean': '평균 이용',
+    'lc.eok': '억',
+    'lc.gapTitle': '아직 없는 것',
+    'lc.gapBody':
+        '건물의 실제 출입 기록이 있으면 정류장 통행 대신 그것으로 곡선을 그릴 수 있습니다. '
+        + '분모가 건물 하나가 되어 훨씬 정확해집니다. 시설관리공단 이용자 통계가 그 자리입니다.',
+    'lc.chartTitle': '이용 곡선과 공사 시점',
+    'lc.chartSub': '2019년 7월 = 100 · 실측 2015~2026 · 예측 2026~2060',
+    'lc.real': '실측',
+    'lc.pred': '예측',
+    'lc.tblTitle': '무엇을 얻고 무엇을 치르는가',
+    'lc.tblSub': '평균 이용은 34년간의 평균 수준입니다',
+    'lc.sc': '시나리오',
+    'lc.works': '공사',
+    'lc.endv': '2060년',
+    'lc.eff': '100억당',
+    'lc.tblNote':
+        '손대지 않으면 34년 평균이 {n}까지 내려갑니다. 공사는 그 곡선을 끌어올리는 값을 사는 것입니다.',
+    'lc.endH': '곡선이 임계선에 닿기 전에 손대면 다시 올라간다',
+    'lc.endB':
+        '손대지 않으면 34년 평균이 64.4까지 내려가고 2052년에는 바닥에 닿습니다. '
+        + '판정이 권한 대로 2031·2039·2045·2054년에 손대면 평균 70.5를 유지합니다. '
+        + '차이는 6.1이고 그 값을 250억에 사는 것입니다. '
+        + '큰 공사는 2039년과 2054년 두 번뿐이고, 둘 다 설비 주기에 맞춰 한 번에 끝냅니다.',
+
+
+    // 05 전환 대안
+    'sh.title': '언제 무엇으로 바꿀 것인가',
+    'sh.sub': '시점은 우리가 고른 것이 아니라 건물의 물리 주기가 정합니다.',
+    'sh.building': '대상 건물',
+    'sh.built': '준공',
+    'sh.age': '경과',
+    'sh.years': '년',
+    'sh.trigger': '전환 트리거',
+    'sh.tgNow': '현재',
+    'sh.tgLine': '임계선',
+    'sh.chosen': '{key}안이 손대는 층',
+    'sh.cycTitle': '이 건물의 물리 주기',
+    'sh.cycSub': 'Duffy 층별 수명 — 구조 50년 · 설비 15년 · 내장 5~7년 (Askar 2021 p.17)',
+    'sh.eok': '억원',
+    'sh.pgTitle': '무엇으로 바꿀 수 있는가',
+    'sh.pgSub': '걸어서 닿는 거리에 이미 있는 기능은 뺍니다',
+    'sh.taken': '이미 있음',
+    'sh.open': '비어 있음',
+    'sh.pgNote':
+      '다섯 가지가 이미 찼습니다. 특히 어르신 기능은 2026년 중계어르신센터가 열렸고 '
+      + '이 건물 안에도 노인회관이 들어가 두 곳이 됐습니다. 남은 것은 생활체육과 창업·일자리이고, '
+      + '둘 다 노원구에서 실제로 이용이 늘고 있는 용도입니다.',
+    'sh.opTitle': '어디까지 손댈 것인가',
+    'sh.opSub': '깊이 손댈수록 지금은 넓어지고 다음은 좁아집니다',
+    'sh.good': '얻는 것',
+    'sh.bad': '치르는 것',
+    'sh.rev': '되돌릴 수 있는 정도',
+    'sh.rev1': '어렵다',
+    'sh.rev2': '보통',
+    'sh.rev3': '쉽다',
+    'sh.endH': '유연성의 값은 다음 전환을 열어 두는 것이다',
+    'sh.endB':
+      'C안은 지금 가장 넓게 열지만 구조를 고정해 다음 50년을 묶습니다. '
+      + 'A안은 지금 좁지만 언제든 다시 바꿀 수 있습니다. '
+      + 'B안은 설비 주기에 맞춰 공사를 한 번만 하고 구조는 남겨 둡니다 — '
+      + '2024년에 노원구가 이미 한 방식이고, 그 결과가 통행 +5%p였습니다.',
+
+
+    // 04 판정
+    'vd.title': '자료를 합치면 무엇을 해야 하는가',
+    'vd.sub': '처방은 「바꿔라」가 아니라 「언제 무엇을 하라」입니다.',
+    'vd.inTitle': '판정의 입력',
+    'vd.inSub': '네 갈래를 같은 틀로 놓습니다',
+    'vd.inNote': '{m}개 중 {n}개만 실제로 쟀습니다. 나머지는 비어 있습니다.',
+    'vd.none': '미확보',
+    'vd.phTitle': '언제 무엇을 하는가',
+    'vd.phSub': '시점은 건물의 물리 주기와 인구추계가 정합니다',
+    'vd.k.hold': '유지',
+    'vd.k.plan': '준비',
+    'vd.k.work': '공사',
+    'vd.watch': '감시',
+    'vd.next': '이 처방이 생애주기 곡선에서 어떻게 그려지는지 봅니다',
     'step.rhino': '모델링',
     'step.future': '시간 변화',
+
+    // 02 상위계획
+    'plan.title': '이 자리를 규정하는 계획',
+    'plan.sub': '대상지를 넣으면 그 자리를 규정하는 계획이 호출됩니다. 서울시에서 노원구로, 다시 이 자리로 좁혀집니다.',
+    'plan.quotes': '인용 조항',
+    'plan.pages': '표시한 원문',
+    'plan.marksNote': 'PDF {n}곳에 근거를 표시했습니다. 페이지를 눌러 크게 볼 수 있습니다.',
+    'plan.from': '입력한 대상지',
+    'plan.see': '원문 보기',
+    'plan.close': '닫기',
+    'plan.next': '이제 여기서 직접 잰 것으로 내려갑니다',
+    'plan.mapOpen': '마인드맵 보기',
+    'plan.mapHint': '어떤 조항이 어떤 방향을 낳았는지 한 화면에서',
+    'plan.mapTitle': '무엇이 무엇에서 나왔는가',
+    'plan.mapSub': '대상지에서 계획으로, 계획에서 조항으로, 조항에서 방향으로',
+    'plan.mapCol1': '대상지',
+    'plan.mapCol2': '계획',
+    'plan.mapCol3': '조항',
+    'plan.mapCol4': '그래서 바뀌어야 할 방향',
+    'plan.summary': '요약',
+    'plan.shifts': '그래서 무엇이 바뀌어야 하는가',
+    'plan.popTitle': '노원구 인구 구성',
+    'plan.popChart': '65세 이상과 14세 이하 비중',
+    'plan.popNote': '2025년 20.9% → 2042년 36.2%. 유소년은 8.8% → 7.5%로 줄어 약 5배 차이가 납니다.',
+    'plan.honestTitle': '빌려오는 것과 지시받은 것',
+    'plan.honestBody':
+      '인용한 조항 중 일부는 맥락이 다릅니다. 용도지역제 조항은 도시 단위이고, '
+      + '유휴시설 전환 조항은 주택 공급 맥락입니다. 원칙을 빌려오는 것이지 '
+      + '계획이 우리 방식을 지시한 것은 아닙니다.',
+
+    // 03 정량 근거
+    'ev.title': '바뀌기 전과 후',
+    'ev.sub': '다섯 갈래를 같은 방식으로 물었습니다.',
+    'ev.head': '기준 사건',
+    'ev.eventTitle': '무엇을 기준으로 나눴나',
+    'ev.before': '전',
+    'ev.after': '후',
+    'ev.ctrl': '노원구 전체',
+    'ev.excess': '초과',
+    'ev.keep': '현황 유지 쪽',
+    'ev.change': '교체 쪽',
+    'ev.noVerdict': '판정 보류',
+    'ev.noData': '자료 미확보',
+    'ev.st.have': '전후 측정',
+    'ev.st.flat': '단면만',
+    'ev.st.missing': '미확보',
+    'ev.statusTitle': '자료 확보 현황',
+    'ev.stHave': '전후 측정',
+    'ev.stFlat': '단면만',
+    'ev.stMiss': '미확보',
+    'ev.statusNote':
+      '다섯 갈래 중 둘만 전후로 잴 수 있었습니다. 못 구한 것을 감추면 '
+      + '결론이 어디까지 근거를 가진 것인지 알 수 없게 됩니다.',
+    'ev.but': '다만',
+    // 03 근거 계보
+    'evidence.title': '이 결론은 어디서 나왔는가',
+    'evidence.sub': '원자료에서 대안까지, 거쳐 온 자리를 전부 펼쳐 놓았습니다.',
+    'evidence.howTitle': '읽는 법',
+    'evidence.how1': '왼쪽에서 오른쪽으로 흐릅니다. 원자료 → 처리 → 산출 → 검정 → 결론 → 대안.',
+    'evidence.how2': '노드를 누르면 그 계보만 남고 나머지는 흐려집니다.',
+    'evidence.how3': '끌어서 옮기고 휠로 확대합니다.',
+    'evidence.nullTitle': '신호를 못 잡은 분석도 남깁니다',
+    'evidence.nullBody':
+      '버스와 집값에서 효과를 찾지 못한 것이 따릉이로 옮긴 이유입니다. '
+      + '그 사슬을 지우면 왜 이 방법을 골랐는지 설명할 수 없습니다.',
+
+    'prov.c.source': '원자료',
+    'prov.c.script': '처리',
+    'prov.c.dataset': '산출',
+    'prov.c.test': '검정',
+    'prov.c.finding': '결론',
+    'prov.c.option': '대안',
+
+    'prov.k.source': '원자료',
+    'prov.k.script': '처리 스크립트',
+    'prov.k.dataset': '산출 데이터',
+    'prov.k.test': '검정',
+    'prov.k.finding': '결론',
+    'prov.k.option': '대안',
+
+    'prov.rel.flow': '흐름',
+    'prov.rel.retry': '다시 시도',
+    'prov.rel.back': '지지',
+    'prov.rel.against': '반대',
+
+    'prov.fit': '전체 보기',
+    'prov.clear': '선택 해제',
+    'prov.limit': '한계',
+    'prov.from': '무엇에서 왔나',
+    'prov.to': '무엇을 낳았나',
+    'prov.src': '위치',
+    'prov.nullTitle': '신호를 못 잡았습니다',
+    'prov.nullNote': '효과가 없다는 것도 결과입니다. 감추지 않고 그대로 둡니다.',
+    'prov.nullCount': '신호 없음',
 
     // 01 랜딩
     'landing.title': '대상지를 입력하십시오',
@@ -56,7 +256,11 @@ export const DICT = {
     'site.far': '용적률',
     'site.maxFloorArea': '최대 연면적',
     'site.missing': '미확보',
-    'site.curatedNote': '지번·면적·지가는 연속지적도에서 실시간으로 가져옵니다.',
+    'site.byLaw': '서울특별시 도시계획 조례',
+    'site.eased': '도시계획시설이면 용적률 {n}%까지 완화되어 {a}',
+    'site.curatedNote':
+      '지번·면적·지가는 연속지적도에서, 용도지역은 토지이용계획에서 실시간으로 가져옵니다. '
+      + '건폐율·용적률은 서울특별시 도시계획 조례 제44조·제48조를 그대로 적용합니다.',
     'site.uncuratedNote': '이 대상지는 지적 정보만 조회했습니다. 인구·상위계획·제도 판정은 자료가 정리된 대상지에서만 제공됩니다.',
     'site.institutions': '적용 제도',
     'site.applies': '해당',
@@ -176,9 +380,212 @@ export const DICT = {
 
     'step.site': 'Sito',
     'step.region': 'Dati del territorio',
-    'step.options': 'Alternative',
+    'step.evidence': 'Filiera delle prove',
+    'step.plan': 'Piani sovraordinati',
+    'step.data': 'Evidenze quantitative',
+    'step.verdict': 'Verdetto',
+    'step.options': 'Riconversione',
+    'step.lcc': 'Ciclo di vita',
+
+    // 06 ciclo di vita
+    'lc.title': 'Quando intervenire e che cosa succede',
+    'lc.sub': 'Senza interventi si scende; con un cantiere si risale; poi si riscende.',
+    'lc.coefTitle': 'I due coefficienti della curva',
+    'lc.decay': 'Calo annuo',
+    'lc.decaySrc': 'trend 2015–2019 (104 to 100)',
+    'lc.lift': 'Recupero per intervento',
+    'lc.liftSrc': 'dopo il cantiere 2024, sul controllo',
+    'lc.coefNote':
+        'Entrambi misurati su questo edificio. Il tratto futuro e una proiezione di quei due valori, non un fatto.',
+    'lc.costTitle': 'Base dei costi',
+    'lc.costNote':
+        'Tutti importi realmente stanziati o spesi dal distretto di Nowon, non prezzari di terzi.',
+    'lc.hint': 'Passa il cursore sulla curva per vedere perche quell anno vale cosi',
+    'lc.tip.real': 'Rilevato · flussi OA-12913',
+    'lc.tip.decay': 'Senza interventi si perde l 1,15% all anno',
+    'lc.tip.floor': 'Minimo · valore prudenziale sul minimo osservato (63)',
+    'lc.tip.lift': 'Il cantiere fa risalire di {n} p.p. e il declino riparte',
+    'lc.tip.cost': 'Costo',
+    'lc.tip.guess': 'Il costo strutturale e stimato da casi di nuova costruzione',
+    'lc.cmpTitle': 'Scenari',
+    'lc.cost': 'Costo totale',
+    'lc.mean': 'Uso medio',
+    'lc.eok': '00 mln',
+    'lc.gapTitle': 'Cio che ancora manca',
+    'lc.gapBody':
+        'Con i registri di accesso reali dell edificio la curva si baserebbe su quelli invece che sulla fermata: '
+        + 'il denominatore diventerebbe il singolo edificio e la stima molto piu precisa.',
+    'lc.chartTitle': 'Curva d uso e momenti di intervento',
+    'lc.chartSub': 'luglio 2019 = 100 · rilevato 2015–2026 · proiettato 2026–2060',
+    'lc.real': 'rilevato',
+    'lc.pred': 'proiezione',
+    'lc.tblTitle': 'Che cosa si ottiene e che cosa si paga',
+    'lc.tblSub': 'L uso medio e il livello medio sui 34 anni',
+    'lc.sc': 'Scenario',
+    'lc.works': 'Cantieri',
+    'lc.endv': '2060',
+    'lc.eff': 'per 10 mld',
+    'lc.tblNote':
+        'Senza interventi la media dei 34 anni scende a {n}. Il cantiere compra il sollevamento di quella curva.',
+    'lc.endH': 'Intervenendo prima che la curva tocchi la soglia, si risale',
+    'lc.endB':
+        'Senza interventi la media dei 34 anni scende a 64,4 e nel 2052 si tocca il minimo. '
+        + 'Seguendo il giudizio (2031, 2039, 2045, 2054) la media resta a 70,5. '
+        + 'La differenza e 6,1 e la si acquista con 25 miliardi. '
+        + 'I cantieri maggiori sono solo due, entrambi allineati al ciclo impiantistico.',
+
+
+    // 05 riconversione
+    'sh.title': 'Quando e verso che cosa cambiare',
+    'sh.sub': 'Il momento non lo scegliamo noi: lo detta il ciclo fisico dell\'edificio.',
+    'sh.building': 'Edificio oggetto',
+    'sh.built': 'Costruzione',
+    'sh.age': 'Anni',
+    'sh.years': '',
+    'sh.trigger': 'Innesco di riconversione',
+    'sh.tgNow': 'ora',
+    'sh.tgLine': 'soglia',
+    'sh.chosen': 'Strati toccati dall\'alternativa {key}',
+    'sh.cycTitle': 'Il ciclo fisico di questo edificio',
+    'sh.cycSub':
+      'Durate per strato secondo Duffy — struttura 50 anni, impianti 15, finiture 5–7 (Askar 2021, p.17)',
+    'sh.eok': '00 mln di won',
+    'sh.pgTitle': 'Verso quali destinazioni si può andare',
+    'sh.pgSub': 'Si escludono le funzioni già presenti a distanza pedonale',
+    'sh.taken': 'già presente',
+    'sh.open': 'scoperta',
+    'sh.pgNote':
+      'Cinque funzioni sono già coperte. Per gli anziani in particolare: nel 2026 ha aperto il centro '
+      + 'di Junggye e un centro anziani è stato inserito in questo stesso edificio. Restano lo sport di base '
+      + 'e il lavoro, entrambi in crescita reale nel distretto.',
+    'sh.opTitle': 'Fin dove intervenire',
+    'sh.opSub': 'Più a fondo si interviene, più si apre ora e più si chiude dopo',
+    'sh.good': 'Che cosa si ottiene',
+    'sh.bad': 'Che cosa si paga',
+    'sh.rev': 'Reversibilità',
+    'sh.rev1': 'difficile',
+    'sh.rev2': 'media',
+    'sh.rev3': 'facile',
+    'sh.endH': 'Il valore della flessibilità è lasciare aperta la riconversione successiva',
+    'sh.endB':
+      'L\'alternativa C apre di più oggi ma fissa la struttura e vincola i prossimi cinquant\'anni. '
+      + 'La A resta stretta ma sempre modificabile. La B allinea il cantiere al ciclo impiantistico '
+      + 'e lascia intatta la struttura: è il metodo già usato da Nowon nel 2024, con un risultato di +5 p.p.',
+
+
+    // 04 verdetto
+    'vd.title': 'Che cosa fare, mettendo insieme i dati',
+    'vd.sub': 'La prescrizione non e "cambiare" ma "quando fare che cosa".',
+    'vd.inTitle': 'Gli ingressi del giudizio',
+    'vd.inSub': 'Quattro voci nello stesso schema',
+    'vd.inNote': 'Solo {n} voci su {m} sono state misurate; le altre restano vuote.',
+    'vd.none': 'non disponibile',
+    'vd.phTitle': 'Quando fare che cosa',
+    'vd.phSub': 'Le date le fissano il ciclo fisico dell edificio e le proiezioni demografiche',
+    'vd.k.hold': 'mantenere',
+    'vd.k.plan': 'preparare',
+    'vd.k.work': 'cantiere',
+    'vd.watch': 'sorveglianza',
+    'vd.next': 'Vediamo come questa prescrizione si disegna sulla curva di ciclo di vita',
     'step.rhino': 'Modellazione',
     'step.future': 'Nel tempo',
+
+    // 02 piani sovraordinati
+    'plan.title': 'I piani che regolano questo luogo',
+    'plan.sub': 'Inserito il sito, vengono richiamati i piani che lo regolano: da Seoul a Nowon, fino a questo lotto.',
+    'plan.quotes': 'passaggi citati',
+    'plan.pages': 'pagine annotate',
+    'plan.marksNote':
+      'I riferimenti sono evidenziati in {n} punti: tocca una pagina per ingrandirla.',
+    'plan.from': 'Sito inserito',
+    'plan.see': 'Vedi l\'originale',
+    'plan.close': 'Chiudi',
+    'plan.next': 'Ora si scende a ciò che abbiamo misurato qui',
+    'plan.mapOpen': 'Vedi la mappa',
+    'plan.mapHint': 'Quale norma genera quale direzione, in una sola schermata',
+    'plan.mapTitle': 'Che cosa nasce da che cosa',
+    'plan.mapSub': 'Dal sito ai piani, dai piani alle norme, dalle norme alle direzioni',
+    'plan.mapCol1': 'Sito',
+    'plan.mapCol2': 'Piano',
+    'plan.mapCol3': 'Norma',
+    'plan.mapCol4': 'Direzione che ne deriva',
+    'plan.summary': 'In sintesi',
+    'plan.shifts': 'Che cosa deve cambiare',
+    'plan.popTitle': 'Composizione demografica di Nowon',
+    'plan.popChart': 'Quota di over 65 e under 14',
+    'plan.popNote':
+      'Dal 20,9% (2025) al 36,2% (2042); gli under 14 scendono dall\'8,8% al 7,5%: circa cinque volte.',
+    'plan.honestTitle': 'Ciò che si mutua e ciò che è prescritto',
+    'plan.honestBody':
+      'Alcuni passaggi hanno un contesto diverso dal nostro: la norma sullo zoning opera a scala urbana, '
+      + 'quella sulla riconversione riguarda l\'offerta abitativa. Ne mutuiamo il principio; '
+      + 'non è il piano a prescrivere il nostro metodo.',
+
+    // 03 evidenze quantitative
+    'ev.title': 'Prima e dopo il cambiamento',
+    'ev.sub': 'Cinque voci interrogate nello stesso modo.',
+    'ev.head': 'Evento di riferimento',
+    'ev.eventTitle': 'Su che cosa si divide prima e dopo',
+    'ev.before': 'prima',
+    'ev.after': 'dopo',
+    'ev.ctrl': 'Nowon nel complesso',
+    'ev.excess': 'scarto',
+    'ev.keep': 'verso il mantenimento',
+    'ev.change': 'verso la sostituzione',
+    'ev.noVerdict': 'giudizio sospeso',
+    'ev.noData': 'dato non disponibile',
+    'ev.st.have': 'misurato prima/dopo',
+    'ev.st.flat': 'solo istantanea',
+    'ev.st.missing': 'non disponibile',
+    'ev.statusTitle': 'Stato dei dati',
+    'ev.stHave': 'prima/dopo',
+    'ev.stFlat': 'istantanea',
+    'ev.stMiss': 'mancante',
+    'ev.statusNote':
+      'Solo due voci su cinque sono misurabili prima e dopo. Nascondere le mancanti '
+      + 'renderebbe impossibile capire fin dove arrivano le prove.',
+    'ev.but': 'Tuttavia',
+    // 03 filiera delle prove
+    'evidence.title': 'Da dove nascono queste conclusioni',
+    'evidence.sub': 'Dal dato grezzo alle alternative: ogni passaggio è esposto.',
+    'evidence.howTitle': 'Come si legge',
+    'evidence.how1':
+      'Il flusso va da sinistra a destra: dato grezzo → elaborazione → output → verifica → conclusione → alternativa.',
+    'evidence.how2': 'Selezionando un nodo resta accesa solo la sua filiera; il resto sbiadisce.',
+    'evidence.how3': 'Trascina per spostare, rotellina per ingrandire.',
+    'evidence.nullTitle': 'Restano anche le analisi senza segnale',
+    'evidence.nullBody':
+      'Non aver trovato effetti su autobus e prezzi è la ragione per cui siamo passati al bike-sharing. '
+      + 'Cancellare quella catena renderebbe inspiegabile la scelta del metodo.',
+
+    'prov.c.source': 'Dato grezzo',
+    'prov.c.script': 'Elaborazione',
+    'prov.c.dataset': 'Output',
+    'prov.c.test': 'Verifica',
+    'prov.c.finding': 'Conclusione',
+    'prov.c.option': 'Alternativa',
+
+    'prov.k.source': 'Dato grezzo',
+    'prov.k.script': 'Script di elaborazione',
+    'prov.k.dataset': 'Dataset prodotto',
+    'prov.k.test': 'Verifica',
+    'prov.k.finding': 'Conclusione',
+    'prov.k.option': 'Alternativa',
+
+    'prov.rel.flow': 'flusso',
+    'prov.rel.retry': 'nuovo tentativo',
+    'prov.rel.back': 'a favore',
+    'prov.rel.against': 'contro',
+
+    'prov.fit': 'Adatta',
+    'prov.clear': 'Deseleziona',
+    'prov.limit': 'Limiti',
+    'prov.from': 'Da dove viene',
+    'prov.to': 'Che cosa genera',
+    'prov.src': 'Percorso',
+    'prov.nullTitle': 'Nessun segnale rilevato',
+    'prov.nullNote': 'Anche l\'assenza di effetto è un risultato: resta visibile, non nascosto.',
+    'prov.nullCount': 'senza segnale',
 
     'landing.title': 'Inserisci il sito da analizzare',
     'landing.ph': 'Indirizzo stradale o particella catastale',
@@ -208,7 +615,12 @@ export const DICT = {
     'site.far': 'Indice di edificabilità',
     'site.maxFloorArea': 'Superficie massima',
     'site.missing': 'non disponibile',
-    'site.curatedNote': 'Particella, superficie e valore provengono in tempo reale dal catasto continuo.',
+    'site.byLaw': 'Regolamento urbanistico di Seoul',
+    'site.eased': 'Se opera di piano, indice fino al {n}%: {a}',
+    'site.curatedNote':
+      'Particella, superficie e valore provengono in tempo reale dal catasto continuo; '
+      + 'la zonizzazione dal piano di uso del suolo. Copertura e indice applicano '
+      + 'gli artt. 44 e 48 del Regolamento urbanistico di Seoul.',
     'site.uncuratedNote': 'Per questo sito sono disponibili solo i dati catastali. Demografia, piani sovraordinati e valutazione normativa esistono solo per i siti già istruiti.',
     'site.institutions': 'Strumenti applicabili',
     'site.applies': 'applicabile',

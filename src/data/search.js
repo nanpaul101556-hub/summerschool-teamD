@@ -5,8 +5,9 @@
  * 제도 판정)를 가진 곳은 아직 한 곳뿐이다. 그 구분을 화면에 그대로 드러낸다.
  */
 
-import { geocode, parcelAt } from '../lib/vworld'
+import { geocode, parcelAt, zoneAt } from '../lib/vworld'
 import { SITE } from './site'
+import { lookup } from './zoning'
 
 /** 중계문화공원 필지의 고유번호 — 이 필지에만 정리된 자료가 붙는다. */
 const CURATED_PNU = '1135010600105070003'
@@ -25,13 +26,11 @@ export async function resolveSite(query) {
   const hit = await geocode(query)
   if (!hit) throw new Error('주소를 찾지 못했습니다')
 
-  // 필지 조회는 실패해도 대상지 자체는 성립한다 — 경계만 없을 뿐이다
-  let parcel = null
-  try {
-    parcel = await parcelAt(hit.lng, hit.lat)
-  } catch {
-    parcel = null
-  }
+  // 필지와 용도지역은 실패해도 대상지 자체는 성립한다 — 경계나 한도만 없을 뿐이다
+  const [parcel, zone] = await Promise.all([
+    parcelAt(hit.lng, hit.lat).catch(() => null),
+    zoneAt(hit.lng, hit.lat).catch(() => null),
+  ])
 
   const curated = parcel?.pnu === CURATED_PNU
 
@@ -40,6 +39,8 @@ export async function resolveSite(query) {
     address: hit.refined,
     coords: [hit.lat, hit.lng],
     parcel,
+    /** 조회된 용도지역과 조례가 정한 건폐율·용적률 */
+    zone: zone?.name ? { ...zone, ...lookup(zone.name) } : null,
     curated,
   }
 }

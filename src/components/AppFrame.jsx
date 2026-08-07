@@ -8,12 +8,20 @@
 import { useLang } from '../i18n'
 import Arrow from './Arrow'
 
+/**
+ * v2 — 근거를 쌓아 판정에 이르는 네 단계.
+ *
+ *   01 어디인가 → 02 무엇에 의거하는가 → 03 자료는 무엇을 말하는가 → 04 그래서 어떻게 짓는가
+ *
+ * 모델링 연결과 이미지 생성은 v1 에서 뺐다. 논리가 서기 전에 형태를 보여 주면
+ * 형태가 논리를 대신하게 된다. 코드는 남아 있으니 필요할 때 되살릴 수 있다.
+ */
 export const STEPS = [
   { key: 'site', no: '01' },
-  { key: 'region', no: '02' },
-  { key: 'options', no: '03' },
-  { key: 'rhino', no: '04' },
-  { key: 'future', no: '05' },
+  { key: 'plan', no: '02' },
+  { key: 'data', no: '03' },
+  { key: 'verdict', no: '04' },
+  { key: 'lcc', no: '05' },
 ]
 
 export default function AppFrame({

@@ -95,11 +95,13 @@ export default function OptionsView({ site, picked, onPick, onStep, onReset, onN
       onReset={onReset}
       side={side}
       scroll
-      next={{
+      // v2 에서는 여기가 마지막이다. 갈 곳이 없으면 버튼을 두지 않는다 —
+      // 눌러도 아무 일이 없는 버튼은 화면이 고장난 것처럼 보인다.
+      next={onNext ? {
         label: picked ? t('opt.next', { key: picked }) : t('opt.pick'),
         onClick: onNext,
         disabled: !picked,
-      }}
+      } : null}
     >
       <div className="opts">
         {options.map((o) => {

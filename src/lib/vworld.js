@@ -82,6 +82,28 @@ export async function parcelAt(lng, lat) {
 }
 
 /**
+ * 좌표가 속한 용도지역.
+ *
+ * LT_C_UQ111 은 국토계획법상 용도지역 레이어다. 건폐율·용적률은 여기 없고
+ * 조례가 정하므로, 받은 지역명을 data/zoning.js 의 표에 대입한다.
+ */
+export async function zoneAt(lng, lat) {
+  const d = await get('data', {
+    service: 'data',
+    request: 'GetFeature',
+    data: 'LT_C_UQ111',
+    format: 'json',
+    size: '1',
+    crs: 'EPSG:4326',
+    geomFilter: `POINT(${lng} ${lat})`,
+  })
+  const f = d?.response?.result?.featureCollection?.features?.[0]
+  if (!f) return null
+  const p = f.properties ?? {}
+  return { name: p.uname ?? null, sido: p.sido_name ?? null, sigg: p.sigg_name ?? null }
+}
+
+/**
  * 필지 면적(m²).
  *
  * 지적 API 가 면적을 주지 않으므로 경계에서 산출한다. 필지 크기에서는
