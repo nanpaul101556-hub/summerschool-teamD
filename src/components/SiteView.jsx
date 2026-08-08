@@ -1,6 +1,7 @@
 /** 01 · 대상지 — 지도가 스테이지를 다 쓰고, 판정 결과는 패널에 붙는다. */
 
-import { LIFESPAN, SITE } from '../data/site'
+import { SITE } from '../data/site'
+import { BUILT, PAST } from '../data/timeline'
 import { SOURCE, capacity } from '../data/zoning'
 
 import { useLang } from '../i18n'
@@ -55,15 +56,6 @@ export default function SiteView({ site, onStep, onReset, onNext }) {
         <p>{site.address}</p>
       </div>
 
-      <section className="hook">
-        <h3 className="lab">{t('site.hookTitle')}</h3>
-        <div className="hook-y">
-          <b className="num">{SITE.builtYear}</b>
-          <span>{t('site.hookAge', { n: 2026 - SITE.builtYear })}</span>
-        </div>
-        <p className="note">{t('site.hookBody')}</p>
-      </section>
-
       <section>
         <h3 className="lab">{t('site.specs')}</h3>
         <div className="kv">
@@ -83,17 +75,17 @@ export default function SiteView({ site, onStep, onReset, onNext }) {
       </section>
 
       <section>
-        <h3 className="lab">{t('site.whyTitle')}</h3>
-        <div className="demands">
-          <div>
-            <div className="dm-h">
-              <span className="dm-n">{tx(LIFESPAN.k)}</span>
-              <span className="dm-p num">{tx(LIFESPAN.v)}</span>
-            </div>
-            <div className="dm-d">{tx(LIFESPAN.demand)}</div>
-          </div>
-        </div>
-        <p className="note">{t('site.whyNote')}</p>
+        <h3 className="lab">{t('site.histTitle')}</h3>
+        <ol className="hist">
+          {PAST.map((p) => (
+            <li key={p.year} className={p.kind}>
+              <b className="num">{p.year}</b>
+              <span className="l">{tx(p.label)}</span>
+              <em className="num">{p.year - BUILT}{t('site.histYr')}</em>
+            </li>
+          ))}
+        </ol>
+        <p className="note">{t('site.histNote')}</p>
       </section>
     </>
   )

@@ -1782,11 +1782,17 @@ body{
 .pg-h .st.taken{border-style:dashed}
 .pg-l p{margin:0;font-size:11px;line-height:1.65;color:var(--ink-3)}
 
-/* 01 — 1989 훅. 마지막 화면에서 회수된다. */
-.side .hook{border-left:2px solid var(--ink);padding-left:12px}
-.hook-y{display:flex;align-items:baseline;gap:10px;margin-bottom:7px}
-.hook-y b{font-size:38px;letter-spacing:-.045em;line-height:1}
-.hook-y span{font-size:11px;color:var(--ink-3)}
+/* 01 — 이 건물이 지나온 시점. 연도와 한 줄만, 근거는 05 가 편다. */
+.hist{list-style:none;margin:0 0 10px;padding:0;
+  display:flex;flex-direction:column;gap:1px}
+.hist li{display:flex;align-items:baseline;gap:10px;padding:7px 0;
+  border-bottom:1px solid var(--rule-2)}
+.hist li:last-child{border-bottom:0}
+.hist b{font-size:14px;letter-spacing:-.02em;flex:none;width:42px}
+.hist .l{flex:1;font-size:11.5px;color:var(--ink-2);line-height:1.45}
+.hist em{font-style:normal;font-size:9.5px;color:var(--ink-3);flex:none}
+.hist li.built b,.hist li.decide b{color:var(--blue-on-dark)}
+.hist li.built .l,.hist li.decide .l{color:var(--ink)}
 
 /* ===== 디자인 레이어 · summerschool-teamd-design ===== */
 /* ============================================================

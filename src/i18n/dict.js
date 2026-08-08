@@ -192,7 +192,7 @@ export const DICT = {
     'tm.yrUnit': '년',
     'tm.fromLaw': '법이 정한 점검 주기',
     'tm.checkAt': '{art} · {n}년마다 오는 정기점검',
-    'tm.hookL': '{y}년을 기억해 달라고 했습니다',
+    'tm.hookL': '{y}년으로 돌아가 보면',
     'ev.title': '지금 이 건물, 제 용도로 잘 쓰이고 있는가',
     'ev.sub': '여섯 갈래를 같은 방식으로 묻고, 근거마다 등급을 밝힙니다.',
     'tj.gradeTitle': '근거 등급',
@@ -304,10 +304,11 @@ export const DICT = {
       + '2018년에 신축을 검토했을 때도 「공원 내에 있어서 증축도 안 된다」는 이유로 '
       + '리모델링으로 돌아섰습니다. 늘릴 수 없는 건물은 바꿔 쓰는 수밖에 없습니다. '
       + '마지막 화면에서 이 연도가 다시 나옵니다.',
-    'site.whyTitle': '왜 바꿔 쓸 수 있는가',
-    'site.whyNote':
-      '늘릴 수 없으면 바꿔 쓰는 수밖에 없고, 바꿔 쓰려면 수명이 다른 층위를 나눠야 합니다. '
-      + '이 건물을 어떻게 볼 것인지가 여기서 정해집니다.',
+    'site.histTitle': '이 건물이 지나온 시점',
+    'site.histYr': '년차',
+    'site.histNote':
+      '전부 원문에서 확인한 것입니다 — 노원구의회 회의록, 세출예산, 열린데이터광장. '
+      + '준공 뒤 세 번 용도를 갈아 끼웠고, 그 간격이 마지막 화면의 근거가 됩니다.',
     'site.specs': '제원',
     'site.jibun': '지번',
     'site.parcelArea': '필지면적',
@@ -615,7 +616,7 @@ export const DICT = {
     'tm.yrUnit': ' anni',
     'tm.fromLaw': 'ciclo fissato dalla legge',
     'tm.checkAt': '{art} · controllo periodico ogni {n} anni',
-    'tm.hookL': 'Vi avevo chiesto di ricordare il {y}',
+    'tm.hookL': 'Tornando al {y}',
     'ev.title': 'Questo edificio serve ancora al suo scopo?',
     'ev.sub': 'Sei voci interrogate nello stesso modo, ciascuna con il proprio grado di prova.',
     'tj.gradeTitle': 'Grado della prova',
@@ -725,10 +726,11 @@ export const DICT = {
       + 'una nuova costruzione, si ripiegò sulla ristrutturazione proprio perché "trovandosi '
       + 'dentro il parco non è ampliabile". Un edificio che non può crescere può solo cambiare uso. '
       + 'Quest\'anno tornerà nell\'ultima schermata.',
-    'site.whyTitle': 'Perché è possibile riconvertirlo',
-    'site.whyNote':
-      'Se non può crescere, resta solo cambiarne l\'uso; e per cambiarlo bisogna separare '
-      + 'strati con vita utile diversa. È qui che si decide come guardare questo edificio.',
+    'site.histTitle': 'Le date di questo edificio',
+    'site.histYr': '° anno',
+    'site.histNote':
+      'Tutte verificate su fonte: verbali del consiglio distrettuale, bilanci, portale open data. '
+      + 'Dopo l\'inaugurazione la destinazione è cambiata tre volte: quegli intervalli fondano l\'ultima schermata.',
     'site.specs': 'Dati del lotto',
     'site.jibun': 'Particella',
     'site.parcelArea': 'Superficie del lotto',
