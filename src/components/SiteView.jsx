@@ -1,17 +1,15 @@
 /** 01 · 대상지 — 지도가 스테이지를 다 쓰고, 판정 결과는 패널에 붙는다. */
 
-import { SITE, TREND_DIRECTION, UPPER_PLANS } from '../data/site'
+import { LIFESPAN, SITE } from '../data/site'
 import { SOURCE, capacity } from '../data/zoning'
 
 import { useLang } from '../i18n'
-import { eligibleIncentives } from '../lib/constraint'
 import { m2 } from '../lib/format'
 import AppFrame from './AppFrame'
 import SiteMap from './SiteMap'
 
 export default function SiteView({ site, onStep, onReset, onNext }) {
   const { t, tx } = useLang()
-  const incentives = eligibleIncentives(SITE)
   const p = site.parcel
   const z = site.zone
 
@@ -85,49 +83,17 @@ export default function SiteView({ site, onStep, onReset, onNext }) {
       </section>
 
       <section>
-        <h3 className="lab">{t('site.institutions')}</h3>
-        <div className="rows">
-          {incentives.map((inc) => (
-            <div key={inc.key}>
-              <span className="n">
-                {inc.label}
-                <br />
-                <span className="sub">{inc.detail}</span>
-              </span>
-              <span className="m">{t(inc.active ? 'site.applies' : 'site.notApplies')}</span>
-            </div>
-          ))}
-        </div>
-      </section>
-
-      <section>
-        <h3 className="lab">{t('site.plans')}</h3>
+        <h3 className="lab">{t('site.whyTitle')}</h3>
         <div className="demands">
-          {UPPER_PLANS.map((u) => (
-            <div key={u.name.ko}>
-              <div className="dm-h">
-                <span className="dm-n">{tx(u.name)}</span>
-                <span className="dm-p num">{u.period}</span>
-              </div>
-              <div className="dm-d">{tx(u.demand)}</div>
+          <div>
+            <div className="dm-h">
+              <span className="dm-n">{tx(LIFESPAN.k)}</span>
+              <span className="dm-p num">{tx(LIFESPAN.v)}</span>
             </div>
-          ))}
+            <div className="dm-d">{tx(LIFESPAN.demand)}</div>
+          </div>
         </div>
-      </section>
-
-      <section>
-        <h3 className="lab">{t('site.trend')}</h3>
-        <div className="demands">
-          {TREND_DIRECTION.map((d) => (
-            <div key={d.k.ko}>
-              <div className="dm-h">
-                <span className="dm-n">{tx(d.k)}</span>
-                <span className="dm-p num">{tx(d.v)}</span>
-              </div>
-              <div className="dm-d">{tx(d.demand)}</div>
-            </div>
-          ))}
-        </div>
+        <p className="note">{t('site.whyNote')}</p>
       </section>
     </>
   )
@@ -139,7 +105,7 @@ export default function SiteView({ site, onStep, onReset, onNext }) {
       onStep={onStep}
       onReset={onReset}
       side={side}
-      next={{ label: t('step.region'), onClick: onNext }}
+      next={{ label: t('step.plan'), onClick: onNext }}
     >
       <SiteMap site={site} />
     </AppFrame>

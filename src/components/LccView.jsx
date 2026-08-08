@@ -11,10 +11,12 @@
 
 import { useState } from 'react'
 
+import { SITE } from '../data/site'
 import {
   BUILT, CLOSING, LAW, NOW, PAST, RHYTHM, checkYears, meanGap,
 } from '../data/timeline'
 import { useLang } from '../i18n'
+import { eligibleIncentives } from '../lib/constraint'
 import AppFrame from './AppFrame'
 
 const FROM = BUILT
@@ -27,6 +29,7 @@ const pos = (year) => ((year - FROM) / (TO - FROM)) * 100
 export default function LccView({ site, onStep, onReset }) {
   const { t, tx } = useLang()
   const [open, setOpen] = useState(PAST.find((p) => p.key)?.year ?? null)
+  const incentives = eligibleIncentives(SITE)
 
   const side = (
     <>
@@ -52,6 +55,23 @@ export default function LccView({ site, onStep, onReset }) {
           <cite>{LAW.gapArt}</cite>
         </blockquote>
         <p className="note">{tx(LAW.gap)}</p>
+      </section>
+
+      <section>
+        <h3 className="lab">{t('tm.incTitle')}</h3>
+        <div className="rows">
+          {incentives.map((inc) => (
+            <div key={inc.key}>
+              <span className="n">
+                {inc.label}
+                <br />
+                <span className="sub">{inc.detail}</span>
+              </span>
+              <span className="m">{t(inc.active ? 'site.applies' : 'site.notApplies')}</span>
+            </div>
+          ))}
+        </div>
+        <p className="note">{t('tm.incNote')}</p>
       </section>
 
       <section>

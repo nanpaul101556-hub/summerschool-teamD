@@ -177,6 +177,10 @@ export const DICT = {
     'tm.lawTitle': '법이 정한 주기',
     'tm.lawNote': '준공 뒤 5년 안에 처음, 그 뒤로는 {n}년마다. 우리가 고른 간격이 아닙니다.',
     'tm.gapTitle': '이 건물에는 없는 것',
+    'tm.incTitle': '손댈 때 쓸 수 있는 제도',
+    'tm.incNote':
+      '우리가 추정한 값이 아니라 제도가 정해 둔 조건입니다. 공사 시점이 정해지면 '
+      + '그때 어떤 지원을 끌어올 수 있는지가 여기서 결정됩니다.',
     'tm.noMoneyTitle': '금액을 말하지 않는 이유',
     'tm.now': '지금',
     'tm.legCheck': '법정 점검 · {n}년마다',
@@ -300,6 +304,10 @@ export const DICT = {
       + '2018년에 신축을 검토했을 때도 「공원 내에 있어서 증축도 안 된다」는 이유로 '
       + '리모델링으로 돌아섰습니다. 늘릴 수 없는 건물은 바꿔 쓰는 수밖에 없습니다. '
       + '마지막 화면에서 이 연도가 다시 나옵니다.',
+    'site.whyTitle': '왜 바꿔 쓸 수 있는가',
+    'site.whyNote':
+      '늘릴 수 없으면 바꿔 쓰는 수밖에 없고, 바꿔 쓰려면 수명이 다른 층위를 나눠야 합니다. '
+      + '이 건물을 어떻게 볼 것인지가 여기서 정해집니다.',
     'site.specs': '제원',
     'site.jibun': '지번',
     'site.parcelArea': '필지면적',
@@ -592,6 +600,10 @@ export const DICT = {
     'tm.lawTitle': 'Il ciclo fissato dalla legge',
     'tm.lawNote': 'Il primo entro cinque anni dall\'agibilità, poi ogni {n} anni: non è un intervallo scelto da noi.',
     'tm.gapTitle': 'Ciò che a questo edificio manca',
+    'tm.incTitle': 'Strumenti disponibili al momento dell\'intervento',
+    'tm.incNote':
+      'Non sono nostre stime ma condizioni fissate dalla normativa: definita la data del cantiere, '
+      + 'è qui che si decide quale sostegno si può attivare.',
     'tm.noMoneyTitle': 'Perché non diamo importi',
     'tm.now': 'oggi',
     'tm.legCheck': 'controllo di legge · ogni {n} anni',
@@ -713,6 +725,10 @@ export const DICT = {
       + 'una nuova costruzione, si ripiegò sulla ristrutturazione proprio perché "trovandosi '
       + 'dentro il parco non è ampliabile". Un edificio che non può crescere può solo cambiare uso. '
       + 'Quest\'anno tornerà nell\'ultima schermata.',
+    'site.whyTitle': 'Perché è possibile riconvertirlo',
+    'site.whyNote':
+      'Se non può crescere, resta solo cambiarne l\'uso; e per cambiarlo bisogna separare '
+      + 'strati con vita utile diversa. È qui che si decide come guardare questo edificio.',
     'site.specs': 'Dati del lotto',
     'site.jibun': 'Particella',
     'site.parcelArea': 'Superficie del lotto',

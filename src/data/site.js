@@ -106,3 +106,9 @@ export const TREND_DIRECTION = [
     },
   },
 ]
+
+/**
+ * 01 이 남기는 한 줄 — 왜 「바꿔 쓰기」가 가능한가.
+ * 나머지 트렌드는 02 가 원문과 함께 다룬다.
+ */
+export const LIFESPAN = TREND_DIRECTION.find((d) => d.k.ko === '용도 수명')
