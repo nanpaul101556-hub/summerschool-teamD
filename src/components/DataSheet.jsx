@@ -36,7 +36,12 @@ export default function DataSheet({ id, onClose }) {
         <div>
           <span className="l">{t('ev.sheet')}</span>
           <b>{tx(s.title)}</b>
-          {s.sample && <span className="samp">{t('ev.sample')}</span>}
+          {s.sample && (
+            <>
+              <span className="samp">{t('ev.sample')}</span>
+              <span className="samp-h">{t('ev.sampleHint')}</span>
+            </>
+          )}
         </div>
         <button type="button" onClick={onClose} aria-label={t('plan.close')}>×</button>
       </header>

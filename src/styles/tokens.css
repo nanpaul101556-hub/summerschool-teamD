@@ -1099,6 +1099,7 @@ body{
   color:var(--ink-2);border:1px solid var(--rule);
   background:repeating-linear-gradient(-45deg,transparent 0 7px,var(--fill) 7px 14px)}
 .ev2-r .samp{margin-left:0;margin-top:6px}
+.samp-h{margin-left:8px;font-size:10px;color:var(--ink-3)}
 
 /* 예시 표 — 자료가 없는 칸에 「자료가 오면 설 표」를 세운다 */
 .ev2-samp{border:1px solid var(--rule);padding:6px;

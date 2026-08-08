@@ -88,8 +88,8 @@ export const CARDS = [
     ],
     // 예시 파일을 analyze_minwon.py 로 돌린 실제 출력. 수치는 지어낸 값이다.
     tab: {
-      head: K('예시 파일을 승하차와 같은 방식으로 돌리면 이 표가 선다',
-        'Elaborando il file di esempio come i flussi, si ottiene questa tabella'),
+      head: K('승하차를 처리한 그 파이프라인이 이 표를 만든다 — 자료를 꽂으면 수치만 바뀐다',
+        'La stessa pipeline dei flussi genera questa tabella: col dato reale cambiano solo i numeri'),
       cols: [
         K('분야', 'Ambito'),
         K('전 12개월', '12 mesi prima'),
@@ -112,10 +112,10 @@ export const CARDS = [
       ),
     },
     reading: K(
-      '「민원이 몇 건 줄었다」는 지금 댈 수 없다. 대신 자료가 오면 설 표를 세워 두었다 — '
-      + '이 수치는 지어낸 값이고, 판정에는 들어가지 않는다.',
-      'Non possiamo ancora dire di quanto siano calati i reclami. Resta però pronta la tabella '
-      + 'che si popolerà: i valori sono inventati e non entrano nel giudizio.',
+      '분야별로 갈라 전체 흐름과 견주는 계산까지 이미 서 있다. '
+      + '노원구청 민원 통계를 꽂는 순간 이 표는 실측이 되고 판정 입력에 들어간다.',
+      'Il calcolo per ambito, confrontato con l\'andamento complessivo, è già in piedi. '
+      + 'Collegate le statistiche del distretto, la tabella diventa misura ed entra nel giudizio.',
     ),
     src: K('예시 · make_minwon_sample.py → analyze_minwon.py',
       'Esempio · make_minwon_sample.py → analyze_minwon.py'),
@@ -127,8 +127,8 @@ export const CARDS = [
     title: K('건물 출입 기록', 'Registri di accesso all’edificio'),
     ask: K('실제로 건물에 들어온 사람이 늘었는가', 'Sono davvero aumentati gli ingressi?'),
     tab: {
-      head: K('예시 파일을 승하차와 같은 방식으로 돌리면 이 표가 선다',
-        'Elaborando il file di esempio come i flussi, si ottiene questa tabella'),
+      head: K('승하차를 처리한 그 파이프라인이 이 표를 만든다 — 자료를 꽂으면 수치만 바뀐다',
+        'La stessa pipeline dei flussi genera questa tabella: col dato reale cambiano solo i numeri'),
       cols: [
         K('이용구분', 'Tipo'),
         K('전 12개월', '12 mesi prima'),
@@ -155,10 +155,10 @@ export const CARDS = [
         'Il file di esempio riprende gli usi confermati dal bilancio: corsi, centro anziani, affitti'),
     ],
     reading: K(
-      '이것이 있으면 분모가 건물 하나가 되어 지금까지의 모든 수치보다 정확해진다. '
-      + '가장 먼저 구해야 할 자료이며, 그때까지 자리는 예시로 채워 둔다.',
-      'Con questi dati il denominatore diventa il singolo edificio: più preciso di ogni altra misura finora. '
-      + 'È il dato da procurarsi per primo; fino ad allora il posto resta occupato da un esempio.',
+      '이 축이 연결되면 분모가 건물 하나가 되어 지금까지의 모든 수치보다 정확해진다. '
+      + '여섯 축 중 가장 먼저 채워야 할 자리이고, 받는 절차는 이미 정해 두었다.',
+      'Collegato questo asse il denominatore diventa il singolo edificio: più preciso di ogni misura finora. '
+      + 'È il primo posto da riempire, e la procedura per ottenerlo è già definita.',
     ),
     src: K('노원구시설관리공단 — 정보공개청구 · 예시 make_entry_sample.py',
       'Ente gestore di Nowon — accesso agli atti · esempio make_entry_sample.py'),

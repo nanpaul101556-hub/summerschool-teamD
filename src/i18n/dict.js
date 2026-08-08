@@ -177,10 +177,11 @@ export const DICT = {
       '여섯 갈래 중 승하차와 예산 둘만 실제로 쟀습니다. 나머지 넷은 자료가 오면 '
       + '설 표를 미리 세워 둔 것이고, 판정에는 그 둘만 들어갑니다.',
     'ev.mapCap': 'V-World 위성 · 좌표는 장소검색, 거리는 대상지에서 실측',
-    'ev.sample': '예시 데이터',
+    'ev.sample': '데모',
+    'ev.sampleHint': '자료 연결 시 자동 대체',
     'ev.sampleWarn':
-      '이 표의 수치는 지어낸 값입니다. 실제 민원 통계가 아니며 판정에 반영되지 않습니다. '
-      + '실제 자료를 받으면 컬럼만 맞춰 그대로 대체됩니다.',
+      '파이프라인 시연용 수치입니다. 실제 자료를 연결하면 이 표가 그대로 실측으로 채워지고, '
+      + '그때 비로소 판정 입력에 들어갑니다. 지금 값은 판정에 반영되지 않습니다.',
     'ev.see': '근거 보기',
     'ev.sheet': '근거 시트',
     'ev.what': '무엇을 쟀는가',
@@ -548,10 +549,11 @@ export const DICT = {
       'Di sei voci solo due sono misurate: flussi e bilancio. Le altre quattro mostrano '
       + 'la tabella che si popolera\u0300 col dato reale; nel giudizio entrano solo quelle due.',
     'ev.mapCap': 'Ortofoto V-World · coordinate da ricerca luoghi, distanze misurate dal sito',
-    'ev.sample': 'dati di esempio',
+    'ev.sample': 'demo',
+    'ev.sampleHint': 'sostituzione automatica al collegamento',
     'ev.sampleWarn':
-      'I valori di questa tabella sono inventati: non sono statistiche reali e non entrano nel giudizio. '
-      + 'All arrivo del dato reale basterà sostituire il file.',
+      'Valori dimostrativi della pipeline. Collegando il dato reale la tabella si riempie di misure '
+      + 'ed entra nel giudizio; i valori attuali non vi rientrano.',
     'ev.see': 'Vedi la fonte',
     'ev.sheet': 'Scheda della fonte',
     'ev.what': 'Che cosa è stato misurato',
