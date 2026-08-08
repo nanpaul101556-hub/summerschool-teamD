@@ -57,6 +57,15 @@ export default function SiteView({ site, onStep, onReset, onNext }) {
         <p>{site.address}</p>
       </div>
 
+      <section className="hook">
+        <h3 className="lab">{t('site.hookTitle')}</h3>
+        <div className="hook-y">
+          <b className="num">{SITE.builtYear}</b>
+          <span>{t('site.hookAge', { n: 2026 - SITE.builtYear })}</span>
+        </div>
+        <p className="note">{t('site.hookBody')}</p>
+      </section>
+
       <section>
         <h3 className="lab">{t('site.specs')}</h3>
         <div className="kv">

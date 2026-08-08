@@ -5,7 +5,7 @@ export const SITE = {
   address: '서울특별시 노원구 동일로 1229',
   coords: [37.6388, 127.0664],
   landArea: 22727, // m²  src: parkUse
-  builtYear: 1990,
+  builtYear: 1989, // 노원구의회 제245회 행정재경위 회의록 (2018.08.22) — 「1989년 건립」
   parkType: '문화공원 (2025.12 근린공원에서 세분 변경)',
 
   // ── 법정 제약 — 미확보 ──

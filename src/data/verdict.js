@@ -23,37 +23,45 @@ export const INPUTS = [
   {
     id: 'entry', have: false,
     label: K('건물 출입 기록', 'Registri di accesso'),
-    detail: K('시설관리공단 이용자 통계 — 미확보',
-      'Statistiche di utenza dell\'ente gestore — non disponibili'),
+    detail: K('시설관리공단이 갖고 있다 — 정보공개청구 단계',
+      'L\'ente gestore li possiede: in corso la richiesta di accesso'),
   },
   {
     id: 'minwon', have: false,
     label: K('민원 건수', 'Reclami'),
-    detail: K('고충민원 통계 2008–2020 — 미확보',
-      'Serie reclami 2008–2020 — non disponibile'),
+    detail: K('자치구 단위는 공개돼 있지 않다 — 정보공개청구 단계',
+      'Il dato per distretto non è pubblico: in corso la richiesta'),
   },
   {
-    id: 'budget', have: true, dir: 'done',
-    label: K('예산 편성', 'Bilancio'),
-    value: K('전환 완료', 'Ciclo concluso'),
-    detail: K('2022년 50.8억 → 2025년 3.5억. 노원구 돈은 활동형 시설로 이동',
-      'Da 5,08 mld (2022) a 0,35 (2025); i fondi si spostano su strutture attive'),
+    id: 'satis', have: false,
+    label: K('문화환경 만족도', 'Soddisfazione culturale'),
+    detail: K('서울서베이 통계 10305 — 공표돼 있고 내려받기만 남았다',
+      'Statistica 10305 del Seoul Survey: pubblicata, resta solo scaricarla'),
+  },
+  {
+    id: 'budget', have: true, dir: 'up',
+    label: K('예산 실집행', 'Spesa effettiva'),
+    value: '+143%',
+    detail: K('2022년 1.5억 → 2025년 3.6억. 전부 새 용도를 끼워 넣는 데 쓰였다',
+      'Da 0,15 a 0,36 mld fra 2022 e 2025, tutto per inserire nuovi usi'),
   },
 ]
 
-/** 종합 판정 */
+/** 종합 판정 — 시점은 두 선이 정한다 (lib/trajectory.js) */
 export const CALL = {
-  head: K('지금은 유지하고, 2039년에 바꾼다',
-    'Mantenere ora, riconvertire nel 2039'),
+  head: K('2029년부터 벌어지고, 2034년에 손대야 한다',
+    'Diverge dal 2029, si interviene nel 2034'),
   body: K(
-    '전환 직후 승하차가 대조군보다 5.3%p 더 올랐다. 2024년 공사의 효과가 아직 살아 있으므로 '
-    + '지금 다시 손댈 이유가 없다. 그러나 그 효과는 영원하지 않고, 2039년에는 '
-    + '설비 15년과 구조 50년이 같은 해에 온다. 그때 계획의 변화를 담아 용도를 바꾸면 '
-    + '공사를 한 번만 하고 곡선을 다시 올릴 수 있다.',
-    'Dopo la riconversione i flussi salgono 5,3 p.p. sopra il controllo: l\'effetto del cantiere 2024 '
-    + 'è ancora attivo e non c\'è ragione di intervenire ora. Quell\'effetto però non dura, e nel 2039 '
-    + 'scadono insieme i quindici anni degli impianti e i cinquanta della struttura. '
-    + 'Allora un solo cantiere può cambiare destinazione e risollevare la curva.',
+    '이 건물은 전에도 두 번 벌어졌고 두 번 다 닫았다 — 2022년 사무동 리모델링, '
+    + '2025년 노인회관 입주. 그래서 지금은 수요보다 적합도가 앞선다. '
+    + '그러나 고령 비중은 계속 오르고 용도는 손대야만 바뀐다. '
+    + '2029년에 다시 벌어지기 시작해 2034년에는 그 폭이 15pt를 넘는다. '
+    + '이번에는 닫아 줄 개입이 예정돼 있지 않다.',
+    'Questo edificio ha già divaricato due volte e due volte è stato richiuso: gli uffici nel 2022, '
+    + 'il centro anziani nel 2025. Per questo oggi l\'idoneità precede la domanda. '
+    + 'Ma la quota di anziani continua a salire e la destinazione cambia solo se la si tocca. '
+    + 'Dal 2029 ricomincia a divaricare e nel 2034 lo scarto supera i 15 punti. '
+    + 'Stavolta non è previsto nulla che lo richiuda.',
   ),
 }
 
@@ -63,55 +71,52 @@ export const CALL = {
  */
 export const PHASES = [
   {
-    id: 'hold-1', from: 2026, to: 2036, kind: 'hold',
+    id: 'hold-1', from: 2026, to: 2029, kind: 'hold',
     label: K('유지', 'Mantenere'),
-    what: K('2024년 공사 효과가 남아 있는 구간', 'Fase in cui l\'effetto del cantiere 2024 persiste'),
+    what: K('2025년 개입 효과가 아직 앞서는 구간',
+      'Fase in cui l\'intervento del 2025 è ancora in vantaggio'),
     why: K(
-      '전환 뒤 승하차가 대조군보다 5.3%p 높다. 내장 주기(2031)에는 마감과 실 구성만 손본다.',
-      'I flussi restano 5,3 p.p. sopra il controllo. Al ciclo delle finiture (2031) si tocca solo il layout.',
+      '노인회관이 들어가면서 적합도가 46까지 올랐고, 2028년까지는 수요보다 높다. '
+      + '지금 다시 손댈 이유가 없다.',
+      'Con il centro anziani l\'idoneità è salita a 46 e fino al 2028 resta sopra la domanda: '
+      + 'non c\'è ragione di intervenire ora.',
     ),
-    watch: K('해마다 대조군 대비 격차를 다시 잰다', 'Ogni anno si rimisura lo scarto dal controllo'),
+    watch: K('해마다 두 선의 폭을 다시 잰다', 'Ogni anno si rimisura lo scarto fra le due linee'),
   },
   {
-    id: 'plan-1', from: 2036, to: 2039, kind: 'plan',
-    label: K('계획 반영 · 설계', 'Recepire il piano · progettare'),
-    what: K('바뀐 수요를 확인하고 용도를 정하는 구간', 'Fase di verifica della domanda e scelta della destinazione'),
+    id: 'plan-1', from: 2029, to: 2034, kind: 'plan',
+    label: K('벌어짐 확인 · 용도 결정', 'Verifica dello scarto · scelta d\'uso'),
+    what: K('수요가 적합도를 앞지른 뒤 닫히지 않는 구간',
+      'Fase in cui la domanda supera l\'idoneità e non si richiude'),
     why: K(
-      '2036년 노원구 고령 비중이 31.9%에 이른다. 그때의 소비·이용 자료로 용도를 다시 정한다. '
-      + '2022~2023년에 설계에 3년을 썼으므로 이번에도 그만큼이 필요하다.',
-      'Nel 2036 gli over 65 di Nowon arrivano al 31,9%: si ridefinisce la destinazione con i dati di allora. '
-      + 'La progettazione 2022–2023 richiese tre anni: ne serviranno altrettanti.',
+      '2029년에 교차하고 그대로 벌어진다. 이 5년이 무슨 용도로 바꿀지 정하고 '
+      + '설계를 마칠 시간이다 — 2022~2024년 설계에 실제로 3년이 걸렸다.',
+      'L\'incrocio avviene nel 2029 e da lì lo scarto cresce. Questi cinque anni servono a decidere '
+      + 'la nuova destinazione e completare la progettazione: nel 2022–2024 ne servirono tre.',
     ),
-    watch: K('임계선(대조군 대비 −10%p)에 닿으면 앞당긴다',
-      'Se si tocca la soglia (−10 p.p. sul controllo) si anticipa'),
-  },
-  {
-    id: 'work-1', year: 2039, kind: 'work', key: true,
-    label: K('리모델링 · 용도 변경', 'Ristrutturazione e cambio d\'uso'),
-    what: K('설비 15년과 구조 50년이 같은 해에 온다', 'Coincidono i 15 anni degli impianti e i 50 della struttura'),
-    why: K(
-      '2024년에 노원구가 이미 쓴 방식이다 — 설비를 갈면서 용도를 함께 바꿨고, '
-      + '그 결과가 승하차 +5.3%p였다. 따로 하면 공사를 두 번 한다.',
-      'È il metodo già usato da Nowon nel 2024: cambiare impianti e destinazione insieme, '
-      + 'con il risultato di +5,3 p.p. Farlo separatamente significa due cantieri.',
-    ),
-    watch: K('용도는 그때의 자료가 정한다 — 지금 정하지 않는다',
+    watch: K('그때의 인구·이용 자료로 용도를 정한다 — 지금 정하지 않는다',
       'La destinazione la decidono i dati di allora, non quelli di oggi'),
   },
   {
-    id: 'hold-2', from: 2039, to: 2054, kind: 'hold',
-    label: K('유지', 'Mantenere'),
-    what: K('두 번째 전환의 효과가 유지되는 구간', 'Fase in cui persiste l\'effetto della seconda riconversione'),
-    why: K('같은 방식으로 격차를 감시한다', 'Si sorveglia lo scarto con lo stesso metodo'),
-    watch: K('내장 주기(2045)에는 실 구성만', 'Al ciclo 2045 si tocca solo il layout'),
+    id: 'work-1', year: 2034, kind: 'work', key: true,
+    label: K('용도 전환', 'Cambio di destinazione'),
+    what: K('벌어진 폭이 15pt를 넘는 해', 'Anno in cui lo scarto supera i 15 punti'),
+    why: K(
+      '이 해에 손대야 다시 닫힌다. 그리고 이 시점은 건물을 어차피 점검·수선해야 하는 '
+      + '주기와 맞물린다 — 다음 화면이 그 이야기다.',
+      'Intervenendo in quest\'anno lo scarto si richiude. E la data coincide con il ciclo '
+      + 'di controllo e manutenzione già dovuto: è il tema della schermata successiva.',
+    ),
+    watch: K('닫힌 뒤에도 같은 방식으로 계속 잰다 — 이것이 한 번으로 끝나지 않는 이유다',
+      'Anche dopo si continua a misurare allo stesso modo: per questo non è un intervento unico'),
   },
   {
-    id: 'work-2', year: 2054, kind: 'work',
-    label: K('설비 교체', 'Sostituzione impianti'),
-    what: K('설비 15년 주기', 'Ciclo impiantistico di 15 anni'),
-    why: K('구조를 남겨 두었으므로 이때 다시 용도를 바꿀 수 있다',
-      'Avendo lasciato intatta la struttura, si può cambiare di nuovo destinazione'),
-    watch: null,
+    id: 'hold-2', from: 2034, to: 2050, kind: 'hold',
+    label: K('다시 유지 · 다시 감시', 'Di nuovo mantenere e sorvegliare'),
+    what: K('세 번째 개입의 효과가 유지되는 구간', 'Fase in cui persiste il terzo intervento'),
+    why: K('2022 · 2025 · 2034 — 같은 일이 세 번째다. 건물은 이렇게 살아간다.',
+      '2022, 2025, 2034: la stessa cosa per la terza volta. È così che un edificio resta in vita.'),
+    watch: K('다음 벌어짐은 다시 계산된다', 'La prossima divergenza si ricalcola'),
   },
 ]
 
@@ -123,15 +128,18 @@ export const BASIS = {
     'Flussi e bilancio sono stati misurati prima e dopo; i flussi con gruppo di controllo e test placebo superato.',
   ),
   gap: K(
-    '출입 기록과 민원은 비어 있다. 출입 기록은 「건물에 실제로 들어온 사람」을 재는 유일한 자료이므로, '
-    + '그것이 채워지면 이 판정의 첫 줄이 정류장에서 건물로 바뀐다. 그때 시점이 앞당겨질 수도 뒤로 밀릴 수도 있다.',
-    'Mancano registri di accesso e reclami. I primi sono l\'unico dato che misura chi entra davvero: '
-    + 'quando ci saranno, la prima riga di questo giudizio passerà dalla fermata all\'edificio, '
-    + 'e la data potrà anticiparsi o slittare.',
+    '출입 기록·민원·만족도 셋은 아직 연결되지 않았다. 그중 출입 기록은 「건물에 실제로 들어온 사람」을 '
+    + '재는 유일한 자료여서, 그것이 채워지면 이 판정의 첫 줄이 정류장에서 건물로 바뀐다. '
+    + '그때 2034라는 해는 앞당겨질 수도 뒤로 밀릴 수도 있다 — 시점이 흔들린다는 것이 이 도구의 결함은 아니다. '
+    + '자료가 좋아지면 답도 좋아진다는 뜻이다.',
+    'Tre assi non sono ancora collegati: accessi, reclami e soddisfazione. I registri di accesso sono '
+    + 'l\'unico dato che misura chi entra davvero: quando ci saranno, la prima riga passerà dalla fermata '
+    + 'all\'edificio e il 2034 potrà anticiparsi o slittare. Che la data si muova non è un difetto '
+    + 'dello strumento: significa che con dati migliori migliora anche la risposta.',
   ),
 }
 
-export const RECOMMEND = { work: [2039, 2054], hold: [2031, 2045] }
+export const RECOMMEND = { work: [2034], hold: [2029] }
 
 export const inputOf = (id) => CARDS.find((c) => c.id === id)
 export const haveCount = () => INPUTS.filter((i) => i.have).length

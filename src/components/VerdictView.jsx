@@ -6,6 +6,7 @@
  */
 
 import { BASIS, CALL, INPUTS, PHASES, haveCount } from '../data/verdict'
+import { PROGRAMS } from '../data/plans'
 import { useLang } from '../i18n'
 import AppFrame from './AppFrame'
 
@@ -101,7 +102,7 @@ export default function VerdictView({ site, onStep, onReset, onNext }) {
                 }}
               />
             ))}
-            {[2026, 2036, 2039, 2054].map((y) => (
+            {[2026, 2029, 2034, 2050].map((y) => (
               <em key={y} className="num" style={{ left: `${pos(y)}%` }}>{y}</em>
             ))}
           </div>
@@ -127,6 +128,33 @@ export default function VerdictView({ site, onStep, onReset, onNext }) {
               </article>
             ))}
           </div>
+        </section>
+
+        {/* ── 무슨 용도로 ─────────────────────── */}
+        <section className="vd2-pg">
+          <div className="sh-h">
+            <h3>{t('vd.pgTitle')}</h3>
+            <span>{t('vd.pgSub')}</span>
+          </div>
+
+          <p className="vd2-pg-how">{t('vd.pgHow')}</p>
+
+          <div className="pg-l">
+            {[...PROGRAMS].sort((a, b) => (a.state === b.state ? 0 : a.state === 'open' ? -1 : 1))
+              .map((p) => (
+                <article key={p.id} className={`${p.state}${p.lead ? ' lead' : ''}`}>
+                  <div className="pg-h">
+                    <b>{tx(p.label)}</b>
+                    <span className={`st ${p.state}`}>
+                      {t(p.state === 'open' ? 'vd.pgOpen' : 'vd.pgTaken')}
+                    </span>
+                  </div>
+                  <p>{tx(p.why)}</p>
+                </article>
+              ))}
+          </div>
+
+          <p className="note">{t('vd.pgNote')}</p>
         </section>
 
         <section className="vd2-next">
