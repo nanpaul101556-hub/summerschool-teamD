@@ -138,14 +138,13 @@ export const PROGRAMS = [
 ]
 
 /**
- * 대안 — 2034년 결정점에 어디까지 손댈 것인가.
+ * 대안 — 다음 점검이 올 때 어디까지 손댈 것인가.
  * back 은 다음 전환을 얼마나 열어 두는가다. 유기체적 설계에서는 이것이 값이다.
  */
 export const OPTIONS = [
   {
     key: 'A',
     label: K('최소 개입 · 실 구성만', 'Intervento minimo · solo layout'),
-    at: 2032,
     layers: ['space'],
     program: ['sport'],
     what: K(
@@ -157,32 +156,30 @@ export const OPTIONS = [
     good: K('가장 싸고, 언제든 되돌릴 수 있다', 'Il più economico e sempre reversibile'),
     bad: K('대강당의 큰 스팬은 그대로라 활용 폭이 제한된다',
       'La grande luce dell\'auditorium resta: il ventaglio d\'uso è limitato'),
-    keeps: K('2034년 결정을 그대로 남겨 둔다', 'Lascia intatta la decisione del 2034'),
+    keeps: K('다음 결정을 그대로 남겨 둔다', 'Lascia intatta la decisione successiva'),
   },
   {
     key: 'B',
     label: K('설비까지 · 주기를 맞춘다', 'Fino agli impianti · sincronizzato'),
-    at: 2034,
     layers: ['space', 'services'],
     program: ['sport', 'work'],
     lead: true,
     what: K(
-      '두 선이 벌어지는 2034년에 설비 교체와 용도 전환을 함께 한다. '
+      '어차피 오는 점검에 설비 교체와 용도 전환을 함께 붙인다. '
       + '체육·활동과 창업·일자리를 한 건물에 넣는다.',
-      'Nel 2034, quando le linee divergono, si cambiano insieme impianti e destinazione: '
+      'Al controllo che arriva comunque si agganciano insieme impianti e destinazione: '
       + 'sport e attività insieme a impresa e lavoro.',
     ),
     good: K('공사를 한 번만 한다. 2024년에 노원구가 이미 쓴 방식이다',
       'Un solo cantiere: è il metodo che Nowon ha già usato nel 2024'),
     bad: K('설비를 새로 깔면 다음 15년은 그 배치에 묶인다',
       'Rifatti gli impianti, i prossimi 15 anni restano legati a quella disposizione'),
-    keeps: K('구조는 건드리지 않아 2054년에 다시 바꿀 수 있다',
-      'La struttura resta intatta: si può ricambiare nel 2054'),
+    keeps: K('구조는 건드리지 않아 다음에 다시 바꿀 수 있다',
+      'La struttura resta intatta: si potrà ricambiare in futuro'),
   },
   {
     key: 'C',
     label: K('구조까지 · 대수선', 'Fino alla struttura · grande intervento'),
-    at: 2034,
     layers: ['space', 'services', 'structure'],
     program: ['sport', 'work'],
     what: K(

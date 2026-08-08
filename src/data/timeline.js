@@ -92,18 +92,35 @@ export const PAST = [
   },
 ]
 
-/** 앞으로 — 법정 점검과 두 선이 정한 전환 시점이 만나는 자리 */
-export const AHEAD = {
-  turn: 2034,
-  turnLabel: K('용도 전환 시점 — 두 선의 폭이 15pt를 넘는 해',
-    'Cambio d\'uso: l\'anno in cui lo scarto supera i 15 punti'),
-  anchorNote: K(
-    '최초 점검일을 확인하지 못했다. 건축물관리법이 이 건물에 걸리기 시작한 해를 기준으로 '
-    + '3년 주기를 그렸으므로, 실제 점검 해는 최대 두 해까지 밀릴 수 있다. '
-    + '그래도 결론은 바뀌지 않는다 — 2034년 앞뒤 3년 안에 반드시 점검이 온다.',
-    'La data del primo controllo non è stata verificata: il ciclo triennale è tracciato dall\'anno '
-    + 'in cui la legge inizia ad applicarsi, quindi la data reale può slittare di un paio d\'anni. '
-    + 'La conclusione non cambia: un controllo cade comunque entro tre anni dal 2034.',
+/**
+ * 앞으로 — 연도를 찍지 않는다.
+ *
+ * 한때 여기에 「전환 시점 2034」가 있었다. 두 선 그래프에서 나온 값이었는데
+ * 그 그래프의 계수와 임계값이 전부 우리가 매긴 것이어서 지웠다.
+ * 남은 것은 실제로 관측된 두 주기뿐이고, 그 둘이 이미 같다.
+ */
+export const RHYTHM = {
+  /** 이 건물이 실제로 손댄 간격 — PAST 에서 그대로 나온다 */
+  gaps: [
+    { from: 2018, to: 2022 },
+    { from: 2022, to: 2025 },
+  ],
+  head: K('두 주기가 이미 같다', 'I due ritmi coincidono già'),
+  body: K(
+    '이 건물은 2018년에 리모델링을 결정하고 2022년에 사무동을, 2025년에 노인회관을 넣었다. '
+    + '간격이 4년과 3년이다. 그리고 법이 정한 정기점검 주기는 3년이다. '
+    + '앞으로 몇 년에 무엇을 하라고 새로 정할 필요가 없다 — '
+    + '어차피 오는 점검에 용도 검토를 붙이면 그것이 곧 이 건물이 살아온 방식이다.',
+    'Nel 2018 si decise di ristrutturare, nel 2022 si rifecero gli uffici, nel 2025 entrò il centro anziani: '
+    + 'intervalli di quattro e tre anni. Il controllo di legge cade ogni tre anni. '
+    + 'Non serve fissare nuove date: agganciare il riesame d\'uso al controllo che arriva comunque '
+    + 'è esattamente il modo in cui questo edificio è vissuto finora.',
+  ),
+  caveat: K(
+    '최초 점검일을 확인하지 못해 다음 점검이 몇 년인지는 적지 않는다. '
+    + '3년 안에 온다는 것만 법에서 확실하다.',
+    'La data del primo controllo non è verificata, quindi non indichiamo l\'anno del prossimo: '
+    + 'dalla legge è certo solo che cade entro tre anni.',
   ),
 }
 
@@ -114,20 +131,20 @@ export function checkYears(from = 2020, to = 2050) {
   return out
 }
 
-/** 전환 시점에 가장 가까운 점검 해 — 「어차피 손볼 때」가 언제인지 */
-export function nearestCheck(turn = AHEAD.turn) {
-  return checkYears().reduce((a, b) =>
-    (Math.abs(b - turn) < Math.abs(a - turn) ? b : a))
+/** 손댄 간격의 평균 — 「3~4년마다」를 말하기 위해서다 */
+export function meanGap() {
+  const g = RHYTHM.gaps.map((x) => x.to - x.from)
+  return g.reduce((a, b) => a + b, 0) / g.length
 }
 
 export const CLOSING = {
   head: K('어차피 손봐야 할 때가 오면, 그때 용도도 같이 바꿔라',
     'Quando arriva comunque il momento di intervenire, cambia anche la destinazione'),
   body: K(
-    '두 선이 벌어지는 해와 건물을 어차피 점검·수선해야 하는 해가 같은 자리에 온다. '
+    '용도를 다시 묻는 일과 건물을 점검하는 일은 이미 같은 주기로 돌고 있다. '
     + '따로 하면 공사를 두 번 하고, 같이 하면 한 번이다. '
     + '노원구는 재정자립도가 서울에서 가장 낮다 — 이런 타이밍 하나가 큰 차이를 만든다.',
-    'L\'anno in cui le linee divergono e quello in cui l\'edificio va comunque revisionato coincidono. '
+    'Riesaminare la destinazione e controllare l\'edificio girano già sullo stesso ritmo. '
     + 'Separarli significa due cantieri; unirli, uno solo. Nowon ha la più bassa autonomia finanziaria '
     + 'di Seoul: una coincidenza come questa fa una differenza reale.',
   ),
@@ -135,11 +152,11 @@ export const CLOSING = {
     '1989년, 이 건물은 공원 안에 지어졌다. 그래서 2018년에 늘릴 수가 없었고, '
     + '신축용으로 13년간 쌓은 기금 28억을 리모델링에 돌리는 것 말고는 길이 없었다. '
     + '늘릴 수 없는 건물은 바꿔 쓰는 수밖에 없다. '
-    + '그 계산을 2034년이 아니라 지금 해 두자는 것이 이 플랫폼이다.',
+    + '그 계산을 다음 점검이 닥쳤을 때가 아니라 지금 해 두자는 것이 이 플랫폼이다.',
     'Nel 1989 questo edificio è stato costruito dentro un parco: nel 2018 non era ampliabile, '
     + 'e non restava che dirottare sulla ristrutturazione i 2,8 miliardi accantonati per tredici anni. '
     + 'Un edificio che non può crescere può solo cambiare uso. '
-    + 'La piattaforma serve a fare quel conto adesso, non nel 2034.',
+    + 'La piattaforma serve a fare quel conto adesso, non quando il controllo sarà già addosso.',
   ),
   noMoney: K(
     '금액은 말하지 않는다. 단가 두 종을 확보하지 못했고, 없이 계산하면 숫자를 지어내는 것이 된다. '

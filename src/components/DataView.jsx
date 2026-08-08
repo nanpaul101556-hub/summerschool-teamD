@@ -1,11 +1,12 @@
 /**
  * 03 · 정량 근거 — 지금 이 건물, 제 용도로 잘 쓰이고 있는가.
  *
- * 실존 건물에는 「신축 사건」이 없다. 그래서 전/후로 자르지 않고
- * 두 궤적이 벌어지는 지점을 본다. 그 그래프가 화면의 머리이고,
- * 여섯 갈래는 그 선을 만든 근거로 아래에 선다.
+ * 한때 여기에 「수요선 vs 적합도선」 그래프가 있었다. 지웠다 —
+ * 적합도 점수도 수요 계수도 임계값도 우리가 매긴 값이어서, 거기서 나온
+ * 전환 연도가 근거를 갖지 못했다. 지어낸 곡선 하나가 실제로 잰 것까지
+ * 의심받게 만든다.
  *
- * 근거는 등급을 밝힌다. 확실하지 않은 것을 확실한 척하지 않는 것이
+ * 남은 것은 여섯 갈래의 근거와 그 등급뿐이다. 등급을 밝히는 것이
  * 이 도구를 믿을 수 있게 만드는 유일한 방법이다.
  */
 
@@ -15,13 +16,9 @@ import { CARDS, CONCLUSION, EVENT } from '../data/evidence'
 import { sheetOf } from '../data/sheets'
 import { useLang } from '../i18n'
 import { n } from '../lib/format'
-import { DEMAND, THRESHOLD, findTurn } from '../lib/trajectory'
 import AppFrame from './AppFrame'
 import DataSheet from './DataSheet'
 import { Bars } from './MiniChart'
-import TwoLines from './TwoLines'
-
-const { turn } = findTurn()
 
 /**
  * 근거 등급 — 확정 논리의 정직성 규칙.
@@ -124,17 +121,6 @@ export default function DataView({ site, onStep, onReset, onNext }) {
       </div>
 
       <section>
-        <h3 className="lab">{t('tj.how')}</h3>
-        <dl className="tj-in">
-          <dt>{t('tj.inDemand')}</dt>
-          <dd className="mono">({t('tj.elder')} − {DEMAND.base}) × {DEMAND.slope}</dd>
-          <dt>{t('tj.inFit')}</dt>
-          <dd>{t('tj.inFitF')}</dd>
-        </dl>
-        <p className="note">{t('tj.why')}</p>
-      </section>
-
-      <section>
         <h3 className="lab">{t('tj.gradeTitle')}</h3>
         <dl className="tj-gr">
           {ORDER.map((g) => (
@@ -173,16 +159,8 @@ export default function DataView({ site, onStep, onReset, onNext }) {
     >
       <div className="ev2">
         <div className="ev2-h">
-          <span className="l">{t('tj.head')}</span>
-          <b>{turn ? t('tj.headV', { y: turn.year, n: THRESHOLD }) : t('tj.head')}</b>
-        </div>
-        <p className="ev2-lead">{t('tj.sub')}</p>
-
-        <TwoLines />
-
-        <div className="ev2-h feeds">
-          <span className="l">{t('tj.feeds')}</span>
-          <b>{t('ev.head')}</b>
+          <span className="l">{t('ev.head')}</span>
+          <b>{EVENT.ym} · {tx(EVENT.label)}</b>
         </div>
 
         {CARDS.map((c) => (

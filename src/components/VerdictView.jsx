@@ -91,29 +91,10 @@ export default function VerdictView({ site, onStep, onReset, onNext }) {
             <span>{t('vd.phSub')}</span>
           </div>
 
-          <div className="ph-tl" aria-hidden="true">
-            {PHASES.map((p) => (
-              <span
-                key={p.id}
-                className={`b ${p.kind} ${p.key ? 'key' : ''}`}
-                style={{
-                  left: `${pos(p.year ?? p.from)}%`,
-                  width: p.year ? '3px' : `${pos(p.to) - pos(p.from)}%`,
-                }}
-              />
-            ))}
-            {[2026, 2029, 2034, 2050].map((y) => (
-              <em key={y} className="num" style={{ left: `${pos(y)}%` }}>{y}</em>
-            ))}
-          </div>
-
           <div className="ph-l">
             {PHASES.map((p) => (
               <article key={p.id} className={`${p.kind} ${p.key ? 'key' : ''}`}>
                 <div className="ph-h">
-                  <span className="yr num">
-                    {p.year ? p.year : `${p.from}–${p.to}`}
-                  </span>
                   <b>{tx(p.label)}</b>
                   <span className={`k ${p.kind}`}>{t(`vd.k.${p.kind}`)}</span>
                 </div>

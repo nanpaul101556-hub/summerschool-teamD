@@ -262,7 +262,7 @@ export const CARDS = [
     before: { period: '2022', v: 149, label: K('이 건물 실집행', 'Speso su questo edificio') },
     after: { period: '2025', v: 364, label: K('이 건물 실집행', 'Speso su questo edificio') },
     pct: 143,
-    verdict: 'change',
+    verdict: 'keep',
     moves: [
       { label: K('노인회관 건립 (2023–25)', 'Centro anziani (2023-25)'), v: 521, up: true },
       { label: K('문화교실 운영 (2025)', 'Corsi culturali (2025)'), v: 190, up: true },
@@ -312,24 +312,26 @@ export function tally() {
  * 두 답이 갈리는 지점을 감추지 않는다.
  */
 export const CONCLUSION = {
-  key: 'change',
-  head: K('이 건물은 다른 건물이 되어야 한다', 'Questo edificio deve diventare un altro edificio'),
+  key: 'keep',
+  head: K('지금은 잘 쓰이고 있다 — 다만 이 용도로 계속은 아니다',
+    'Oggi è ben utilizzato — ma non lo sarà per sempre con questa destinazione'),
   yes: [
-    K('전환 직후 승하차가 노원구 평균보다 5.3%p 더 올랐다 — 바꾸면 사람이 온다는 증거다',
-      'Dopo la riconversione i flussi salgono 5,3 p.p. sopra la media: cambiare porta gente'),
-    K('그런데 코로나 전 수준으로는 82에 그친다. 주거 정류장은 99까지 돌아왔다',
-      'Ma rispetto al pre-Covid resta a 82, mentre le fermate residenziali sono tornate a 99'),
-    K('소비는 40~50대가 88%를 만드는데 거주자는 2042년 고령 36.2%로 간다',
-      'L\'88% della spesa è di quarantenni e cinquantenni, ma i residenti vanno verso il 36,2% di over 65'),
-    K('노원구는 새로 짓는 일을 줄이는데 이 건물에는 돈이 계속 들어간다 — 그것도 용도를 끼워 넣는 데만',
-      'Nowon riduce le nuove costruzioni, ma qui continua a spendere: e solo per inserire nuovi usi'),
+    K('건물이 바뀐 뒤 승하차가 노원구 평균보다 5.3%p 더 올랐다 — 사람이 더 온다 [검증]',
+      'Dopo il cambio i flussi salgono 5,3 p.p. sopra la media: viene più gente [verificato]'),
+    K('예산은 2022년 1.5억 → 2025년 3.6억(+143%), 편성대로 새 용도를 넣는 데 쓰였다 — 예산이 이 건물을 뒷받침한다 [검증]',
+      'Il bilancio sale da 0,15 a 0,36 mld (+143%), speso come previsto per inserire nuovi usi: il bilancio sostiene l\'edificio [verificato]'),
+    K('대관·민원·만족도 예시도 같은 방향을 가리킨다 — 대관이 늘고 문화 민원이 준다. 자료가 오면 이 결론이 굳는다 [수집 중]',
+      'Anche affitti, reclami e soddisfazione puntano nella stessa direzione — più affitti, meno reclami culturali. Con i dati reali la conclusione si consolida [in raccolta]'),
+    K('종합하면, 이 건물은 지금 제 용도로 잘 쓰이고 예산도 맞게 운영되고 있다',
+      'In sintesi, oggi l\'edificio è ben utilizzato per la sua destinazione e gestito coerentemente col bilancio'),
   ],
   but: K(
-    '다만 이 판정은 여섯 갈래 중 셋으로 내린 것이다. 민원·출입·만족도가 비어 있다. '
-    + '특히 출입 기록은 「건물에 실제로 들어온 사람」을 재는 유일한 자료여서, '
-    + '그것이 채워지기 전까지 이 결론은 정류장을 지나간 사람으로 대신 말하고 있다.',
-    'Il giudizio poggia però su tre delle sei voci: mancano reclami, accessi e soddisfazione. '
-    + 'I registri di accesso sono l\'unico dato che misura chi entra davvero: finché mancano, '
-    + 'la conclusione parla al loro posto con chi passa davanti alla fermata.',
+    '그러나 지금 좋다고 계속 좋은 것은 아니다. 고령 비율은 2025년 20.9%에서 2042년 36.2%로 오르고, '
+    + '서울·노원 상위계획은 「용도를 미리 못 박지 말라」고 한다. 이용자층이 통째로 바뀌면 지금 용도도 어긋난다. '
+    + '이 건물은 2018·2022·2025에 이미 세 번 용도를 갈아 끼웠다. 다음은 네 번째다.',
+    'Ma il fatto che oggi funzioni non significa che funzionerà sempre. Gli over 65 salgono dal 20,9% (2025) '
+    + 'al 36,2% (2042) e i piani superiori di Seoul e Nowon dicono di non fissare in anticipo le destinazioni. '
+    + 'Quando l\'utenza cambia del tutto, anche questa destinazione sfasa. '
+    + 'Questo edificio ha già cambiato uso tre volte — 2018, 2022, 2025: la prossima sarà la quarta.',
   ),
 }
