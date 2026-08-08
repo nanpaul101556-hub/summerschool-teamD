@@ -3,7 +3,15 @@
 import { useState } from 'react'
 
 import { SAMPLE, resolveSite } from '../data/search'
+import { Suspense, lazy } from 'react'
+
 import { useLang } from '../i18n'
+
+/**
+ * 3차원 배경은 three.js 를 끌고 온다 — 첫 화면이 그걸 기다릴 이유가 없다.
+ * 따로 떼어 나중에 받고, 그동안은 .page-bg 가 비어 있다.
+ */
+const Ambient = lazy(() => import('./Ambient'))
 import { hasKey } from '../lib/vworld'
 import Arrow from './Arrow'
 
@@ -28,6 +36,12 @@ export default function Landing({ onFound }) {
 
   return (
     <div className="page">
+      <div className="page-bg" aria-hidden="true">
+        <Suspense fallback={null}>
+          <Ambient />
+        </Suspense>
+      </div>
+
       <div className="lang-float">
         {langs.map((l) => (
           <button

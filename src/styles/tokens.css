@@ -1787,3 +1787,1083 @@ body{
 .hook-y{display:flex;align-items:baseline;gap:10px;margin-bottom:7px}
 .hook-y b{font-size:38px;letter-spacing:-.045em;line-height:1}
 .hook-y span{font-size:11px;color:var(--ink-3)}
+
+/* ===== 디자인 레이어 · summerschool-teamd-design ===== */
+/* ============================================================
+   Apple — 순검정 캔버스 · 다크 타일 · 파랑 하나
+
+   DESIGN.md(apple) 를 이 도구의 화면 언어로 옮긴 것.
+   원본은 밝은 면이 기본이지만 캔버스를 #000000 으로 지정받았으므로,
+   같은 시스템의 다크 타일 계열(#272729 / #2a2a2c / #252527)로 면을 쌓는다.
+
+   구획은 선이 아니라 면의 밝기 변화로 나눈다 — 테두리를 먼저 긋지 않는다.
+   상호작용은 파랑 하나로만 말한다. 두 번째 강조색은 없다.
+   그림자는 시스템 전체에 딱 하나, 사진에만 쓴다.
+   대문자도 넓은 자간도 쓰지 않는다. 큰 글씨는 자간을 오히려 조인다.
+   굵기 사다리는 300 / 400 / 600 / 700 — 500 은 쓰지 않는다.
+   ============================================================ */
+
+:root{
+  /* ── 면 ── */
+  --canvas:#000000;   /* 페이지 바닥 · 상단바 — 진짜 검정 */
+  --tile-1:#272729;   /* 기본 다크 타일 */
+  --tile-2:#2a2a2c;   /* 한 눈금 밝게 — 타일이 붙어설 때 */
+  --tile-3:#252527;   /* 한 눈금 어둡게 — 바닥 쪽 */
+
+  /* 기존 이름은 그대로 두고 값만 바꾼다 */
+  --paper:#000000;
+  --fill:#252527;
+  --fill-2:#2a2a2c;
+
+  --ink:#FFFFFF;              /* 다크 면 위의 모든 텍스트 */
+  --ink-2:#CCCCCC;            /* 보조 — 순백은 너무 크게 말한다 */
+  --ink-3:rgba(255,255,255,.56);
+  --ink-4:rgba(255,255,255,.4);
+
+  /* 헤어라인 — 밝은 면의 rgba(0,0,0,.08) 을 다크로 뒤집은 값 */
+  --rule:rgba(255,255,255,.14);
+  --rule-2:rgba(255,255,255,.08);
+  --btn:transparent;
+
+  /* ── 파랑 하나. 이것 말고 강조색은 없다. ── */
+  --blue:#0066CC;        /* 알약 버튼 바탕 */
+  --blue-focus:#0071E3;  /* 초점 링 */
+  --blue-on-dark:#2997FF;/* 어두운 면 위의 링크·강조 — #0066CC 는 여기서 묻힌다 */
+
+  /* 상태색 — DESIGN.md 에 없는 자리다. 애플 HIG 다크 시스템색으로 메운다. */
+  --ok:#30D158;
+  --warn:#FFD60A;
+  --bad:#FF453A;
+
+  /* SF Pro → Inter. -apple-system 은 애플 기기에서만 잡힌다. */
+  --f:-apple-system,BlinkMacSystemFont,'Inter','Pretendard Variable','Pretendard',
+     system-ui,'Segoe UI','Malgun Gothic',sans-serif;
+
+  /* 8px 기준 — DESIGN.md 의 spacing 토큰 */
+  --s1:4px; --s2:8px; --s3:12px; --s4:17px; --s5:24px;
+  --s6:32px; --s7:48px; --s8:80px;
+
+  /* 모서리 문법 — 이 다섯 가지 말고는 쓰지 않는다 */
+  --r-sm:8px;    /* 유틸리티 버튼 */
+  --r-md:11px;   /* 캡슐 */
+  --r-lg:18px;   /* 카드 */
+  --r-pill:9999px;
+
+  /* 시스템 전체에서 단 하나뿐인 그림자 — 사진 전용 */
+  --shadow-photo:rgba(0,0,0,.22) 3px 5px 30px 0;
+}
+
+*{box-sizing:border-box}
+html{color-scheme:dark;height:100%}
+body{
+  margin:0;height:100%;background:var(--canvas);color:var(--ink);
+  font-family:var(--f);font-size:17px;font-weight:400;line-height:1.44;
+  letter-spacing:-.022em;-webkit-font-smoothing:antialiased;
+  /* Inter 의 ss03 은 SF Pro 의 둥근 a 에 가깝다 */
+  font-feature-settings:'ss03';
+}
+#root{height:100%}
+.num{font-variant-numeric:tabular-nums}
+
+/* ── 커서 ── 화면 전체에 걸린다. cursor 는 물려받으므로 body 한 곳이면 된다.
+   속이 비치는 화살표다 — 회백색을 옅게 깔고 밝은 테두리로 형태를 잡되,
+   바깥에 어두운 테두리를 한 겹 더 둘러 지도나 사진처럼 밝은 면 위에서도
+   사라지지 않게 한다. 검은 화면과 흰 화면을 오가는 도구라 두 겹이 필요하다.
+   끝점이 실제로 가리키는 자리이므로 hotspot 을 3 2 로 맞춘다. */
+body{
+  cursor:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='32' height='32' viewBox='0 0 32 32'><path d='M3,2L3,26L9,20L13,29L17.5,26.9L13.6,18.4L21.5,18.4Z' fill='none' stroke='%23000000' stroke-opacity='0.5' stroke-width='3' stroke-linejoin='round'/><path d='M3,2L3,26L9,20L13,29L17.5,26.9L13.6,18.4L21.5,18.4Z' fill='%23D6D6D3' fill-opacity='0.32' stroke='%23F0F0EC' stroke-opacity='0.95' stroke-width='1.2' stroke-linejoin='round'/></svg>") 3 2, auto;
+}
+
+/* 표제 — 굵기 600, 자간은 조인다. 대문자는 쓰지 않는다. */
+h1,h2,h3{font-weight:600;letter-spacing:-.028em;color:var(--ink);text-transform:none}
+
+/* 누르면 줄어든다 — 시스템 전체의 공통 미세동작 */
+button:active:not(:disabled),.dl:active{transform:scale(.95)}
+button,.dl{transition:transform .2s ease,background-color .2s ease,
+  border-color .2s ease,color .2s ease}
+@media (prefers-reduced-motion:reduce){
+  button:active:not(:disabled),.dl:active{transform:none}
+}
+
+/* ============================================================
+   앱 셸 — 화면을 꽉 채운다. 문서가 아니라 도구다.
+   상단 스텝바 · 좌측 스테이지 · 우측 패널
+   ============================================================ */
+.app{height:100dvh;display:flex;flex-direction:column;overflow:hidden;
+  background:var(--canvas)}
+
+/* 상단바 — 진짜 검정. 크롬은 뒤로 물러난다. */
+.topbar{flex:none;height:52px;display:flex;align-items:stretch;
+  padding-left:var(--s5);background:var(--canvas);
+  border-bottom:1px solid var(--rule-2)}
+
+.tb-brand{display:flex;flex-direction:column;justify-content:center;flex:none;
+  padding-right:var(--s5);margin-right:var(--s5)}
+.tb-brand b{font-size:15px;font-weight:600;letter-spacing:-.022em;line-height:1.2;
+  color:var(--ink)}
+.tb-brand span{font-size:12px;font-weight:400;letter-spacing:-.01em;
+  color:var(--ink-3);line-height:1.2;margin-top:2px}
+
+/* 스텝 — 세그먼티드 컨트롤. 현재 단계만 알약으로 떠오른다. */
+.steps{display:flex;align-items:center;gap:2px;flex:1;min-width:0;overflow-x:auto}
+.stp{display:flex;align-items:center;gap:7px;flex:none;height:32px;padding:0 14px;
+  background:transparent;border:0;border-radius:var(--r-pill);cursor:pointer;
+  font-family:var(--f);color:var(--ink-3)}
+.stp:hover:not(:disabled){color:var(--ink)}
+.stp.on{background:rgba(255,255,255,.11);color:var(--ink)}
+.stp:disabled{cursor:not-allowed;color:var(--ink-4)}
+.stp-n{font-size:12px;font-weight:400;letter-spacing:-.01em;color:var(--ink-4)}
+.stp.on .stp-n{color:var(--blue-on-dark)}
+.stp-l{font-size:14px;font-weight:400;letter-spacing:-.016em;white-space:nowrap}
+.stp.on .stp-l{font-weight:600}
+.stp:focus-visible{outline:2px solid var(--blue-focus);outline-offset:2px}
+
+.tb-lang{display:flex;align-items:center;gap:6px;flex:none;padding:0 var(--s4)}
+.tb-lang button{font-family:var(--f);font-size:14px;font-weight:400;
+  letter-spacing:-.016em;padding:6px 12px;cursor:pointer;background:var(--tile-1);
+  color:var(--ink-2);border:0;border-radius:var(--r-sm)}
+.tb-lang button:hover{color:var(--ink)}
+.tb-lang button.on{background:var(--blue);color:#fff}
+.tb-lang button:focus-visible{outline:2px solid var(--blue-focus);outline-offset:2px}
+
+.tb-site{display:flex;align-items:center;gap:var(--s3);flex:none;padding:0 var(--s5);
+  max-width:32vw}
+.tb-site .nm{font-size:14px;font-weight:400;letter-spacing:-.016em;color:var(--ink-2);
+  white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+/* 텍스트 링크는 파랑 하나로 말한다 */
+.tb-site button{flex:none;font-family:var(--f);font-size:14px;font-weight:400;
+  letter-spacing:-.016em;padding:6px 0;cursor:pointer;background:transparent;
+  color:var(--blue-on-dark);border:0}
+.tb-site button:hover{text-decoration:underline}
+.tb-site button:focus-visible{outline:2px solid var(--blue-focus);outline-offset:2px;
+  border-radius:var(--r-sm)}
+
+.body{flex:1;min-height:0;display:grid;grid-template-columns:minmax(0,1fr) 400px}
+.stage{position:relative;min-width:0;min-height:0;overflow:hidden;
+  display:flex;flex-direction:column;background:var(--canvas)}
+/* 카드·이미지처럼 스테이지 자체가 흘러야 하는 화면 */
+.stage.scroll{overflow-y:auto;padding:var(--s6)}
+
+/* 우측 패널 — 검정 스테이지 옆의 한 눈금 밝은 면. 이 밝기 차이가 구획선이다. */
+.side{min-height:0;overflow-y:auto;padding:var(--s6) var(--s5) var(--s7);
+  background:var(--tile-3)}
+.side > section{margin-bottom:var(--s6)}
+.side > section:last-child{margin-bottom:0}
+.side-h{margin-bottom:var(--s6);padding-bottom:var(--s5);
+  border-bottom:1px solid var(--rule-2)}
+.side-h .n{font-size:14px;font-weight:400;letter-spacing:-.016em;
+  color:var(--blue-on-dark)}
+.side-h h2{font-size:34px;font-weight:600;letter-spacing:-.028em;line-height:1.1;
+  margin:6px 0 0;color:var(--ink)}
+.side-h p{font-size:17px;font-weight:400;letter-spacing:-.022em;color:var(--ink-2);
+  line-height:1.44;margin:10px 0 0}
+
+/* 다음 단계 — 알약 CTA. 알약 모양 자체가 「누르는 것」이라는 신호다. */
+.go-next{display:flex;align-items:center;justify-content:center;gap:10px;
+  width:100%;min-height:44px;margin-top:var(--s6);padding:11px 22px;cursor:pointer;
+  font-family:var(--f);font-size:17px;font-weight:400;letter-spacing:-.022em;
+  background:var(--blue);color:#fff;border:0;border-radius:var(--r-pill)}
+.go-next:hover:not(:disabled){background:var(--blue-focus)}
+.go-next:disabled{background:var(--tile-1);color:var(--ink-4);cursor:not-allowed}
+.go-next svg{width:17px;height:17px;flex:none}
+.go-next:focus-visible{outline:2px solid var(--blue-focus);outline-offset:3px}
+
+@media (max-width:1000px){
+  .body{grid-template-columns:1fr;grid-template-rows:minmax(0,1fr) auto}
+}
+
+/* ── 랜딩 (셸 밖) — 대상지 영상 위에 뜬 히어로 ──
+   영상은 화면 전체를 덮어야 하므로 fixed 로 둔다. .page 에 filter 나
+   transform 을 걸면 fixed 가 이 상자에 갇히므로 걸지 않는다. */
+.page{position:relative;isolation:isolate;min-height:100dvh;max-width:1440px;
+  margin:0 auto;background:var(--canvas);
+  padding:var(--s8) var(--s6) var(--s5);display:flex;flex-direction:column}
+
+/* 화면을 그대로 덮는다. 재료의 결이 보여야 하므로 흐리지 않는다 —
+   .page-bg 에 filter 를 걸면 fixed 인 자식이 이 상자에 갇히기도 한다. */
+.page-bg{position:fixed;inset:0;z-index:0;pointer-events:none;overflow:hidden;
+  background:url('/building/y10.jpg') center/cover no-repeat}
+
+/* 재료 덩이가 도는 3차원 화면. Canvas 는 감싸는 div 에 class 를 넘기므로
+   그 안의 canvas 까지 함께 채워야 한다. */
+.amb{position:absolute;inset:0;width:100%;height:100%}
+.amb canvas{display:block;width:100%;height:100%}
+/* 글자가 읽히게 하는 막 — 장식이 아니라 판독을 위한 것.
+   재료의 결이 보여야 하므로 필요한 만큼만 덮는다. */
+.page::after{content:'';position:fixed;inset:0;z-index:0;pointer-events:none;
+  background:rgba(0,0,0,.26)}
+.page > :not(.page-bg){position:relative;z-index:1}
+
+
+/* 좌상단 언어 전환 — 영상 위에 뜨는 반투명 칩 */
+.lang-float{position:absolute;top:var(--s5);left:var(--s6);z-index:2;
+  display:flex;gap:6px}
+.lang-float button{font-family:var(--f);font-size:14px;font-weight:400;
+  letter-spacing:-.016em;padding:7px 13px;cursor:pointer;color:var(--ink-2);
+  background:rgba(255,255,255,.14);
+  -webkit-backdrop-filter:blur(20px) saturate(180%);
+  backdrop-filter:blur(20px) saturate(180%);
+  border:0;border-radius:var(--r-sm)}
+.lang-float button:hover{color:var(--ink)}
+.lang-float button.on{background:var(--blue);color:#fff}
+.lang-float button:focus-visible{outline:2px solid var(--blue-focus);outline-offset:2px}
+
+/* 하단 — 번호와 주기가 붙어 읽히지 않게 사이를 벌린다 */
+.foot{flex:none;display:flex;align-items:baseline;gap:var(--s3)}
+.foot .no{font-size:12px;font-weight:600;letter-spacing:-.01em;
+  color:var(--blue-on-dark)}
+.foot .meta{font-size:12px;font-weight:400;letter-spacing:-.01em;color:var(--ink-3)}
+
+.center{flex:1;display:flex;flex-direction:column;align-items:center;
+  justify-content:center;text-align:center;padding-bottom:var(--s8)}
+/* 주관 기관 마크 — 감청색 원본을 검은 면에 맞춰 흰색으로 반전한다 */
+.marks{height:36px;width:auto;display:block;margin-bottom:var(--s7);
+  filter:brightness(0) invert(1);opacity:.92}
+
+.brand{font-size:21px;font-weight:600;letter-spacing:.011em;color:var(--ink-2);
+  margin-bottom:var(--s3)}
+/* 히어로 표제 — 굵기 600, 자간은 조인다. 이 조임이 이 시스템의 목소리다. */
+.q{font-size:clamp(34px,4.6vw,56px);font-weight:600;letter-spacing:-.028em;
+  line-height:1.07;margin:0 0 var(--s7);color:var(--ink);text-wrap:balance}
+
+/* 입력 — 검색창도 알약이다. 버튼과 같은 문법을 쓴다. */
+.field{display:flex;align-items:center;gap:var(--s3);width:min(600px,100%)}
+.field input{flex:1;min-width:0;height:44px;padding:12px 20px;
+  background:rgba(39,39,41,.56);color:var(--ink);border:1px solid rgba(255,255,255,.14);
+  border-radius:var(--r-pill);outline:0;font-family:var(--f);font-size:17px;
+  font-weight:400;letter-spacing:-.022em;
+  -webkit-backdrop-filter:blur(24px) saturate(180%);
+  backdrop-filter:blur(24px) saturate(180%)}
+.field input::placeholder{color:var(--ink-3)}
+.field input:focus{border-color:var(--blue-focus)}
+/* 인증키가 없을 때 입력칸 자리에 놓이는 고정 대상지 */
+.field .pick{flex:1;min-width:0;display:flex;align-items:center;height:44px;
+  padding:12px 20px;background:rgba(39,39,41,.56);color:var(--ink);
+  border:1px solid rgba(255,255,255,.14);border-radius:var(--r-pill);text-align:left;
+  font-size:17px;font-weight:400;letter-spacing:-.022em;
+  -webkit-backdrop-filter:blur(24px) saturate(180%);
+  backdrop-filter:blur(24px) saturate(180%)}
+
+/* 원형 컨트롤 — 44px. 곡률이 원형까지 가는 유일한 자리다. */
+.go{flex:none;width:44px;height:44px;cursor:pointer;background:var(--blue);
+  color:#fff;border:0;border-radius:var(--r-pill);display:grid;place-items:center}
+.go:hover:not(:disabled){background:var(--blue-focus)}
+.go:disabled{background:var(--tile-1);color:var(--ink-4);cursor:not-allowed}
+.go:focus-visible{outline:2px solid var(--blue-focus);outline-offset:3px}
+.go svg{width:19px;height:19px}
+
+.hint{margin-top:var(--s5);font-size:14px;font-weight:400;letter-spacing:-.016em;
+  color:var(--ink-3)}
+.hint button{border:0;background:transparent;padding:0;cursor:pointer;
+  font-family:var(--f);font-size:14px;font-weight:400;letter-spacing:-.016em;
+  color:var(--blue-on-dark)}
+.hint button:hover{text-decoration:underline}
+.miss{margin-top:var(--s5);font-size:14px;font-weight:400;letter-spacing:-.016em;
+  color:var(--ink-2);max-width:600px;line-height:1.43}
+
+/* 구획 이름 — 대문자도 자간도 쓰지 않는다 */
+.lab{font-size:14px;font-weight:600;letter-spacing:-.016em;color:var(--ink-2);
+  margin:0 0 var(--s3);text-transform:none}
+
+/* 카드 */
+.block{background:var(--tile-1);border-radius:var(--r-lg);padding:var(--s5)}
+
+/* ── 01 대상지 — 지도가 위, 요구되는 것 셋이 아래 ── */
+.site-stage{flex:1;min-height:0;display:flex;flex-direction:column}
+.site-map{flex:1;min-height:0;display:flex;flex-direction:column}
+/* 셋을 가로로 편다. 좁은 패널에서 세로로 쌓으면 굴려야 하던 것들이다.
+   가장 긴 열(상위계획 4개)이 다 들어가는 높이로 잡는다 — 지도가 조금 양보한다. */
+.site-req{flex:none;height:46%;min-height:0;
+  display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:var(--s6);
+  padding:var(--s4) var(--s6) var(--s5);border-top:1px solid var(--rule-2)}
+.site-req > section{min-height:0;overflow:auto}
+.site-req .lab{margin-bottom:10px}
+.site-req .demands > div{padding:7px 0}
+.site-req .rows > div{padding:8px 0}
+.site-req .dm-d{font-size:13px;line-height:1.4;margin-top:4px}
+.site-req .dm-n{font-size:15px}
+
+/* ── 04 모델링 — 두 창이 위, 기록이 아래 ── */
+.rh-stage{flex:1;min-height:0;display:flex;flex-direction:column}
+.rh-log{flex:none;height:23%;min-height:0;display:flex;flex-direction:column;
+  padding:var(--s4) var(--s6) var(--s5);border-top:1px solid var(--rule-2)}
+/* 패널에 있을 때와 달리 남는 높이를 다 쓴다 */
+.rh-log .log{flex:1;min-height:0;max-height:none;margin-top:0}
+
+/* 지도 자리 — 남는 높이를 전부 차지한다 */
+.mapslot{position:relative;flex:1;min-height:300px;background:var(--tile-3);
+  display:grid;place-items:center;text-align:center;padding:var(--s5)}
+.mapslot .t{font-size:21px;font-weight:600;letter-spacing:.011em;color:var(--ink)}
+.mapslot .s{font-size:14px;font-weight:400;letter-spacing:-.016em;color:var(--ink-3);
+  margin-top:8px}
+
+/* ── V-World 지도 — 스테이지를 꽉 채운다 ── */
+.mapwrap{position:relative;flex:1;min-height:0;background:var(--tile-3)}
+.mapcanvas{position:absolute;inset:0}
+/* 밝은 배경도는 검은 화면에서 튄다 — 한 단계 눕힌다 */
+.vw-muted{filter:saturate(.4) brightness(.7) contrast(1.04)}
+
+/* 대상지 라벨 — 경계 위에 얹는다 */
+.sitetag-wrap{pointer-events:none}
+.sitetag{position:absolute;transform:translate(-50%,-50%);white-space:nowrap;
+  background:rgba(210,210,215,.64);backdrop-filter:blur(20px) saturate(180%);
+  color:#1d1d1f;font-size:12px;font-weight:600;letter-spacing:-.01em;
+  padding:5px 12px;border-radius:var(--r-pill)}
+.on-dark .sitetag{background:rgba(0,0,0,.56);color:#fff}
+
+/* 지도 위 컨트롤 — 사진 위에 뜨는 반투명 칩 */
+.maptoggle{position:absolute;z-index:500;top:14px;left:14px;display:flex;gap:6px}
+.maptoggle button{font-family:var(--f);font-size:14px;font-weight:400;
+  letter-spacing:-.016em;padding:8px 15px;cursor:pointer;
+  background:rgba(210,210,215,.64);backdrop-filter:blur(20px) saturate(180%);
+  color:#1d1d1f;border:0;border-radius:var(--r-pill)}
+.maptoggle button.on{background:var(--blue);color:#fff}
+.maptoggle button:focus-visible{outline:2px solid var(--blue-focus);outline-offset:2px}
+
+.mapbadge{position:absolute;z-index:500;left:14px;bottom:14px;
+  background:rgba(0,0,0,.56);backdrop-filter:blur(20px) saturate(180%);
+  border-radius:var(--r-md);padding:8px 14px;font-size:14px;font-weight:400;
+  letter-spacing:-.016em;color:var(--ink-2)}
+
+.maperr{position:absolute;z-index:500;left:14px;right:14px;bottom:14px;
+  background:rgba(0,0,0,.72);backdrop-filter:blur(20px) saturate(180%);
+  border-radius:var(--r-md);padding:12px var(--s4);font-size:14px;font-weight:400;
+  letter-spacing:-.016em;color:var(--bad)}
+
+/* Leaflet 기본 크롬을 화면 언어에 맞춘다 */
+.leaflet-container{background:var(--tile-3);font-family:var(--f)}
+.leaflet-bar{border:0;box-shadow:none}
+.leaflet-bar a{width:36px;height:36px;line-height:36px;color:#1d1d1f;
+  background:rgba(210,210,215,.64);backdrop-filter:blur(20px) saturate(180%);
+  border:0;border-radius:var(--r-sm);margin-bottom:4px}
+.leaflet-bar a:hover{background:rgba(210,210,215,.8)}
+.leaflet-bar a:first-child,.leaflet-bar a:last-child{border-radius:var(--r-sm)}
+.leaflet-tooltip{background:rgba(0,0,0,.72);color:#fff;border:0;
+  border-radius:var(--r-sm);box-shadow:none;font-size:14px;font-weight:400;
+  padding:6px 12px}
+.leaflet-tooltip-top::before{border-top-color:rgba(0,0,0,.72)}
+
+/* 제원 목록 */
+.kv div{display:flex;justify-content:space-between;align-items:baseline;gap:var(--s4);
+  padding:11px 0;border-bottom:1px solid var(--rule-2)}
+.kv div:last-child{border-bottom:0}
+.kv dt,.kv .k{font-size:14px;font-weight:400;letter-spacing:-.016em;color:var(--ink-3)}
+.kv .kn{font-style:normal;font-size:12px;font-weight:400;letter-spacing:-.01em;
+  color:var(--ink-4);margin-left:7px}
+.kv .v{font-size:17px;font-weight:600;letter-spacing:-.022em;text-align:right;
+  color:var(--ink)}
+.kv .v.none{color:var(--ink-4);font-weight:400}
+
+/* 계획 열 */
+.grp{margin-bottom:var(--s6)}
+.grp:last-child{margin-bottom:0}
+
+.rows > div{display:flex;justify-content:space-between;align-items:baseline;
+  gap:var(--s4);padding:11px 0;border-bottom:1px solid var(--rule-2)}
+.rows > div:last-child{border-bottom:0}
+.rows .n{font-size:14px;font-weight:400;letter-spacing:-.016em;line-height:1.43;
+  color:var(--ink)}
+.rows .sub{font-size:12px;font-weight:400;letter-spacing:-.01em;color:var(--ink-3)}
+.rows .m{font-size:14px;font-weight:600;letter-spacing:-.016em;color:var(--ink-2);
+  white-space:nowrap}
+
+/* 시기별 경로 — 세로로 쌓으면 화면을 넘겨서 가로 3열로 편다 */
+.path{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:var(--s5)}
+.path > div{background:var(--tile-1);border-radius:var(--r-lg);padding:var(--s5)}
+.path .y{display:block;font-size:14px;font-weight:400;letter-spacing:-.016em;
+  color:var(--blue-on-dark)}
+.path .u{font-size:21px;font-weight:600;letter-spacing:.011em;margin-top:4px;
+  color:var(--ink)}
+.path .b{font-size:14px;font-weight:400;letter-spacing:-.016em;color:var(--ink-3);
+  margin-top:6px;line-height:1.43}
+.path .tag{display:inline-block;font-size:12px;font-weight:400;letter-spacing:-.01em;
+  color:var(--ink-3);background:var(--tile-2);border-radius:var(--r-pill);
+  padding:2px 10px;margin-left:8px;vertical-align:3px}
+
+.note.warn{color:var(--warn)}
+.note{font-size:12px;font-weight:400;letter-spacing:-.01em;color:var(--ink-3);
+  line-height:1.5;margin:12px 0 0}
+
+/* ── 02 계획이 요구하는 것 ── */
+.demands > div{padding:14px 0;border-bottom:1px solid var(--rule-2)}
+.demands > div:last-child{border-bottom:0}
+.dm-h{display:flex;justify-content:space-between;align-items:baseline;gap:var(--s4)}
+.dm-n{font-size:17px;font-weight:600;letter-spacing:-.022em;line-height:1.24;
+  color:var(--ink)}
+.dm-p{font-size:12px;font-weight:400;letter-spacing:-.01em;color:var(--ink-3);
+  white-space:nowrap}
+.dm-d{font-size:14px;font-weight:400;letter-spacing:-.016em;color:var(--ink-2);
+  line-height:1.43;margin-top:6px}
+
+/* ── 02 지역 정보 ── */
+.rg-h{display:flex;align-items:baseline;gap:10px;margin-bottom:var(--s3)}
+.rg-h .lab{margin:0}
+.rg-tag{font-size:12px;font-weight:400;letter-spacing:-.01em;color:#fff;
+  background:var(--blue);border-radius:var(--r-pill);padding:3px 11px}
+.rg-tag.off{color:var(--ink-3);background:var(--tile-2)}
+
+/* 인구 곡선 */
+.curve svg{width:100%;height:auto;display:block}
+.c-elder{fill:none;stroke:var(--blue-on-dark);stroke-width:2.5;
+  stroke-linecap:round;stroke-linejoin:round}
+.c-youth{fill:none;stroke:var(--ink-3);stroke-width:2;
+  stroke-linecap:round;stroke-linejoin:round}
+.c-elder.dash,.c-youth.dash{stroke-dasharray:5 4}
+/* 눈금과 면 채움 — 색을 컴포넌트가 아니라 여기서 정한다 */
+.c-grid{stroke:rgba(255,255,255,.08)}
+.c-grid.hi{stroke:rgba(255,255,255,.16)}
+.c-fade-0{stop-color:#2997FF;stop-opacity:.22}
+.c-fade-1{stop-color:#2997FF;stop-opacity:0}
+.c-dot{fill:var(--canvas);stroke:var(--blue-on-dark);stroke-width:2.5}
+.c-val{font-size:14px;font-weight:600;fill:var(--ink)}
+.c-ax{font-size:12px;fill:var(--ink-3)}
+.c-note{font-size:12px;fill:var(--ink-3)}
+.c-legend{display:flex;flex-wrap:wrap;gap:var(--s5);margin-top:var(--s3);
+  font-size:14px;font-weight:400;letter-spacing:-.016em;color:var(--ink-2)}
+.c-legend span{display:inline-flex;align-items:center;gap:8px}
+.c-legend i{width:16px;height:0;border-top:2.5px solid var(--blue-on-dark)}
+.c-legend i.k-youth{border-top-color:var(--ink-3)}
+.c-sep{color:var(--ink-3);margin-left:auto}
+
+/* 값 막대 */
+.acts > div{display:grid;grid-template-columns:1fr 96px 46px;align-items:center;
+  gap:var(--s3);padding:11px 0;border-bottom:1px solid var(--rule-2)}
+.acts > div:last-child{border-bottom:0}
+.ac-n{font-size:14px;font-weight:400;letter-spacing:-.016em;line-height:1.43;
+  color:var(--ink)}
+.ac-n em{display:block;font-style:normal;font-size:12px;font-weight:400;
+  color:var(--ink-3)}
+.ac-b{display:block;height:6px;background:var(--tile-2);border-radius:var(--r-pill)}
+.ac-b span{display:block;height:100%;background:var(--blue-on-dark);
+  border-radius:var(--r-pill)}
+.ac-v{font-size:14px;font-weight:600;letter-spacing:-.016em;color:var(--ink-2);
+  text-align:right}
+
+/* 미연결 자리 — 채워지면 어떤 형태가 올지만 보여준다 */
+.rg-ghost{opacity:.7}
+.skel{height:74px;background:var(--tile-1);border-radius:var(--r-lg);padding:14px 16px}
+.skel-bars{display:flex;flex-direction:column;justify-content:space-between}
+.skel-bars span{display:block;height:6px;background:var(--tile-2);
+  border-radius:var(--r-pill)}
+.skel-svg{width:100%;height:100%;display:block}
+.skel-svg polyline{fill:none;stroke:var(--rule);stroke-width:3;
+  vector-effect:non-scaling-stroke;stroke-linecap:round;stroke-linejoin:round}
+.gh-q{font-size:14px;font-weight:400;letter-spacing:-.016em;color:var(--ink-2);
+  margin-top:var(--s3)}
+.gh-list{display:flex;flex-wrap:wrap;gap:6px;margin-top:var(--s3)}
+.gh-list span{font-size:12px;font-weight:400;letter-spacing:-.01em;color:var(--ink-3);
+  background:var(--tile-2);border-radius:var(--r-pill);padding:4px 12px}
+.gh-list em{font-style:normal;font-weight:600;color:var(--ink);margin-left:6px}
+
+.tal-bar{display:flex;height:6px;overflow:hidden;background:var(--tile-2);
+  border-radius:var(--r-pill)}
+.tal-bar span{display:block;height:100%}
+.tal-bar .have{background:var(--blue-on-dark)}
+.tal-bar .partial{background:rgba(41,151,255,.45)}
+.tal-bar .none{background:transparent}
+.tal-l{display:flex;gap:var(--s5);margin-top:10px;font-size:14px;font-weight:400;
+  letter-spacing:-.016em;color:var(--ink-2)}
+.tal-l b{font-weight:600;color:var(--ink);margin-right:4px}
+.tal-t{margin-left:auto;color:var(--ink-3)}
+
+.ax-h{display:flex;align-items:baseline;gap:10px}
+.ax-no{font-size:14px;font-weight:400;letter-spacing:-.016em;color:var(--ink-4)}
+.ax-l{font-size:21px;font-weight:600;letter-spacing:.011em;color:var(--ink)}
+.ax-q{font-size:14px;font-weight:400;letter-spacing:-.016em;color:var(--ink-3);
+  margin-top:4px}
+.ax-lead{font-size:14px;font-weight:400;letter-spacing:-.016em;color:var(--ink);
+  margin-top:10px;line-height:1.43}
+
+.slots{margin-top:var(--s3);display:flex;flex-direction:column;gap:8px}
+.slot{background:var(--tile-1);border-radius:var(--r-lg);padding:14px 16px}
+.slot.have{background:var(--tile-2)}
+/* 미연결은 비어 보이게 — 채워질 자리라는 뜻이다 */
+.slot.none{background:transparent;border:1px solid var(--rule-2)}
+.sl-h{display:flex;align-items:baseline;gap:9px}
+.sl-n{font-size:17px;font-weight:600;letter-spacing:-.022em;line-height:1.24;
+  color:var(--ink)}
+.sl-r{font-size:12px;font-weight:400;letter-spacing:-.01em;color:#fff;
+  background:var(--blue);border-radius:var(--r-pill);padding:2px 10px;white-space:nowrap}
+.sl-s{margin-left:auto;font-size:12px;font-weight:400;letter-spacing:-.01em;
+  white-space:nowrap;color:var(--ink-3)}
+.sl-s.have{color:var(--blue-on-dark)}
+.sl-s.partial{color:var(--ink-2)}
+.sl-src{font-size:12px;font-weight:400;letter-spacing:-.01em;color:var(--ink-3);
+  margin-top:4px}
+.sl-src em{font-style:normal;font-size:11px;font-weight:400;color:var(--ink-4);
+  background:var(--tile-3);border-radius:var(--r-pill);padding:2px 8px;margin-left:7px;
+  vertical-align:1px}
+.sl-i{font-size:12px;font-weight:400;letter-spacing:-.01em;color:var(--ink-2);
+  margin-top:9px;padding-top:9px;border-top:1px solid var(--rule-2);line-height:1.5}
+
+/* ── 03 대안 산출 ── */
+.because{margin:0;padding-left:18px;font-size:14px;font-weight:400;
+  letter-spacing:-.016em;color:var(--ink-2);line-height:1.6}
+.because li{margin-bottom:6px}
+.because li:last-child{color:var(--ink);font-weight:600}
+
+.opts{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));
+  gap:var(--s5);align-items:start}
+/* 선택 카드 — 18px 모서리. 고르면 파랑 테두리 2px 으로 올라선다. */
+.opt{display:flex;flex-direction:column;text-align:left;font-family:var(--f);
+  background:var(--tile-1);border:1px solid var(--rule-2);border-radius:var(--r-lg);
+  padding:var(--s5);cursor:pointer}
+.opt:hover{background:var(--tile-2)}
+.opt.on{background:var(--tile-2);border:2px solid var(--blue-focus);
+  padding:calc(var(--s5) - 1px)}
+.opt:focus-visible{outline:2px solid var(--blue-focus);outline-offset:3px}
+/* 누를 때 카드까지 줄어들면 산만하다 — 카드는 제자리에 둔다 */
+.opt:active{transform:none}
+
+.opt-h{display:flex;align-items:center;gap:10px}
+.opt-k{font-size:14px;font-weight:600;background:var(--tile-3);color:var(--ink-2);
+  width:28px;height:28px;border-radius:var(--r-pill);display:grid;place-items:center}
+.opt.on .opt-k{background:var(--blue);color:#fff}
+.opt-l{font-size:21px;font-weight:600;letter-spacing:.011em;color:var(--ink)}
+.opt-r{margin-left:auto;font-size:12px;font-weight:400;letter-spacing:-.01em;
+  color:var(--blue-on-dark);background:rgba(41,151,255,.16);
+  border-radius:var(--r-pill);padding:3px 11px}
+.opt-s{font-size:14px;font-weight:400;letter-spacing:-.016em;color:var(--ink-2);
+  margin:10px 0 0;line-height:1.43}
+/* 규모가 모자라는 안 — 테두리로 조건이 붙었음을 알린다 */
+.opt.short{border-style:dashed;border-color:var(--rule)}
+
+/* 궤적 — 건물이 받는 것과 넘기는 것 */
+.track{margin-top:var(--s4);border-top:1px solid var(--rule-2)}
+.tr{display:grid;grid-template-columns:46px 1fr auto;align-items:baseline;gap:10px;
+  padding:10px 0;border-bottom:1px solid var(--rule-2)}
+.tr-y{font-size:12px;font-weight:600;letter-spacing:-.01em;color:var(--blue-on-dark)}
+.tr-u{font-size:14px;font-weight:600;letter-spacing:-.016em;color:var(--ink)}
+.tr-m{font-size:12px;font-weight:400;letter-spacing:-.01em;color:var(--ink-3)}
+.tr.link .tr-u{color:var(--ink-3);font-weight:400}
+.tr.link .tr-m{background:var(--tile-3);border-radius:var(--r-pill);padding:2px 9px}
+.tr.own .tr-m{background:var(--tile-2);border-radius:var(--r-pill);padding:2px 9px}
+.tr.bet .tr-m em{font-style:normal;font-weight:600;color:var(--ink);margin-left:6px}
+
+.opt-req{display:flex;align-items:baseline;gap:10px;margin-top:var(--s4);
+  padding-top:var(--s3);border-top:1px solid var(--rule-2)}
+.opt-req span:first-child{font-size:12px;font-weight:400;letter-spacing:-.01em;
+  color:var(--ink-3)}
+.opt-req b{font-size:28px;font-weight:600;letter-spacing:-.028em;color:var(--ink)}
+.opt-v{margin-left:auto;font-size:12px;font-weight:600;letter-spacing:-.01em;
+  color:var(--bad)}
+.opt-v.ok{color:var(--ok)}
+
+.opt-why{margin:var(--s4) 0 0;display:grid;grid-template-columns:40px 1fr;gap:5px 10px}
+.opt-why dt{font-size:12px;font-weight:400;letter-spacing:-.01em;color:var(--ink-4);
+  padding-top:2px}
+.opt-why dd{margin:0;font-size:12px;font-weight:400;letter-spacing:-.01em;
+  color:var(--ink-2);line-height:1.5}
+.opt-why dd.pm{color:var(--ink)}
+
+/* 규모 사다리 */
+.ladder > div{display:grid;grid-template-columns:76px 1fr 34px;align-items:center;
+  gap:10px;padding:9px 0;border-bottom:1px solid var(--rule-2)}
+.ladder > div:last-child{border-bottom:0}
+.ld-a{font-size:14px;font-weight:400;letter-spacing:-.016em;color:var(--ink-3)}
+.ladder .on .ld-a{color:var(--ink);font-weight:600}
+.ld-b{display:block;height:6px;background:var(--tile-2);border-radius:var(--r-pill)}
+.ld-b i{display:block;height:100%;background:var(--ink-4);border-radius:var(--r-pill)}
+.ladder .on .ld-b i{background:var(--blue-on-dark)}
+.ld-n{font-size:12px;font-weight:400;letter-spacing:-.01em;color:var(--ink-3);
+  text-align:right}
+
+/* 분기도 */
+.fork-sec{margin-top:var(--s7);padding-top:var(--s6);border-top:1px solid var(--rule-2)}
+
+.fork svg{width:100%;height:auto;display:block}
+.fk-edge{fill:none;stroke:rgba(255,255,255,.18);stroke-width:1.5}
+.fk-node{stroke:var(--blue-on-dark);stroke-width:2.5}
+.fk-node.own{fill:var(--blue-on-dark)}
+.fk-node.link{fill:var(--canvas)}
+.fk-use{font-size:14px;font-weight:600;fill:var(--ink)}
+.fk-mode{font-size:12px;fill:var(--ink-3)}
+.fk-cut{stroke:rgba(255,255,255,.18);stroke-dasharray:4 4}
+.fk-note{font-size:12px;fill:var(--ink-3)}
+.fk-year{font-size:12px;font-weight:600;fill:var(--blue-on-dark)}
+.fk-key{font-size:17px;font-weight:600;fill:var(--ink)}
+.fk-label{font-size:14px;fill:var(--ink-2)}
+.fk-verdict{font-size:12px;font-weight:600;fill:var(--bad)}
+.fk-verdict.ok{fill:var(--ok)}
+.fk-legend{display:flex;flex-wrap:wrap;gap:var(--s5);margin-top:var(--s3);
+  font-size:14px;font-weight:400;letter-spacing:-.016em;color:var(--ink-2)}
+.fk-legend span{display:inline-flex;align-items:center;gap:8px}
+.fk-legend i{width:10px;height:10px;border-radius:50%;
+  border:2.5px solid var(--blue-on-dark)}
+.fk-legend i.fk-own{background:var(--blue-on-dark)}
+.fk-legend i.fk-link{background:var(--canvas)}
+.fk-sep{color:var(--ink-3);margin-left:auto}
+
+/* 전제 */
+.premise{font-size:14px;font-weight:400;letter-spacing:-.016em;color:var(--ink);
+  line-height:1.5;margin:var(--s3) 0 0;background:var(--tile-2);
+  border-radius:var(--r-lg);padding:14px 16px}
+.premise span{display:block;font-size:12px;font-weight:400;letter-spacing:-.01em;
+  color:var(--blue-on-dark);margin-bottom:4px}
+
+/* ── 05 시간에 따른 변화 ── */
+.futures{height:100%;display:grid;grid-template-columns:repeat(3,minmax(0,1fr));
+  gap:var(--s5)}
+.fu{display:flex;flex-direction:column;min-height:0}
+
+/* 사진 — 시스템에서 그림자가 허용되는 유일한 자리 */
+.fu-img{position:relative;flex:1;min-height:180px;display:block;width:100%;padding:0;
+  border:0;background:var(--tile-1);border-radius:var(--r-lg);cursor:zoom-in;
+  overflow:hidden;box-shadow:var(--shadow-photo)}
+.fu-img img{width:100%;height:100%;object-fit:cover;display:block;
+  transition:transform .5s ease}
+.fu-img:hover img{transform:scale(1.03)}
+.fu-img:active{transform:none}
+.fu-img:focus-visible{outline:2px solid var(--blue-focus);outline-offset:3px}
+.fu-yr{position:absolute;top:12px;left:12px;
+  background:rgba(210,210,215,.64);backdrop-filter:blur(20px) saturate(180%);
+  color:#1d1d1f;font-size:12px;font-weight:600;letter-spacing:-.01em;
+  padding:5px 12px;border-radius:var(--r-pill)}
+
+.fu-body{flex:none;padding-top:var(--s4)}
+.fu-use{font-size:21px;font-weight:600;letter-spacing:.011em;color:var(--ink)}
+.fu-use .tag{display:inline-block;font-size:12px;font-weight:400;letter-spacing:-.01em;
+  color:var(--ink-3);background:var(--tile-2);border-radius:var(--r-pill);
+  padding:2px 10px;margin-left:8px;vertical-align:3px}
+.fu-yn{font-size:12px;font-weight:400;letter-spacing:-.01em;color:var(--ink-3);
+  margin-top:3px}
+.fu-basis{font-size:14px;font-weight:400;letter-spacing:-.016em;color:var(--ink-2);
+  line-height:1.43;margin:10px 0 0}
+.fu-in{font-size:12px;font-weight:400;letter-spacing:-.01em;color:var(--ink-3);
+  line-height:1.5;margin-top:10px;padding-top:10px;border-top:1px solid var(--rule-2)}
+.fu-k{display:block;font-size:12px;font-weight:400;letter-spacing:-.01em;
+  color:var(--blue-on-dark);margin-bottom:3px}
+
+/* 남는 것 */
+.kept .kk{font-size:14px;font-weight:400;letter-spacing:-.016em;color:var(--ink-3)}
+.kept .kv2{font-size:40px;font-weight:600;letter-spacing:-.028em;line-height:1.1;
+  color:var(--ink);margin-top:2px}
+.kept .kv2 em{font-style:normal;font-size:17px;font-weight:400;letter-spacing:-.022em;
+  color:var(--ink-3);margin-left:6px}
+.kept .note{margin-top:var(--s3)}
+
+/* 확대 — 진짜 검정. 사진만 남는다. */
+.lb{position:fixed;inset:0;z-index:20;background:rgba(0,0,0,.94);
+  backdrop-filter:blur(20px) saturate(180%);
+  display:flex;flex-direction:column;align-items:center;justify-content:center;
+  gap:var(--s5);padding:var(--s6);cursor:zoom-out}
+.lb img{max-width:100%;max-height:82vh;object-fit:contain;display:block;
+  border-radius:var(--r-lg);box-shadow:var(--shadow-photo)}
+.lb-cap{color:var(--ink-2);font-size:14px;font-weight:400;letter-spacing:-.016em}
+.lb-cap b{font-weight:600;color:var(--ink);margin-right:10px}
+.lb-x{position:absolute;top:var(--s5);right:var(--s5);
+  background:rgba(210,210,215,.64);backdrop-filter:blur(20px) saturate(180%);
+  border:0;border-radius:var(--r-pill);color:#1d1d1f;font-family:var(--f);
+  font-size:14px;font-weight:400;letter-spacing:-.016em;padding:10px 18px;
+  cursor:pointer}
+.lb-x:hover{background:rgba(210,210,215,.82)}
+/* 지웠던 화면들의 규칙은 걷어냈다 —
+   .lc 와 .lead 가 v2 의 같은 이름과 부딪혀 그래프를 눌러 버렸고,
+   나머지는 쓰는 곳이 없는 죽은 규칙이었다. */
+
+/* ── Rhino 연결 ── */
+.conn{display:flex;align-items:center;gap:10px;background:var(--tile-1);
+  border-radius:var(--r-lg);padding:14px var(--s4)}
+.dot{width:10px;height:10px;flex:none;border-radius:50%;background:var(--ink-4)}
+.dot.on{background:var(--ok)}
+.dot.off{background:var(--bad)}
+.dot.wait{background:var(--warn)}
+.conn .st{font-size:17px;font-weight:600;letter-spacing:-.022em;color:var(--ink)}
+.ep{font-size:12px;font-weight:400;letter-spacing:-.01em;color:var(--ink-3);
+  margin-top:8px}
+
+/* 유틸리티 버튼 — 8px 모서리. 알약은 주 동작에만 쓴다. */
+.act{display:flex;flex-wrap:wrap;gap:var(--s2);margin-top:var(--s4)}
+.act button{font-family:var(--f);font-size:14px;font-weight:400;letter-spacing:-.016em;
+  min-height:36px;padding:8px 15px;cursor:pointer;background:var(--tile-1);
+  color:var(--ink);border:0;border-radius:var(--r-sm)}
+.act button:hover:not(:disabled){background:var(--tile-2)}
+.act button.on{background:var(--blue);color:#fff}
+.act button:disabled{background:var(--tile-3);color:var(--ink-4);cursor:not-allowed}
+.act button:focus-visible{outline:2px solid var(--blue-focus);outline-offset:2px}
+
+/* 평면 · 모델 — 좌우로 나란히. 캡처도 세로 비율로 받아 칸을 꽉 채운다 */
+.split{position:relative;flex:1;min-height:0;display:grid;
+  grid-template-columns:1fr 1fr;grid-template-rows:minmax(0,1fr)}
+.pane{display:flex;flex-direction:column;min-width:0;min-height:0}
+/* 구획은 선이 아니라 면의 밝기 차이로 나눈다 */
+.pane + .pane{background:var(--tile-3)}
+
+/* 모델링 진행 — 떠 있는 바 */
+.building{position:absolute;z-index:8;left:50%;bottom:24px;transform:translateX(-50%);
+  display:flex;align-items:center;gap:12px;white-space:nowrap;
+  background:rgba(210,210,215,.64);backdrop-filter:blur(20px) saturate(180%);
+  color:#1d1d1f;font-size:14px;font-weight:400;letter-spacing:-.016em;
+  padding:11px 20px;border-radius:var(--r-pill)}
+.building .bar{display:block;width:36px;height:3px;background:rgba(0,0,0,.18);
+  border-radius:var(--r-pill);position:relative;overflow:hidden}
+.building .bar::after{content:'';position:absolute;inset:0;width:40%;
+  background:var(--blue);border-radius:var(--r-pill);
+  animation:slide 1.2s ease-in-out infinite}
+@keyframes slide{0%{left:-40%}100%{left:100%}}
+@media (prefers-reduced-motion:reduce){
+  .building .bar::after{animation:none;left:0;width:100%}
+}
+.pane-h{flex:none;display:flex;align-items:center;gap:10px;padding:14px var(--s5);
+  border-bottom:1px solid var(--rule-2)}
+.pane-h span:first-child{font-size:14px;font-weight:600;letter-spacing:-.016em;
+  color:var(--ink)}
+.pane-m{margin-left:auto;font-size:12px;font-weight:400;letter-spacing:-.01em;
+  color:var(--ink-3)}
+.pane-b{flex:1;min-height:0;position:relative;display:flex;flex-direction:column}
+
+/* 평면도 */
+.plan{flex:1;min-height:0;margin:0;display:flex;flex-direction:column;
+  padding:var(--s6) var(--s6) var(--s3)}
+.plan svg{flex:1;min-height:0;width:100%;display:block}
+.pl-grid{stroke:rgba(255,255,255,.08);stroke-width:1}
+.pl-fill{fill:rgba(41,151,255,.1)}
+.pl-skin line{stroke:var(--ink);stroke-width:2.5}
+.pl-col{fill:var(--blue-on-dark)}
+.pl-dim line{stroke:var(--ink-4);stroke-width:1}
+.pl-dim text{font-size:12px;fill:var(--ink-3)}
+.pl-legend{flex:none;display:flex;flex-wrap:wrap;gap:var(--s5);padding-top:var(--s3);
+  font-size:14px;font-weight:400;letter-spacing:-.016em;color:var(--ink-2)}
+.pl-legend span{display:inline-flex;align-items:center;gap:8px}
+.pl-legend i{width:12px;height:12px;border-radius:3px;background:var(--tile-2)}
+.pl-legend i.pl-k-fill{background:rgba(41,151,255,.1);
+  box-shadow:inset 0 0 0 1px var(--blue-on-dark)}
+.pl-sep{color:var(--ink-3);margin-left:auto}
+
+/* 뷰포트 캡처 */
+.shot{position:relative;flex:1;min-height:0;background:var(--canvas);
+  display:grid;place-items:center;overflow:hidden}
+.shot img{width:100%;height:100%;object-fit:contain;display:block}
+.shot-act{position:absolute;z-index:5;top:16px;left:16px;display:flex;gap:6px}
+.shot-act button{font-family:var(--f);font-size:14px;font-weight:400;
+  letter-spacing:-.016em;padding:8px 15px;cursor:pointer;
+  background:rgba(210,210,215,.64);backdrop-filter:blur(20px) saturate(180%);
+  color:#1d1d1f;border:0;border-radius:var(--r-pill)}
+.shot-act button:hover:not(:disabled){background:rgba(210,210,215,.82)}
+.shot-act button:disabled{color:rgba(29,29,31,.4);cursor:not-allowed}
+.shot .ph{text-align:center;padding:var(--s5)}
+.shot .ph .t{font-size:21px;font-weight:600;letter-spacing:.011em;color:var(--ink)}
+.shot .ph .s{font-size:14px;font-weight:400;letter-spacing:-.016em;color:var(--ink-3);
+  margin-top:8px}
+.livetag{position:absolute;top:14px;left:14px;background:var(--bad);color:#fff;
+  font-size:12px;font-weight:600;letter-spacing:-.01em;padding:4px 12px;
+  border-radius:var(--r-pill)}
+
+/* 내려받기 — 알약 CTA */
+.dl{display:inline-flex;align-items:center;font-size:14px;font-weight:400;
+  letter-spacing:-.016em;min-height:36px;padding:8px 18px;text-decoration:none;
+  background:var(--blue);color:#fff;border:0;border-radius:var(--r-pill)}
+.dl:hover{background:var(--blue-focus)}
+.dl:focus-visible{outline:2px solid var(--blue-focus);outline-offset:2px}
+
+.log{background:var(--tile-1);border-radius:var(--r-lg);padding:var(--s4) var(--s5);
+  margin-top:var(--s4);max-height:260px;overflow-y:auto;
+  font-family:ui-monospace,'SF Mono','Consolas','Menlo',monospace;
+  font-size:12px;line-height:1.8;letter-spacing:0}
+.log div{display:flex;gap:12px;color:var(--ink-2)}
+.log .tm{color:var(--ink-4);flex:none}
+.log .er{color:var(--bad)}
+.log .empty{color:var(--ink-3)}
+
+/* 좁은 화면 — 셸은 유지하고 3열짜리만 접는다 */
+@media (max-width:900px){
+  .page{min-height:0;padding:var(--s7) var(--s5)}
+  .stage.scroll{padding:var(--s5)}
+  .path{grid-template-columns:1fr;gap:var(--s3)}
+  .opts{grid-template-columns:1fr;gap:var(--s3)}
+  .futures{height:auto;grid-template-columns:1fr;gap:var(--s6)}
+  .fu-img{flex:none;height:clamp(200px,34vh,300px)}
+}
+
+@media (prefers-reduced-motion:reduce){
+  .fu-img img{transition:none}
+  .fu-img:hover img{transform:none}
+}
+
+/* ============================================================
+   모든 화면 — 뒤에 3차원 배경을 깔고, 그 위는 젖빛 유리가 된다.
+
+   배경은 첫 화면과 같은 것을 쓴다. 다만 모래는 끈다 —
+   자료를 읽는 화면에서 글자 뒤 알갱이가 계속 움직이면 눈이 끌린다.
+
+   투명도는 아주 조금만 연다. 뒤가 있다는 것만 알면 되지,
+   무엇이 있는지 읽히기 시작하면 앞의 수치와 다툰다.
+
+   흐림은 무거운 연산이라 유리면은 두 장뿐이다. 상단바 한 장,
+   본문 한 장. 그 위의 카드들은 흐리지 않고 투명도만 준다.
+   ============================================================ */
+.app{position:relative;isolation:isolate}
+/* 배경은 자리를 차지하지 않는다. 아래 규칙이 이것까지 잡으면
+   흐름 안으로 들어와 셸을 밀어내므로 반드시 빼 둔다. */
+.app-bg{position:absolute;inset:0;z-index:0;pointer-events:none;
+  background:var(--canvas)}
+.app > :not(.app-bg){position:relative;z-index:1}
+
+/* 상단바 — 첫 번째 유리면 */
+.topbar{
+  background:rgba(0,0,0,.36);
+  -webkit-backdrop-filter:blur(18px) saturate(180%);
+  backdrop-filter:blur(18px) saturate(180%);
+  border-bottom-color:rgba(255,255,255,.12);
+}
+
+/* 본문 — 두 번째 유리면. 스테이지와 패널이 이 한 장을 나눠 쓴다.
+   막을 걷고 흐림도 줄여 뒤의 윤곽이 읽히게 했다.
+   대신 글이 앉는 카드와 패널은 지킨다 — 밝히는 곳과 지키는 곳을 나눈다. */
+.body{
+  background:rgba(0,0,0,.24);
+  -webkit-backdrop-filter:blur(24px) saturate(180%);
+  backdrop-filter:blur(24px) saturate(180%);
+}
+.stage{background:transparent}
+/* 패널은 카드 없이 글이 바로 앉는 자리다. 스테이지를 연 만큼 여기는 도로 덮어
+   앞서와 같은 어둡기를 지킨다 — 밝기 차이는 그대로라 구획선도 그대로다. */
+.side{background:rgba(0,0,0,.3)}
+
+/* 카드 — 유리를 한 번 더 흐리지 않는다. 투명도만 줘서 뒤가 비치게 한다. */
+.block,
+.conn,
+.slot.have,
+.skel,
+.premise,
+.path > div,
+
+.log,
+.opt{
+  background:rgba(39,39,41,.66);
+  box-shadow:inset 0 0 0 1px rgba(255,255,255,.07);
+}
+/* 고른 안은 파랑 테두리가 유리 위에서도 또렷해야 한다 */
+.opt.on{background:rgba(42,42,44,.84);box-shadow:none}
+/* 미연결 자리는 유리 위에서도 비어 보여야 한다 */
+.slot.none{background:transparent;box-shadow:none}
+
+/* 04 의 두 창과 05 의 사진 자리도 뒤가 비치게 한다 */
+.pane + .pane{background:rgba(255,255,255,.03)}
+.shot{background:rgba(0,0,0,.2)}
+.fu-img{background:rgba(39,39,41,.6)}
+
+/* 지도 자리도 유리로 — 검은 사각형이 유리를 뚫고 나오지 않게 */
+.mapslot,.mapwrap{background:rgba(0,0,0,.22)}
+
+/* 투명 효과를 줄이도록 설정한 사용자에게는 원래의 불투명한 면을 돌려준다 */
+@media (prefers-reduced-transparency:reduce){
+  /* 배경은 그대로 둔다 — 투명도를 줄이라는 뜻이지 배경을 없애라는 뜻이 아니다 */
+  .field input,.field .pick{background:var(--tile-1);border-color:var(--rule-2);
+    backdrop-filter:none}
+  .lang-float button{background:var(--tile-1);backdrop-filter:none}
+  /* 불투명한 면이 덮을 것이므로 3차원 배경을 그릴 이유가 없다 */
+  .app-bg{display:none}
+  .body{background:var(--canvas);backdrop-filter:none}
+  .topbar{background:var(--canvas);backdrop-filter:none}
+  .side{background:var(--tile-3)}
+  .block,.conn,.slot.have,.skel,.premise,.path > div,.log,.opt{
+    background:var(--tile-1);box-shadow:none}
+  .pane + .pane{background:var(--tile-3)}
+  .shot{background:var(--canvas)}
+  .fu-img{background:var(--tile-1)}
+}
+
+/* ════════════════════════════════════════════════════════════════
+   v2 화면 보정
+
+   v2 의 규칙은 흰 바탕을 전제로 쓰였다. 거기서 var(--ink) 는 검정이라
+   「검은 칩에 흰 글씨」였는데, 이 팔레트에서 --ink 는 흰색이므로
+   그대로 두면 「흰 칩에 흰 글씨」가 되어 글자가 사라진다.
+
+   토큰 이름을 바꾸면 v2 를 다시 받을 때마다 충돌하므로,
+   해당 자리만 글자색을 캔버스 색으로 뒤집는다 — 흰 칩에 검은 글씨.
+   ════════════════════════════════════════════════════════════════ */
+
+.mm-site,
+.ph-l article.key,
+.lc-read,
+.lc-cmp button.on,
+.cyc-l article.key,
+.op-ly span.on,
+.bd-layers div.on,
+.vd-ax-v{color:var(--canvas)}
+
+/* 그 안의 보조 글씨도 같이 뒤집는다 — 흰 바탕에서 흰 반투명은 안 보인다 */
+.mm-site span{color:rgba(0,0,0,.62)}
+.ph-l article.key .ph-h .k{border-color:rgba(0,0,0,.4);color:var(--canvas)}
+
+/* ── 상위계획 도표 ──
+   상자는 HTML, 곡선만 SVG. 도표는 본래 크기로만 그린다 —
+   화면이 넓다고 통째로 늘리면 글자까지 같이 커져 비율이 깨진다. */
+.mm-b{display:flex;align-items:flex-start;justify-content:center;overflow:auto;
+  padding:var(--s5) var(--s5) var(--s6)}
+.mm-stage{position:relative;flex:none}
+.mm-svg{position:absolute;inset:0;width:100%;height:100%;min-width:0}
+.mm-nodes{position:absolute;inset:0}
+
+/* 상자는 제 행의 한가운데에 선다.
+   자리를 위쪽에 맞추면 글이 길어질 때 아래로만 자라 옆 상자를 덮는다.
+   가운데에 맞추면 위아래로 똑같이 벌어져 연결선과도 어긋나지 않는다. */
+.mm-nodes > .mm-site,
+.mm-nodes > div > .mm-plan,
+.mm-nodes > div > .mm-q,
+.mm-nodes > div > .mm-s{position:absolute;transform:translateY(-50%)}
+
+/* 높이를 못 박지 않는다. 글이 길면 상자가 알아서 커지고,
+   가운데 정렬이라 커진 만큼 위아래로 똑같이 벌어진다.
+   자르지 않으므로 무엇을 근거로 삼았는지가 사라지지 않는다. */
+.mm-q{height:auto;min-height:52px;align-items:center;gap:10px;padding:10px 13px}
+.mm-q b{white-space:normal;overflow:visible;text-overflow:clip;
+  font-size:12.5px;line-height:1.35;overflow-wrap:anywhere}
+/* 강조 조항도 상자 크기는 같아야 한다 — 색과 테두리만 다르다 */
+.mm-q.lead{border-width:1px}
+
+.mm-s{height:auto;min-height:52px;align-items:center;gap:9px;padding:10px 4px;
+  flex-wrap:wrap}
+.mm-s .a{white-space:normal;overflow:visible;text-overflow:clip;
+  line-height:1.35;flex:0 1 auto}
+.mm-s .b{line-height:1.35;overflow-wrap:anywhere}
+
+/* 계획 이름은 세 줄까지 — 두 줄로 자르면 「기본계획」이 사라진다 */
+.mm-plan{height:auto;min-height:60px;padding:11px 13px;justify-content:center}
+.mm-plan b{-webkit-line-clamp:3;line-height:1.3}
+
+.mm-site{height:auto;min-height:68px;padding:11px 14px}
+.mm-site b{overflow-wrap:anywhere}
+
+/* 도표 안의 상자는 유리 위가 아니라 제 배경을 갖는다 —
+   선과 글자가 배경의 도시 위에 그대로 얹히면 읽히지 않는다 */
+.mm{background:rgba(0,0,0,.86);
+  -webkit-backdrop-filter:blur(30px) saturate(180%);
+  backdrop-filter:blur(30px) saturate(180%)}
+.mm-q{background:rgba(37,37,39,.92)}
+.mm-q.lead{background:rgba(42,42,44,.96)}
+.mm-plan{background:rgba(37,37,39,.92)}
+.mm-f{background:rgba(0,0,0,.5)}
+
+/* ── 05 이용 곡선 ──
+   v2 의 곡선은 흰 종이 위를 전제로 그려졌다. 검은 화면으로 오면서
+   격자와 예측선이 배경에 묻히고, 곡선과 눈금이 같은 굵기로 경쟁한다.
+   굵기와 밝기의 층위를 다시 세운다 — 실측이 가장 진하고, 격자가 가장 옅다. */
+.lc-c{background:rgba(23,23,25,.72);border-radius:var(--r-lg);
+  padding:var(--s4) 0 var(--s3)}
+
+/* 격자와 눈금 — 배경이지 내용이 아니다 */
+.lc-c .g{stroke:rgba(255,255,255,.1);stroke-width:1;stroke-dasharray:2 5}
+.lc-c .tick{font-size:11px;fill:var(--ink-4)}
+.lc-c .split{stroke:rgba(255,255,255,.28);stroke-width:1;stroke-dasharray:4 4}
+.lc-c .band{font-size:10.5px;fill:var(--ink-3);letter-spacing:.06em}
+
+/* 실측 — 이 화면에서 유일하게 사실인 구간이라 가장 진하다 */
+.lc-c .hist{stroke:var(--ink);stroke-width:2.6}
+.lc-c .hp{fill:var(--ink)}
+
+/* 예측 — 사실이 아니므로 점선이고, 고른 안만 또렷하다 */
+.lc-c .sc{stroke:rgba(255,255,255,.34);stroke-width:1.4;opacity:1;
+  stroke-dasharray:5 4}
+.lc-c .sc.none{stroke:rgba(255,255,255,.26);stroke-dasharray:2 4}
+.lc-c .sc.on{stroke:var(--blue-on-dark);stroke-width:2.8;stroke-dasharray:6 4}
+
+/* 공사 시점 — 곡선이 왜 꺾이는지를 짚는 자리 */
+.lc-c .done line{stroke:rgba(255,255,255,.22);stroke-dasharray:2 4}
+.lc-c .done text{font-size:11px;fill:var(--ink-3);font-weight:400}
+.lc-c .mk line{stroke:var(--blue-on-dark);stroke-width:1.4}
+.lc-c .mk circle{fill:var(--canvas);stroke:var(--blue-on-dark);stroke-width:2.4;r:4}
+.lc-c .mk text{font-size:11.5px;fill:var(--ink);font-weight:600}
+.lc-c .end{font-size:11.5px;fill:var(--ink-4)}
+.lc-c .end.on{fill:var(--blue-on-dark);font-weight:600}
+
+/* 커서 */
+.lc-c .cur line{stroke:rgba(255,255,255,.5)}
+.lc-c .cur circle{fill:var(--blue-on-dark);stroke:var(--canvas);stroke-width:2.5}
+.lc-hint{font-size:12px;color:var(--ink-4);margin:var(--s2) 0 var(--s5)}
+
+/* 근거 상자 — 유리 위가 아니라 제 배경을 갖는다 */
+.tip{background:rgba(30,30,32,.97);border:1px solid rgba(255,255,255,.16);
+  border-radius:var(--r-md);padding:12px 14px;font-size:12px;line-height:1.6;
+  color:var(--ink-2);box-shadow:0 8px 28px rgba(0,0,0,.5)}
+.tip .t-h b{color:var(--ink)}
+
+/* ===== 새 화면 대응 · 같은 디자인 언어로 ===== */
+
+/* ── 두 선 (03) ────────────────────────────────────────────
+   테두리로 가두지 않는다. 타일 하나를 깔고 그 위에 선을 얹는다. */
+.tl2{background:var(--tile-1);border:0;border-radius:var(--r-lg);overflow:hidden}
+.tl2-demand{stroke:var(--ink);stroke-width:2.5}
+.tl2-fit{stroke:var(--ink-3);stroke-width:1.8}
+.tl2-turn{stroke:var(--blue-on-dark);stroke-width:2}
+.tl2-turn-l{fill:var(--blue-on-dark);font-weight:700}
+.tl2-dot.lead{fill:var(--blue-on-dark);stroke:var(--blue-on-dark)}
+.tl2-dot{fill:var(--tile-1);stroke:var(--ink-2)}
+.tl2-read{background:var(--tile-3);border-top:0}
+.tl2-read .v .over b{color:var(--blue-on-dark)}
+.tl2-note{border-top:1px solid var(--rule-2)}
+.tl2-note .lead b{color:var(--blue-on-dark)}
+
+/* 입력과 등급 — 사이드 패널 */
+.tj-in dd.mono{font-family:ui-monospace,'SF Mono','Menlo',monospace;color:var(--ink-3)}
+.tj-gr{background:transparent;border:0;gap:var(--s1)}
+.tj-gr>div{background:var(--tile-1);border-radius:var(--r-sm);padding:9px 12px}
+.tj-gr dt{border-radius:var(--r-pill);padding:2px 9px}
+.tj-gr dt.verified{border-color:var(--blue-on-dark);color:var(--blue-on-dark)}
+
+/* 근거 등급 칩 */
+.ev2-q .grade{border-radius:var(--r-pill);padding:3px 10px}
+.ev2-q .grade.verified{border-color:var(--blue-on-dark);color:var(--blue-on-dark)}
+
+/* 데모 표 — 빗금은 다크에서 너무 세다. 면을 한 눈금 낮춰 대신한다. */
+.ev2-samp{background:var(--tile-3);border:0;border-radius:var(--r-lg);padding:0;overflow:hidden}
+.ev2-samp .cap{background:var(--tile-2);border-bottom:0}
+.ev2-tab{background:transparent}
+.ev2-tab th{border-bottom:1px solid var(--rule-2)}
+.ev2-tab td{border-bottom:1px solid var(--rule-2)}
+.ev2-tab tr.lead td{color:var(--ink)}
+.ev2-samp-n{background:transparent;border-top:1px solid var(--rule-2)}
+.samp{border-radius:var(--r-pill);padding:3px 10px;border-color:var(--rule)}
+.samp-warn{border:0;border-radius:var(--r-sm);background:var(--tile-2)}
+
+/* 근거 보기 — 이 화면의 유일한 파랑 조작 */
+.ev2-f .see{background:var(--blue);color:#fff;border:0;border-radius:var(--r-pill);
+  padding:7px 16px;font-weight:600;font-size:13px}
+.ev2-f .see:hover{background:var(--blue-focus)}
+
+/* ── 용도 후보 (04) ────────────────────────────────────── */
+.pg-l{background:transparent;border:0;gap:var(--s2)}
+.pg-l article{background:var(--tile-1);border-radius:var(--r-lg);padding:var(--s4)}
+.pg-l article.taken{background:var(--tile-3);opacity:.72}
+.pg-l article.lead{background:var(--tile-2)}
+.pg-h .st{border-radius:var(--r-pill);padding:2px 9px}
+.pg-h .st.open{border-color:var(--blue-on-dark);color:var(--blue-on-dark)}
+
+/* 처방 축 — 라벨이 막대에 묻히지 않게 */
+.ph-tl em{background:transparent;color:var(--ink-3)}
+
+/* ── 시점 타임라인 (05) ────────────────────────────────── */
+.tm-line{background:var(--rule)}
+.tm-check{background:var(--rule-2)}
+.tm-check.near{background:var(--blue-on-dark)}
+.tm-pt i{background:var(--canvas);border-color:var(--ink-3)}
+.tm-pt.key i{background:var(--ink);border-color:var(--ink)}
+.tm-pt.on i,.tm-pt:hover i{background:var(--blue-on-dark);border-color:var(--blue-on-dark)}
+.tm-pt em{background:transparent}
+.tm-turn i{background:var(--canvas);border-color:var(--blue-on-dark)}
+.tm-turn em{color:var(--blue-on-dark)}
+.tm-leg i.t{border-color:var(--blue-on-dark)}
+
+.tm-list{background:transparent;gap:var(--s1)}
+.tm-list li{background:var(--tile-1);border-radius:var(--r-lg);overflow:hidden}
+.tm-list li.on,.tm-list button:hover{background:var(--tile-2)}
+.tm-list li.on{background:var(--tile-2)}
+.tm-d blockquote{border-left-color:var(--blue-on-dark)}
+
+.tm-q{background:var(--tile-1);border-radius:var(--r-sm);padding:12px 14px}
+.tm-meet{border:0;background:var(--tile-1);border-radius:var(--r-lg);padding:var(--s5)}
+.tm-meet-g b{color:var(--ink)}
+.tm-meet-g>div:last-of-type b{color:var(--blue-on-dark)}
+.tm-meet .note{border-top-color:var(--rule-2)}
+.tm-hook{background:var(--tile-1);border-left:0;border-radius:var(--r-lg);padding:var(--s5)}
+
+/* ── 1989 훅 (01) ──────────────────────────────────────── */
+.side .hook{border-left:0;background:var(--tile-1);border-radius:var(--r-lg);
+  padding:var(--s4);margin-bottom:var(--s5)}
+.hook-y b{color:var(--blue-on-dark)}
+
+/* 근거 시트 — 표 정렬은 그대로 두고 면만 바꾼다 */
+.dsh-t th,.dsh-t td{border-bottom-color:var(--rule-2)}
+.samp-h{color:var(--ink-3)}

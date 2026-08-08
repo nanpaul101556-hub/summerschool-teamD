@@ -5,7 +5,15 @@
  * 내용만 신경 쓰면 된다.
  */
 
+import { Suspense, lazy } from 'react'
+
 import { useLang } from '../i18n'
+
+/**
+ * 배경은 three.js 를 끌고 온다 — 화면이 그걸 기다릴 이유가 없다.
+ * 첫 화면과 같은 덩어리를 나눠 쓰므로 단계를 넘길 때 다시 받지 않는다.
+ */
+const Ambient = lazy(() => import('./Ambient'))
 import Arrow from './Arrow'
 
 /**
@@ -38,7 +46,19 @@ export default function AppFrame({
   const i = STEPS.findIndex((s) => s.key === stage)
 
   return (
-    <div className="app">
+    <div className="app" data-stage={stage}>
+      {/*
+        모든 화면 뒤에 같은 배경이 흐른다. 단계가 바뀌어도 이어지므로
+        같은 곳에 머물러 있다는 감각이 끊기지 않는다.
+        모래는 끈다 — 자료를 읽는 화면에서 글자 뒤 알갱이가 계속 움직이면
+        눈이 그쪽으로 끌린다.
+      */}
+      <div className="app-bg" aria-hidden="true">
+        <Suspense fallback={null}>
+          <Ambient sand={false} />
+        </Suspense>
+      </div>
+
       <header className="topbar">
         <div className="tb-brand">
           <b>{t('app.brand')}</b>
