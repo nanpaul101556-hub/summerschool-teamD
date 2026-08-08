@@ -38,12 +38,14 @@ export const CYCLE = [
     note: K('철근콘크리트 · 대강당 중심 문화시설', 'C.a. · struttura culturale con auditorium'),
   },
   {
-    year: 2024, kind: 'done',
+    // 여기 있던 94.2억·주변정비 6.0억은 중계로 181 의 다른 건물(노원문화예술회관) 값이었다.
+    // 띄어쓰기 때문에 예산 검색이 갈렸던 탓이다 — budget/building_lines.py 로 다시 뽑았다.
+    year: 2025, kind: 'done',
     label: K('1차 전환 — 완료', 'Prima riconversione — conclusa'),
-    note: K('리모델링 공사 94.2억 · 노인회관 5.2억 · 주변 정비 6.0억 · 사무동 1.0억',
-      'Ristrutturazione 9,42 mld · centro anziani 0,52 · esterni 0,60 · uffici 0,10'),
-    cost: 10640,
-    layers: ['space', 'services'],
+    note: K('노인회관 건립 5.2억 · 문화교실 1.9억 · 사무동 1.0억 · 임시선별검사소 0.4억',
+      'Centro anziani 0,52 mld · corsi 0,19 · uffici 0,10 · centro tamponi 0,04'),
+    cost: 850,
+    layers: ['space'],
     result: K('앞 정류장 통행 대조군 대비 +5%p — 노원구 전환 사례 중 1위',
       'Flussi alla fermata +5 p.p. sul controllo: primo fra le riconversioni del distretto'),
   },
