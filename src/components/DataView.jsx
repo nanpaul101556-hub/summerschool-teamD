@@ -1,7 +1,7 @@
 /**
  * 03 · 정량 근거 — 건물이 바뀌기 전과 후.
  *
- * 다섯 갈래를 같은 틀로 묻는다. 왼쪽에 전, 가운데에 후, 오른쪽에 그래서 무엇인가.
+ * 여섯 갈래를 같은 틀로 묻는다. 왼쪽에 전, 가운데에 후, 오른쪽에 그래서 무엇인가.
  * 못 구한 갈래도 같은 자리를 차지한다. 빈칸을 감추면 결론이 어디까지
  * 근거를 가진 것인지 알 수 없게 된다.
  */
@@ -47,15 +47,6 @@ function BeforeAfter({ c }) {
           <span className="ex">{t('ev.excess')} <b className="num">+{c.excess}%p</b></span>
         </div>
       )}
-    </div>
-  )
-}
-
-function Missing() {
-  const { t } = useLang()
-  return (
-    <div className="ba miss" role="img" aria-label={t('ev.noData')}>
-      <span>{t('ev.noData')}</span>
     </div>
   )
 }
@@ -131,13 +122,7 @@ export default function DataView({ site, onStep, onReset, onNext }) {
         <h3 className="lab">{t('ev.statusTitle')}</h3>
         <div className="st-bar">
           <span className="have" style={{ flex: t3.have }} />
-          <span className="flat" style={{ flex: t3.flat }} />
-          <span className="miss" style={{ flex: t3.missing }} />
-        </div>
-        <div className="st-l">
-          <span><b className="num">{t3.have}</b> {t('ev.stHave')}</span>
-          <span><b className="num">{t3.flat}</b> {t('ev.stFlat')}</span>
-          <span><b className="num">{t3.missing}</b> {t('ev.stMiss')}</span>
+          <span className="miss" style={{ flex: CARDS.length - t3.have }} />
         </div>
         <p className="note">{t('ev.statusNote')}</p>
       </section>
@@ -168,12 +153,11 @@ export default function DataView({ site, onStep, onReset, onNext }) {
               <h3>{tx(c.title)}</h3>
               <div className="ask">{tx(c.ask)}</div>
               {c.unit && <div className="unit">{tx(c.unit)}</div>}
-              <span className={`tag ${c.status}`}>{t(`ev.st.${c.status}`)}</span>
               {c.sample && <span className="samp">{t('ev.sample')}</span>}
             </div>
 
             <div className="ev2-m">
-              {c.status === 'missing' && (c.tab ? <SampleTable tab={c.tab} /> : <Missing />)}
+              {c.tab && <SampleTable tab={c.tab} />}
               {c.before && <BeforeAfter c={c} />}
               {c.bars && (
                 <div className="ev2-bars">

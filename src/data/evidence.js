@@ -151,8 +151,6 @@ export const CARDS = [
     facts: [
       K('정류장 통행은 건물 앞을 지나간 사람이지 건물에 들어온 사람이 아니다',
         'I flussi alla fermata contano chi passa davanti, non chi entra'),
-      K('노원구시설관리공단이 운영하며 대관·강좌·전시 통계를 갖고 있다 — 공개는 안 한다',
-        'L’ente gestore possiede le statistiche di utenza, ma non le pubblica'),
       K('예산줄에서 확인된 용도를 그대로 넣어 예시 파일을 만들었다 — 문화교실·노인회관·대관',
         'Il file di esempio riprende gli usi confermati dal bilancio: corsi, centro anziani, affitti'),
     ],
@@ -323,15 +321,15 @@ export const CONCLUSION = {
       'Ma rispetto al pre-Covid resta a 82, mentre le fermate residenziali sono tornate a 99'),
     K('소비는 40~50대가 88%를 만드는데 거주자는 2042년 고령 36.2%로 간다',
       'L\'88% della spesa è di quarantenni e cinquantenni, ma i residenti vanno verso il 36,2% di over 65'),
-    K('예산은 이 건물의 전환을 이미 끝냈고, 노원구의 돈은 활동형 시설로 옮겨 가고 있다',
-      'Il bilancio ha già chiuso questa riconversione e i fondi si spostano verso strutture attive'),
+    K('노원구는 새로 짓는 일을 줄이는데 이 건물에는 돈이 계속 들어간다 — 그것도 용도를 끼워 넣는 데만',
+      'Nowon riduce le nuove costruzioni, ma qui continua a spendere: e solo per inserire nuovi usi'),
   ],
   but: K(
-    '다만 이 판정은 다섯 갈래 중 셋으로 내린 것이다. 민원과 출입 기록이 비어 있다. '
+    '다만 이 판정은 여섯 갈래 중 셋으로 내린 것이다. 민원·출입·만족도가 비어 있다. '
     + '특히 출입 기록은 「건물에 실제로 들어온 사람」을 재는 유일한 자료여서, '
     + '그것이 채워지기 전까지 이 결론은 정류장을 지나간 사람으로 대신 말하고 있다.',
-    'Il giudizio poggia però su tre delle cinque voci: mancano reclami e registri di accesso. '
-    + 'Questi ultimi sono l\'unico dato che misura chi entra davvero: finché mancano, '
+    'Il giudizio poggia però su tre delle sei voci: mancano reclami, accessi e soddisfazione. '
+    + 'I registri di accesso sono l\'unico dato che misura chi entra davvero: finché mancano, '
     + 'la conclusione parla al loro posto con chi passa davanti alla fermata.',
   ),
 }

@@ -162,7 +162,7 @@ export const DICT = {
 
     // 03 정량 근거
     'ev.title': '바뀌기 전과 후',
-    'ev.sub': '다섯 갈래를 같은 방식으로 물었습니다.',
+    'ev.sub': '여섯 갈래를 같은 방식으로 물었습니다.',
     'ev.head': '기준 사건',
     'ev.eventTitle': '무엇을 기준으로 나눴나',
     'ev.before': '전',
@@ -172,17 +172,10 @@ export const DICT = {
     'ev.keep': '현황 유지 쪽',
     'ev.change': '교체 쪽',
     'ev.noVerdict': '판정 보류',
-    'ev.noData': '자료 미확보',
-    'ev.st.have': '전후 측정',
-    'ev.st.flat': '단면만',
-    'ev.st.missing': '미확보',
-    'ev.statusTitle': '자료 확보 현황',
-    'ev.stHave': '전후 측정',
-    'ev.stFlat': '단면만',
-    'ev.stMiss': '미확보',
+    'ev.statusTitle': '어디까지가 실측인가',
     'ev.statusNote':
-      '다섯 갈래 중 둘만 전후로 잴 수 있었습니다. 못 구한 것을 감추면 '
-      + '결론이 어디까지 근거를 가진 것인지 알 수 없게 됩니다.',
+      '여섯 갈래 중 승하차와 예산 둘만 실제로 쟀습니다. 나머지 넷은 자료가 오면 '
+      + '설 표를 미리 세워 둔 것이고, 판정에는 그 둘만 들어갑니다.',
     'ev.mapCap': 'V-World 위성 · 좌표는 장소검색, 거리는 대상지에서 실측',
     'ev.sample': '예시 데이터',
     'ev.sampleWarn':
@@ -540,7 +533,7 @@ export const DICT = {
 
     // 03 evidenze quantitative
     'ev.title': 'Prima e dopo il cambiamento',
-    'ev.sub': 'Cinque voci interrogate nello stesso modo.',
+    'ev.sub': 'Sei voci interrogate nello stesso modo.',
     'ev.head': 'Evento di riferimento',
     'ev.eventTitle': 'Su che cosa si divide prima e dopo',
     'ev.before': 'prima',
@@ -550,17 +543,10 @@ export const DICT = {
     'ev.keep': 'verso il mantenimento',
     'ev.change': 'verso la sostituzione',
     'ev.noVerdict': 'giudizio sospeso',
-    'ev.noData': 'dato non disponibile',
-    'ev.st.have': 'misurato prima/dopo',
-    'ev.st.flat': 'solo istantanea',
-    'ev.st.missing': 'non disponibile',
-    'ev.statusTitle': 'Stato dei dati',
-    'ev.stHave': 'prima/dopo',
-    'ev.stFlat': 'istantanea',
-    'ev.stMiss': 'mancante',
+    'ev.statusTitle': 'Fin dove si misura davvero',
     'ev.statusNote':
-      'Solo due voci su cinque sono misurabili prima e dopo. Nascondere le mancanti '
-      + 'renderebbe impossibile capire fin dove arrivano le prove.',
+      'Di sei voci solo due sono misurate: flussi e bilancio. Le altre quattro mostrano '
+      + 'la tabella che si popolera\u0300 col dato reale; nel giudizio entrano solo quelle due.',
     'ev.mapCap': 'Ortofoto V-World · coordinate da ricerca luoghi, distanze misurate dal sito',
     'ev.sample': 'dati di esempio',
     'ev.sampleWarn':
