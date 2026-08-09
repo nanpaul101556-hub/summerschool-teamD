@@ -23,15 +23,21 @@ export const SAMPLE = {
  * @throws {Error} 주소를 못 찾거나 조회에 실패했을 때
  */
 export async function resolveSite(query) {
-  // 정리된 대상지(중계문화공원)는 SITE 에 자료가 다 있으므로 V-World 없이 진입한다.
-  // 발표·데모에서 API 키가 없어도 이 대상지는 항상 열린다.
+  // 정리된 대상지(중계문화공원)는 좌표를 이미 알고 있으므로 주소검색을 건너뛴다.
+  // 다만 필지 경계와 용도지역은 V-World 에서 그대로 가져온다 — 지도에 테두리가 서려면
+  // geometry 가 있어야 하기 때문이다. 조회가 실패해도 대상지 자체는 열린다.
   if (query.trim() === SAMPLE.query) {
+    const [lat, lng] = SITE.coords
+    const [parcel, zone] = await Promise.all([
+      parcelAt(lng, lat).catch(() => null),
+      zoneAt(lng, lat).catch(() => null),
+    ])
     return {
       name: SITE.name,
       address: SITE.address,
       coords: SITE.coords,
-      parcel: null,
-      zone: null,
+      parcel,
+      zone: zone?.name ? { ...zone, ...lookup(zone.name) } : null,
       curated: true,
     }
   }
