@@ -95,40 +95,6 @@ export const SHEETS = {
     ),
   },
 
-  // ── 소비 ────────────────────────────────────────────────
-  age: {
-    title: K('어느 상권을 어떻게 잘랐는가', 'Quale area commerciale e come'),
-    where: K(
-      '대상지 반경의 상권만 골랐다. 상권 코드명에 중계·하계·은행사거리·불암이 들어간 것을 '
-      + '정규식으로 걸러 2025년 분기 자료를 합쳤다.',
-      'Selezionate solo le aree attorno al sito filtrando i codici che contengono '
-      + 'Junggye, Hagye, Eunhaeng-sageori, Buram; aggregati i trimestri 2025.',
-    ),
-    cols: ['업종', '매출(억원)', '비중'],
-    rows: [
-      ['일반교습학원', '725', '34.1%'],
-      ['일반의원', '415', '19.5%'],
-      ['슈퍼마켓', '353', '16.6%'],
-    ],
-    calc: [
-      K('업종별 당월매출금액을 상권 전체로 합산', 'Somma del fatturato mensile per settore'),
-      K('연령대별 매출금액 컬럼을 따로 합산 — 40대 50.1% · 50대 38.3% · 60대+ 0%',
-        'Somma separata per fascia d\'età: 40enni 50,1%, 50enni 38,3%, over 60 nullo'),
-    ],
-    src: {
-      raw: K('서울시 상권분석서비스 추정매출 · 업종 100종 · 요일·시간대·성별·연령대 분해',
-        'Servizio di analisi commerciale di Seoul · 100 settori'),
-      file: 'signals/demand_junggye.csv · 34업종',
-      script: 'signals/analyze_demand.py',
-    },
-    limit: K(
-      '2025년 한 해 자료라 전후로 나눌 수 없다. 60대+ 열이 정말 0인지, '
-      + '연령 구간이 50대에서 끊기는지도 확인하지 못했다.',
-      'Un solo anno (2025): non divisibile in prima e dopo. Né è verificato se la colonna '
-      + 'over-60 sia davvero nulla o se le fasce si fermino ai 50.',
-    ),
-  },
-
   // ── 예산 ────────────────────────────────────────────────
   budget: {
     title: K('예산 어느 줄을 읽었는가', 'Quali righe di bilancio'),

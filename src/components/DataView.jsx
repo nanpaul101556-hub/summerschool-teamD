@@ -123,7 +123,7 @@ export default function DataView({ site, onStep, onReset, onNext }) {
       <section>
         <h3 className="lab">{t('tj.gradeTitle')}</h3>
         <dl className="tj-gr">
-          {ORDER.map((g) => (
+          {ORDER.filter((g) => CARDS.some((c) => gradeOf(c) === g)).map((g) => (
             <div key={g}>
               <dt className={g}>{t(`tj.g.${g}`)}</dt>
               <dd>

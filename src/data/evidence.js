@@ -1,7 +1,7 @@
 /**
  * 정량 근거 — 건물이 바뀌기 전과 후, 무엇이 달라졌는가.
  *
- * 여섯 갈래를 같은 방식으로 묻는다. 전에는 얼마였고 후에는 얼마인가,
+ * 다섯 갈래를 같은 방식으로 묻는다. 전에는 얼마였고 후에는 얼마인가,
  * 그리고 그 변화가 노원구 전체의 흐름보다 큰가 작은가.
  *
  * 확보하지 못한 갈래도 자리를 지운다. 빈칸이 보여야 결론이 어디까지
@@ -212,49 +212,9 @@ export const CARDS = [
       'Portale open data di Seoul, statistica 10305 · esempio make_satis_sample.py'),
   },
 
-  // ── ⑤ 소비와 연령 ────────────────────────────────────────
+  // ── ⑤ 예산 ───────────────────────────────────────────────
   {
-    id: 'age', no: '05', status: 'flat',
-    title: K('무엇에 돈을 쓰고 누가 쓰는가', 'Su che cosa e chi spende'),
-    ask: K('주민이 실제로 관심 있는 것은 무엇인가', 'Che cosa interessa davvero ai residenti?'),
-    unit: K('대상지 일대 상권 · 2025년', 'Area commerciale attorno al sito · 2025'),
-    bars: [
-      { label: K('일반교습학원', 'Doposcuola'), v: 34.1, lead: true },
-      { label: K('일반의원', 'Ambulatori'), v: 19.5 },
-      { label: K('슈퍼마켓', 'Supermercati'), v: 16.6 },
-    ],
-    ages: [
-      { label: '40', v: 50.1 },
-      { label: '50', v: 38.3 },
-      { label: '60+', v: 0 },
-    ],
-    verdict: 'change',
-    facts: [
-      K('일반교습학원이 매출의 34.1% · 725억원으로 압도적 1위다',
-        'I doposcuola valgono il 34,1% del fatturato, 72,5 miliardi: primi con distacco'),
-      K('40대 50.1% · 50대 38.3% — 두 세대가 소비의 88%를 만든다',
-        '40enni 50,1% e 50enni 38,3%: l\'88% della spesa'),
-      K('65세 이상은 2025년 20.9%에서 2042년 36.2%로 늘지만 60대+ 소비는 잡히지 않는다',
-        'Gli over 65 passano dal 20,9% al 36,2%, ma la loro spesa non compare'),
-    ],
-    reading: K(
-      '거주자는 늙어 가는데 돈을 쓰는 쪽은 40~50대 학부모 세대다. '
-      + '이 건물이 지금 무엇을 담아야 하는지에서 두 신호가 어긋난다.',
-      'I residenti invecchiano ma a spendere sono i quarantenni e cinquantenni con figli a scuola: '
-      + 'i due segnali divergono su che cosa debba ospitare l\'edificio.',
-    ),
-    limit: K(
-      '2025년 한 해 자료라 전후로 나눌 수 없다. 60대+ 열이 정말 0인지, '
-      + '연령 구간이 50대에서 끊기는지도 아직 확인하지 못했다.',
-      'È un solo anno (2025), non divisibile in prima e dopo. Né è verificato se la colonna over-60 '
-      + 'sia davvero nulla o se le fasce si fermino ai 50.',
-    ),
-    src: K('서울시 상권분석 · analyze_demand.py', 'Analisi commerciale di Seoul · analyze_demand.py'),
-  },
-
-  // ── ⑥ 예산 ───────────────────────────────────────────────
-  {
-    id: 'budget', no: '06', status: 'have',
+    id: 'budget', no: '05', status: 'have',
     title: K('이 건물에 들어간 돈과 노원구가 가는 방향',
       'La spesa su questo edificio e la direzione del distretto'),
     ask: K('예산은 어디로 움직였는가', 'Dove si è spostato il bilancio?'),
@@ -320,8 +280,10 @@ export const CONCLUSION = {
       'Dopo il cambio i flussi salgono 5,3 p.p. sopra la media: viene più gente [verificato]'),
     K('예산은 2022년 1.5억 → 2025년 3.6억(+143%), 편성대로 새 용도를 넣는 데 쓰였다 — 예산이 이 건물을 뒷받침한다 [검증]',
       'Il bilancio sale da 0,15 a 0,36 mld (+143%), speso come previsto per inserire nuovi usi: il bilancio sostiene l\'edificio [verificato]'),
-    K('대관·민원·만족도 예시도 같은 방향을 가리킨다 — 대관이 늘고 문화 민원이 준다. 자료가 오면 이 결론이 굳는다 [수집 중]',
-      'Anche affitti, reclami e soddisfazione puntano nella stessa direzione — più affitti, meno reclami culturali. Con i dati reali la conclusione si consolida [in raccolta]'),
+    K('준공 뒤 세 번 용도를 갈아 끼웠고 그때마다 통행이 꺼지지 않았다 — 이 건물은 새 용도를 받아낸다 [검증]',
+      'Ha cambiato uso tre volte e i flussi non si sono mai spenti: questo edificio accoglie nuove destinazioni [verificato]'),
+    K('민원·출입·만족도 셋은 아직 연결 대기다 — 방향을 주장하지 않는다. 자료가 오면 그때 판정에 들어간다 [수집 중]',
+      'Reclami, accessi e soddisfazione restano da collegare: non ne affermiamo la direzione. Entreranno nel giudizio quando arriveranno [in raccolta]'),
     K('종합하면, 이 건물은 지금 제 용도로 잘 쓰이고 예산도 맞게 운영되고 있다',
       'In sintesi, oggi l\'edificio è ben utilizzato per la sua destinazione e gestito coerentemente col bilancio'),
   ],
