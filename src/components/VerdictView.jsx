@@ -17,7 +17,7 @@
  * 견주면 못 돌아왔다. 둘 다 사실이므로 ② 에 둘 다 놓는다.
  */
 
-import { DRIFT, PHASES, SIGNALS, tally } from '../data/verdict'
+import { DRIFT, PHASES, SIGNALS, TALLY } from '../data/verdict'
 import { NEXT_YEAR, WHEN } from '../data/outcome'
 import { READS, UNUSED } from '../data/derive'
 import { PROGRAMS } from '../data/plans'
@@ -30,8 +30,6 @@ const ROWS = ORDER.flatMap((d) => SIGNALS.filter((s) => s.dir === d))
 export default function VerdictView({ site, onStep, onReset, onNext }) {
   const { t, tx } = useLang()
 
-  const counts = ORDER.map((d) => ({ d, n: tally(d) }))
-
   const side = (
     <>
       <div className="side-h">
@@ -43,7 +41,7 @@ export default function VerdictView({ site, onStep, onReset, onNext }) {
       <section>
         <h3 className="lab">{t('vd.tally')}</h3>
         <div className="vj-side">
-          {counts.map(({ d, n }) => (
+          {TALLY.map(({ d, n }) => (
             <div key={d} className={d}>
               <b>{n}</b>
               <span>{t(`vd.d.${d}`)}</span>
@@ -76,7 +74,7 @@ export default function VerdictView({ site, onStep, onReset, onNext }) {
           <span className="cap">{t('vd.callCap')}</span>
           <h2>{t('vd.callHead', { y: NEXT_YEAR })}</h2>
           <ul className="vj-cnt">
-            {counts.map(({ d, n }) => (
+            {TALLY.map(({ d, n }) => (
               <li key={d} className={d}>
                 <b>{n}</b>
                 <span>{t(`vd.d.${d}`)}</span>

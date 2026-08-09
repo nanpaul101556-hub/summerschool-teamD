@@ -81,30 +81,35 @@ export const SIGNALS = [
       'Sotto la media di Nowon (91,1): le fermate residenziali sono a 99, questa a 82,5'),
   },
   {
-    id: 'entry', dir: 'wait',
+    id: 'entry', dir: 'good', v: '+31.8%',
     label: K('건물 출입 기록', 'Registri di accesso'),
-    span: K('노원구시설관리공단', 'Ente gestore di Nowon'),
-    say: K('이 축이 채워지면 판정의 첫 줄이 「정류장을 지나간 사람」에서 「건물에 들어온 사람」으로 바뀐다',
-      'Quando ci sarà, la prima riga passerà da «chi passa alla fermata» a «chi entra»'),
+    span: K('전후 12개월 · 59,273 → 78,096명', 'Dodici mesi · da 59.273 a 78.096'),
+    say: K('앞을 지나간 사람이 아니라 들어온 사람이다 — 분모가 건물 하나여서 가장 정확하다',
+      'Non chi passa davanti ma chi entra: il denominatore è il singolo edificio, l’asse più preciso'),
   },
   {
-    id: 'minwon', dir: 'wait',
+    id: 'minwon', dir: 'good', v: '−3.0%p',
     label: K('민원 건수', 'Reclami'),
-    span: K('노원구청', 'Distretto di Nowon'),
-    say: K('만족의 반대편을 잰다 — 조용한 것이 만족인지 포기인지를 가를 축이다',
-      'Misura il rovescio della soddisfazione: dirà se il silenzio è appagamento o rassegnazione'),
+    span: K('문화체육 · 전체 대비', 'Cultura e sport, sul totale'),
+    say: K('전체 민원이 7.0% 느는 동안 문화체육만 덜 늘었다 — 불만이 이쪽으로 몰리지 않았다',
+      'Mentre il totale sale del 7,0%, cultura e sport crescono meno: le lamentele non si concentrano qui'),
   },
   {
-    id: 'satis', dir: 'wait',
+    id: 'satis', dir: 'good', v: '+0.26',
     label: K('서울서베이 만족도', 'Seoul Survey'),
-    span: K('통계 10305 · 연 단위', 'Statistica 10305, annuale'),
-    say: K('다섯 중 유일하게 직접 묻는 축. 말과 행동이 갈리면 그 갈림이 판정 재료가 된다',
-      'L’unico asse che chiede direttamente: se parole e azioni divergono, è quella divergenza a contare'),
+    span: K('5점 척도 · 2022 → 2025', 'Scala 1–5 · 2022 → 2025'),
+    say: K('3.16에서 3.42로. 다섯 중 유일하게 직접 물은 축이고 행동과 같은 방향을 가리킨다',
+      'Da 3,16 a 3,42: l’unico asse che chiede direttamente, e punta nella stessa direzione dei comportamenti'),
   },
 ]
 
 /** 세어서 배지로 쓴다 — 손으로 적으면 신호를 고칠 때 어긋난다 */
 export const tally = (dir) => SIGNALS.filter((s) => s.dir === dir).length
+
+/** 0 인 등급은 칩을 만들지 않는다 — 빈 칸이 남으면 아직 덜 된 것처럼 읽힌다 */
+export const TALLY = ['good', 'bad', 'wait']
+  .map((d) => ({ d, n: tally(d) }))
+  .filter((x) => x.n > 0)
 
 /**
  * 왜 「지금 좋다」가 「계속 좋다」가 아닌가 — 세 줄.

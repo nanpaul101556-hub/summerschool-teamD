@@ -150,7 +150,6 @@ export const SHEETS = {
   minwon: {
     title: K('실데이터가 없어 예시로 흐름만 보인다',
       'Senza dato reale, resta visibile solo il flusso'),
-    sample: true,
     where: K(
       '노원구 단위 민원 통계는 공개돼 있지 않다. 공공데이터포털에서 실제로 받아 열어 보니 '
       + '전국 처리건수와 언어별 집계뿐이었다(자료 15066811 · 3070323). '
@@ -204,7 +203,6 @@ export const SHEETS = {
 
   entry: {
     title: K('가장 맞는 자료가 무엇에 막혔는가', 'Che cosa blocca il dato più pertinente'),
-    sample: true,
     where: K(
       '이 건물은 노원구시설관리공단이 운영한다. 대관·강좌·전시 이용자 통계를 공단이 갖고 있지만 '
       + '공개돼 있지 않고, 정보공개청구로만 얻는다. 가장 가까운 공개 자료였던 '
@@ -252,7 +250,6 @@ export const SHEETS = {
   satis: {
     title: K('이 자료는 있다 — 받는 길만 막혀 있다',
       'Il dato esiste: è bloccato solo il canale'),
-    sample: true,
     where: K(
       '앞의 둘과 사정이 다르다. 민원은 자치구 단위 자료가 애초에 없고, 출입은 공단이 안 열어 준다. '
       + '만족도는 이미 자치구별로 공표돼 있다 — 서울서베이 도시정책지표조사의 '

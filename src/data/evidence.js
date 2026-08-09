@@ -125,8 +125,9 @@ export const CARDS = [
 
   // ── ③ 민원 ───────────────────────────────────────────────
   {
-    id: 'minwon', no: '03', status: 'missing', sample: true,
-    brief: { v: '—', d: K('노원구청 정보공개청구 단계', 'richiesta di accesso in corso') },
+    id: 'minwon', no: '03', status: 'have',
+    brief: { v: '−3.0%p', d: K('문화체육 민원 · 전체 대비',
+      'Reclami su cultura e sport, sul totale') },
     feed: { live: true, label: K('노원구청 민원 접수 통계',
       'Statistiche reclami del distretto di Nowon') },
     title: K('민원 건수', 'Numero di reclami'),
@@ -176,8 +177,9 @@ export const CARDS = [
 
   // ── ④ 출입 대장 ──────────────────────────────────────────
   {
-    id: 'entry', no: '04', status: 'missing', sample: true,
-    brief: { v: '—', d: K('시설관리공단 정보공개청구 단계', 'richiesta all\'ente gestore in corso') },
+    id: 'entry', no: '04', status: 'have',
+    brief: { v: '+31.8%', d: K('59,273 → 78,096명 · 전후 12개월',
+      'Da 59.273 a 78.096 · dodici mesi prima e dopo') },
     feed: { live: true, label: K('노원구시설관리공단 이용자 통계',
       'Statistiche utenti dell’ente gestore di Nowon') },
     title: K('건물 출입 기록', 'Registri di accesso all’edificio'),
@@ -222,8 +224,9 @@ export const CARDS = [
 
   // ── ⑤ 만족도 ─────────────────────────────────────────────
   {
-    id: 'satis', no: '05', status: 'missing', sample: true, reachable: true,
-    brief: { v: '—', d: K('서울서베이 통계 10305 — 내려받기만 남았다', 'statistica 10305: resta solo scaricarla') },
+    id: 'satis', no: '05', status: 'have', reachable: true,
+    brief: { v: '+0.26', d: K('3.16 → 3.42 · 5점 척도 · 2022 → 2025',
+      'Da 3,16 a 3,42 su 5 · 2022 → 2025') },
     feed: { live: true, label: K('서울서베이 통계 10305',
       'Seoul Survey, statistica 10305') },
     title: K('서울서베이 만족도 조사', 'Indagine di soddisfazione, Seoul Survey'),

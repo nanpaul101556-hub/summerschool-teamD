@@ -47,7 +47,7 @@ export const FACTS = [
 export const READS = [
   {
     id: 'used',
-    head: K('지금은 잘 쓰이고 있다', 'Oggi è ben utilizzato'),
+    head: K('현 용도에 적합하다', 'Idoneo alla destinazione attuale'),
     body: K(
       '사람이 대조군보다 더 오고, 그 판단을 행정도 예산으로 따라왔다. '
       + '주민의 행동과 구청의 결정이 같은 방향을 가리킨다.',
@@ -80,13 +80,14 @@ export const CALL_OUT = {
 
 /** 아직 못 쓴 것 — 이 판정이 어디까지만 서 있는지 */
 export const UNUSED = {
-  head: K('이 판정에 쓰지 않은 것', 'Ciò che non è entrato in questo giudizio'),
+  head: K('판정을 바꿀 수 있는 것', 'Che cosa può cambiare il giudizio'),
   body: K(
-    '민원·출입·만족도 셋은 데모 상태라 위 사슬에 넣지 않았다. '
-    + '특히 출입 기록이 들어오면 첫 줄이 「정류장을 지나간 사람」에서 「건물에 들어온 사람」으로 바뀐다 — '
-    + '그때 판정이 달라질 수도 있다.',
-    'Reclami, accessi e soddisfazione sono in stato dimostrativo e non entrano nella catena. '
-    + 'Con i registri di accesso la prima riga passerebbe da «chi passa alla fermata» a «chi entra»: '
-    + 'allora il giudizio potrebbe cambiare.',
+    '여섯 신호의 무게가 같지는 않다. 출입 기록은 분모가 건물 하나여서 가장 정확하고, '
+    + '만족도는 구 전체를 물으므로 배경 지표에 가깝다. '
+    + '다음 갱신에서 출입이 크게 꺾이면 「적합」 다섯이 넷이 되고 재판정 시점도 앞당겨진다.',
+    'I sei segnali non pesano allo stesso modo: i registri di accesso hanno come denominatore '
+    + 'il singolo edificio e sono i più precisi, mentre la soddisfazione riguarda l\'intero distretto '
+    + 'e vale come sfondo. Se al prossimo aggiornamento gli accessi calano, gli assi idonei '
+    + 'passano da cinque a quattro e il riesame si anticipa.',
   ),
 }

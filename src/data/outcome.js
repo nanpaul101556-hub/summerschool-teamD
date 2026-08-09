@@ -7,9 +7,9 @@
  *
  * 세 칸으로 끝낸다 — 지금 · 언제 · 무엇으로.
  *
- *   지금      +5.3%p  +143%  82.5      잘 쓰이고 있다
- *   2028년    3년 주기 · 마지막 개입 2025년 · 고령 36.2%
- *   그때      +51%p  +35%p             비어 있는 용도 둘
+ *   지금      현 용도에 적합하다      +5.3%p  +143%  82.5▾
+ *   2028년    적합성을 다시 잰다       3년 주기 · 마지막 개입 2025 · 고령 36.2%
+ *   그다음    이 용도로 대응한다       +51%p  +35%p
  *
  * 값은 하나도 여기서 만들지 않는다. 전부 다른 파일에서 끌어온다.
  * 2028 도 우리가 고른 해가 아니라 마지막 개입(2025)에 법정 주기(3년)를 더한 것이다.
@@ -35,9 +35,9 @@ const SITE = STOPS.find((s) => s.lead)
 const AGED = POPULATION.find((p) => p.year === 2042)
 const OPEN = PROGRAMS.filter((p) => p.state === 'open')
 
-/** ① 지금 — 어떻게 쓰이고 있는가 */
+/** ① 지금 — 현 용도에 맞는가 */
 export const NOW = {
-  head: K('잘 쓰이고 있다', 'È ben utilizzato'),
+  head: K('현 용도에 적합하다', 'Idoneo alla destinazione attuale'),
   rows: [
     {
       id: 'bus', dir: 'up', v: card('bus').brief.v,
@@ -61,7 +61,7 @@ export const NOW = {
 /** ② 언제 — 우리가 정하지 않는다 */
 export const WHEN = {
   v: `${NEXT_YEAR}`,
-  head: K('용도를 다시 본다', 'Si riesamina la destinazione'),
+  head: K('적합성을 다시 잰다', 'Si rimisura l’idoneità'),
   rows: [
     {
       id: 'law', v: `${LAW.cycle}년`,
@@ -83,7 +83,7 @@ export const WHEN = {
 
 /** ③ 무엇으로 — 걸어서 닿는 거리에 없는 것만 남는다 */
 export const INTO = {
-  head: K('이 용도가 비어 있다', 'Queste destinazioni sono libere'),
+  head: K('이 용도로 대응한다', 'Si risponde con queste destinazioni'),
   rows: OPEN.map((p) => ({
     id: p.id, v: p.v, k: p.label,
     d: K('인근 같은 용도 시설의 실측 증감', 'Variazione misurata in strutture analoghe vicine'),
