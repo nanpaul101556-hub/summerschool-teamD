@@ -3130,3 +3130,92 @@ button,.dl{transition:transform .2s ease,background-color .2s ease,
   .mm2-l{grid-template-columns:repeat(2,minmax(0,1fr))}
   .mm2-hd{display:none}
 }
+
+/* ===== 03 가독성 ===== */
+/* ============================================================
+   03 읽히게 — 글자 하한 12px, 위계는 「무엇을 뜻하는가」 순
+   ============================================================ */
+
+/* ── 머리 도해 ── */
+.mm2{padding:var(--s5)}
+.mm2>header h3{font-size:21px;margin-bottom:8px}
+.mm2>header p{font-size:14px;line-height:1.7;max-width:74ch}
+.mm2-hd b{font-size:13.5px}
+.mm2-hd span{font-size:12px;line-height:1.45}
+.mm2-l{gap:9px}
+.mm2-ax{padding:12px 13px;gap:3px}
+.mm2-ax em{font-size:11px}
+.mm2-ax b{font-size:14px;line-height:1.35}
+.mm2-ax .q{font-size:12.5px;line-height:1.4}
+.mm2-ax .g{font-size:10.5px;padding:3px 10px;margin-top:8px}
+.mm2-hint{font-size:12.5px;color:var(--ink-3)}
+.mm2-d{padding:15px 17px}
+.mm2-d-h em{font-size:12px}
+.mm2-d-h b{font-size:16px}
+.mm2-d dl{grid-template-columns:132px minmax(0,1fr);gap:9px 14px}
+.mm2-d dt{font-size:12px}
+.mm2-d dd{font-size:14px;line-height:1.75}
+.mm2-d dd.lead{font-size:15px}
+.mm2-f h4{font-size:14px;margin-bottom:10px}
+.mm2-f ol{font-size:13.5px;line-height:1.85;margin-bottom:11px}
+.mm2-f>p{font-size:13.5px;line-height:1.75;max-width:74ch}
+
+/* ── 카드 ── */
+/* 폭을 다시 나눈다 — 제목 열은 좁혀도 되고, 해석 열은 넓어야 줄이 안 접힌다 */
+.ev2-r{grid-template-columns:28px minmax(0,.66fr) minmax(0,1.12fr) minmax(0,1.3fr);
+  gap:0 var(--s4);padding:var(--s5) 0}
+/* 한계는 카드 아래 전체 폭으로 — 좁은 열에 끼면 읽히지 않는다 */
+.ev2-s .lim{margin-top:var(--s3);padding-top:var(--s3);border-top:1px solid var(--rule-2)}
+.ev2-no{font-size:13px}
+.ev2-q h3{font-size:19px;margin-bottom:7px;line-height:1.3}
+/* 이 축이 무엇을 묻는가 — 화면에서 두 번째로 중요한 줄이다 */
+.ev2-q .ask{font-size:15px;color:var(--ink-2);line-height:1.5;margin-bottom:10px}
+.ev2-q .unit{font-size:12px;margin-bottom:10px}
+.ev2-q .grade,.ev2-q .samp{font-size:11px;padding:3px 11px;margin-top:8px}
+
+.ba-s .l{font-size:11px}
+.ba-s b{font-size:clamp(26px,3vw,34px)}
+.ba-s em{font-size:12px}
+.ba-x .d{font-size:14px;font-weight:700}
+.ba-c{font-size:12.5px}
+.ba-c b{font-size:14px}
+.ba-c .ex b{font-size:16px}
+
+.ev2-s ul li{font-size:14px;line-height:1.7;margin-bottom:7px}
+/* 이 축이 말하는 것 — 이 화면에서 가장 중요한 문장 */
+.ev2-s .say{font-size:16px;line-height:1.75;color:var(--ink);padding:var(--s4)}
+.ev2-f{gap:12px}
+.ev2-f .v{font-size:12px;padding:4px 11px}
+.ev2-f .src{font-size:12px}
+.ev2-f .see{font-size:14px;padding:9px 18px}
+.lim{font-size:12.5px;line-height:1.7}
+
+/* ── 데모 표 ── */
+.ev2-samp .cap{padding:11px 14px;gap:11px}
+.ev2-samp-h{font-size:12.5px;line-height:1.5}
+.samp{font-size:11px;padding:3px 10px}
+.ev2-tab th{font-size:11px;padding:9px 12px 7px}
+.ev2-tab td{font-size:13.5px;padding:8px 12px}
+.ev2-samp-n{font-size:12.5px;line-height:1.7;padding:11px 14px}
+
+/* ── 만족도 그래프 ── */
+.mt-lg{font-size:12px}
+
+/* ── 오른쪽 패널 ── */
+.side .lab{font-size:12px;letter-spacing:.1em}
+.side .note{font-size:13px;line-height:1.75}
+.side-h h2{font-size:26px;line-height:1.25}
+.side-h p{font-size:14px;line-height:1.7}
+.tj-ax dt{font-size:12px}
+.tj-ax dd b{font-size:22px}
+.tj-ax dd .s{font-size:11px;padding:3px 10px}
+.tj-ax dd .d{font-size:12.5px;line-height:1.5}
+.evt b{font-size:19px}
+.evt span{font-size:13px}
+
+/* ── 머리와 결론 ── */
+.ev2-h .l{font-size:11.5px}
+.ev2-h b{font-size:17px}
+.ev2-end h2{font-size:26px;line-height:1.3}
+.ev2-end ol li{font-size:14.5px;line-height:1.8}
+.ev2-end .but{font-size:13.5px;line-height:1.75}
