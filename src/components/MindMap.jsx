@@ -145,7 +145,7 @@ export default function MindMap({ site, onClose }) {
                 </foreignObject>
               ))}
 
-              <foreignObject x={X.duty} y={b.mid - 46} width="286" height="92">
+              <foreignObject x={X.duty} y={b.mid - 54} width="300" height="108">
                 <div className="mm-d" xmlns="http://www.w3.org/1999/xhtml">
                   <span className="w">
                     {dutyOf(b.lv.id).words.map((wd) => (

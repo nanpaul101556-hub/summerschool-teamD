@@ -343,30 +343,40 @@ export const PLAN_STATS = {
  * 네 번째 칸까지는 계획이 하는 말이다. 거기서 끊으면 「좋은 말이네」로 끝난다.
  * 그 말이 우리에게 시키는 일을 한 줄로 받아 적는다.
  *
- *   words 그 계획의 방향을 세 낱말로
- *   act   그래서 이 플랫폼이 하는 일
+ *   words 그 계획의 방향 — 낱말이 아니라 수치와 거리로 적는다
+ *   act   그래서 이 건물에 무엇을 하는가 — 「고려한다」가 아니라 동사로 끝낸다
+ *
+ * 「주기마다 용도를 다시 잰다」처럼 쓰면 어느 건물에나 맞는 말이 되어 아무것도
+ * 말하지 않는다. 복합센터로 만든다 · 청년 몫을 비우지 않는다 · 도보권에 없는 것만
+ * 넣는다 — 이 셋은 이 건물에만 맞는 말이고, 그래서 05 의 용도 후보로 이어진다.
  */
 const D = (ko, it) => ({ ko, it })
 
 export const DUTY = [
   {
     id: 'seoul',
-    words: [D('복합', 'Misto'), D('가변', 'Variabile'), D('재사용', 'Riuso')],
-    act: D('주기마다 용도를 다시 잰다', 'Rimisurare la destinazione a ogni ciclo'),
+    words: [D('복합 용도', 'Uso misto'), D('시기별 재정의', 'Ridefinizione per fasi'),
+      D('있는 것 바꿔 쓰기', 'Riuso dell’esistente')],
+    act: D('한 건물에 여러 기능을 겹친 복합센터로 만든다',
+      'Farne un centro che sovrappone più funzioni in un solo edificio'),
   },
   {
     id: 'nowon',
-    words: [D('고령 36.2%', 'Over 65 al 36,2%'), D('존치', 'Conservare'),
+    words: [D('고령 20.4 → 36.2%', 'Over 65: 20,4 → 36,2%'),
+      D('유소년 8.8 → 7.5%', 'Minori: 8,8 → 7,5%'),
       D('세대 교체', 'Ricambio generazionale')],
-    act: D('2042년 인구까지 보고 용도를 고른다',
-      'Scegliere la destinazione guardando alla popolazione del 2042'),
+    act: D('고령을 받되 청년·청소년 몫을 비우지 않는다 — 세대를 안 가르는 기능부터',
+      'Accogliere gli anziani senza togliere spazio a giovani e ragazzi: '
+      + 'prima le funzioni che non dividono le generazioni'),
   },
   {
     id: 'site',
-    words: [D('연계', 'In rete'), D('무장애', 'Senza barriere')],
-    act: D('걸어서 닿는 거리에 없는 것만 넣는다',
-      'Inserire solo ciò che manca entro distanza pedonale'),
+    words: [D('도보 5분', 'Cinque minuti a piedi'), D('미술관 196 m', 'Museo a 196 m'),
+      D('복합지원센터 629 m', 'Polo servizi a 629 m'), D('BF 인증', 'Certificazione BF')],
+    act: D('도보권에 이미 있는 기능은 넘기고, 없는 것만 이 건물에 넣는다',
+      'Lasciare ciò che esiste già nel raggio pedonale e inserire qui solo ciò che manca'),
   },
 ]
+
 
 export const dutyOf = (id) => DUTY.find((d) => d.id === id)
