@@ -76,8 +76,6 @@ export default function MethodMap() {
             <dd>{tx(shown.measures)}</dd>
             <dt>{t('mm.why')}</dt>
             <dd className="lead">{tx(shown.why)}</dd>
-            <dt>{t('mm.blind')}</dt>
-            <dd>{tx(shown.blind)}</dd>
           </dl>
         </div>
       ) : (

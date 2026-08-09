@@ -73,9 +73,54 @@ export const CARDS = [
     src: 'OA-12913 · analyze_events.py',
   },
 
-  // ── ② 민원 ───────────────────────────────────────────────
+  // ── ② 예산 ───────────────────────────────────────────────
   {
-    id: 'minwon', no: '02', status: 'missing', sample: true,
+    id: 'budget', no: '02', status: 'have',
+    title: K('이 건물에 들어간 돈과 노원구가 가는 방향',
+      'La spesa su questo edificio e la direzione del distretto'),
+    ask: K('예산은 어디로 움직였는가', 'Dove si è spostato il bilancio?'),
+    unit: K('노원구 세출예산 실집행 · 백만원', 'Spesa effettiva di Nowon · milioni di won'),
+    before: { period: '2022', v: 149, label: K('이 건물 실집행', 'Speso su questo edificio') },
+    after: { period: '2025', v: 364, label: K('이 건물 실집행', 'Speso su questo edificio') },
+    pct: 143,
+    verdict: 'keep',
+    moves: [
+      { label: K('노인회관 건립 (2023–25)', 'Centro anziani (2023-25)'), v: 521, up: true },
+      { label: K('문화교실 운영 (2025)', 'Corsi culturali (2025)'), v: 190, up: true },
+      { label: K('앞 스마트쉼터 (2025 주민제안)', 'Pensilina smart (proposta 2025)'), v: 158, up: true },
+      { label: K('사무동 리모델링 (2022)', 'Uffici ristrutturati (2022)'), v: 98, up: true },
+      { label: K('임시선별검사소 (2022)', 'Centro tamponi (2022)'), v: 41, up: true },
+    ],
+    facts: [
+      K('이 건물 실집행은 2022년 1.5억 → 2025년 3.6억으로 오히려 늘었다',
+        'La spesa su questo edificio sale da 0,15 a 0,36 mld fra 2022 e 2025'),
+      K('들어간 돈은 전부 「새 용도를 끼워 넣는」 데 쓰였다 — 선별검사소·노인회관·문화교실',
+        'Tutto speso per inserire nuovi usi: centro tamponi, centro anziani, corsi culturali'),
+      K('노원구 시설조성 예산은 4년 사이 58% 줄고 사업 수는 117개에서 70개가 됐다',
+        'Il budget per nuove strutture cala del 58% in quattro anni; i progetti da 117 a 70'),
+    ],
+    reading: K(
+      '노원구는 새로 짓는 일을 줄이고 있는데, 이 건물에는 돈이 계속 들어간다. '
+      + '그 돈이 하는 일은 하나뿐이다 — 있는 껍데기 안에 새 용도를 끼워 넣는 것. '
+      + '이 건물은 이미 우리가 주장하는 방식으로 살아 왔다.',
+      'Nowon riduce le nuove costruzioni, ma su questo edificio continua a spendere. '
+      + 'E quella spesa fa una cosa sola: inserire nuovi usi dentro un guscio esistente. '
+      + 'L\'edificio vive già come sosteniamo debba vivere.',
+    ),
+    limit: K(
+      '처음에는 「노원문화예술회관 리모델링」 94.2억을 이 건물 것으로 넣었다. 틀렸다 — '
+      + '그것은 중계로 181의 다른 건물(2004년 개관, 노원문화재단 운영)이고 2025년 1월 재개관했다. '
+      + '원자료에 「노원구민의 전당」처럼 띄어 쓴 줄이 있어 검색에서 갈렸던 탓이다.',
+      'Inizialmente i 9,42 mld della ristrutturazione erano attribuiti a questo edificio: errore. '
+      + 'Riguardano un altro edificio in Junggye-ro 181 (2004, Fondazione culturale di Nowon), '
+      + 'riaperto nel gennaio 2025. La confusione nasceva da una spaziatura nel nome.',
+    ),
+    src: K('서울재정포털 · building_lines.py', 'Portale finanziario di Seoul · building_lines.py'),
+  },
+
+  // ── ③ 민원 ───────────────────────────────────────────────
+  {
+    id: 'minwon', no: '03', status: 'missing', sample: true,
     title: K('민원 건수', 'Numero di reclami'),
     ask: K('불만이 줄었는가', 'Le lamentele sono diminuite?'),
     facts: [
@@ -121,9 +166,9 @@ export const CARDS = [
       'Esempio · make_minwon_sample.py → analyze_minwon.py'),
   },
 
-  // ── ③ 출입 대장 ──────────────────────────────────────────
+  // ── ④ 출입 대장 ──────────────────────────────────────────
   {
-    id: 'entry', no: '03', status: 'missing', sample: true,
+    id: 'entry', no: '04', status: 'missing', sample: true,
     title: K('건물 출입 기록', 'Registri di accesso all’edificio'),
     ask: K('실제로 건물에 들어온 사람이 늘었는가', 'Sono davvero aumentati gli ingressi?'),
     tab: {
@@ -164,9 +209,9 @@ export const CARDS = [
       'Ente gestore di Nowon — accesso agli atti · esempio make_entry_sample.py'),
   },
 
-  // ── ④ 만족도 ─────────────────────────────────────────────
+  // ── ⑤ 만족도 ─────────────────────────────────────────────
   {
-    id: 'satis', no: '04', status: 'missing', sample: true, reachable: true,
+    id: 'satis', no: '05', status: 'missing', sample: true, reachable: true,
     title: K('말로 물은 만족도', 'La soddisfazione dichiarata'),
     ask: K('주민은 문화환경에 만족한다고 답하는가', 'I residenti si dicono soddisfatti?'),
     tab: {
@@ -212,50 +257,6 @@ export const CARDS = [
       'Portale open data di Seoul, statistica 10305 · esempio make_satis_sample.py'),
   },
 
-  // ── ⑤ 예산 ───────────────────────────────────────────────
-  {
-    id: 'budget', no: '05', status: 'have',
-    title: K('이 건물에 들어간 돈과 노원구가 가는 방향',
-      'La spesa su questo edificio e la direzione del distretto'),
-    ask: K('예산은 어디로 움직였는가', 'Dove si è spostato il bilancio?'),
-    unit: K('노원구 세출예산 실집행 · 백만원', 'Spesa effettiva di Nowon · milioni di won'),
-    before: { period: '2022', v: 149, label: K('이 건물 실집행', 'Speso su questo edificio') },
-    after: { period: '2025', v: 364, label: K('이 건물 실집행', 'Speso su questo edificio') },
-    pct: 143,
-    verdict: 'keep',
-    moves: [
-      { label: K('노인회관 건립 (2023–25)', 'Centro anziani (2023-25)'), v: 521, up: true },
-      { label: K('문화교실 운영 (2025)', 'Corsi culturali (2025)'), v: 190, up: true },
-      { label: K('앞 스마트쉼터 (2025 주민제안)', 'Pensilina smart (proposta 2025)'), v: 158, up: true },
-      { label: K('사무동 리모델링 (2022)', 'Uffici ristrutturati (2022)'), v: 98, up: true },
-      { label: K('임시선별검사소 (2022)', 'Centro tamponi (2022)'), v: 41, up: true },
-    ],
-    facts: [
-      K('이 건물 실집행은 2022년 1.5억 → 2025년 3.6억으로 오히려 늘었다',
-        'La spesa su questo edificio sale da 0,15 a 0,36 mld fra 2022 e 2025'),
-      K('들어간 돈은 전부 「새 용도를 끼워 넣는」 데 쓰였다 — 선별검사소·노인회관·문화교실',
-        'Tutto speso per inserire nuovi usi: centro tamponi, centro anziani, corsi culturali'),
-      K('노원구 시설조성 예산은 4년 사이 58% 줄고 사업 수는 117개에서 70개가 됐다',
-        'Il budget per nuove strutture cala del 58% in quattro anni; i progetti da 117 a 70'),
-    ],
-    reading: K(
-      '노원구는 새로 짓는 일을 줄이고 있는데, 이 건물에는 돈이 계속 들어간다. '
-      + '그 돈이 하는 일은 하나뿐이다 — 있는 껍데기 안에 새 용도를 끼워 넣는 것. '
-      + '이 건물은 이미 우리가 주장하는 방식으로 살아 왔다.',
-      'Nowon riduce le nuove costruzioni, ma su questo edificio continua a spendere. '
-      + 'E quella spesa fa una cosa sola: inserire nuovi usi dentro un guscio esistente. '
-      + 'L\'edificio vive già come sosteniamo debba vivere.',
-    ),
-    limit: K(
-      '처음에는 「노원문화예술회관 리모델링」 94.2억을 이 건물 것으로 넣었다. 틀렸다 — '
-      + '그것은 중계로 181의 다른 건물(2004년 개관, 노원문화재단 운영)이고 2025년 1월 재개관했다. '
-      + '원자료에 「노원구민의 전당」처럼 띄어 쓴 줄이 있어 검색에서 갈렸던 탓이다.',
-      'Inizialmente i 9,42 mld della ristrutturazione erano attribuiti a questo edificio: errore. '
-      + 'Riguardano un altro edificio in Junggye-ro 181 (2004, Fondazione culturale di Nowon), '
-      + 'riaperto nel gennaio 2025. La confusione nasceva da una spaziatura nel nome.',
-    ),
-    src: K('서울재정포털 · building_lines.py', 'Portale finanziario di Seoul · building_lines.py'),
-  },
 ]
 
 export function tally() {
