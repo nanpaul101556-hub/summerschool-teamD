@@ -16,7 +16,7 @@
 
 import { CHAIN, FRAME } from '../data/method'
 import DriftFigure from './DriftFigure'
-import SignalMap from './SignalMap'
+import SignalMap, { SignalList } from './SignalMap'
 import { useLang } from '../i18n'
 
 export default function MethodMap() {
@@ -42,6 +42,7 @@ export default function MethodMap() {
             </div>
           ))}
           <DriftFigure />
+          <SignalMap />
         </div>
 
         <div className="mf-ar" aria-hidden="true">
@@ -57,23 +58,25 @@ export default function MethodMap() {
             <b>{tx(answer.head)}</b>
             <span className="d">{tx(answer.body)}</span>
           </div>
-          <SignalMap />
+          <SignalList />
+
+          {/* 자의 네 단계 — 세로로 쌓아 순서를 못 오해하게 한다 */}
+          <div className="mf-f">
+            <h4>{tx(FRAME.head)}</h4>
+            <ol className="mf-s">
+              {FRAME.steps.map((s, i) => (
+                <li key={tx(s.t)} className={i === FRAME.steps.length - 1 ? 'last' : ''}>
+                  <i>{i + 1}</i>
+                  <b>{tx(s.t)}</b>
+                  <span>{tx(s.d)}</span>
+                </li>
+              ))}
+            </ol>
+          </div>
         </div>
       </div>
 
-      {/* ── 자의 네 단계 · 한 줄 ──────────────────── */}
-      <div className="mf-f">
-        <h4>{tx(FRAME.head)}</h4>
-        <ol className="mf-s">
-          {FRAME.steps.map((s, i) => (
-            <li key={tx(s.t)} className={i === FRAME.steps.length - 1 ? 'last' : ''}>
-              <b>{tx(s.t)}</b>
-              <span>{tx(s.d)}</span>
-            </li>
-          ))}
-        </ol>
-        <p>{tx(FRAME.close)}</p>
-      </div>
+      <p className="mf-e">{tx(FRAME.close)}</p>
     </section>
   )
 }

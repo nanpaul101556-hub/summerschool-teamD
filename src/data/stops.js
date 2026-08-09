@@ -61,10 +61,10 @@ export const CONTROL = { idx: 91.1, n: 536, label: K('노원구 평균', 'Media 
 export const STOP_MAX = Math.max(...STOPS.map((s) => s.raw))
 
 /**
- * 원 반지름 — 대상지 앞과 미술관 앞이 182 m 라 이 축척에서 30 px 안쪽이다.
+ * 원 반지름 — 대상지 앞과 미술관 앞이 182 m 라 지도를 키워도 40 px 안쪽이다.
  * 원이 그보다 커지면 두 개가 한 덩어리로 보인다.
  */
-export const rOf = (raw) => 5 + 15 * Math.sqrt(raw / STOP_MAX)
+export const rOf = (raw) => 6 + 18 * Math.sqrt(raw / STOP_MAX)
 
 export const STOP_META = {
   month: '2026.07',
