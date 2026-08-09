@@ -3680,3 +3680,37 @@ button,.dl{transition:transform .2s ease,background-color .2s ease,
   .tc-r li{grid-template-columns:80px minmax(0,1fr);row-gap:3px}
   .tc-r .d{grid-column:2}
 }
+
+
+/* ===== 05 층별 잔존 수명 — 물리적 가치는 여기서 말한다 ===== */
+.ll{margin:0 0 var(--s5)}
+.ll>header{display:flex;align-items:baseline;gap:12px;flex-wrap:wrap;
+  padding-bottom:var(--s2);border-bottom:2px solid var(--ink);margin-bottom:var(--s4)}
+.ll>header h3{margin:0;font-size:19px;letter-spacing:-.03em}
+.ll>header span{font-size:13px;color:var(--ink-3)}
+.ll ol{list-style:none;margin:0;padding:0;background:var(--tile-1);
+  border-radius:var(--r-lg);padding:var(--s3) var(--s5)}
+.ll li{display:grid;grid-template-columns:150px minmax(0,1fr) 76px 116px;
+  align-items:center;gap:18px;padding:14px 0;border-bottom:1px solid var(--rule-2)}
+.ll li:last-child{border-bottom:0}
+.ll .nm{display:flex;flex-direction:column;gap:2px;min-width:0}
+.ll .nm b{font-size:14px;font-weight:700;letter-spacing:-.02em;color:var(--ink)}
+.ll .nm em{font-style:normal;font-size:10.5px;color:var(--ink-4);
+  font-variant-numeric:tabular-nums}
+.ll .bar{height:9px;border-radius:5px;background:var(--tile-3);overflow:hidden}
+.ll .bar i{display:block;height:100%;border-radius:5px;background:var(--ink-3)}
+.ll li:first-child .bar i{background:var(--blue-on-dark)}
+.ll .left,.ll .due{display:flex;flex-direction:column;gap:1px;text-align:right}
+.ll .left b{font-size:21px;font-weight:700;letter-spacing:-.04em;color:var(--ink);
+  font-variant-numeric:tabular-nums}
+.ll .left em,.ll .due em{font-style:normal;font-size:10.5px;color:var(--ink-4)}
+.ll .due b{font-size:15px;font-weight:700;letter-spacing:-.03em;
+  color:var(--blue-on-dark);font-variant-numeric:tabular-nums}
+.ll li.unsure .nm em{color:var(--ink-3)}
+.ll li.unsure .nm em::after{content:' *'}
+.ll-n{margin:var(--s3) 0 0;font-size:11.5px;line-height:1.7;color:var(--ink-4);max-width:88ch}
+
+@media (max-width:900px){
+  .ll li{grid-template-columns:1fr 70px;row-gap:8px}
+  .ll .bar{grid-column:1 / -1;order:3}
+}

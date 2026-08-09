@@ -194,6 +194,19 @@ export const DICT = {
       + '계획이 우리 방식을 지시한 것은 아닙니다.',
 
     // 03 정량 근거
+    'll.title': '물리적으로 얼마나 남았는가',
+    'll.sub': '층마다 수명이 다릅니다 — 쓴 만큼 줄어들 뿐, 갑자기 떨어지지 않습니다',
+    'll.of': '수명 {life}년 · {last}년부터',
+    'll.left': '년 남음',
+    'll.due.fit': '내장 교체',
+    'll.due.svc': '설비 교체',
+    'll.due.str': '구조 수명 도래',
+    'll.note':
+      '{now}년 기준입니다. 물리적 가치는 층마다 선형으로 닳습니다 — 계수를 넣지 않았고 '
+      + '넣을 자리도 없습니다. 이만큼이 아니라 급격히 떨어지는 경우는 화재나 붕괴처럼 '
+      + '사고가 났을 때입니다. 설비만 마지막 교체일을 확인하지 못해 준공 기준으로 셌습니다.',
+    'lcx.title': '이용은 손대지 않으면 계속 빠진다',
+    'lcx.sub': '정류장 승하차 지수 · 2026년 = 100 · 물리 성능이 아닙니다',
     'tc.title': '두 시계가 겹치는 해에 손댄다',
     'tc.sub': '건물이 낡는 속도와 동네가 변하는 속도는 다릅니다',
     'tc.phys': '물리 시계',
@@ -210,8 +223,6 @@ export const DICT = {
       '시계 하나만 보면 공사를 두 번 합니다. 용도를 바꾸려고 한 번 뜯고, '
       + '몇 년 뒤 설비 때문에 또 뜯습니다. 겹치는 해에 한 번에 하면 그 두 번이 한 번이 됩니다. '
       + '{big}년이 가장 큰 자리입니다 — 구조 수명이 닿고, 그 무렵 용도 주기({gap})도 돌아옵니다.',
-    'lcx.title': '손대지 않으면 값은 계속 내려간다',
-    'lcx.sub': '2026년 = 100 · 세로선은 두 시계가 겹치는 해',
     'lcx.plan': '겹치는 해에 손대면 평균 {n}',
     'lcx.none': '손대지 않으면 평균 {n}',
     'tm.title': '언제 손봐야 하는가',
@@ -701,6 +712,20 @@ export const DICT = {
       + 'non è il piano a prescrivere il nostro metodo.',
 
     // 03 evidenze quantitative
+    'll.title': 'Quanta vita utile resta, strato per strato',
+    'll.sub': 'Ogni strato ha una durata diversa: si consuma per quanto lo si usa, non crolla di colpo',
+    'll.of': 'Durata {life} anni · dal {last}',
+    'll.left': 'anni residui',
+    'll.due.fit': 'Rifacimento finiture',
+    'll.due.svc': 'Sostituzione impianti',
+    'll.due.str': 'Fine vita strutturale',
+    'll.note':
+      'Riferito al {now}. Il valore fisico si consuma in modo lineare, strato per strato: '
+      + 'non ci sono coefficienti e non c\'è spazio per inventarne. Un calo brusco come quello '
+      + 'di una curva d\'uso corrisponderebbe a un incendio o a un crollo. Solo per gli impianti '
+      + 'la data dell\'ultima sostituzione non è verificata: si conta dall\'agibilità.',
+    'lcx.title': 'Senza interventi l\'uso continua a calare',
+    'lcx.sub': 'Indice dei flussi alla fermata · 2026 = 100 · non è la prestazione fisica',
     'tc.title': 'Si interviene dove i due orologi coincidono',
     'tc.sub': 'L\'edificio invecchia a una velocità, il quartiere cambia a un\'altra',
     'tc.phys': 'Orologio fisico',
@@ -718,8 +743,6 @@ export const DICT = {
       + 'e pochi anni dopo un\'altra per gli impianti. Facendo tutto dove i cicli coincidono, '
       + 'due cantieri diventano uno. Il {big} è il punto decisivo: la struttura arriva a fine '
       + 'vita e nello stesso periodo torna il ciclo d\'uso ({gap}).',
-    'lcx.title': 'Senza interventi il valore continua a scendere',
-    'lcx.sub': '2026 = 100 · le verticali sono gli anni in cui i due orologi coincidono',
     'lcx.plan': 'Intervenendo alle coincidenze: media {n}',
     'lcx.none': 'Senza interventi: media {n}',
     'tm.title': 'Quando intervenire',

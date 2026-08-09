@@ -131,3 +131,39 @@ export const WORK_YEARS = MEET_YEARS.map((m) => ({
   year: m.a,
   layers: m.layer === 'str' ? ['structure', 'space'] : [LAYER[m.layer]],
 }))
+
+/**
+ * 층별 잔존 수명 — 물리적 가치는 이렇게 말한다.
+ *
+ * 05 의 곡선은 정류장 승하차 지수인데 이름을 「값」이라고 붙였다. 그러면
+ * 생애주기 비용의 물리 성능 곡선으로 읽히고, 실제 물리 성능은 그렇게
+ * 출렁이지 않는다 — 그만큼 떨어지려면 화재가 나거나 무너져야 한다.
+ *
+ * 물리적 가치를 정직하게 적는 방법은 층마다 수명을 얼마나 썼는지를 그대로
+ * 보이는 것이다. 선형이고, 계수가 없고, 지어낼 자리가 없다.
+ *
+ *   구조  1989 + 50년   37년 썼다 · 13년 남았다 → 2039
+ *   설비  2019 + 15년    7년 썼다 ·  8년 남았다 → 2034
+ *   내장  2025 +  6년    1년 썼다 ·  5년 남았다 → 2031
+ *
+ * 남은 햇수가 곧 겹침의 자리다. 두 시계 그림과 같은 값에서 나온다.
+ */
+export const LIFE_LEFT = PHYSICAL.map((p) => {
+  const life = (p.life[0] + p.life[1]) / 2
+  /** 주기가 되풀이되는 층은 마지막 교체가 언제였는지부터 되짚는다 */
+  const cycles = Math.floor((NOW - p.from) / life)
+  const last = p.from + cycles * life
+  const used = NOW - last
+  return {
+    id: p.id,
+    label: p.label,
+    base: p.base,
+    sure: p.sure,
+    life,
+    last,
+    used,
+    left: Math.max(life - used, 0),
+    pct: Math.min(used / life, 1),
+    due: last + life,
+  }
+}).sort((a, b) => a.due - b.due)
