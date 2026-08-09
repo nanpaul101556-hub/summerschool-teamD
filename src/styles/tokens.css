@@ -3223,37 +3223,58 @@ button,.dl{transition:transform .2s ease,background-color .2s ease,
 /* ===== 03 카드 그리드 ===== */
 .ev3{max-width:1180px;margin:0 auto;padding-bottom:var(--s7)}
 
-/* ── 머리 · 왜 이 근거가 필요한가 ───────────────────────── */
+/* ── 머리 · 왜 이 근거가 필요한가 ───────────────────────
+   문제 둘을 왼쪽에 묶고 우리가 만든 것을 오른쪽에 크게 —
+   대비가 설명을 대신한다. */
 .mf{background:var(--tile-1);border-radius:var(--r-lg);padding:var(--s5);
   margin-bottom:var(--s6)}
 .mf>header{margin-bottom:var(--s4)}
-.mf>header h3{margin:0 0 6px;font-size:21px;letter-spacing:-.03em}
-.mf>header p{margin:0;font-size:14px;line-height:1.7;color:var(--ink-3);max-width:74ch}
+.mf>header h3{margin:0;font-size:21px;letter-spacing:-.03em}
 
-.mf-c{list-style:none;margin:0 0 var(--s4);padding:0;
-  display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:9px}
-.mf-c li{background:var(--tile-3);border-radius:var(--r-md);padding:13px 15px;
-  display:flex;flex-direction:column;gap:5px;position:relative}
-.mf-c li+li::before{content:'';position:absolute;left:-7px;top:50%;
-  width:5px;height:1px;background:var(--rule)}
-.mf-c .n{font-size:10px;letter-spacing:.1em;color:var(--ink-4)}
-.mf-c b{font-size:14px;letter-spacing:-.025em;line-height:1.4}
-.mf-c .d{font-size:12.5px;line-height:1.6;color:var(--ink-3)}
-.mf-c li.rule{background:var(--tile-2)}
-.mf-c li.rule b{color:var(--blue-on-dark)}
+.mf-x{display:grid;grid-template-columns:minmax(0,1fr) 52px minmax(0,1.15fr);
+  align-items:center;gap:var(--s2);margin-bottom:var(--s5)}
+.mf .cap{display:block;font-size:11px;letter-spacing:.12em;text-transform:uppercase;
+  color:var(--ink-4);margin-bottom:9px}
 
+.mf-p{display:flex;flex-direction:column;gap:8px}
+.mf-i{background:var(--tile-3);border-radius:var(--r-md);padding:13px 15px}
+.mf-i b{display:block;font-size:15px;letter-spacing:-.025em;line-height:1.35;
+  color:var(--ink-2);margin-bottom:3px}
+.mf-i span{font-size:12.5px;line-height:1.55;color:var(--ink-3)}
+
+.mf-ar svg{display:block;width:100%;height:16px}
+.mf-ar path{fill:none;stroke:var(--ink-3);stroke-width:1.4}
+
+.mf-a{background:var(--tile-2);border:1px solid var(--blue-on-dark);
+  border-radius:var(--r-lg);padding:var(--s4) var(--s5)}
+.mf-a .cap{color:var(--blue-on-dark)}
+.mf-a b{display:block;font-size:26px;letter-spacing:-.035em;line-height:1.2;
+  margin-bottom:7px}
+.mf-a .d{font-size:14px;line-height:1.6;color:var(--ink-2)}
+
+/* 자의 네 단계 — 한 줄로 흘린다 */
 .mf-f{border-top:1px solid var(--rule-2);padding-top:var(--s4)}
-.mf-f h4{margin:0 0 10px;font-size:14px;letter-spacing:-.02em}
-.mf-s{list-style:none;margin:0 0 11px;padding:0;display:flex;gap:8px;flex-wrap:wrap}
-.mf-s li{flex:1 1 190px;display:flex;align-items:flex-start;gap:8px;
-  background:var(--tile-3);border-radius:var(--r-sm);padding:10px 12px;
-  font-size:12.5px;line-height:1.55;color:var(--ink-3)}
-.mf-s li:last-child{color:var(--ink);background:var(--tile-2)}
-.mf-s .n{flex:none;width:17px;height:17px;border-radius:var(--r-pill);
-  background:var(--tile-1);color:var(--ink-3);font-size:10px;
-  display:flex;align-items:center;justify-content:center;margin-top:1px}
-.mf-s li:last-child .n{background:var(--blue);color:#fff}
+.mf-f h4{margin:0 0 11px;font-size:14px;letter-spacing:-.02em}
+.mf-s{list-style:none;margin:0 0 12px;padding:0;
+  display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:7px}
+.mf-s li{position:relative;background:var(--tile-3);border-radius:var(--r-sm);
+  padding:11px 13px}
+.mf-s li+li::before{content:'';position:absolute;left:-6px;top:50%;
+  width:0;height:0;border-left:5px solid var(--rule);
+  border-top:4px solid transparent;border-bottom:4px solid transparent}
+.mf-s b{display:block;font-size:13px;letter-spacing:-.02em;line-height:1.3;
+  color:var(--ink-2);margin-bottom:3px}
+.mf-s span{font-size:11.5px;line-height:1.5;color:var(--ink-3)}
+.mf-s li.last{background:var(--tile-2)}
+.mf-s li.last b{color:var(--blue-on-dark)}
+.mf-s li.last span{color:var(--ink-2)}
 .mf-f>p{margin:0;font-size:13.5px;line-height:1.7;color:var(--ink-2);max-width:74ch}
+
+@media (max-width:1180px){
+  .mf-x{grid-template-columns:1fr}
+  .mf-ar{display:none}
+  .mf-s{grid-template-columns:repeat(2,minmax(0,1fr))}
+}
 
 /* ── 다섯 갈래 ─────────────────────────────────────────── */
 .ev3-h{display:flex;align-items:baseline;gap:12px;padding-bottom:var(--s2);

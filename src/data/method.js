@@ -116,14 +116,25 @@ export const WHY = {
 /** 어떻게 재는가 — 다섯 갈래에 똑같이 적용하는 틀 */
 export const FRAME = {
   head: K('다섯 갈래에 같은 자를 댄다', 'Lo stesso metro su cinque assi'),
+  /** 제목은 짧게, 이유는 한 줄. 왼쪽에서 오른쪽으로 읽히면 설명이 끝난다. */
   steps: [
-    K('이 건물이 바뀐 달을 기준으로 앞뒤 12개월을 자른다',
-      'Si tagliano dodici mesi prima e dopo il mese in cui l\'edificio è cambiato'),
-    K('전과 후의 차이를 낸다', 'Si calcola la differenza fra prima e dopo'),
-    K('같은 기간 노원구 전체의 변화를 뺀다 — 동네가 같이 오른 건 이 건물 공이 아니다',
-      'Si sottrae la variazione dell\'intero distretto: se sale tutto il quartiere, non è merito dell\'edificio'),
-    K('남은 것이 초과분이다. 이것만 이 건물이 만든 몫이다',
-      'Ciò che resta è lo scostamento: solo questo è opera dell\'edificio'),
+    {
+      t: K('기준 달 전후 12개월', 'Dodici mesi prima e dopo'),
+      d: K('2021.05 에 이 건물이 바뀌었다', 'L\'edificio cambia nel maggio 2021'),
+    },
+    {
+      t: K('전과 후의 차이', 'La differenza'),
+      d: K('얼마나 움직였는가', 'Di quanto si è mosso'),
+    },
+    {
+      t: K('노원구 전체를 뺀다', 'Meno l\'intero distretto'),
+      d: K('동네가 같이 오른 건 이 건물 공이 아니다',
+        'Se sale tutto il quartiere non è merito suo'),
+    },
+    {
+      t: K('남은 것이 초과분', 'Ciò che resta è lo scostamento'),
+      d: K('이것만 이 건물이 만든 몫이다', 'Solo questo è opera dell\'edificio'),
+    },
   ],
   close: K(
     '한 축만 보면 속는다. 말과 행동이 갈리는 지점, 행동과 행정이 갈리는 지점 — '
@@ -134,35 +145,27 @@ export const FRAME = {
 }
 
 /**
- * 왜 이 근거가 필요한가 — 카드 앞에 서는 네 걸음.
- * 갈래별 상세는 카드가 맡으므로 여기서는 흐름만 말한다.
+ * 왜 이 근거가 필요한가 — 세 덩어리.
+ *
+ * 넷으로 늘어놓았더니 문제와 해법이 같은 무게로 보여, 읽어야 이해되는 그림이 됐다.
+ * 문제 둘 · 우리가 만든 것 하나로 줄이고 글자를 깎는다.
+ * 마지막 칸만 강조해 「그래서 이걸 만들었다」가 눈에 먼저 들어오게 한다.
  */
 export const CHAIN = [
   {
     id: 'problem',
-    head: K('용도는 한번 정하면 수십 년 간다', 'Una destinazione dura decenni'),
-    body: K('그 사이 동네는 늙고, 예산도 상위계획도 바뀐다',
-      'Nel frattempo il quartiere invecchia e cambiano bilanci e piani'),
+    head: K('용도는 고정, 동네는 변한다', 'L\'uso è fisso, il quartiere cambia'),
+    body: K('준공 때 정한 용도가 수십 년 간다', 'La destinazione fissata all\'apertura dura decenni'),
   },
   {
     id: 'gap',
-    head: K('그런데 아직 맞는 용도인지 아무도 다시 묻지 않는다',
-      'Eppure nessuno torna a chiedere se quella destinazione regga ancora'),
-    body: K('물어도 감으로 답한다 — 잴 자가 없기 때문이다',
-      'E se lo si chiede, si risponde a intuito: manca un metro'),
-  },
-  {
-    id: 'how',
-    head: K('만족은 직접 잴 수 없다', 'La soddisfazione non si misura direttamente'),
-    body: K('물어보면 말은 듣지만 사람은 말과 다르게 움직인다 — '
-      + '그래서 말한 것 · 행동한 것 · 행정이 본 것, 세 층위로 나눠 묻는다',
-      'Chiedendo si ottengono parole, ma si agisce diversamente: '
-      + 'perciò si interroga su tre livelli — dichiarato, comportamento, amministrazione'),
+    head: K('어긋나도 잴 자가 없다', 'Nessun metro per misurare lo scarto'),
+    body: K('그래서 감으로 결정한다', 'Così si decide a intuito'),
   },
   {
     id: 'rule',
-    head: K('다섯 갈래에 같은 자를 댄다', 'Lo stesso metro su cinque assi'),
-    body: K('축마다 다른 잣대를 쓰면 견줄 수 없다. 아래 넷을 전부 똑같이 적용한다',
-      'Con metri diversi non si confronta: le quattro regole qui sotto valgono per tutti'),
+    head: K('그 자를 만든다', 'Costruiamo quel metro'),
+    body: K('만족을 다섯 갈래로 나눠 같은 방식으로 잰다',
+      'Misurando la soddisfazione su cinque assi, tutti allo stesso modo'),
   },
 ]

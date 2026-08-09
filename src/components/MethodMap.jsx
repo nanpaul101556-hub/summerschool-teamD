@@ -1,15 +1,14 @@
 /**
- * 03 머리 — 왜 이 근거가 필요한가, 그리고 어떻게 재는가.
+ * 03 머리 — 왜 이 근거가 필요한가.
  *
- * 카드 다섯을 먼저 보여 주면 「그래서 이게 왜 필요한데」가 남는다.
- * 그 물음에 먼저 답하고 카드로 내려간다.
+ * 넷을 나란히 늘어놓았더니 문제와 해법이 같은 무게로 보여,
+ * 「읽어야 이해되는 그림」이 됐다. 그림이 논리를 대신하지 못한 것이다.
  *
- *   ① 문제  용도는 수십 년 가는데 동네는 계속 변한다
- *   ② 공백  그런데 아무도 다시 묻지 않는다
- *   ③ 방법  만족은 직접 못 재니 세 층위로 나눠 묻는다
- *   ④ 자    다섯 갈래에 같은 자를 댄다
+ * 문제 둘을 왼쪽에 묶고, 우리가 만든 것 하나를 오른쪽에 크게 놓는다.
+ * 가운데 굵은 화살표 하나가 그 둘을 잇는다 — 대비가 설명을 대신한다.
  *
- * 갈래별 상세는 카드가 맡는다 — 여기서는 흐름만 말한다.
+ * 자의 네 단계는 세로로 쌓지 않고 한 줄로 흘린다. 계산은 순서가 전부이므로
+ * 왼쪽에서 오른쪽으로 읽히면 그것으로 설명이 끝난다.
  */
 
 import { CHAIN, FRAME } from '../data/method'
@@ -18,32 +17,49 @@ import { useLang } from '../i18n'
 export default function MethodMap() {
   const { t, tx } = useLang()
 
+  const problems = CHAIN.filter((c) => c.id !== 'rule')
+  const answer = CHAIN.find((c) => c.id === 'rule')
+
   return (
     <section className="mf">
       <header>
         <h3>{t('mf.title')}</h3>
-        <p>{t('mf.sub')}</p>
       </header>
 
-      {/* ── 왜 필요한가 ─────────────────────────── */}
-      <ol className="mf-c">
-        {CHAIN.map((c, i) => (
-          <li key={c.id} className={c.id}>
-            <span className="n num">{String(i + 1).padStart(2, '0')}</span>
-            <b>{tx(c.head)}</b>
-            <span className="d">{tx(c.body)}</span>
-          </li>
-        ))}
-      </ol>
+      {/* ── 문제 → 우리가 만든 것 ─────────────────── */}
+      <div className="mf-x">
+        <div className="mf-p">
+          <span className="cap">{t('mf.problem')}</span>
+          {problems.map((c) => (
+            <div key={c.id} className="mf-i">
+              <b>{tx(c.head)}</b>
+              <span>{tx(c.body)}</span>
+            </div>
+          ))}
+        </div>
 
-      {/* ── 어떻게 재는가 ───────────────────────── */}
+        <div className="mf-ar" aria-hidden="true">
+          <svg viewBox="0 0 40 16" preserveAspectRatio="none">
+            <path d="M0,8 H30" />
+            <path d="M24,3 L31,8 L24,13" />
+          </svg>
+        </div>
+
+        <div className="mf-a">
+          <span className="cap">{t('mf.answer')}</span>
+          <b>{tx(answer.head)}</b>
+          <span className="d">{tx(answer.body)}</span>
+        </div>
+      </div>
+
+      {/* ── 자의 네 단계 · 한 줄 ──────────────────── */}
       <div className="mf-f">
         <h4>{tx(FRAME.head)}</h4>
         <ol className="mf-s">
           {FRAME.steps.map((s, i) => (
-            <li key={tx(s)}>
-              <span className="n num">{i + 1}</span>
-              <span>{tx(s)}</span>
+            <li key={tx(s.t)} className={i === FRAME.steps.length - 1 ? 'last' : ''}>
+              <b>{tx(s.t)}</b>
+              <span>{tx(s.d)}</span>
             </li>
           ))}
         </ol>

@@ -220,7 +220,8 @@ export const DICT = {
     'tj.g.verified': '실측 검증 완료',
     'tj.g.collecting': '계산 검증 완료',
     'mf.title': '이 근거는 왜 필요한가',
-    'mf.sub': '다섯 갈래를 보기 전에, 왜 다섯으로 나눠 재는지부터 봅니다.',
+    'mf.problem': '지금까지',
+    'mf.answer': '그래서 만든 것',
     'mm.title': '무엇으로 「만족한다」를 재는가',
     'mm.sub':
       '만족은 직접 잴 수 없습니다. 물어보면 말은 듣지만 사람은 말과 다르게 움직입니다. '
@@ -674,7 +675,8 @@ export const DICT = {
     'tj.g.verified': 'misurato e verificato',
     'tj.g.collecting': 'calcolo verificato',
     'mf.title': 'Perché servono queste prove',
-    'mf.sub': 'Prima dei cinque assi, perché la misura è divisa in cinque.',
+    'mf.problem': 'Finora',
+    'mf.answer': 'Ciò che abbiamo costruito',
     'mm.title': 'Come si misura la soddisfazione',
     'mm.sub':
       'La soddisfazione non si misura direttamente: chiedendo si ottengono parole, ma le persone '
