@@ -125,7 +125,8 @@ export default function DataView({ site, onStep, onReset, onNext }) {
                 {c.feed && (
                   <span className={`ec-f${c.feed.live ? ' live' : ''}`}>
                     <i aria-hidden="true" />
-                    {c.feed.live ? t('ms.live') : tx(c.feed.label)}
+                    {c.feed.live && <em>{t('ms.live')}</em>}
+                    {tx(c.feed.label)}
                   </span>
                 )}
               </button>
