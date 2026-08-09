@@ -72,6 +72,8 @@ export const CARDS = [
       + 'Nel breve è salito, nel lungo non è tornato: entrambe le cose sono vere.',
     ),
     src: 'OA-12913 · analyze_events.py',
+    feed: { live: false, label: K('서울 열린데이터광장 OA-12913 · 월 공표분',
+      'Open Data Seoul OA-12913 · pubblicazione mensile') },
   },
 
   // ── ② 예산 ───────────────────────────────────────────────
@@ -117,12 +119,16 @@ export const CARDS = [
       + 'riaperto nel gennaio 2025. La confusione nasceva da una spaziatura nel nome.',
     ),
     src: K('서울재정포털 · building_lines.py', 'Portale finanziario di Seoul · building_lines.py'),
+    feed: { live: false, label: K('서울재정포털 세출예산서 · 연 공표분',
+      'Portale finanziario di Seoul · pubblicazione annuale') },
   },
 
   // ── ③ 민원 ───────────────────────────────────────────────
   {
     id: 'minwon', no: '03', status: 'missing', sample: true,
     brief: { v: '—', d: K('노원구청 정보공개청구 단계', 'richiesta di accesso in corso') },
+    feed: { live: false, label: K('노원구청 정보공개청구 진행 중',
+      'Richiesta di accesso al distretto di Nowon in corso') },
     title: K('민원 건수', 'Numero di reclami'),
     ask: K('불만이 줄었는가', 'Le lamentele sono diminuite?'),
     facts: [
@@ -172,6 +178,8 @@ export const CARDS = [
   {
     id: 'entry', no: '04', status: 'missing', sample: true,
     brief: { v: '—', d: K('시설관리공단 정보공개청구 단계', 'richiesta all\'ente gestore in corso') },
+    feed: { live: false, label: K('노원구시설관리공단 정보공개청구 진행 중',
+      'Richiesta di accesso all’ente gestore in corso') },
     title: K('건물 출입 기록', 'Registri di accesso all’edificio'),
     ask: K('실제로 건물에 들어온 사람이 늘었는가', 'Sono davvero aumentati gli ingressi?'),
     tab: {
@@ -216,6 +224,8 @@ export const CARDS = [
   {
     id: 'satis', no: '05', status: 'missing', sample: true, reachable: true,
     brief: { v: '—', d: K('서울서베이 통계 10305 — 내려받기만 남았다', 'statistica 10305: resta solo scaricarla') },
+    feed: { live: false, label: K('서울서베이 통계 10305 · 연 공표분',
+      'Seoul Survey, statistica 10305 · pubblicazione annuale') },
     title: K('서울서베이 만족도 조사', 'Indagine di soddisfazione, Seoul Survey'),
     ask: K('주민은 문화환경에 만족한다고 답하는가', 'I residenti si dicono soddisfatti?'),
     tab: {

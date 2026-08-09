@@ -6,12 +6,13 @@
  * 상자를 지우고 그 자리를 그림에 준다.
  *
  * 왼쪽은 무엇을 봤는가 — 시간(인구)과 공간(지도).
- * 오른쪽은 어떻게 재는가 — 정류장별 수치와 자의 네 단계.
+ * 오른쪽은 어떻게 재는가 — 정류장별 수치, 자의 네 단계, 그리고 네 줄 요약.
  * 닫는 문장만 아래에 폭 전체로 남긴다. 양쪽을 다 받는 말이라 그 자리가 맞다.
  */
 
 import { FRAME, LEAD } from '../data/method'
 import DriftFigure from './DriftFigure'
+import MethodSummary from './MethodSummary'
 import SignalMap, { SignalList } from './SignalMap'
 import { useLang } from '../i18n'
 
@@ -49,6 +50,8 @@ export default function MethodMap() {
               ))}
             </ol>
           </div>
+
+          <MethodSummary />
         </div>
       </div>
 

@@ -122,6 +122,12 @@ export default function DataView({ site, onStep, onReset, onNext }) {
                 </div>
                 <p className="say">{tx(c.reading)}</p>
                 <span className="ec-go">{t('ev.see')}</span>
+                {c.feed && (
+                  <span className={`ec-f${c.feed.live ? ' live' : ''}`}>
+                    <i aria-hidden="true" />
+                    {c.feed.live ? t('ms.live') : tx(c.feed.label)}
+                  </span>
+                )}
               </button>
             )
           })}
