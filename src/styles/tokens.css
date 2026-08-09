@@ -3459,3 +3459,97 @@ button,.dl{transition:transform .2s ease,background-color .2s ease,
   .ec-lb{display:none}
   .ec{grid-row:auto}
 }
+
+/* ===== 04 판정 — 좋은가 나쁜가 ===== */
+.vj{max-width:1000px;margin:0 auto;padding-bottom:var(--s7)}
+
+/* ① 결론을 먼저 크게. 이 화면이 답할 것은 하나뿐이다. */
+.vj-call{border-top:2px solid var(--ink);padding:var(--s5) 0 var(--s5)}
+.vj-call .cap{display:block;font-size:11px;letter-spacing:.12em;
+  text-transform:uppercase;color:var(--ink-4);margin-bottom:12px}
+.vj-call h2{margin:0 0 var(--s3);font-size:clamp(24px,3.2vw,36px);font-weight:700;
+  letter-spacing:-.04em;line-height:1.2;text-wrap:balance}
+.vj-call p{margin:0;font-size:15px;line-height:1.78;color:var(--ink-2);max-width:68ch}
+.vj-cnt{list-style:none;display:flex;flex-wrap:wrap;gap:10px;margin:var(--s4) 0 0;padding:0}
+.vj-cnt li{display:flex;align-items:baseline;gap:7px;padding:9px 15px;
+  background:var(--tile-3);border-radius:var(--r-pill)}
+.vj-cnt b{font-size:19px;font-weight:700;letter-spacing:-.04em;
+  font-variant-numeric:tabular-nums}
+.vj-cnt span{font-size:12.5px;color:var(--ink-3)}
+.vj-cnt .good b{color:var(--blue-on-dark)}
+.vj-cnt .bad b{color:var(--ink)}
+.vj-cnt .wait b{color:var(--ink-4)}
+
+/* ② 신호 — 왼쪽 색 막대 하나로 좋다·나쁘다가 읽힌다 */
+.vj-s,.vj-r,.vj-d,.vj-ph{padding-top:var(--s5)}
+.vj-sl{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:1px;
+  background:var(--rule-2);border-radius:var(--r-md);overflow:hidden}
+.vj-sl li{display:grid;grid-template-columns:4px minmax(0,190px) 92px minmax(0,1fr);
+  align-items:center;gap:16px;background:var(--tile-1);padding:15px 18px 15px 0}
+.vj-sl .mk{align-self:stretch;background:var(--ink-4)}
+.vj-sl li.good .mk{background:var(--blue-on-dark)}
+.vj-sl li.bad .mk{background:#fff}
+.vj-sl li.wait .mk{background:var(--rule)}
+.vj-sl .nm{display:flex;flex-direction:column;gap:2px;min-width:0}
+.vj-sl .nm b{font-size:14px;font-weight:600;letter-spacing:-.025em;color:var(--ink)}
+.vj-sl .nm em{font-style:normal;font-size:11px;color:var(--ink-4)}
+.vj-sl .v{font-size:21px;font-weight:700;letter-spacing:-.04em;text-align:right;
+  font-variant-numeric:tabular-nums;color:var(--ink)}
+.vj-sl li.good .v{color:var(--blue-on-dark)}
+.vj-sl li.wait .v{font-size:12.5px;font-weight:600;color:var(--ink-4)}
+.vj-sl .say{font-size:13px;line-height:1.65;color:var(--ink-2)}
+.vj-sl li.wait .say{color:var(--ink-3)}
+
+/* ③ 둘이 합쳐야 나오는 말 */
+.vj-rl{display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:10px}
+.vj-rl article{background:var(--tile-2);border-radius:var(--r-md);padding:var(--s4)}
+.vj-rl b{display:block;font-size:16px;letter-spacing:-.03em;margin-bottom:8px;
+  color:var(--blue-on-dark)}
+.vj-rl p{margin:0;font-size:13.5px;line-height:1.72;color:var(--ink-2)}
+
+/* ④ 왜 「계속」은 아닌가 */
+.vj-dl{list-style:none;margin:0;padding:0}
+.vj-dl li{display:grid;grid-template-columns:170px minmax(0,auto) minmax(0,1fr);
+  align-items:baseline;gap:16px;padding:14px 0;border-bottom:1px solid var(--rule-2)}
+.vj-dl li:last-child{border-bottom:0}
+.vj-dl b{font-size:16px;font-weight:700;letter-spacing:-.03em;color:var(--ink);white-space:nowrap;
+  font-variant-numeric:tabular-nums}
+.vj-dl .h{font-size:14px;font-weight:600;letter-spacing:-.02em;color:var(--ink-2)}
+.vj-dl .d{font-size:12.5px;line-height:1.6;color:var(--ink-4)}
+
+/* ⑤ 시점은 우리가 고르지 않는다 */
+.vj-why{margin:0 0 var(--s3);font-size:13.5px;line-height:1.78;color:var(--ink-2);
+  max-width:74ch}
+
+/* 옆 패널 */
+.vj-side{display:flex;gap:8px}
+.vj-side div{flex:1;background:var(--tile-2);border-radius:var(--r-md);
+  padding:11px 12px;display:flex;flex-direction:column;gap:2px}
+.vj-side b{font-size:21px;font-weight:700;letter-spacing:-.04em;
+  font-variant-numeric:tabular-nums}
+.vj-side span{font-size:11px;color:var(--ink-3)}
+.vj-side .good b{color:var(--blue-on-dark)}
+.vj-side .wait b{color:var(--ink-4)}
+
+@media (max-width:900px){
+  .vj-sl li{grid-template-columns:4px minmax(0,1fr) 88px;row-gap:8px;
+    padding:14px 16px 14px 0}
+  .vj-sl .say{grid-column:2 / -1}
+  .vj-dl li{grid-template-columns:110px minmax(0,1fr);row-gap:4px}
+  .vj-dl .d{grid-column:2}
+}
+
+/* 처방 카드 — 밝은 테마 시절 규칙이 남아 핵심 칸만 흰 덩어리로 튀었다.
+   어두운 바탕에서는 채움 대신 왼쪽 파란 띠로 「여기가 핵심」을 말한다. */
+.ph-l{background:var(--rule-2);border-radius:var(--r-md);overflow:hidden}
+.ph-l article,.ph-l article.work{background:var(--tile-1);color:var(--ink-2);
+  padding:15px 18px}
+.ph-l article.key{background:var(--tile-2);color:var(--ink-2);
+  box-shadow:inset 3px 0 0 var(--blue-on-dark)}
+.ph-l article.key .ph-h b{color:var(--blue-on-dark)}
+.ph-l article.key .ph-h .k{border-color:var(--blue-on-dark);color:var(--blue-on-dark)}
+.ph-l article.key .ph-w{color:var(--ink-3)}
+.ph-l article.key p{color:var(--ink-2)}
+.ph-l article.key .ph-watch{border-top-color:var(--rule-2);color:var(--ink-3)}
+.ph-l article.key .ph-watch span{border-color:var(--rule)}
+.ph-l article.key .ph-watch span{border-color:var(--rule);color:var(--ink-3)}

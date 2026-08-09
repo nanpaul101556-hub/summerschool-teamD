@@ -1,22 +1,35 @@
 /**
- * 04 · 판정 — 자료를 합치면 무엇을 해야 하는가.
+ * 04 · 판정 — 모은 자료가 무엇이라 말하는가.
  *
- * 위에 네 갈래의 입력을 놓고, 그 아래에 시간 구간별 처방을 놓는다.
- * 처방은 「바꿔라」가 아니라 「언제 무엇을 하라」다.
+ * 전에는 입력 다섯을 늘어놓고 처방으로 바로 건너뛰었다. 그래서 이 화면이
+ * 답해야 할 질문 — 「그래서 좋은가 나쁜가」 — 이 어디에도 없었다.
+ *
+ * 순서를 바꾼다. 결론을 먼저 크게 놓고, 그 아래에서 하나씩 따진다.
+ *
+ *   ① 판정        좋다 둘 · 나쁘다 하나 · 쌓는 중 셋 → 한 문장
+ *   ② 신호        축마다 좋다·나쁘다와 그렇게 본 기간
+ *   ③ 그래서      두 신호가 합쳐 무엇이 되는가
+ *   ④ 그런데      왜 「지금 좋다」가 「계속 좋다」가 아닌가
+ *   ⑤ 언제        다시 보는 시점 — 우리가 아니라 법과 이력이 정한다
+ *   ⑥ 무엇으로    그때 열려 있는 용도
+ *
+ * 좋은 것만 세지 않는다. 같은 승하차 자료도 12개월로 보면 오르고 2019년과
+ * 견주면 못 돌아왔다. 둘 다 사실이므로 ② 에 둘 다 놓는다.
  */
 
-import { BASIS, CALL, INPUTS, PHASES, haveCount } from '../data/verdict'
+import { CALL, DRIFT, PHASES, SIGNALS, tally } from '../data/verdict'
+import { READS, UNUSED } from '../data/derive'
 import { PROGRAMS } from '../data/plans'
 import { useLang } from '../i18n'
-import Derivation from './Derivation'
 import AppFrame from './AppFrame'
 
-const SPAN = [2026, 2058]
-const pos = (y) => ((y - SPAN[0]) / (SPAN[1] - SPAN[0])) * 100
+const ORDER = ['good', 'bad', 'wait']
+const ROWS = ORDER.flatMap((d) => SIGNALS.filter((s) => s.dir === d))
 
 export default function VerdictView({ site, onStep, onReset, onNext }) {
   const { t, tx } = useLang()
-  const have = haveCount()
+
+  const counts = ORDER.map((d) => ({ d, n: tally(d) }))
 
   const side = (
     <>
@@ -27,22 +40,21 @@ export default function VerdictView({ site, onStep, onReset, onNext }) {
       </div>
 
       <section>
-        <h3 className="lab">{t('vd.inTitle')}</h3>
-        <div className="vin">
-          {INPUTS.map((i) => (
-            <div key={i.id} className={i.have ? 'on' : 'off'}>
-              <span className="n">{tx(i.label)}</span>
-              <span className="v">{i.have ? tx(i.value) : t('vd.none')}</span>
+        <h3 className="lab">{t('vd.tally')}</h3>
+        <div className="vj-side">
+          {counts.map(({ d, n }) => (
+            <div key={d} className={d}>
+              <b>{n}</b>
+              <span>{t(`vd.d.${d}`)}</span>
             </div>
           ))}
         </div>
-        <p className="note">{t('vd.inNote', { n: have, m: INPUTS.length })}</p>
+        <p className="note">{t('vd.tallyNote')}</p>
       </section>
 
       <section>
-        <h3 className="lab">{tx(BASIS.head)}</h3>
-        <p className="note">{tx(BASIS.have)}</p>
-        <div className="vgap">{tx(BASIS.gap)}</div>
+        <h3 className="lab">{tx(UNUSED.head)}</h3>
+        <p className="note">{tx(UNUSED.body)}</p>
       </section>
     </>
   )
@@ -57,42 +69,85 @@ export default function VerdictView({ site, onStep, onReset, onNext }) {
       scroll
       next={{ label: t('step.lcc'), onClick: onNext }}
     >
-      <div className="vd2">
-        {/* ── 입력 ─────────────────────────────── */}
-        <section className="vd2-in">
+      <div className="vj">
+        {/* ① 판정 ─────────────────────────────── */}
+        <section className="vj-call">
+          <span className="cap">{t('vd.callCap')}</span>
+          <h2>{t('vd.callHead')}</h2>
+          <p>{t('vd.callBody')}</p>
+          <ul className="vj-cnt">
+            {counts.map(({ d, n }) => (
+              <li key={d} className={d}>
+                <b>{n}</b>
+                <span>{t(`vd.d.${d}`)}</span>
+              </li>
+            ))}
+          </ul>
+        </section>
+
+        {/* ② 신호 ─────────────────────────────── */}
+        <section className="vj-s">
           <div className="sh-h">
-            <h3>{t('vd.inTitle')}</h3>
-            <span>{t('vd.inSub')}</span>
+            <h3>{t('vd.sigTitle')}</h3>
+            <span>{t('vd.sigSub')}</span>
           </div>
-          <div className="vd2-il">
-            {INPUTS.map((i) => (
-              <article key={i.id} className={i.have ? 'have' : 'miss'}>
-                <b>{tx(i.label)}</b>
-                {i.have ? (
-                  <span className={`v ${i.dir}`}>{tx(i.value)}</span>
-                ) : (
-                  <span className="v none">—</span>
-                )}
-                <p>{tx(i.detail)}</p>
+
+          <ol className="vj-sl">
+            {ROWS.map((s) => (
+              <li key={s.id} className={s.dir}>
+                <span className="mk" aria-hidden="true" />
+                <span className="nm">
+                  <b>{tx(s.label)}</b>
+                  <em>{tx(s.span)}</em>
+                </span>
+                <span className="v">{s.v || t('vd.d.wait')}</span>
+                <span className="say">{tx(s.say)}</span>
+              </li>
+            ))}
+          </ol>
+        </section>
+
+        {/* ③ 그래서 ───────────────────────────── */}
+        <section className="vj-r">
+          <div className="sh-h">
+            <h3>{t('vd.readTitle')}</h3>
+            <span>{t('vd.readSub')}</span>
+          </div>
+          <div className="vj-rl">
+            {READS.map((r) => (
+              <article key={r.id}>
+                <b>{tx(r.head)}</b>
+                <p>{tx(r.body)}</p>
               </article>
             ))}
           </div>
         </section>
 
-        <Derivation />
-
-        {/* ── 결론 ─────────────────────────────── */}
-        <section className="vd2-call">
-          <h2>{tx(CALL.head)}</h2>
-          <p>{tx(CALL.body)}</p>
+        {/* ④ 그런데 ───────────────────────────── */}
+        <section className="vj-d">
+          <div className="sh-h">
+            <h3>{t('vd.driftTitle')}</h3>
+            <span>{t('vd.driftSub')}</span>
+          </div>
+          <ol className="vj-dl">
+            {DRIFT.map((d) => (
+              <li key={d.id}>
+                <b className="num">{d.v}</b>
+                <span className="h">{tx(d.head)}</span>
+                <span className="d">{tx(d.body)}</span>
+              </li>
+            ))}
+          </ol>
         </section>
 
-        {/* ── 처방 ─────────────────────────────── */}
-        <section className="vd2-ph">
+        {/* ⑤ 언제 ─────────────────────────────── */}
+        <section className="vj-ph">
           <div className="sh-h">
             <h3>{t('vd.phTitle')}</h3>
             <span>{t('vd.phSub')}</span>
           </div>
+
+          <p className="vj-why">{tx(CALL.body)}</p>
 
           <div className="ph-l">
             {PHASES.map((p) => (
@@ -114,7 +169,7 @@ export default function VerdictView({ site, onStep, onReset, onNext }) {
           </div>
         </section>
 
-        {/* ── 무슨 용도로 ─────────────────────── */}
+        {/* ⑥ 무엇으로 ─────────────────────────── */}
         <section className="vd2-pg">
           <div className="sh-h">
             <h3>{t('vd.pgTitle')}</h3>

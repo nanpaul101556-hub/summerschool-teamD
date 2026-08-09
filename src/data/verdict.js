@@ -1,11 +1,16 @@
 /**
- * 판정 — 모은 자료를 합치면 무엇을 해야 하는가.
+ * 판정 — 모은 자료가 무엇이라 말하는가.
  *
- * 네 갈래를 본다. 승하차·출입 기록·민원·예산.
- * 둘은 재었고 둘은 못 구했다. 그 사실 위에서 처방을 낸다.
+ * 이 화면이 답할 것은 하나다. 「지금 이 건물, 좋은가 나쁜가.」
+ * 그래서 먼저 신호를 하나씩 좋다·나쁘다로 가르고, 세어서 결론을 낸 뒤,
+ * 그 결론이 왜 「영원히」가 아닌지를 밝히고, 마지막에 언제 다시 볼지를 정한다.
+ *
+ * 좋은 것만 늘어놓지 않는다. 같은 승하차 자료라도 12개월로 보면 오르고
+ * 2019년과 견주면 못 돌아왔다 — 둘 다 사실이므로 둘 다 적는다.
+ * 나쁜 신호가 하나도 없는 판정은 판정이 아니라 홍보다.
  *
  * 처방은 「바꿔라」가 아니라 「언제 무엇을 하라」다. 시점은 우리가 고르지 않는다.
- * 건물의 물리 주기(구조 50년 · 설비 15년 · 내장 5~7년)와 인구추계가 정한다.
+ * 건물의 물리 주기(구조 50년 · 설비 15년 · 내장 5~7년)와 법정 점검 주기가 정한다.
  */
 
 import { CARDS } from './evidence.js'
@@ -44,6 +49,85 @@ export const INPUTS = [
     value: '+143%',
     detail: K('2022년 1.5억 → 2025년 3.6억. 전부 새 용도를 끼워 넣는 데 쓰였다',
       'Da 0,15 a 0,36 mld fra 2022 e 2025, tutto per inserire nuovi usi'),
+  },
+]
+
+/**
+ * 신호 — 하나씩 좋다·나쁘다로 가른다.
+ *
+ * dir  good 좋다 · bad 나쁘다 · wait 값을 쌓는 중
+ * span 어느 기간으로 본 것인가 — 같은 자료도 기간이 다르면 답이 갈린다
+ */
+export const SIGNALS = [
+  {
+    id: 'bus', dir: 'good', v: '+5.3%p',
+    label: K('앞 정류장 승하차', 'Flussi alla fermata'),
+    span: K('전환 전후 12개월', 'Dodici mesi prima e dopo'),
+    say: K('노원구 전체가 오른 몫을 빼고도 더 왔다',
+      'Al netto della crescita dell’intero distretto, è comunque venuta più gente'),
+  },
+  {
+    id: 'budget', dir: 'good', v: '+143%',
+    label: K('예산 편성', 'Bilancio'),
+    span: K('2022 → 2025', '2022 → 2025'),
+    say: K('1.5억에서 3.6억으로. 전부 새 용도를 넣는 데 썼다 — 행정도 같은 판단을 했다',
+      'Da 0,15 a 0,36 mld, tutto per inserire nuovi usi: anche l’amministrazione ha letto così'),
+  },
+  {
+    id: 'recover', dir: 'bad', v: '82.5',
+    label: K('코로나 전 대비 회복률', 'Ripresa sul pre-Covid'),
+    span: K('같은 자료 · 2019.07 = 100', 'Stesso dato · 07.2019 = 100'),
+    say: K('노원구 평균 91.1 아래. 주거 정류장은 99까지 돌아왔는데 여기는 82.5다',
+      'Sotto la media di Nowon (91,1): le fermate residenziali sono a 99, questa a 82,5'),
+  },
+  {
+    id: 'entry', dir: 'wait',
+    label: K('건물 출입 기록', 'Registri di accesso'),
+    span: K('노원구시설관리공단', 'Ente gestore di Nowon'),
+    say: K('이 축이 채워지면 판정의 첫 줄이 「정류장을 지나간 사람」에서 「건물에 들어온 사람」으로 바뀐다',
+      'Quando ci sarà, la prima riga passerà da «chi passa alla fermata» a «chi entra»'),
+  },
+  {
+    id: 'minwon', dir: 'wait',
+    label: K('민원 건수', 'Reclami'),
+    span: K('노원구청', 'Distretto di Nowon'),
+    say: K('만족의 반대편을 잰다 — 조용한 것이 만족인지 포기인지를 가를 축이다',
+      'Misura il rovescio della soddisfazione: dirà se il silenzio è appagamento o rassegnazione'),
+  },
+  {
+    id: 'satis', dir: 'wait',
+    label: K('서울서베이 만족도', 'Seoul Survey'),
+    span: K('통계 10305 · 연 단위', 'Statistica 10305, annuale'),
+    say: K('다섯 중 유일하게 직접 묻는 축. 말과 행동이 갈리면 그 갈림이 판정 재료가 된다',
+      'L’unico asse che chiede direttamente: se parole e azioni divergono, è quella divergenza a contare'),
+  },
+]
+
+/** 세어서 배지로 쓴다 — 손으로 적으면 신호를 고칠 때 어긋난다 */
+export const tally = (dir) => SIGNALS.filter((s) => s.dir === dir).length
+
+/**
+ * 왜 「지금 좋다」가 「계속 좋다」가 아닌가 — 세 줄.
+ * 전부 다른 화면에서 이미 근거를 댄 것만 옮겨 온다.
+ */
+export const DRIFT = [
+  {
+    id: 'pop', v: '20.9% → 36.2%',
+    head: K('이용자층이 통째로 바뀐다', 'L’utenza cambia del tutto'),
+    body: K('노원구 65세 이상 비율, 2025 → 2042 · 유소년은 8.8%에서 7.5%로 준다',
+      'Over 65 a Nowon, 2025 → 2042; i minori scendono dall’8,8% al 7,5%'),
+  },
+  {
+    id: 'past', v: '3번',
+    head: K('이미 세 번 용도를 갈아 끼웠다', 'Ha già cambiato uso tre volte'),
+    body: K('2018 리모델링 결정 · 2022 사무동 · 2023–25 노인회관. 다음은 네 번째다',
+      '2018 la decisione, 2022 gli uffici, 2023–25 il centro anziani: la prossima è la quarta'),
+  },
+  {
+    id: 'plan', v: '상위계획',
+    head: K('용도를 미리 못 박지 말라', 'Non fissare in anticipo la destinazione'),
+    body: K('서울·노원 상위계획이 유연한 용도 운용을 요구한다 — 02 화면의 인용 조항',
+      'I piani di Seoul e Nowon chiedono un uso flessibile: le clausole citate nella schermata 02'),
   },
 ]
 
