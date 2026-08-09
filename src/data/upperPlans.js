@@ -336,3 +336,37 @@ export const PLAN_STATS = {
   pages: 7,
   marks: 21,
 }
+
+/**
+ * 마인드맵 오른쪽 끝 — 그래서 우리가 무엇을 하는가.
+ *
+ * 네 번째 칸까지는 계획이 하는 말이다. 거기서 끊으면 「좋은 말이네」로 끝난다.
+ * 그 말이 우리에게 시키는 일을 한 줄로 받아 적는다.
+ *
+ *   words 그 계획의 방향을 세 낱말로
+ *   act   그래서 이 플랫폼이 하는 일
+ */
+const D = (ko, it) => ({ ko, it })
+
+export const DUTY = [
+  {
+    id: 'seoul',
+    words: [D('복합', 'Misto'), D('가변', 'Variabile'), D('재사용', 'Riuso')],
+    act: D('주기마다 용도를 다시 잰다', 'Rimisurare la destinazione a ogni ciclo'),
+  },
+  {
+    id: 'nowon',
+    words: [D('고령 36.2%', 'Over 65 al 36,2%'), D('존치', 'Conservare'),
+      D('세대 교체', 'Ricambio generazionale')],
+    act: D('2042년 인구까지 보고 용도를 고른다',
+      'Scegliere la destinazione guardando alla popolazione del 2042'),
+  },
+  {
+    id: 'site',
+    words: [D('연계', 'In rete'), D('무장애', 'Senza barriere')],
+    act: D('걸어서 닿는 거리에 없는 것만 넣는다',
+      'Inserire solo ciò che manca entro distanza pedonale'),
+  },
+]
+
+export const dutyOf = (id) => DUTY.find((d) => d.id === id)

@@ -966,7 +966,7 @@ body{
   background:transparent;border:1px solid var(--rule);font-family:var(--f)}
 .mm-h button:hover{border-color:var(--ink)}
 .mm-b{flex:1;min-height:0;overflow:auto;padding:var(--s3) var(--s4)}
-.mm-svg{display:block;width:100%;height:auto;min-width:900px}
+.mm-svg{display:block;width:100%;height:auto;min-width:1080px}
 
 .mw{fill:none;stroke:var(--rule);stroke-width:1.2}
 .mw.lead{stroke:var(--ink-3);stroke-width:1.6}
@@ -999,7 +999,7 @@ body{
 .mm-s .b{font-size:12.5px;font-weight:700;letter-spacing:-.02em;color:var(--ink);
   flex:1 1 auto;min-width:0}
 
-.mm-f{flex:none;display:grid;grid-template-columns:170px 220px 330px 1fr;
+.mm-f{flex:none;display:grid;grid-template-columns:152px 190px 268px 350px 1fr;
   gap:0;padding:9px 20px;border-top:1px solid var(--rule);background:var(--fill)}
 .mm-f .l{font-size:9.5px;letter-spacing:.12em;text-transform:uppercase;color:var(--ink-3)}
 
@@ -3573,3 +3573,13 @@ button,.dl{transition:transform .2s ease,background-color .2s ease,
 .vj-eq em{font-style:normal;font-size:11.5px;color:var(--ink-4)}
 .vj-eq .out b{font-size:30px;color:var(--blue-on-dark)}
 .vj-eq .out em{color:var(--blue-on-dark)}
+
+/* 마인드맵 끝 칸 — 계획이 시키는 일을 낱말과 한 줄로 받는다 */
+.mm-d{height:100%;display:flex;flex-direction:column;justify-content:center;gap:8px;
+  padding:0 2px 0 10px;border-left:2px solid var(--blue-on-dark)}
+.mm-d .w{display:flex;flex-wrap:wrap;gap:5px}
+.mm-d .w i{font-style:normal;font-size:10.5px;letter-spacing:-.01em;
+  padding:3px 9px;border-radius:var(--r-pill);
+  background:var(--tile-3);color:var(--ink-3);white-space:nowrap}
+.mm-d b{font-size:13px;font-weight:700;letter-spacing:-.025em;line-height:1.35;
+  color:var(--blue-on-dark)}

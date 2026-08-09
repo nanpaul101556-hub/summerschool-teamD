@@ -4,19 +4,22 @@
  * 세 계획이 각각 조항을 내고, 그 조항이 「무엇에서 무엇으로」를 낳는다.
  * 스크롤로 훑으면 순서만 보이고 연결은 안 보인다. 한 화면에 펼쳐야
  * 어느 조항이 어느 방향을 떠받치는지가 눈에 들어온다.
+ *
+ * 방향에서 끊으면 「좋은 말이네」로 끝난다. 그래서 칸을 하나 더 붙인다 —
+ * 그 방향을 세 낱말로 줄이고, 그것이 우리에게 시키는 일을 한 줄로 받는다.
  */
 
 import { useEffect } from 'react'
 
-import { LEVELS } from '../data/upperPlans'
+import { dutyOf, LEVELS } from '../data/upperPlans'
 import { useLang } from '../i18n'
 
-const W = 1180
+const W = 1400
 const ROW = 44          // 잎 하나의 높이
 const GAP = 26          // 계획 사이 여백
 const PAD = 28
 
-const X = { site: 40, plan: 210, quote: 430, shift: 760 }
+const X = { site: 36, plan: 196, quote: 400, shift: 700, duty: 1080 }
 
 /** 계획마다 조항 수와 방향 수 중 큰 쪽이 그 가지의 높이를 정한다 */
 function layout() {
@@ -78,17 +81,18 @@ export default function MindMap({ site, onClose }) {
                 <path
                   key={tr.id}
                   className={`mw ${tr.lead ? 'lead' : ''}`}
-                  d={wire(X.plan + 190, b.mid, X.quote, b.top + ROW * i + ROW / 2)}
+                  d={wire(X.plan + 180, b.mid, X.quote, b.top + ROW * i + ROW / 2)}
                 />
               ))}
               {b.lv.shifts.map((sh, i) => (
                 <path
                   key={tx(sh.to)}
                   className="mw thin"
-                  d={wire(X.quote + 300, b.top + ROW * Math.min(i, b.lv.trends.length - 1) + ROW / 2,
+                  d={wire(X.quote + 270, b.top + ROW * Math.min(i, b.lv.trends.length - 1) + ROW / 2,
                     X.shift, b.top + ROW * i + ROW / 2)}
                 />
               ))}
+              <path className="mw thin" d={wire(X.shift + 330, b.mid, X.duty, b.mid)} />
             </g>
           ))}
 
@@ -115,7 +119,7 @@ export default function MindMap({ site, onClose }) {
                   key={tr.id}
                   x={X.quote}
                   y={b.top + ROW * i + 3}
-                  width="300"
+                  width="270"
                   height={ROW - 6}
                 >
                   <div className={`mm-q ${tr.lead ? 'lead' : ''}`} xmlns="http://www.w3.org/1999/xhtml">
@@ -130,7 +134,7 @@ export default function MindMap({ site, onClose }) {
                   key={tx(sh.to)}
                   x={X.shift}
                   y={b.top + ROW * i + 3}
-                  width="380"
+                  width="330"
                   height={ROW - 6}
                 >
                   <div className="mm-s" xmlns="http://www.w3.org/1999/xhtml">
@@ -140,6 +144,17 @@ export default function MindMap({ site, onClose }) {
                   </div>
                 </foreignObject>
               ))}
+
+              <foreignObject x={X.duty} y={b.mid - 46} width="286" height="92">
+                <div className="mm-d" xmlns="http://www.w3.org/1999/xhtml">
+                  <span className="w">
+                    {dutyOf(b.lv.id).words.map((wd) => (
+                      <i key={tx(wd)}>{tx(wd)}</i>
+                    ))}
+                  </span>
+                  <b>{tx(dutyOf(b.lv.id).act)}</b>
+                </div>
+              </foreignObject>
             </g>
           ))}
         </svg>
@@ -150,6 +165,7 @@ export default function MindMap({ site, onClose }) {
         <span className="l">{t('plan.mapCol2')}</span>
         <span className="l">{t('plan.mapCol3')}</span>
         <span className="l">{t('plan.mapCol4')}</span>
+        <span className="l">{t('plan.mapCol5')}</span>
       </footer>
     </div>
   )
