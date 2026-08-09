@@ -25,6 +25,21 @@ export const LAW = {
     'Il controllo periodico si effettua entro cinque anni dall\'agibilità '
     + 'e successivamente ogni tre anni.',
   ),
+  /**
+   * 3년 주기는 아무 건물에나 걸리지 않는다.
+   * 시행령 제8조① 3호 → 건축법 시행령 제2조17호 다중이용 건축물,
+   * 즉 문화·집회시설 등의 바닥면적 합계 5,000 m² 이상이거나 16층 이상이어야 한다.
+   * 이 건물의 연면적을 건축물대장에서 확인하지 못했으므로 대상 여부는 미확정이다.
+   */
+  scopeArt: '건축물관리법 시행령 제8조① · 건축법 시행령 제2조17호',
+  scope: K(
+    '정기점검 대상은 다중이용 건축물이다 — 문화·집회시설 등의 바닥면적 합계 '
+    + '5,000 m² 이상이거나 16층 이상. 이 건물의 연면적을 확인하지 못해 '
+    + '대상인지 아직 모른다.',
+    'Il controllo periodico riguarda gli edifici a grande affluenza: oltre 5.000 m² '
+    + 'di superficie per usi culturali e assembleari, oppure almeno 16 piani. '
+    + 'Non avendo verificato la superficie, non sappiamo se questo edificio rientri.',
+  ),
   gapArt: '건축물관리법 제11조①',
   gapQuote: K(
     '사용승인을 받고자 하는 건축물의 건축주는 건축물관리계획을 수립하여 '
