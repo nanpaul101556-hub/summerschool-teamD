@@ -132,3 +132,37 @@ export const FRAME = {
     + 'dall\'amministrazione: è quella divergenza a diventare materia di giudizio.',
   ),
 }
+
+/**
+ * 왜 이 근거가 필요한가 — 카드 앞에 서는 네 걸음.
+ * 갈래별 상세는 카드가 맡으므로 여기서는 흐름만 말한다.
+ */
+export const CHAIN = [
+  {
+    id: 'problem',
+    head: K('용도는 한번 정하면 수십 년 간다', 'Una destinazione dura decenni'),
+    body: K('그 사이 동네는 늙고, 예산도 상위계획도 바뀐다',
+      'Nel frattempo il quartiere invecchia e cambiano bilanci e piani'),
+  },
+  {
+    id: 'gap',
+    head: K('그런데 아직 맞는 용도인지 아무도 다시 묻지 않는다',
+      'Eppure nessuno torna a chiedere se quella destinazione regga ancora'),
+    body: K('물어도 감으로 답한다 — 잴 자가 없기 때문이다',
+      'E se lo si chiede, si risponde a intuito: manca un metro'),
+  },
+  {
+    id: 'how',
+    head: K('만족은 직접 잴 수 없다', 'La soddisfazione non si misura direttamente'),
+    body: K('물어보면 말은 듣지만 사람은 말과 다르게 움직인다 — '
+      + '그래서 말한 것 · 행동한 것 · 행정이 본 것, 세 층위로 나눠 묻는다',
+      'Chiedendo si ottengono parole, ma si agisce diversamente: '
+      + 'perciò si interroga su tre livelli — dichiarato, comportamento, amministrazione'),
+  },
+  {
+    id: 'rule',
+    head: K('다섯 갈래에 같은 자를 댄다', 'Lo stesso metro su cinque assi'),
+    body: K('축마다 다른 잣대를 쓰면 견줄 수 없다. 아래 넷을 전부 똑같이 적용한다',
+      'Con metri diversi non si confronta: le quattro regole qui sotto valgono per tutti'),
+  },
+]

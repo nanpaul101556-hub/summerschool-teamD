@@ -219,6 +219,8 @@ export const DICT = {
     'tj.axLinked': '실측 연결',
     'tj.g.verified': '실측 검증 완료',
     'tj.g.collecting': '계산 검증 완료',
+    'mf.title': '이 근거는 왜 필요한가',
+    'mf.sub': '다섯 갈래를 보기 전에, 왜 다섯으로 나눠 재는지부터 봅니다.',
     'mm.title': '무엇으로 「만족한다」를 재는가',
     'mm.sub':
       '만족은 직접 잴 수 없습니다. 물어보면 말은 듣지만 사람은 말과 다르게 움직입니다. '
@@ -230,6 +232,7 @@ export const DICT = {
     'mt.aria': '노원구와 서울시 평균, 두 선과 그 사이의 격차',
     'mt.gap': '격차',
     'ev.head': '기준 사건',
+    'ev.axes': '다섯 갈래',
     'ev.eventTitle': '무엇을 기준으로 나눴나',
     'ev.before': '전',
     'ev.after': '후',
@@ -250,6 +253,7 @@ export const DICT = {
       + '그때 비로소 판정 입력에 들어갑니다. 지금 값은 판정에 반영되지 않습니다.',
     'ev.see': '근거 보기',
     'ev.sheet': '근거 시트',
+    'dsh.asked': '무엇을 물었고 무엇이 나왔는가',
     'ev.what': '무엇을 쟀는가',
     'ev.raw': '원자료',
     'ev.calc': '어떻게 계산했는가',
@@ -669,6 +673,8 @@ export const DICT = {
     'tj.axLinked': 'misurato e collegato',
     'tj.g.verified': 'misurato e verificato',
     'tj.g.collecting': 'calcolo verificato',
+    'mf.title': 'Perché servono queste prove',
+    'mf.sub': 'Prima dei cinque assi, perché la misura è divisa in cinque.',
     'mm.title': 'Come si misura la soddisfazione',
     'mm.sub':
       'La soddisfazione non si misura direttamente: chiedendo si ottengono parole, ma le persone '
@@ -680,6 +686,7 @@ export const DICT = {
     'mt.aria': 'Nowon e media di Seoul: due linee e il divario fra loro',
     'mt.gap': 'divario',
     'ev.head': 'Evento di riferimento',
+    'ev.axes': 'I cinque assi',
     'ev.eventTitle': 'Su che cosa si divide prima e dopo',
     'ev.before': 'prima',
     'ev.after': 'dopo',
@@ -700,6 +707,7 @@ export const DICT = {
       + 'ed entra nel giudizio; i valori attuali non vi rientrano.',
     'ev.see': 'Vedi la fonte',
     'ev.sheet': 'Scheda della fonte',
+    'dsh.asked': 'Che cosa si è chiesto e che cosa ne è uscito',
     'ev.what': 'Che cosa è stato misurato',
     'ev.raw': 'Dato grezzo',
     'ev.calc': 'Come è stato calcolato',

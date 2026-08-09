@@ -1,89 +1,51 @@
 /**
- * 무엇으로 「만족한다」를 재는가 — 03 의 머리.
+ * 03 머리 — 왜 이 근거가 필요한가, 그리고 어떻게 재는가.
  *
- * 다섯 갈래가 왜 다섯인지를 화면이 한 번도 말하지 않고 있었다.
- * 카드마다 같은 틀이 반복되는데 그 틀을 설명한 적이 없으니,
- * 보는 사람이 다섯 번 반복해서 스스로 알아내야 했다.
+ * 카드 다섯을 먼저 보여 주면 「그래서 이게 왜 필요한데」가 남는다.
+ * 그 물음에 먼저 답하고 카드로 내려간다.
  *
- * 여기서 한 번에 말한다 — 세 층위로 묶고, 갈래를 누르면
- * 무엇을 재고 왜 그것이 만족의 신호인지, 무엇을 못 말하는지가 펼쳐진다.
+ *   ① 문제  용도는 수십 년 가는데 동네는 계속 변한다
+ *   ② 공백  그런데 아무도 다시 묻지 않는다
+ *   ③ 방법  만족은 직접 못 재니 세 층위로 나눠 묻는다
+ *   ④ 자    다섯 갈래에 같은 자를 댄다
+ *
+ * 갈래별 상세는 카드가 맡는다 — 여기서는 흐름만 말한다.
  */
 
-import { useState } from 'react'
-
-import { CARDS } from '../data/evidence'
-import { FRAME, LAYERS, WHY } from '../data/method'
+import { CHAIN, FRAME } from '../data/method'
 import { useLang } from '../i18n'
-
-const GRADE = { have: 'verified', missing: 'collecting', flat: 'hypothesis' }
-const cardOf = (id) => CARDS.find((c) => c.id === id)
 
 export default function MethodMap() {
   const { t, tx } = useLang()
-  const [open, setOpen] = useState(null)
-
-  const shown = open && WHY[open]
-  const card = open && cardOf(open)
 
   return (
-    <section className="mm2">
+    <section className="mf">
       <header>
-        <h3>{t('mm.title')}</h3>
-        <p>{t('mm.sub')}</p>
+        <h3>{t('mf.title')}</h3>
+        <p>{t('mf.sub')}</p>
       </header>
 
-      {/* ── 세 층위 · 한 줄 다섯 칸 ─────────────── */}
-      <div className="mm2-l">
-        {LAYERS.map((lv) => (
-          <div key={lv.id} className={`mm2-hd ${lv.id}`}>
-            <b>{tx(lv.label)}</b>
-            <span>{tx(lv.lead)}</span>
-          </div>
+      {/* ── 왜 필요한가 ─────────────────────────── */}
+      <ol className="mf-c">
+        {CHAIN.map((c, i) => (
+          <li key={c.id} className={c.id}>
+            <span className="n num">{String(i + 1).padStart(2, '0')}</span>
+            <b>{tx(c.head)}</b>
+            <span className="d">{tx(c.body)}</span>
+          </li>
         ))}
+      </ol>
 
-        {LAYERS.flatMap((lv) => lv.axes).map((id) => {
-          const c = cardOf(id)
-          if (!c) return null
-          const g = GRADE[c.status] || 'hypothesis'
-          return (
-            <button
-              key={id}
-              type="button"
-              className={`mm2-ax ${g}${open === id ? ' on' : ''}`}
-              onClick={() => setOpen(open === id ? null : id)}
-            >
-              <em className="num">{c.no}</em>
-              <b>{tx(WHY[id].name)}</b>
-              <span className="q">{tx(WHY[id].short)}</span>
-              <span className={`g ${g}`}>{t(`tj.g.${g}`)}</span>
-            </button>
-          )
-        })}
-      </div>
-
-      {/* ── 고른 갈래의 사슬 ─────────────────────── */}
-      {shown ? (
-        <div className="mm2-d">
-          <div className="mm2-d-h">
-            <em className="num">{card.no}</em>
-            <b>{tx(card.title)}</b>
-          </div>
-          <dl>
-            <dt>{t('mm.measures')}</dt>
-            <dd>{tx(shown.measures)}</dd>
-            <dt>{t('mm.why')}</dt>
-            <dd className="lead">{tx(shown.why)}</dd>
-          </dl>
-        </div>
-      ) : (
-        <p className="mm2-hint">{t('mm.hint')}</p>
-      )}
-
-      {/* ── 같은 자를 댄다 ───────────────────────── */}
-      <div className="mm2-f">
+      {/* ── 어떻게 재는가 ───────────────────────── */}
+      <div className="mf-f">
         <h4>{tx(FRAME.head)}</h4>
-        <ol>
-          {FRAME.steps.map((s) => <li key={tx(s)}>{tx(s)}</li>)}
+        <ol className="mf-s">
+          {FRAME.steps.map((s, i) => (
+            <li key={tx(s)}>
+              <span className="n num">{i + 1}</span>
+              <span>{tx(s)}</span>
+            </li>
+          ))}
         </ol>
         <p>{tx(FRAME.close)}</p>
       </div>

@@ -43,6 +43,7 @@ export const CARDS = [
   // ── ① 승하차 ─────────────────────────────────────────────
   {
     id: 'bus', no: '01', status: 'have',
+    brief: { v: '+5.3%p', d: K('노원구 대조군 대비 초과', 'oltre il controllo distrettuale') },
     title: K('앞 정류장 승하차', 'Saliti e discesi alla fermata'),
     ask: K('사람이 더 왔는가', 'È venuta più gente?'),
     unit: K('월평균 승하차', 'media mensile'),
@@ -76,6 +77,7 @@ export const CARDS = [
   // ── ② 예산 ───────────────────────────────────────────────
   {
     id: 'budget', no: '02', status: 'have',
+    brief: { v: '+143%', d: K('2022년 1.5억 → 2025년 3.6억', 'da 0,15 a 0,36 mld') },
     title: K('이 건물에 들어간 돈과 노원구가 가는 방향',
       'La spesa su questo edificio e la direzione del distretto'),
     ask: K('예산은 어디로 움직였는가', 'Dove si è spostato il bilancio?'),
@@ -121,6 +123,7 @@ export const CARDS = [
   // ── ③ 민원 ───────────────────────────────────────────────
   {
     id: 'minwon', no: '03', status: 'missing', sample: true,
+    brief: { v: '—', d: K('노원구청 정보공개청구 단계', 'richiesta di accesso in corso') },
     title: K('민원 건수', 'Numero di reclami'),
     ask: K('불만이 줄었는가', 'Le lamentele sono diminuite?'),
     facts: [
@@ -169,6 +172,7 @@ export const CARDS = [
   // ── ④ 출입 대장 ──────────────────────────────────────────
   {
     id: 'entry', no: '04', status: 'missing', sample: true,
+    brief: { v: '—', d: K('시설관리공단 정보공개청구 단계', 'richiesta all\'ente gestore in corso') },
     title: K('건물 출입 기록', 'Registri di accesso all’edificio'),
     ask: K('실제로 건물에 들어온 사람이 늘었는가', 'Sono davvero aumentati gli ingressi?'),
     tab: {
@@ -212,6 +216,7 @@ export const CARDS = [
   // ── ⑤ 만족도 ─────────────────────────────────────────────
   {
     id: 'satis', no: '05', status: 'missing', sample: true, reachable: true,
+    brief: { v: '—', d: K('서울서베이 통계 10305 — 내려받기만 남았다', 'statistica 10305: resta solo scaricarla') },
     title: K('말로 물은 만족도', 'La soddisfazione dichiarata'),
     ask: K('주민은 문화환경에 만족한다고 답하는가', 'I residenti si dicono soddisfatti?'),
     tab: {

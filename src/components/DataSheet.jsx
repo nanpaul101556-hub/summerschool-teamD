@@ -8,6 +8,7 @@
 
 import { useEffect } from 'react'
 
+import { CARDS } from '../data/evidence'
 import { PLACES, REPO, sheetOf } from '../data/sheets'
 import { useLang } from '../i18n'
 import StopMap from './StopMap'
@@ -21,6 +22,7 @@ const isNum = (v, i) => i > 0 && /^-?[\d,]+(\.\d+)?$/.test(String(v).trim())
 export default function DataSheet({ id, onClose }) {
   const { t, tx } = useLang()
   const s = sheetOf(id)
+  const card = CARDS.find((c) => c.id === id)
 
   useEffect(() => {
     const esc = (e) => e.key === 'Escape' && onClose()
@@ -60,6 +62,18 @@ export default function DataSheet({ id, onClose }) {
                   </li>
                 ))}
               </ul>
+            </section>
+          )}
+
+          {card && (
+            <section className="dsh-q">
+              <h3 className="lab">{t('dsh.asked')}</h3>
+              <p className="ask">{tx(card.ask)}</p>
+              <ul>
+                {card.facts.map((f) => <li key={tx(f)}>{tx(f)}</li>)}
+              </ul>
+              <p className="say">{tx(card.reading)}</p>
+              {card.limit && <p className="lim">{tx(card.limit)}</p>}
             </section>
           )}
 
