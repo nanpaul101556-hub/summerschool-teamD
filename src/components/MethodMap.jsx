@@ -12,6 +12,7 @@
  */
 
 import { CHAIN, FRAME } from '../data/method'
+import DriftFigure from './DriftFigure'
 import { useLang } from '../i18n'
 
 export default function MethodMap() {
@@ -36,6 +37,7 @@ export default function MethodMap() {
               <span>{tx(c.body)}</span>
             </div>
           ))}
+          <DriftFigure />
         </div>
 
         <div className="mf-ar" aria-hidden="true">

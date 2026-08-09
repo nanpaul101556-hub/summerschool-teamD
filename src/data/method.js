@@ -84,7 +84,7 @@ export const WHY = {
       'Solo chi è scontento scrive: il silenzio può essere soddisfazione o rassegnazione'),
   },
   satis: {
-    name: K('문화환경 만족도', 'Soddisfazione culturale'),
+    name: K('서울서베이 만족도', 'Seoul Survey'),
     short: K('만족한다 말하나', 'Si dichiarano soddisfatti?'),
     measures: K('문화환경에 만족한다고 답한 정도 (5점 척도)',
       'Grado di soddisfazione dichiarato per l\'ambiente culturale, scala 1-5'),
@@ -98,7 +98,7 @@ export const WHY = {
       'Riguarda l\'intero distretto, non questo edificio: va usato solo come sfondo'),
   },
   budget: {
-    name: K('예산 실집행', 'Spesa effettiva'),
+    name: K('예산 편성', 'Bilancio'),
     short: K('돈이 따라왔나', 'Il bilancio ha seguito?'),
     measures: K('구청이 이 건물에 실제로 집행한 예산',
       'Spesa effettivamente eseguita dal distretto su questo edificio'),

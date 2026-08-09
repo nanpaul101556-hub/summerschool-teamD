@@ -78,8 +78,7 @@ export const CARDS = [
   {
     id: 'budget', no: '02', status: 'have',
     brief: { v: '+143%', d: K('2022년 1.5억 → 2025년 3.6억', 'da 0,15 a 0,36 mld') },
-    title: K('이 건물에 들어간 돈과 노원구가 가는 방향',
-      'La spesa su questo edificio e la direzione del distretto'),
+    title: K('예산 편성', 'Bilancio'),
     ask: K('예산은 어디로 움직였는가', 'Dove si è spostato il bilancio?'),
     unit: K('노원구 세출예산 실집행 · 백만원', 'Spesa effettiva di Nowon · milioni di won'),
     before: { period: '2022', v: 149, label: K('이 건물 실집행', 'Speso su questo edificio') },
@@ -217,7 +216,7 @@ export const CARDS = [
   {
     id: 'satis', no: '05', status: 'missing', sample: true, reachable: true,
     brief: { v: '—', d: K('서울서베이 통계 10305 — 내려받기만 남았다', 'statistica 10305: resta solo scaricarla') },
-    title: K('말로 물은 만족도', 'La soddisfazione dichiarata'),
+    title: K('서울서베이 만족도 조사', 'Indagine di soddisfazione, Seoul Survey'),
     ask: K('주민은 문화환경에 만족한다고 답하는가', 'I residenti si dicono soddisfatti?'),
     tab: {
       head: K('서울서베이 문화환경 만족도 · 5점 척도 · 2016–2025',
