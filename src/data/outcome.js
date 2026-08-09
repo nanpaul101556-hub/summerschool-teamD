@@ -30,17 +30,26 @@ const card = (id) => CARDS.find((c) => c.id === id)
 const LAST = PAST.filter((p) => p.kind === 'work').at(-1)
 
 /**
- * 최근 개입 간격 — 2022 → 2025 의 3년. 법이 아니라 이 건물의 이력에서 나온다.
+ * 다음에 손댈 때 — 한 해로 못 박지 않고 구간으로 적는다.
  *
- * 한때 여기에 「법정 점검 주기도 3년이라 같다」를 적었다가 뺐다. 그 문장은
- * 이 건물이 정기점검 대상이라는 전제를 깔아야 성립하는데, 시행령 제8조① 3호의
- * 대상은 바닥면적 합계 5,000 m² 이상인 다중이용 건축물이고 우리는 연면적을
- * 모른다. 게다가 2025년은 점검이 아니라 노인회관 입주 공사다.
- * 그러므로 이 해는 「이 건물이 손댈 때가 되는 해」이지 법정 일정이 아니다.
+ * 관측이 둘뿐이다. 2018 → 2022 가 4년, 2022 → 2025 가 3년.
+ * 처음에는 최근값 3년만 써서 2028 이라고 적었는데, 왜 3이고 4가 아닌지에
+ * 근거가 없었다. 둘 중 하나를 고르는 순간 그건 우리가 만든 값이다.
+ * 그래서 짧은 쪽과 긴 쪽을 모두 남겨 2028–29 로 적는다.
+ *
+ * 법정 점검 일정과는 무관하다. 시행령 제8조① 3호의 정기점검 대상은
+ * 바닥면적 합계 5,000 m² 이상인 다중이용 건축물이고 이 건물의 연면적을
+ * 확인하지 못했다. 2025년도 점검이 아니라 노인회관 입주 공사다.
  */
-const RECENT_GAP = RHYTHM.gaps.at(-1).to - RHYTHM.gaps.at(-1).from
+const GAPS = RHYTHM.gaps.map((g) => g.to - g.from)
+const GAP_MIN = Math.min(...GAPS)
+const GAP_MAX = Math.max(...GAPS)
 
-export const NEXT_YEAR = LAST.year + RECENT_GAP
+export const NEXT_FROM = LAST.year + GAP_MIN
+export const NEXT_TO = LAST.year + GAP_MAX
+
+/** 화면에 크게 놓는 문자열 — 2028–29 */
+export const NEXT_LABEL = `${NEXT_FROM}–${String(NEXT_TO).slice(2)}`
 
 const SITE = STOPS.find((s) => s.lead)
 const AGED = POPULATION.find((p) => p.year === 2042)
@@ -71,14 +80,14 @@ export const NOW = {
 
 /** ② 언제 — 우리가 정하지 않는다 */
 export const WHEN = {
-  v: `${NEXT_YEAR}`,
+  v: NEXT_LABEL,
   head: K('적합성을 다시 잰다', 'Si rimisura l’idoneità'),
   rows: [
     {
-      id: 'gap', v: `${RECENT_GAP}년`,
+      id: 'gap', v: `${GAP_MIN}~${GAP_MAX}년`,
       k: K('이 건물이 손댄 간격', 'Intervallo fra gli interventi'),
-      d: K('2018 → 2022 → 2025 · 4년과 3년',
-        '2018 → 2022 → 2025: quattro e tre anni'),
+      d: K('2018 → 2022 → 2025 · 관측 두 번',
+        '2018 → 2022 → 2025 · due osservazioni'),
     },
     {
       id: 'last', v: `${LAST.year}`,
@@ -115,12 +124,13 @@ export const OUT_SRC = K(
  * 화면에서 지우면 「법이 정한 해」로 읽히므로 결과 칸 아래에 그대로 둔다.
  */
 export const OUT_CAVEAT = K(
-  `${NEXT_YEAR}년은 이 건물이 손대 온 간격에서 나온 해다. 법정 점검 일정이 아니다 — `
-  + `${LAW.scopeArt} 의 정기점검 대상은 바닥면적 합계 5,000 m² 이상인 다중이용 건축물이고, `
-  + '이 건물의 연면적을 건축물대장에서 확인하지 못해 대상 여부부터 미확정이다. '
-  + '연면적과 최초 점검일을 받으면 그때 법정 일정과 맞춰 본다.',
-  `Il ${NEXT_YEAR} deriva dagli intervalli con cui questo edificio è stato modificato: `
-  + 'non è una scadenza di legge. Il controllo periodico riguarda gli edifici a grande '
-  + 'affluenza oltre i 5.000 m² e, non avendo verificato la superficie, non sappiamo '
-  + 'nemmeno se questo edificio vi rientri.',
+  `한 해로 못 박지 않는다. 관측한 간격이 4년과 3년, 둘뿐이라 짧은 쪽과 긴 쪽을 `
+  + `모두 남겨 ${NEXT_FROM}–${NEXT_TO}년으로 적는다. `
+  + `법정 점검 일정도 아니다 — ${LAW.scopeArt} 의 정기점검 대상은 바닥면적 합계 `
+  + '5,000 m² 이상인 다중이용 건축물인데, 이 건물의 연면적을 건축물대장에서 '
+  + '확인하지 못해 대상 여부부터 미확정이다.',
+  'Non fissiamo un anno solo: gli intervalli osservati sono due, quattro e tre anni, '
+  + `quindi teniamo entrambi gli estremi — ${NEXT_FROM}–${NEXT_TO}. `
+  + 'Non è nemmeno una scadenza di legge: il controllo periodico riguarda gli edifici '
+  + 'a grande affluenza oltre i 5.000 m² e non abbiamo verificato la superficie.',
 )

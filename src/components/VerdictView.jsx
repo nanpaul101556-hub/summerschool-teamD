@@ -18,7 +18,7 @@
  */
 
 import { DRIFT, PHASES, SIGNALS, TALLY } from '../data/verdict'
-import { NEXT_YEAR, OUT_CAVEAT, WHEN } from '../data/outcome'
+import { NEXT_LABEL, OUT_CAVEAT, WHEN } from '../data/outcome'
 import { READS, UNUSED } from '../data/derive'
 import { PROGRAMS } from '../data/plans'
 import { useLang } from '../i18n'
@@ -72,7 +72,7 @@ export default function VerdictView({ site, onStep, onReset, onNext }) {
         {/* ① 판정 ─────────────────────────────── */}
         <section className="vj-call">
           <span className="cap">{t('vd.callCap')}</span>
-          <h2>{t('vd.callHead', { y: NEXT_YEAR })}</h2>
+          <h2>{t('vd.callHead', { y: NEXT_LABEL })}</h2>
           <ul className="vj-cnt">
             {TALLY.map(({ d, n }) => (
               <li key={d} className={d}>
@@ -154,7 +154,7 @@ export default function VerdictView({ site, onStep, onReset, onNext }) {
               </span>
             ))}
             <span className="out">
-              <b className="num">{NEXT_YEAR}</b>
+              <b className="num">{NEXT_LABEL}</b>
               <em>{t('vd.eqOut')}</em>
             </span>
           </p>
