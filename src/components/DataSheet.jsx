@@ -71,24 +71,39 @@ export default function DataSheet({ id, onClose }) {
           {s.rows && (
             <section>
               <h3 className="lab">{t('ev.raw')}</h3>
-              <table className="dsh-t">
-                <thead>
-                  <tr>
-                    {s.cols.map((c, i) => (
-                      <th key={c} className={isNum(s.rows[0][i], i) ? 'num' : ''}>{c}</th>
-                    ))}
-                  </tr>
-                </thead>
-                <tbody>
-                  {s.rows.map((r) => (
-                    <tr key={r.join('|')}>
-                      {r.map((c, i) => (
-                        <td key={`${r[0]}-${i}`} className={isNum(c, i) ? 'num' : ''}>{c}</td>
+              {/*
+                원자료는 표계산기처럼 보인다 — 열 문자와 행 번호를 붙이고 격자를 긋는다.
+                「우리가 정리한 표」가 아니라 「파일을 그대로 연 것」으로 읽혀야
+                근거로 받아들여지기 때문이다. 1행이 머리글, 자료는 2행부터다.
+              */}
+              <div className="xl">
+                <table className="xl-t">
+                  <thead>
+                    <tr className="xl-ab">
+                      <th className="xl-c" />
+                      {s.cols.map((c, i) => (
+                        <th key={`ab-${c}`}>{String.fromCharCode(65 + i)}</th>
                       ))}
                     </tr>
-                  ))}
-                </tbody>
-              </table>
+                    <tr className="xl-hd">
+                      <th className="xl-c">1</th>
+                      {s.cols.map((c, i) => (
+                        <th key={c} className={isNum(s.rows[0][i], i) ? 'num' : ''}>{c}</th>
+                      ))}
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {s.rows.map((r, ri) => (
+                      <tr key={r.join('|')}>
+                        <th className="xl-c">{ri + 2}</th>
+                        {r.map((c, i) => (
+                          <td key={`${r[0]}-${i}`} className={isNum(c, i) ? 'num' : ''}>{c}</td>
+                        ))}
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              </div>
               {s.sample && <div className="samp-warn">{t('ev.sampleWarn')}</div>}
               {s.rowNote && <p className="note">{tx(s.rowNote)}</p>}
             </section>
