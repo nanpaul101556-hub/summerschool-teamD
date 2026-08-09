@@ -32,36 +32,33 @@ export default function MethodMap() {
         <p>{t('mm.sub')}</p>
       </header>
 
-      {/* ── 세 층위 ─────────────────────────────── */}
+      {/* ── 세 층위 · 한 줄 다섯 칸 ─────────────── */}
       <div className="mm2-l">
         {LAYERS.map((lv) => (
-          <div key={lv.id} className={`mm2-lv ${lv.id}`}>
-            <div className="hd">
-              <b>{tx(lv.label)}</b>
-              <span>{tx(lv.lead)}</span>
-            </div>
-            <div className="ax">
-              {lv.axes.map((id) => {
-                const c = cardOf(id)
-                if (!c) return null
-                const g = GRADE[c.status] || 'hypothesis'
-                return (
-                  <button
-                    key={id}
-                    type="button"
-                    className={`mm2-ax ${g}${open === id ? ' on' : ''}`}
-                    onClick={() => setOpen(open === id ? null : id)}
-                  >
-                    <em className="num">{c.no}</em>
-                    <b>{tx(WHY[id].name)}</b>
-                    <span className="q">{tx(WHY[id].short)}</span>
-                    <span className={`g ${g}`}>{t(`tj.g.${g}`)}</span>
-                  </button>
-                )
-              })}
-            </div>
+          <div key={lv.id} className={`mm2-hd ${lv.id}`}>
+            <b>{tx(lv.label)}</b>
+            <span>{tx(lv.lead)}</span>
           </div>
         ))}
+
+        {LAYERS.flatMap((lv) => lv.axes).map((id) => {
+          const c = cardOf(id)
+          if (!c) return null
+          const g = GRADE[c.status] || 'hypothesis'
+          return (
+            <button
+              key={id}
+              type="button"
+              className={`mm2-ax ${g}${open === id ? ' on' : ''}`}
+              onClick={() => setOpen(open === id ? null : id)}
+            >
+              <em className="num">{c.no}</em>
+              <b>{tx(WHY[id].name)}</b>
+              <span className="q">{tx(WHY[id].short)}</span>
+              <span className={`g ${g}`}>{t(`tj.g.${g}`)}</span>
+            </button>
+          )
+        })}
       </div>
 
       {/* ── 고른 갈래의 사슬 ─────────────────────── */}

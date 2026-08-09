@@ -2873,63 +2873,6 @@ button,.dl{transition:transform .2s ease,background-color .2s ease,
 .dsh-t th,.dsh-t td{border-bottom-color:var(--rule-2)}
 .samp-h{color:var(--ink-3)}
 
-/* ============================================================
-   03 머리 — 무엇으로 「만족한다」를 재는가
-   ============================================================ */
-.mm2{background:var(--tile-1);border-radius:var(--r-lg);padding:var(--s5);
-  margin-bottom:var(--s6)}
-.mm2>header{margin-bottom:var(--s5)}
-.mm2>header h3{margin:0 0 6px;font-size:19px;letter-spacing:-.03em}
-.mm2>header p{margin:0;font-size:12.5px;line-height:1.7;color:var(--ink-3);max-width:66ch}
-
-.mm2-l{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,2.4fr) minmax(0,1fr);
-  gap:var(--s3);margin-bottom:var(--s4);align-items:stretch}
-.mm2-lv{background:var(--tile-3);border-radius:var(--r-md);padding:12px;
-  display:flex;flex-direction:column}
-.mm2-lv .hd{margin-bottom:9px}
-.mm2-lv .hd b{display:block;font-size:12.5px;letter-spacing:-.02em}
-.mm2-lv .hd span{font-size:10px;color:var(--ink-3);line-height:1.5}
-.mm2-lv .ax{display:flex;flex-direction:column;gap:6px;flex:1}
-.mm2-lv.act .ax{flex-direction:row}
-.mm2-lv.act .ax>*{flex:1;min-width:0}
-
-.mm2-ax{display:flex;flex-direction:column;align-items:flex-start;gap:3px;flex:1;justify-content:flex-start;
-  background:var(--tile-2);border:1px solid transparent;border-radius:var(--r-sm);
-  padding:9px 11px;cursor:pointer;font-family:var(--f);text-align:left;width:100%}
-.mm2-ax:hover{border-color:var(--rule)}
-.mm2-ax.on{border-color:var(--blue-on-dark);background:var(--tile-1)}
-.mm2-ax em{font-style:normal;font-size:9px;color:var(--ink-3)}
-.mm2-ax b{font-size:12px;letter-spacing:-.02em;line-height:1.3}
-.mm2-ax .q{font-size:10.5px;color:var(--ink-3)}
-.mm2-ax .g{margin-top:auto;font-size:8.5px;letter-spacing:.06em;padding:1px 7px;
-  border:1px solid var(--rule);border-radius:var(--r-pill);color:var(--ink-3)}
-.mm2-ax .g.verified{border-color:var(--blue-on-dark);color:var(--blue-on-dark)}
-.mm2-ax .g.collecting{border-style:dotted}
-
-.mm2-d{background:var(--tile-3);border-radius:var(--r-md);padding:14px 16px;
-  margin-bottom:var(--s4)}
-.mm2-d-h{display:flex;align-items:baseline;gap:9px;margin-bottom:10px;
-  padding-bottom:9px;border-bottom:1px solid var(--rule-2)}
-.mm2-d-h em{font-style:normal;font-size:10px;color:var(--ink-3)}
-.mm2-d-h b{font-size:14px;letter-spacing:-.025em}
-.mm2-d dl{margin:0;display:grid;grid-template-columns:118px minmax(0,1fr);gap:7px 14px}
-.mm2-d dt{font-size:10px;letter-spacing:.04em;color:var(--ink-3);padding-top:2px}
-.mm2-d dd{margin:0;font-size:12px;line-height:1.7;color:var(--ink-2)}
-.mm2-d dd.lead{color:var(--ink)}
-.mm2-hint{margin:0 0 var(--s4);padding:14px 16px;background:var(--tile-3);
-  border-radius:var(--r-md);font-size:11.5px;color:var(--ink-3)}
-
-.mm2-f{border-top:1px solid var(--rule-2);padding-top:var(--s4)}
-.mm2-f h4{margin:0 0 9px;font-size:12.5px;letter-spacing:-.02em}
-.mm2-f ol{margin:0 0 11px;padding-left:19px;font-size:11.5px;line-height:1.75;color:var(--ink-3)}
-.mm2-f ol li{margin-bottom:3px}
-.mm2-f ol li:last-child{color:var(--ink-2);font-weight:600}
-.mm2-f>p{margin:0;font-size:12px;line-height:1.7;color:var(--ink-2);max-width:66ch}
-
-@media (max-width:1100px){
-  .mm2-l{grid-template-columns:1fr}
-  .mm2-lv.act .ax{flex-direction:column}
-}
 
 /* key 구간은 흰 카드로 뒤집힌다 — 겉만 뒤집고 속을 두면 흰 바탕에 흰 글씨가 된다 */
 .ph-l article.key .ph-w{color:rgba(0,0,0,.62)}
@@ -3122,3 +3065,68 @@ button,.dl{transition:transform .2s ease,background-color .2s ease,
 .mt-lg i.b{border-top:1.4px dashed var(--ink-3)}
 .mt-lg i.g{height:8px;border:0;
   background:repeating-linear-gradient(-45deg,transparent 0 3px,var(--rule) 3px 4px)}
+
+/* ============================================================
+   03 머리 — 무엇으로 「만족한다」를 재는가
+
+   다섯 갈래가 왜 다섯인지를 한 화면에서 말한다.
+   줄 하나에 한 갈래 — 번호 · 이름 · 묻는 것 · 등급.
+   ============================================================ */
+.mm2{background:var(--tile-1);border-radius:var(--r-lg);
+  padding:var(--s4) var(--s5);margin-bottom:var(--s5)}
+
+.mm2>header{margin-bottom:var(--s4)}
+.mm2>header h3{margin:0 0 5px;font-size:17px;letter-spacing:-.03em}
+.mm2>header p{margin:0;font-size:12px;line-height:1.65;color:var(--ink-3);max-width:70ch}
+
+/* 세 층위 — 띠로만 남기고, 축은 다섯 칸이 폭을 고르게 나눈다 */
+.mm2-l{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));
+  gap:7px;margin-bottom:var(--s3)}
+
+.mm2-hd{grid-row:1;padding:0 2px 6px;border-bottom:1px solid var(--rule-2)}
+.mm2-hd.say{grid-column:1}
+.mm2-hd.act{grid-column:2 / span 3}
+.mm2-hd.admin{grid-column:5}
+.mm2-hd b{display:block;font-size:11.5px;letter-spacing:-.02em;line-height:1.3}
+.mm2-hd span{font-size:9.5px;color:var(--ink-3);line-height:1.35}
+
+/* 갈래 한 칸 */
+.mm2-ax{grid-row:2;display:flex;flex-direction:column;align-items:flex-start;gap:2px;
+  padding:9px 11px;text-align:left;font-family:var(--f);
+  background:var(--tile-3);border:1px solid transparent;border-radius:var(--r-sm);
+  cursor:pointer}
+.mm2-ax:hover{border-color:var(--rule);background:var(--tile-2)}
+.mm2-ax.on{border-color:var(--blue-on-dark);background:var(--tile-2)}
+.mm2-ax em{font-style:normal;font-size:9px;color:var(--ink-4)}
+.mm2-ax b{font-size:12px;letter-spacing:-.025em;line-height:1.3}
+.mm2-ax .q{font-size:10px;color:var(--ink-3);line-height:1.3}
+.mm2-ax .g{margin-top:5px;font-size:8.5px;letter-spacing:.05em;padding:2px 8px;
+  white-space:nowrap;border:1px solid var(--rule);border-radius:var(--r-pill);
+  color:var(--ink-3)}
+.mm2-ax .g.verified{border-color:var(--blue-on-dark);color:var(--blue-on-dark)}
+.mm2-ax .g.collecting{border-style:dotted}
+
+/* 고른 갈래 */
+.mm2-hint{margin:0 0 var(--s3);font-size:10.5px;color:var(--ink-4)}
+.mm2-d{background:var(--tile-3);border-radius:var(--r-md);
+  padding:12px 14px;margin-bottom:var(--s3)}
+.mm2-d-h{display:flex;align-items:baseline;gap:9px;margin-bottom:9px;
+  padding-bottom:8px;border-bottom:1px solid var(--rule-2)}
+.mm2-d-h em{font-style:normal;font-size:10px;color:var(--ink-3)}
+.mm2-d-h b{font-size:14px;letter-spacing:-.025em}
+.mm2-d dl{margin:0;display:grid;grid-template-columns:112px minmax(0,1fr);gap:6px 12px}
+.mm2-d dt{font-size:10px;letter-spacing:.04em;color:var(--ink-3);padding-top:2px}
+.mm2-d dd{margin:0;font-size:12px;line-height:1.65;color:var(--ink-2)}
+.mm2-d dd.lead{color:var(--ink)}
+
+/* 같은 자를 댄다 */
+.mm2-f{border-top:1px solid var(--rule-2);padding-top:var(--s3)}
+.mm2-f h4{margin:0 0 8px;font-size:12.5px;letter-spacing:-.02em}
+.mm2-f ol{margin:0 0 9px;padding-left:19px;font-size:11.5px;line-height:1.7;color:var(--ink-3)}
+.mm2-f ol li:last-child{color:var(--ink-2);font-weight:600}
+.mm2-f>p{margin:0;font-size:12px;line-height:1.65;color:var(--ink-2);max-width:70ch}
+
+@media (max-width:1180px){
+  .mm2-l{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .mm2-hd{display:none}
+}
