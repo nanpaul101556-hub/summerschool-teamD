@@ -115,6 +115,14 @@ export const DICT = {
 
 
     // 04 판정
+    'dv.title': '이 판정이 어디서 나왔는가',
+    'dv.sub': '잰 것에서 결론까지, 그 사이를 그대로 놓습니다',
+    'dv.c1': '① 잰 것',
+    'dv.c2': '② 그것이 말하는 것',
+    'dv.c3': '③ 합치면',
+    'dv.from': '{n} 화면',
+    'dv.g.verified': '실측',
+    'dv.g.law': '법 조문',
     'vd.title': '자료를 합치면 무엇을 해야 하는가',
     'vd.sub': '처방은 「바꿔라」가 아니라 「언제 무엇을 하라」입니다.',
     'vd.inTitle': '판정의 입력',
@@ -132,6 +140,7 @@ export const DICT = {
     'vd.pgHow': '후보는 우리가 고른 것이 아닙니다. 인구 추계가 가장 높게 요구하는 기능부터 올리고, '
       + '걸어서 닿는 거리에 이미 있는 것을 뺀 나머지입니다.',
     'vd.phTitle': '무엇을 언제 다시 재는가',
+    'vd.phSub': '연도를 찍지 않습니다 — 관측된 주기에 붙입니다',
     'vd.k.hold': '유지',
     'vd.k.plan': '준비',
     'vd.k.work': '공사',
@@ -545,6 +554,14 @@ export const DICT = {
 
 
     // 04 verdetto
+    'dv.title': 'Da dove viene questo giudizio',
+    'dv.sub': 'Dalla misura alla conclusione, con in mezzo tutti i passaggi',
+    'dv.c1': '① Ciò che è misurato',
+    'dv.c2': '② Ciò che dice',
+    'dv.c3': '③ Messo insieme',
+    'dv.from': 'schermata {n}',
+    'dv.g.verified': 'misurato',
+    'dv.g.law': 'norma',
     'vd.title': 'Che cosa fare, mettendo insieme i dati',
     'vd.sub': 'La prescrizione non e "cambiare" ma "quando fare che cosa".',
     'vd.inTitle': 'Gli ingressi del giudizio',
@@ -562,6 +579,7 @@ export const DICT = {
     'vd.pgHow': 'I candidati non li scegliamo noi: si parte dalle funzioni che le proiezioni demografiche '
       + 'richiedono di più e si tolgono quelle già raggiungibili a piedi.',
     'vd.phTitle': 'Quando fare che cosa',
+    'vd.phSub': 'Non fissiamo anni: ci si aggancia al ciclo osservato',
     'vd.k.hold': 'mantenere',
     'vd.k.plan': 'preparare',
     'vd.k.work': 'cantiere',

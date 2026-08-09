@@ -2931,3 +2931,60 @@ button,.dl{transition:transform .2s ease,background-color .2s ease,
   .mm2-l{grid-template-columns:1fr}
   .mm2-lv.act .ax{flex-direction:column}
 }
+
+/* key 구간은 흰 카드로 뒤집힌다 — 겉만 뒤집고 속을 두면 흰 바탕에 흰 글씨가 된다 */
+.ph-l article.key .ph-w{color:rgba(0,0,0,.62)}
+.ph-l article.key p{color:rgba(0,0,0,.78)}
+.ph-l article.key .ph-watch{color:rgba(0,0,0,.62);border-top-color:rgba(0,0,0,.14)}
+.ph-l article.key .ph-watch span{border-color:rgba(0,0,0,.3);color:rgba(0,0,0,.66)}
+.ph-h .k{flex:none;white-space:nowrap}
+
+/* ============================================================
+   04 — 자료에서 판정까지의 사슬
+   ============================================================ */
+.dv{margin-bottom:var(--s6)}
+.dv-g{display:grid;grid-template-columns:minmax(0,1fr) 34px minmax(0,1.1fr) 34px minmax(0,1.1fr);
+  gap:var(--s3);align-items:start}
+.dv-col{display:flex;flex-direction:column;gap:var(--s2)}
+.dv-col h4{margin:0 0 2px;font-size:10px;letter-spacing:.1em;color:var(--ink-3);font-weight:600}
+
+.dv-f{background:var(--tile-1);border-radius:var(--r-md);padding:11px 13px;
+  display:flex;flex-direction:column;gap:3px;border-left:2px solid transparent}
+.dv-f.used{border-left-color:var(--blue-on-dark)}
+.dv-f.rhythm{border-left-color:var(--ink-3)}
+.dv-f .hd{display:flex;align-items:baseline;justify-content:space-between;gap:8px}
+.dv-f .nm{font-size:11.5px;color:var(--ink-2)}
+.dv-f .g{font-size:8.5px;letter-spacing:.06em;padding:1px 7px;border-radius:var(--r-pill);
+  border:1px solid var(--rule);color:var(--ink-3);flex:none;white-space:nowrap}
+.dv-f .g.verified{border-color:var(--blue-on-dark);color:var(--blue-on-dark)}
+.dv-f b{font-size:22px;letter-spacing:-.035em;line-height:1.1}
+.dv-f .dt{font-size:10.5px;color:var(--ink-3);line-height:1.5}
+.dv-f .from{font-size:9px;letter-spacing:.06em;color:var(--ink-4)}
+
+.dv-ar{display:flex;flex-direction:column;justify-content:center;gap:60px;
+  height:100%;padding-top:34px}
+.dv-ar span{display:block;height:1px;background:var(--rule);position:relative}
+.dv-ar span::after{content:'';position:absolute;right:0;top:-3px;
+  border-left:6px solid var(--rule);border-top:3.5px solid transparent;
+  border-bottom:3.5px solid transparent}
+.dv-ar.one{gap:0;padding-top:88px}
+
+.dv-r{background:var(--tile-1);border-radius:var(--r-md);padding:13px 15px}
+.dv-r b{display:block;font-size:13.5px;letter-spacing:-.025em;margin-bottom:5px}
+.dv-r p{margin:0;font-size:11.5px;line-height:1.7;color:var(--ink-3)}
+.dv-r.used b{color:var(--blue-on-dark)}
+
+.dv-out{background:var(--tile-2);border-radius:var(--r-lg);padding:var(--s4);
+  border:1px solid var(--blue-on-dark)}
+.dv-out b{display:block;font-size:17px;letter-spacing:-.03em;line-height:1.35;margin-bottom:8px}
+.dv-out p{margin:0;font-size:12px;line-height:1.75;color:var(--ink-2)}
+
+.dv-un{margin-top:var(--s4);padding:12px 15px;background:var(--tile-3);
+  border-radius:var(--r-md)}
+.dv-un .l{display:block;font-size:10px;letter-spacing:.08em;color:var(--ink-3);margin-bottom:5px}
+.dv-un p{margin:0;font-size:11.5px;line-height:1.7;color:var(--ink-3);max-width:80ch}
+
+@media (max-width:1180px){
+  .dv-g{grid-template-columns:1fr}
+  .dv-ar{display:none}
+}

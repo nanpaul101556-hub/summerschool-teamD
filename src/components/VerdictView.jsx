@@ -8,6 +8,7 @@
 import { BASIS, CALL, INPUTS, PHASES, haveCount } from '../data/verdict'
 import { PROGRAMS } from '../data/plans'
 import { useLang } from '../i18n'
+import Derivation from './Derivation'
 import AppFrame from './AppFrame'
 
 const SPAN = [2026, 2058]
@@ -77,6 +78,8 @@ export default function VerdictView({ site, onStep, onReset, onNext }) {
             ))}
           </div>
         </section>
+
+        <Derivation />
 
         {/* ── 결론 ─────────────────────────────── */}
         <section className="vd2-call">
