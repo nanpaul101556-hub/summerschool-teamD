@@ -18,6 +18,7 @@ import { useLang } from '../i18n'
 import { n } from '../lib/format'
 import AppFrame from './AppFrame'
 import DataSheet from './DataSheet'
+import MethodMap from './MethodMap'
 import { Bars } from './MiniChart'
 
 /**
@@ -158,7 +159,9 @@ export default function DataView({ site, onStep, onReset, onNext }) {
       next={{ label: t('step.verdict'), onClick: onNext }}
     >
       <div className="ev2">
-        <div className="ev2-h">
+        <MethodMap />
+
+        <div className="ev2-h feeds">
           <span className="l">{t('ev.head')}</span>
           <b>{EVENT.ym} · {tx(EVENT.label)}</b>
         </div>

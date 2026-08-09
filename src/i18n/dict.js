@@ -203,6 +203,14 @@ export const DICT = {
     'tj.g.collectingD': '받는 절차가 정해진 것',
     'tj.g.hypothesis': '가설',
     'tj.g.hypothesisD': '단면만 있어 추세는 미검증',
+    'mm.title': '무엇으로 「만족한다」를 재는가',
+    'mm.sub':
+      '만족은 직접 잴 수 없습니다. 물어보면 말은 듣지만 사람은 말과 다르게 움직입니다. '
+      + '그래서 세 층위에서 다섯 갈래로 나눠 묻습니다.',
+    'mm.hint': '갈래를 누르면 무엇을 재고 왜 그것이 만족의 신호인지 펼쳐집니다',
+    'mm.measures': '무엇을 재는가',
+    'mm.why': '왜 그것이 만족의 신호인가',
+    'mm.blind': '무엇을 못 말하는가',
     'ev.head': '기준 사건',
     'ev.eventTitle': '무엇을 기준으로 나눴나',
     'ev.before': '전',
@@ -627,6 +635,14 @@ export const DICT = {
     'tj.g.collectingD': 'procedura di acquisizione definita',
     'tj.g.hypothesis': 'ipotesi',
     'tj.g.hypothesisD': 'solo istantanea, tendenza non verificata',
+    'mm.title': 'Come si misura la soddisfazione',
+    'mm.sub':
+      'La soddisfazione non si misura direttamente: chiedendo si ottengono parole, ma le persone '
+      + 'agiscono diversamente da come parlano. Per questo la interroghiamo su tre livelli, in cinque assi.',
+    'mm.hint': 'Scegli un asse per vedere che cosa misura e perché è un segnale di soddisfazione',
+    'mm.measures': 'Che cosa misura',
+    'mm.why': 'Perché è un segnale di soddisfazione',
+    'mm.blind': 'Che cosa non può dire',
     'ev.head': 'Evento di riferimento',
     'ev.eventTitle': 'Su che cosa si divide prima e dopo',
     'ev.before': 'prima',
