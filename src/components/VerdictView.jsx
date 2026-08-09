@@ -18,7 +18,7 @@
  */
 
 import { DRIFT, PHASES, SIGNALS, TALLY } from '../data/verdict'
-import { NEXT_YEAR, WHEN } from '../data/outcome'
+import { NEXT_YEAR, OUT_CAVEAT, WHEN } from '../data/outcome'
 import { READS, UNUSED } from '../data/derive'
 import { PROGRAMS } from '../data/plans'
 import { useLang } from '../i18n'
@@ -158,6 +158,8 @@ export default function VerdictView({ site, onStep, onReset, onNext }) {
               <em>{t('vd.eqOut')}</em>
             </span>
           </p>
+
+          <p className="vj-cav">{tx(OUT_CAVEAT)}</p>
 
           <div className="ph-l">
             {PHASES.map((p) => (

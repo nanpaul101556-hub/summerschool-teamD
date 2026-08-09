@@ -7,9 +7,12 @@
  *   지금 현 용도에 적합하다 → 2028년 적합성을 다시 잰다 → 그다음 이 용도로 대응한다
  *
  * 가운데 칸의 연도만 크게 놓는다. 이 화면에서 사람이 가져갈 것은 그 하나다.
+ *
+ * 그 연도가 「법이 정한 해」로 읽히면 안 되므로 바로 아래에 단서를 붙인다.
+ * 최초 점검일을 모르는 채로 법정 일정을 말하면 그건 지어낸 값이다.
  */
 
-import { INTO, NEXT_YEAR, NOW, OUT_SRC, WHEN } from '../data/outcome'
+import { INTO, NEXT_YEAR, NOW, OUT_CAVEAT, OUT_SRC, WHEN } from '../data/outcome'
 import { useLang } from '../i18n'
 
 function Col({ cap, v, head, rows, big }) {
@@ -43,6 +46,7 @@ export default function Outcome() {
           rows={WHEN.rows} big />
         <Col cap={t('oc.into')} head={INTO.head} rows={INTO.rows} />
       </div>
+      <p className="oc-w">{tx(OUT_CAVEAT)}</p>
       <p className="oc-s">{tx(OUT_SRC)}</p>
     </div>
   )

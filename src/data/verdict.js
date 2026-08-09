@@ -173,8 +173,9 @@ export const PHASES = [
   },
   {
     id: 'check', kind: 'plan', key: true,
-    label: K('다음 정기점검 — 3년 주기', 'Prossimo controllo periodico, ciclo triennale'),
-    what: K('건축물관리법 제13조③이 정한 주기', 'Ciclo fissato dalla legge sulla gestione degli edifici'),
+    label: K('다음 손댈 때 — 3년 뒤', 'Prossimo intervento, fra tre anni'),
+    what: K('2022 → 2025 와 같은 간격 · 법정 점검 주기도 3년',
+      'Stesso intervallo di 2022 → 2025; anche il ciclo di legge è triennale'),
     why: K(
       '점검은 어차피 온다. 그때 구조·설비 상태와 함께 용도 적합성도 같이 본다. '
       + '따로 판단하면 공사를 두 번 하게 된다. '
