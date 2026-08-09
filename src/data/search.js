@@ -23,6 +23,19 @@ export const SAMPLE = {
  * @throws {Error} 주소를 못 찾거나 조회에 실패했을 때
  */
 export async function resolveSite(query) {
+  // 정리된 대상지(중계문화공원)는 SITE 에 자료가 다 있으므로 V-World 없이 진입한다.
+  // 발표·데모에서 API 키가 없어도 이 대상지는 항상 열린다.
+  if (query.trim() === SAMPLE.query) {
+    return {
+      name: SITE.name,
+      address: SITE.address,
+      coords: SITE.coords,
+      parcel: null,
+      zone: null,
+      curated: true,
+    }
+  }
+
   const hit = await geocode(query)
   if (!hit) throw new Error('주소를 찾지 못했습니다')
 

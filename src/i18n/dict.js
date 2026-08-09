@@ -190,7 +190,9 @@ export const DICT = {
     'tm.incNote':
       '우리가 추정한 값이 아니라 제도가 정해 둔 조건입니다. 공사 시점이 정해지면 '
       + '그때 어떤 지원을 끌어올 수 있는지가 여기서 결정됩니다.',
-    'tm.noMoneyTitle': '금액을 말하지 않는 이유',
+    'tm.scopeTitle': '무엇을 하고 무엇을 안 하는가',
+    'tm.fmTitle': '금액은 어디서 막히는가',
+    'tm.fundTitle': '구가 실제로 내는 몫',
     'tm.now': '지금',
     'tm.legCheck': '법정 점검 · {n}년마다',
     'tm.legPast': '지나온 시점',
@@ -631,7 +633,9 @@ export const DICT = {
     'tm.incNote':
       'Non sono nostre stime ma condizioni fissate dalla normativa: definita la data del cantiere, '
       + 'è qui che si decide quale sostegno si può attivare.',
-    'tm.noMoneyTitle': 'Perché non diamo importi',
+    'tm.scopeTitle': 'Che cosa facciamo e che cosa no',
+    'tm.fmTitle': 'Dove si blocca il calcolo degli importi',
+    'tm.fundTitle': 'La quota realmente a carico del distretto',
     'tm.now': 'oggi',
     'tm.legCheck': 'controllo di legge · ogni {n} anni',
     'tm.legPast': 'date già avvenute',

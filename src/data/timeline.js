@@ -165,3 +165,94 @@ export const CLOSING = {
     + 'Per ora, solo le date.',
   ),
 }
+
+/**
+ * LCC 범위 — 무엇을 하고 무엇을 하지 않는가.
+ * 03-data/METHOD-lcc.md 「★ 범위 확정」을 그대로 옮긴다.
+ */
+export const SCOPE = {
+  head: K('우리가 만드는 LCC는 「금액」이 아니라 「시점」이다',
+    'Il nostro LCC non riguarda gli importi ma le date'),
+  cols: [K('하는 것', 'Ciò che facciamo'), K('하지 않는 것', 'Ciò che non facciamo')],
+  rows: [
+    {
+      k: K('질문', 'Domanda'),
+      a: K('언제 무엇을 손봐야 하는가', 'Quando intervenire e su che cosa'),
+      b: K('50년 총액이 얼마인가', 'Quanto costa in cinquant\'anni'),
+    },
+    {
+      k: K('산출', 'Risultato'),
+      a: K('연도별 공사 타임라인', 'Cronologia degli interventi'),
+      b: K('NPV · 회수기간', 'VAN e tempo di ritorno'),
+    },
+    {
+      k: K('입력', 'Ingressi'),
+      a: K('준공연도 + 법정 주기', 'Anno di agibilità e ciclo di legge'),
+      b: K('단가 · 할인율 · 확률', 'Costi unitari, tasso di sconto, probabilità'),
+    },
+    {
+      k: K('근거', 'Fondamento'),
+      a: K('건축물관리법 제13조③ — 확정값', 'Art. 13 c.3: valore fissato'),
+      b: K('추정 단가 — 미확보', 'Costi unitari stimati: non reperiti'),
+    },
+    {
+      k: K('상태', 'Stato'),
+      a: K('지금 계산된다', 'Calcolabile ora'),
+      b: K('단가 없이는 불가', 'Impossibile senza i costi'),
+    },
+  ],
+}
+
+/** 어디서 막히는가 — 식 하나로 보인다 */
+export const FORMULA = {
+  parts: [
+    { t: '금액', k: 'out' },
+    { t: '=', k: 'op' },
+    { t: '주기', k: 'have', note: K('법정 확정', 'fissato dalla legge') },
+    { t: '×', k: 'op' },
+    { t: '물량', k: 'have', note: K('도면에서 산출', 'dal progetto') },
+    { t: '×', k: 'op' },
+    { t: '단가', k: 'miss', note: K('미확보 — 여기서만 막힌다', 'non reperito: è qui che si blocca') },
+  ],
+  note: K(
+    '주기는 법이 정해 두었고 물량은 도면에서 나온다. 막히는 것은 단가 하나뿐이다. '
+    + '그런데 시점을 묻는 데에는 단가가 필요 없다 — 그래서 지금 답할 수 있는 것부터 답한다.',
+    'Il ciclo lo fissa la legge e le quantità vengono dal progetto: manca solo il costo unitario. '
+    + 'Ma per rispondere sulle date il costo non serve: rispondiamo a ciò a cui si può già rispondere.',
+  ),
+}
+
+/** 재원 경로 — 총사업비와 구 부담액은 다르다 */
+export const FUNDING = {
+  head: K('총사업비가 아니라 구 부담액이다', 'Non il costo totale, ma la quota a carico del distretto'),
+  ratio: { gov: 70, gu: 30 },
+  label: K('그린리모델링 국비 : 지방비', 'Green remodeling: Stato / ente locale'),
+  body: K(
+    '구청이 보는 숫자는 총사업비가 아니라 구가 실제로 내는 몫이다. '
+    + '그린리모델링을 태우면 국비가 7할을 대므로 구 부담은 3할로 떨어진다. '
+    + '노원구는 재정자립도가 서울에서 가장 낮다 — 이 비율 하나가 되고 안 되고를 가른다.',
+    'Ciò che conta per il distretto non è il costo totale ma la quota propria. '
+    + 'Con il programma di green remodeling lo Stato copre il 70%, lasciandone il 30%. '
+    + 'Nowon ha la più bassa autonomia finanziaria di Seoul: è questa proporzione a decidere se si fa o no.',
+  ),
+}
+
+/** 왜 이 계산을 지금 하는가 — METHOD §5 */
+export const WHY_NOW = {
+  head: K('제도는 있는데 아무도 안 한다', 'Gli strumenti esistono, ma nessuno li usa'),
+  chain: [
+    K('제도는 있다 — 그린리모델링도 ZEB 인센티브도 있다',
+      'Gli strumenti ci sono: green remodeling e incentivi ZEB'),
+    K('계산상 이익도 존재한다', 'E il vantaggio esiste anche sulla carta'),
+    K('그런데 노원구 ZEB 인증 7건은 전부 공공이고 민간은 0건이다',
+      'Eppure le sette certificazioni ZEB di Nowon sono tutte pubbliche: zero privati'),
+  ],
+  why: K(
+    '설계 전에는 얼마인지 모르고, 알 때쯤이면 도면이 다 그려져 있기 때문이다.',
+    'Perché prima di progettare non si sa quanto costi, e quando lo si sa il progetto è già disegnato.',
+  ),
+  close: K(
+    '그 계산을 도면 앞으로 옮기는 것 — 그것이 이 플랫폼이다.',
+    'Spostare quel calcolo prima del disegno: è questo la piattaforma.',
+  ),
+}

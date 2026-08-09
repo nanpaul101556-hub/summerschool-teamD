@@ -13,11 +13,13 @@ import { useState } from 'react'
 
 import { SITE } from '../data/site'
 import {
-  BUILT, CLOSING, LAW, NOW, PAST, RHYTHM, checkYears, meanGap,
+  BUILT, CLOSING, FORMULA, FUNDING, LAW, NOW, PAST, RHYTHM, SCOPE, WHY_NOW,
+  checkYears, meanGap,
 } from '../data/timeline'
 import { useLang } from '../i18n'
 import { eligibleIncentives } from '../lib/constraint'
 import AppFrame from './AppFrame'
+import LccChart from './LccChart'
 
 const FROM = BUILT
 const TO = 2050
@@ -75,8 +77,25 @@ export default function LccView({ site, onStep, onReset }) {
       </section>
 
       <section>
-        <h3 className="lab">{t('tm.noMoneyTitle')}</h3>
-        <p className="note">{tx(CLOSING.noMoney)}</p>
+        <h3 className="lab">{t('tm.scopeTitle')}</h3>
+        <p className="tm-scope-h">{tx(SCOPE.head)}</p>
+        <table className="tm-scope">
+          <thead>
+            <tr>
+              <th />
+              {SCOPE.cols.map((c) => <th key={tx(c)}>{tx(c)}</th>)}
+            </tr>
+          </thead>
+          <tbody>
+            {SCOPE.rows.map((r) => (
+              <tr key={tx(r.k)}>
+                <th scope="row">{tx(r.k)}</th>
+                <td className="do">{tx(r.a)}</td>
+                <td className="dont">{tx(r.b)}</td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
       </section>
     </>
   )
@@ -88,6 +107,8 @@ export default function LccView({ site, onStep, onReset }) {
           <span className="l">{t('tm.head')}</span>
           <b>{t('tm.headV', { built: BUILT, n: LAW.cycle })}</b>
         </div>
+
+        <LccChart />
 
         {/* ── 축 ─────────────────────────────────────────── */}
         <div className="tm-axis">
@@ -174,12 +195,55 @@ export default function LccView({ site, onStep, onReset }) {
           <p className="note">{tx(RHYTHM.caveat)}</p>
         </section>
 
+        {/* ── 어디서 막히는가 ─────────────────────── */}
+        <section className="tm-fm">
+          <h3 className="tm-sec">{t('tm.fmTitle')}</h3>
+          <div className="tm-fm-r">
+            {FORMULA.parts.map((p, i) => (
+              <span key={`${p.t}-${i}`} className={`pt ${p.k}`}>
+                <b>{p.t}</b>
+                {p.note && <em>{tx(p.note)}</em>}
+              </span>
+            ))}
+          </div>
+          <p className="note">{tx(FORMULA.note)}</p>
+        </section>
+
+        {/* ── 구가 실제로 내는 몫 ──────────────────── */}
+        <section className="tm-fund">
+          <h3 className="tm-sec">{t('tm.fundTitle')}</h3>
+          <div className="tm-fund-b">
+            <div className="bar" aria-hidden="true">
+              <span className="gov" style={{ flex: FUNDING.ratio.gov }}>
+                {FUNDING.ratio.gov}%
+              </span>
+              <span className="gu" style={{ flex: FUNDING.ratio.gu }}>
+                {FUNDING.ratio.gu}%
+              </span>
+            </div>
+            <div className="cap">
+              <span>{tx(FUNDING.label)}</span>
+              <b>{tx(FUNDING.head)}</b>
+            </div>
+          </div>
+          <p className="note">{tx(FUNDING.body)}</p>
+        </section>
+
         <section className="tm-end">
           <h2>{tx(CLOSING.head)}</h2>
           <p>{tx(CLOSING.body)}</p>
           <div className="tm-hook">
             <span className="l">{t('tm.hookL', { y: BUILT })}</span>
             <p>{tx(CLOSING.hook)}</p>
+          </div>
+
+          <div className="tm-why">
+            <b>{tx(WHY_NOW.head)}</b>
+            <ol>
+              {WHY_NOW.chain.map((c) => <li key={tx(c)}>{tx(c)}</li>)}
+            </ol>
+            <p className="q">{tx(WHY_NOW.why)}</p>
+            <p className="a">{tx(WHY_NOW.close)}</p>
           </div>
         </section>
       </div>
