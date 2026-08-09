@@ -1,5 +1,5 @@
 /**
- * 생애주기 예측 — 이용은 떨어지고, 공사가 되돌리고, 다시 떨어진다.
+ * 생애주기 예측 — 값은 떨어지고, 공사가 되돌리고, 다시 떨어진다.
  *
  * 곡선의 두 계수는 지어낸 값이 아니라 이 건물에서 실측한 값이다.
  *   감쇠  코로나 전 5년(2015~2019) 추세 — 손대지 않으면 해마다 얼마나 빠지는가
@@ -8,7 +8,13 @@
  * 미래는 그 둘을 반복해서 그린다. 예측이지 사실이 아니다.
  */
 
-/** 2019년 7월 = 100 지수. analyze_recovery.py 산출 */
+import { WORK_YEARS } from './clocks'
+
+/**
+ * 2015~2026 실측 지수. 곡선에는 더 이상 그리지 않는다 —
+ * 2020~21 의 골은 이 건물이 아니라 코로나가 만든 것이라
+ * 「건물의 값」으로 읽히면 안 된다. 참조용으로만 남긴다.
+ */
 export const HISTORY = [
   { y: 2015, v: 104 }, { y: 2016, v: 103 }, { y: 2017, v: 105 },
   { y: 2018, v: 101 }, { y: 2019, v: 100 }, { y: 2020, v: 73 },
@@ -62,12 +68,12 @@ export const WORK = {
 export const DECAY = -1.15         // %/년. 2015→2019 추세 (104 → 100)
 export const FLOOR = 55            // 아무리 방치해도 이 아래로는 잘 안 간다 (관측 최저 63의 보수값)
 export const START = 2026
-export const END = 2060
+export const END = 2045
 
 /**
  * 두 갈래만 놓는다 — 판정이 권한 대로 하는 경우와 손대지 않는 경우.
  * 대안을 여러 개 늘어놓으면 「무엇을 해야 하는가」가 다시 흐려진다.
- * 시점은 verdict.js 의 처방(2031 · 2039 · 2045 · 2054)과 같다.
+ * 시점은 우리가 고르지 않는다. lib/clocks.js 가 두 시계의 겹침에서 뽑아 준다.
  */
 export const SCENARIOS = [
   {
@@ -83,17 +89,12 @@ export const SCENARIOS = [
     key: 'plan',
     label: { ko: '판정이 권한 대로', it: 'Seguendo il giudizio' },
     lead: true,
-    works: [
-      { year: 2031, layers: ['space'] },
-      { year: 2039, layers: ['space', 'services'] },
-      { year: 2045, layers: ['space'] },
-      { year: 2054, layers: ['space', 'services'] },
-    ],
+    works: WORK_YEARS,
     note: {
-      ko: '2031·2045년에는 내장만, 2039·2054년에는 설비 주기에 용도 전환을 얹는다. '
-        + '큰 공사는 두 번이고, 그때마다 곡선이 반등한다.',
-      it: 'Nel 2031 e 2045 solo finiture; nel 2039 e 2054 la riconversione si innesta sul ciclo impiantistico. '
-        + 'Due cantieri maggiori, e a ognuno la curva risale.',
+      ko: '물리 시계와 수요 시계가 겹치는 해에만 손댄다. 내장·설비·구조가 각각 '
+        + '수명을 다하는 자리에 용도 전환을 얹으므로 공사가 두 번이 되지 않는다.',
+      it: 'Si interviene solo dove i due orologi coincidono: la riconversione si innesta '
+        + 'sul punto in cui finiture, impianti e struttura esauriscono la loro vita utile.',
     },
   },
 ]

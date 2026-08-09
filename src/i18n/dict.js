@@ -194,12 +194,34 @@ export const DICT = {
       + '계획이 우리 방식을 지시한 것은 아닙니다.',
 
     // 03 정량 근거
+    'tc.title': '두 시계가 겹치는 해에 손댄다',
+    'tc.sub': '건물이 낡는 속도와 동네가 변하는 속도는 다릅니다',
+    'tc.phys': '물리 시계',
+    'tc.physD': '건물이 낡는 속도',
+    'tc.dem': '수요 시계',
+    'tc.demD': '동네가 변하는 속도',
+    'tc.onlyH': '재기만 한다',
+    'tc.onlyD': '물리 주기와 겹치지 않습니다 — 손대지 않고 적합성만 다시 잽니다',
+    'tc.withDem': '용도 재판정 {s} 과 겹칩니다',
+    'tc.h.fit': '내장 교체 + 용도 전환',
+    'tc.h.svc': '설비 교체 + 용도 전환',
+    'tc.h.str': '구조 수명 도래 — 가장 큰 결정',
+    'tc.why':
+      '시계 하나만 보면 공사를 두 번 합니다. 용도를 바꾸려고 한 번 뜯고, '
+      + '몇 년 뒤 설비 때문에 또 뜯습니다. 겹치는 해에 한 번에 하면 그 두 번이 한 번이 됩니다. '
+      + '{big}년이 가장 큰 자리입니다 — 구조 수명이 닿고, 그 무렵 용도 주기({gap})도 돌아옵니다.',
+    'lcx.title': '손대지 않으면 값은 계속 내려간다',
+    'lcx.sub': '2026년 = 100 · 세로선은 두 시계가 겹치는 해',
+    'lcx.plan': '겹치는 해에 손대면 평균 {n}',
+    'lcx.none': '손대지 않으면 평균 {n}',
     'tm.title': '언제 손봐야 하는가',
     'tm.sub': '금액이 아니라 시점입니다. 시점은 법과 이 건물의 이력이 정합니다.',
     'tm.head': '준공부터 지금까지, 그리고 앞으로',
-    'tm.headV': '{built}년에 지어졌고, 점검은 {n}년마다 온다',
+    'tm.headV': '{built}년에 지어졌고, 세 번 용도를 갈아 끼웠다',
     'tm.lawTitle': '법이 정한 주기',
-    'tm.lawNote': '준공 뒤 5년 안에 처음, 그 뒤로는 {n}년마다. 우리가 고른 간격이 아닙니다.',
+    'tm.lawNote': '다만 이 주기는 「다중이용 건축물」에만 걸립니다 — 문화·집회시설은 '
+      + '바닥면적 합계 5,000 m² 이상이어야 하고, 이 건물의 연면적을 확인하지 못했습니다. '
+      + '대상 여부부터 미확정이라 아래 시점은 법이 아니라 이 건물의 이력에서 뽑았습니다.',
     'tm.gapTitle': '이 건물에는 없는 것',
     'tm.incTitle': '손댈 때 쓸 수 있는 제도',
     'tm.incNote':
@@ -679,12 +701,35 @@ export const DICT = {
       + 'non è il piano a prescrivere il nostro metodo.',
 
     // 03 evidenze quantitative
+    'tc.title': 'Si interviene dove i due orologi coincidono',
+    'tc.sub': 'L\'edificio invecchia a una velocità, il quartiere cambia a un\'altra',
+    'tc.phys': 'Orologio fisico',
+    'tc.physD': 'Quanto in fretta invecchia l\'edificio',
+    'tc.dem': 'Orologio della domanda',
+    'tc.demD': 'Quanto in fretta cambia il quartiere',
+    'tc.onlyH': 'Si misura soltanto',
+    'tc.onlyD': 'Non coincide con alcun ciclo fisico: si rimisura l\'idoneità senza intervenire',
+    'tc.withDem': 'coincide con il riesame {s}',
+    'tc.h.fit': 'Rifacimento finiture + riconversione',
+    'tc.h.svc': 'Sostituzione impianti + riconversione',
+    'tc.h.str': 'Fine vita strutturale: la decisione più grande',
+    'tc.why':
+      'Guardando un solo orologio si apre il cantiere due volte: una per cambiare uso, '
+      + 'e pochi anni dopo un\'altra per gli impianti. Facendo tutto dove i cicli coincidono, '
+      + 'due cantieri diventano uno. Il {big} è il punto decisivo: la struttura arriva a fine '
+      + 'vita e nello stesso periodo torna il ciclo d\'uso ({gap}).',
+    'lcx.title': 'Senza interventi il valore continua a scendere',
+    'lcx.sub': '2026 = 100 · le verticali sono gli anni in cui i due orologi coincidono',
+    'lcx.plan': 'Intervenendo alle coincidenze: media {n}',
+    'lcx.none': 'Senza interventi: media {n}',
     'tm.title': 'Quando intervenire',
     'tm.sub': 'Non importi, ma date: le fissano la legge e la storia di questo edificio.',
     'tm.head': 'Dall\'inaugurazione a oggi, e oltre',
-    'tm.headV': 'Costruito nel {built}; il controllo cade ogni {n} anni',
+    'tm.headV': 'Costruito nel {built}, ha già cambiato uso tre volte',
     'tm.lawTitle': 'Il ciclo fissato dalla legge',
-    'tm.lawNote': 'Il primo entro cinque anni dall\'agibilità, poi ogni {n} anni: non è un intervallo scelto da noi.',
+    'tm.lawNote': 'Il ciclo però vale solo per gli edifici a grande affluenza: per gli usi '
+      + 'culturali e assembleari servono oltre 5.000 m² di superficie, che non abbiamo verificato. '
+      + 'Non sapendo se l\'edificio vi rientri, le date qui sotto derivano dalla sua storia, non dalla legge.',
     'tm.gapTitle': 'Ciò che a questo edificio manca',
     'tm.incTitle': 'Strumenti disponibili al momento dell\'intervento',
     'tm.incNote':

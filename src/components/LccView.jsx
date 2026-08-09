@@ -5,26 +5,27 @@
  * 대신 시점만 낸다. 시점은 법(건축물관리법 제13조③)과 이 건물의 이력에서 나오므로
  * 추정이 섞이지 않는다.
  *
- * 미래의 한 해를 찍지 않는다. 이 건물이 손댄 간격(4년·3년)과
- * 법이 정한 점검 주기(3년)가 이미 같다는 관찰이 이 화면의 클라이맥스다.
+ * 미래의 한 해를 찍지 않는다. 물리 시계(내장 5~7년·설비 15년·구조 50년)와
+ * 수요 시계(관측된 3~4년)가 겹치는 자리를 찾는 것이 이 화면의 클라이맥스다.
+ * 두 시계 중 하나만 보면 공사를 두 번 한다.
  */
 
 import { useState } from 'react'
 
 import { SITE } from '../data/site'
 import {
-  BUILT, CLOSING, FORMULA, FUNDING, LAW, NOW, PAST, RHYTHM, SCOPE, WHY_NOW,
-  checkYears, meanGap,
+  BUILT, CLOSING, FORMULA, FUNDING, LAW, NOW, PAST, SCOPE, WHY_NOW,
+  checkYears,
 } from '../data/timeline'
 import { useLang } from '../i18n'
 import { eligibleIncentives } from '../lib/constraint'
 import AppFrame from './AppFrame'
 import LccChart from './LccChart'
+import TwoClocks from './TwoClocks'
 
 const FROM = BUILT
 const TO = 2050
 const CHECKS = checkYears(2020, TO)
-const GAP = meanGap()
 
 const pos = (year) => ((year - FROM) / (TO - FROM)) * 100
 
@@ -108,6 +109,8 @@ export default function LccView({ site, onStep, onReset }) {
           <b>{t('tm.headV', { built: BUILT, n: LAW.cycle })}</b>
         </div>
 
+        <TwoClocks />
+
         <LccChart />
 
         {/* ── 축 ─────────────────────────────────────────── */}
@@ -171,29 +174,6 @@ export default function LccView({ site, onStep, onReset }) {
             </li>
           ))}
         </ol>
-
-        {/* ── 겹치는 자리 ─────────────────────────────────── */}
-        <section className="tm-meet">
-          <h3>{tx(RHYTHM.head)}</h3>
-          <div className="tm-meet-g">
-            <div>
-              <span className="l">{t('tm.obsGap')}</span>
-              <b className="num">{GAP % 1 ? GAP.toFixed(1) : GAP}{t('tm.yrUnit')}</b>
-              <p>{t('tm.obsGapD', {
-                a: RHYTHM.gaps[0].to - RHYTHM.gaps[0].from,
-                b: RHYTHM.gaps[1].to - RHYTHM.gaps[1].from,
-              })}</p>
-            </div>
-            <div className="x" aria-hidden="true">=</div>
-            <div>
-              <span className="l">{t('tm.fromLaw')}</span>
-              <b className="num">{LAW.cycle}{t('tm.yrUnit')}</b>
-              <p>{t('tm.checkAt', { n: LAW.cycle, art: LAW.art })}</p>
-            </div>
-          </div>
-          <p className="tm-meet-b">{tx(RHYTHM.body)}</p>
-          <p className="note">{tx(RHYTHM.caveat)}</p>
-        </section>
 
         {/* ── 어디서 막히는가 ─────────────────────── */}
         <section className="tm-fm">
