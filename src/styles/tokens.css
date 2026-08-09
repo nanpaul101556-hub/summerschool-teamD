@@ -3228,12 +3228,13 @@ button,.dl{transition:transform .2s ease,background-color .2s ease,
    대비가 설명을 대신한다. */
 .mf{background:var(--tile-1);border-radius:var(--r-lg);padding:var(--s5);
   margin-bottom:var(--s6)}
-.mf>header{margin-bottom:var(--s4)}
-.mf>header h3{margin:0;font-size:21px;letter-spacing:-.03em}
+.mf>header{margin-bottom:var(--s4);max-width:96ch}
+.mf>header h3{margin:0 0 8px;font-size:21px;letter-spacing:-.03em}
+.mf>header p{margin:0;font-size:14.5px;line-height:1.75;color:var(--ink-2)}
 
-.mf-x{display:grid;grid-template-columns:minmax(0,1fr) 52px minmax(0,1.15fr);
-  align-items:start;gap:var(--s2);margin-bottom:var(--s5)}
-.mf-ar{align-self:start;margin-top:78px}
+ /* 화살표 칸을 뺐다 — 상자 셋이 사라져 이을 것이 없다 */
+.mf-x{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.02fr);
+  align-items:start;gap:var(--s5);margin-bottom:var(--s3)}
 .mf .cap{display:block;font-size:11px;letter-spacing:.12em;text-transform:uppercase;
   color:var(--ink-4);margin-bottom:9px}
 
@@ -3260,9 +3261,6 @@ button,.dl{transition:transform .2s ease,background-color .2s ease,
 .df figcaption i.b{height:9px;width:2.5px;border:0;background:var(--blue-on-dark)}
 .df figcaption em{font-style:normal;color:var(--ink-4);margin-left:auto}
 
-.mf-ar svg{display:block;width:100%;height:16px}
-.mf-ar path{fill:none;stroke:var(--ink-3);stroke-width:1.4}
-
 .mf-r{display:flex;flex-direction:column;gap:8px;min-width:0}
 .mf-a{background:var(--tile-2);border:1px solid var(--blue-on-dark);
   border-radius:var(--r-lg);padding:var(--s4) var(--s5)}
@@ -3275,14 +3273,14 @@ button,.dl{transition:transform .2s ease,background-color .2s ease,
 /* 지도는 왼쪽 칸을 꽉 채운다. 정류장이 남북으로 늘어서 있어
    칸이 옆으로 넓으면 축척이 튀므로 세로로 조금 긴 비율을 준다. */
 .sm{margin:0;min-width:0}
-.sm-box{aspect-ratio:1/1.08;border-radius:var(--r-md);overflow:hidden;background:#111}
+.sm-box{aspect-ratio:1/1.02;border-radius:var(--r-md);overflow:hidden;background:#111}
 .sm-box .leaflet-container{background:#111}
 .sm-k{display:flex;align-items:center;gap:14px;flex-wrap:wrap;
   margin-top:8px;font-size:11px;color:var(--ink-3)}
 .sm-k span{display:flex;align-items:center;gap:6px}
-.sm-k span::before{content:'';flex:none;width:11px;height:11px;border-radius:50%;
-  border:1.5px solid var(--ink-3)}
-.sm-k .k3::before{border-color:var(--blue-on-dark);background:rgba(0,102,204,.45)}
+.sm-k span::before{content:'';flex:none;width:10px;height:10px;border-radius:50%;
+  background:var(--blue-on-dark)}
+.sm-k em{font-style:normal;color:var(--ink-4);margin-left:auto;text-align:right}
 
 /* 이름과 수치는 오른쪽 목록이 맡는다 */
 .sl{min-width:0}
@@ -3314,16 +3312,27 @@ button,.dl{transition:transform .2s ease,background-color .2s ease,
 .sl-f em{font-style:normal;color:var(--ink-4);text-align:right}
 
 /* 지도 위 글자 — 위성 배경이라 반드시 그림자를 깐다 */
-.sm-n,.sm-site{position:absolute;font-family:var(--f);white-space:nowrap;
-  text-shadow:0 1px 3px rgba(0,0,0,.95),0 0 7px rgba(0,0,0,.75);pointer-events:none}
-.sm-n{transform:translate(-50%,-50%);font-size:12px;font-weight:700;
-  color:#fff;font-variant-numeric:tabular-nums}
-.sm-n.low{color:#a8d6ff}
-.sm-site{transform:translate(-50%,0);display:flex;flex-direction:column;
-  align-items:center;gap:4px}
-.sm-site b{font-size:12px;font-weight:700;color:#fff;letter-spacing:-.02em}
-.sm-site i{width:8px;height:8px;border-radius:50%;background:#fff;
-  box-shadow:0 0 0 3px rgba(0,0,0,.65)}
+.sm-p,.sm-site{position:absolute;font-family:var(--f);white-space:nowrap;
+  display:flex;flex-direction:column;align-items:center;gap:3px;
+  text-shadow:0 1px 3px rgba(0,0,0,.95),0 0 8px rgba(0,0,0,.8);pointer-events:none}
+.sm-p{transform:translate(-50%,-50%)}
+.sm-p i{width:9px;height:9px;border-radius:50%;background:rgba(255,255,255,.9);
+  border:1.5px solid rgba(0,0,0,.5)}
+.sm-p b{font-size:12px;font-weight:600;color:rgba(255,255,255,.96);letter-spacing:-.02em}
+.sm-p em{font-style:normal;font-size:10.5px;color:rgba(255,255,255,.66);
+  font-variant-numeric:tabular-nums}
+.sm-p.low i{background:#2997FF;border-color:rgba(0,0,0,.4);
+  box-shadow:0 0 0 4px rgba(41,151,255,.28)}
+.sm-p.low b{color:#a8d6ff}
+.sm-p.low em{color:#7fbdf5}
+.sm-p.bldg i{width:7px;height:7px;background:rgba(255,255,255,.55)}
+.sm-p.bldg b{font-size:11px;color:rgba(255,255,255,.75)}
+
+/* 대상지는 이름이 위, 점이 아래 — 정류장 이름표와 겹치지 않는다 */
+.sm-site{transform:translate(-50%,-100%)}
+.sm-site b{font-size:13px;font-weight:700;color:#fff;letter-spacing:-.025em}
+.sm-site i{width:11px;height:11px;background:#fff;
+  box-shadow:0 0 0 3px rgba(0,0,0,.6)}
 
 /* 자의 네 단계 — 지도가 커지며 오른쪽이 비어, 그 자리에 세로로 쌓는다.
    계산은 순서가 전부이므로 번호를 달아 위에서 아래로 읽히게 한다. */
@@ -3345,7 +3354,6 @@ button,.dl{transition:transform .2s ease,background-color .2s ease,
 
 @media (max-width:1180px){
   .mf-x{grid-template-columns:1fr}
-  .mf-ar{display:none}
 }
 
 /* ── 다섯 갈래 ─────────────────────────────────────────── */

@@ -145,27 +145,17 @@ export const FRAME = {
 }
 
 /**
- * 왜 이 근거가 필요한가 — 세 덩어리.
+ * 왜 이 근거가 필요한가 — 한 문장.
  *
- * 넷으로 늘어놓았더니 문제와 해법이 같은 무게로 보여, 읽어야 이해되는 그림이 됐다.
- * 문제 둘 · 우리가 만든 것 하나로 줄이고 글자를 깎는다.
- * 마지막 칸만 강조해 「그래서 이걸 만들었다」가 눈에 먼저 들어오게 한다.
+ * 처음에는 넷, 다음에는 상자 셋으로 그렸다. 상자를 세울수록 화면은 설명서가 되고
+ * 정작 볼 것 — 인구 곡선과 지도 — 이 아래로 밀렸다. 논지는 두 줄이면 끝난다.
+ * 상자를 지우고 그 자리를 그림에 준다.
  */
-export const CHAIN = [
-  {
-    id: 'problem',
-    head: K('용도는 고정, 동네는 변한다', 'L\'uso è fisso, il quartiere cambia'),
-    body: K('준공 때 정한 용도가 수십 년 간다', 'La destinazione fissata all\'apertura dura decenni'),
-  },
-  {
-    id: 'gap',
-    head: K('어긋나도 잴 자가 없다', 'Nessun metro per misurare lo scarto'),
-    body: K('그래서 감으로 결정한다', 'Così si decide a intuito'),
-  },
-  {
-    id: 'rule',
-    head: K('그 자를 만든다', 'Costruiamo quel metro'),
-    body: K('만족을 다섯 갈래로 나눠 같은 방식으로 잰다',
-      'Misurando la soddisfazione su cinque assi, tutti allo stesso modo'),
-  },
-]
+export const LEAD = K(
+  '준공 때 정한 용도는 수십 년 가는데 동네는 계속 변한다. '
+  + '어긋나도 잴 자가 없어 지금까지는 감으로 결정했다 — '
+  + '그 자를 만든다. 만족을 다섯 갈래로 나눠 같은 방식으로 잰다.',
+  'La destinazione fissata all\'apertura dura decenni, ma il quartiere continua a cambiare. '
+  + 'Non esiste un metro per misurare lo scarto, e finora si è deciso a intuito — '
+  + 'quel metro lo costruiamo noi: la soddisfazione, misurata su cinque assi allo stesso modo.',
+)

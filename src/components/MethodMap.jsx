@@ -1,20 +1,16 @@
 /**
  * 03 머리 — 왜 이 근거가 필요한가.
  *
- * 넷을 나란히 늘어놓았더니 문제와 해법이 같은 무게로 보여,
- * 「읽어야 이해되는 그림」이 됐다. 그림이 논리를 대신하지 못한 것이다.
+ * 문제 둘과 해법 하나를 상자로 세워 봤다. 대비는 생겼지만 화면이 설명서가 됐고,
+ * 정작 볼 것 — 인구 곡선과 지도 — 이 아래로 밀렸다. 논지는 두 줄이면 끝난다.
+ * 상자를 지우고 그 자리를 그림에 준다.
  *
- * 문제 둘을 왼쪽에 묶고, 우리가 만든 것 하나를 오른쪽에 크게 놓는다.
- * 가운데 굵은 화살표 하나가 그 둘을 잇는다 — 대비가 설명을 대신한다.
- *
- * 자의 네 단계는 세로로 쌓지 않고 한 줄로 흘린다. 계산은 순서가 전부이므로
- * 왼쪽에서 오른쪽으로 읽히면 그것으로 설명이 끝난다.
- *
- * 그림 둘은 축이 다르다 — 왼쪽 DriftFigure 가 시간, 오른쪽 SignalMap 이 공간이다.
- * 「동네는 계속 변한다」와 「그래서 여기를 이렇게 잰다」가 나란히 놓인다.
+ * 왼쪽은 무엇을 봤는가 — 시간(인구)과 공간(지도).
+ * 오른쪽은 어떻게 재는가 — 정류장별 수치와 자의 네 단계.
+ * 닫는 문장만 아래에 폭 전체로 남긴다. 양쪽을 다 받는 말이라 그 자리가 맞다.
  */
 
-import { CHAIN, FRAME } from '../data/method'
+import { FRAME, LEAD } from '../data/method'
 import DriftFigure from './DriftFigure'
 import SignalMap, { SignalList } from './SignalMap'
 import { useLang } from '../i18n'
@@ -22,42 +18,22 @@ import { useLang } from '../i18n'
 export default function MethodMap() {
   const { t, tx } = useLang()
 
-  const problems = CHAIN.filter((c) => c.id !== 'rule')
-  const answer = CHAIN.find((c) => c.id === 'rule')
-
   return (
     <section className="mf">
       <header>
         <h3>{t('mf.title')}</h3>
+        <p>{tx(LEAD)}</p>
       </header>
 
-      {/* ── 문제 → 우리가 만든 것 ─────────────────── */}
       <div className="mf-x">
+        {/* 무엇을 봤는가 — 시간과 공간 */}
         <div className="mf-p">
-          <span className="cap">{t('mf.problem')}</span>
-          {problems.map((c) => (
-            <div key={c.id} className="mf-i">
-              <b>{tx(c.head)}</b>
-              <span>{tx(c.body)}</span>
-            </div>
-          ))}
           <DriftFigure />
           <SignalMap />
         </div>
 
-        <div className="mf-ar" aria-hidden="true">
-          <svg viewBox="0 0 40 16" preserveAspectRatio="none">
-            <path d="M0,8 H30" />
-            <path d="M24,3 L31,8 L24,13" />
-          </svg>
-        </div>
-
+        {/* 어떻게 재는가 */}
         <div className="mf-r">
-          <div className="mf-a">
-            <span className="cap">{t('mf.answer')}</span>
-            <b>{tx(answer.head)}</b>
-            <span className="d">{tx(answer.body)}</span>
-          </div>
           <SignalList />
 
           {/* 자의 네 단계 — 세로로 쌓아 순서를 못 오해하게 한다 */}

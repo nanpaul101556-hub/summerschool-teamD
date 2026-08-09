@@ -3,28 +3,31 @@
  *
  * 왼쪽 DriftFigure 가 시간을 보여 준다면 이것은 공간을 보여 준다.
  * 다섯 갈래가 추상어로 들리는 이유는 잰 자리가 안 보이기 때문이다.
- * 대상지와 정류장을 위성 위에 얹으면 「앞 정류장」이 말 그대로 앞이라는 것이,
- * 그리고 그 통행이 얼마나 큰지가 한눈에 들어온다.
  *
- * 지도는 왼쪽 칸을 꽉 채우고 목록은 오른쪽으로 간다. 지도에 이름을 쓰지 않는
- * 이유는 대상지와 미술관 앞이 182 m 밖에 안 떨어져 이 축척에서도 글자가
- * 서로를 덮기 때문이다. 위치와 크기는 지도가, 이름과 수치는 목록이 맡고
- * 원 안의 회복률 숫자가 둘을 잇는다.
+ * 처음에는 정류장 다섯을 다 담으려고 2.3 km 를 한 화면에 넣었다. 그러니 대상지가
+ * 점이 되고 「앞 정류장」이 왜 앞인지가 안 보였다. 지도의 일은 위치를 납득시키는
+ * 것이지 비교가 아니다. 비교는 옆 목록이 이미 하고 있다.
  *
- * 원 크기 = 그 달 승하차 (실측)   원 안 숫자 = 회복률, 2019.07 = 100 (실측)
- * 파란 원 = 노원구 평균보다 덜 돌아온 곳 — 둘 다 문화시설로 가는 통행이다
+ * 그래서 대상지 둘레 250 m 만 남긴다. 건물 윤곽과 공원이 보이고, 정류장이
+ * 정문 앞 동일로변이라는 것이 눈에 들어온다. 대조군 셋은 1.7~2.3 km 북쪽이라
+ * 이 화면 밖이고, 그 사실을 범례에 적는다.
  *
- * 값을 만들지 않는다. 두 수치 모두 recovery_result.md 의 표 그대로다.
+ * 정류장 옆 숫자는 회복률 (2019.07 = 100, 실측). 파랑은 노원구 평균보다
+ * 덜 돌아온 곳이다 — 여기 둘 다 그렇고, 둘 다 문화시설로 가는 통행이다.
+ * 값을 만들지 않는다. recovery_result.md 의 표 그대로다.
  */
 
 import L from 'leaflet'
 import { useEffect, useRef } from 'react'
 
-import { ORIGIN } from '../data/sheets'
-import { CONTROL, rOf, STOP_MAX, STOP_META, STOPS } from '../data/stops'
+import { ORIGIN, PLACES } from '../data/sheets'
+import { CONTROL, STOP_MAX, STOP_META, STOPS } from '../data/stops'
 import { useLang } from '../i18n'
 
 const KEY = import.meta.env.VITE_VWORLD_KEY
+
+/** 미술관 건물은 배경지도가 이미 이름을 달아 준다 — 겹쳐 쓰면 글자가 두 번 보인다 */
+const PINS = PLACES.filter((p) => p.kind === 'stop')
 
 const wmts = (layer, ext = 'png') =>
   `https://api.vworld.kr/req/wmts/1.0.0/${KEY}/${layer}/{z}/{y}/{x}.${ext}`
@@ -35,8 +38,11 @@ const isLow = (s) => s.idx < CONTROL.idx
 const dot = (html) =>
   L.divIcon({ className: 'sm-w', html, iconSize: [0, 0], iconAnchor: [0, 0] })
 
+/** 정류장 두 곳은 STOPS 에 회복률이 있다 — 지도와 목록을 잇는 고리다 */
+const idxOf = (id) => STOPS.find((s) => s.ars === id)
+
 export default function SignalMap() {
-  const { t, lang } = useLang()
+  const { t, tx, lang } = useLang()
   const box = useRef(null)
   const map = useRef(null)
 
@@ -46,54 +52,55 @@ export default function SignalMap() {
     const m = L.map(box.current, {
       zoomControl: false,
       attributionControl: false,
-      zoomSnap: 0, // 정수 배율로 튀면 화면이 대상지 둘레를 한참 벗어난다
+      zoomSnap: 0,
       scrollWheelZoom: false,
       dragging: false,
       doubleClickZoom: false,
       keyboard: false,
     })
 
-    L.tileLayer(wmts('Satellite', 'jpeg'), { maxNativeZoom: 19, maxZoom: 21 }).addTo(m)
-    L.tileLayer(wmts('Hybrid'), { maxNativeZoom: 19, maxZoom: 21, opacity: 0.5 }).addTo(m)
+    L.tileLayer(wmts('Satellite', 'jpeg'), { maxNativeZoom: 19, maxZoom: 20 }).addTo(m)
+    L.tileLayer(wmts('Hybrid'), { maxNativeZoom: 19, maxZoom: 20, opacity: 0.75 }).addTo(m)
 
     const origin = [ORIGIN.lat, ORIGIN.lng]
 
-    for (const s of STOPS) {
-      const low = isLow(s)
-      L.circleMarker([s.lat, s.lng], {
-        radius: rOf(s.raw),
-        color: low ? '#2997FF' : '#fff',
-        weight: 1.6,
-        opacity: low ? 1 : 0.78,
-        fillColor: low ? '#0066CC' : '#fff',
-        fillOpacity: low ? 0.42 : 0.15,
-        interactive: false,
+    // 대상지에서 앞 정류장까지 — 46 m 를 선으로 보여야 「앞」이 납득된다
+    for (const p of PINS) {
+      L.polyline([origin, [p.lat, p.lng]], {
+        color: '#fff',
+        weight: p.lead ? 2 : 1,
+        opacity: p.lead ? 0.9 : 0.4,
+        dashArray: p.lead ? null : '3 5',
       }).addTo(m)
+    }
 
-      L.marker([s.lat, s.lng], {
-        icon: dot(`<span class="sm-n ${low ? 'low' : ''}">${s.idx.toFixed(1)}</span>`),
+    for (const p of PINS) {
+      const s = idxOf(p.id)
+      const low = s && isLow(s)
+      L.marker([p.lat, p.lng], {
+        icon: dot(`<span class="sm-p ${p.kind} ${low ? 'low' : ''}">
+                     <i></i>
+                     <b>${tx(p.label)}</b>
+                     <em>${p.m} m${s ? ` · ${s.idx.toFixed(1)}` : ''}</em>
+                   </span>`),
         interactive: false,
       }).addTo(m)
     }
 
-    // 대상지 — 앞 정류장과 46 m 라 이 축척에서도 열 몇 픽셀 차이다.
-    // 정류장 숫자가 원 한가운데 있으므로 이름은 원 아래로 내린다 —
-    // 위쪽 182 m 는 미술관 앞 원이 이미 차지하고 있다.
-    const lead = STOPS.find((s) => s.lead)
+    // 대상지는 이름을 위로 올린다 — 아래·오른쪽은 정류장 이름표가 쓴다
     L.marker(origin, {
-      icon: dot(`<span class="sm-site" style="padding-top:${Math.round(rOf(lead.raw)) + 4}px">
-                   <i></i><b>${t('sm.site')}</b>
-                 </span>`),
+      icon: dot(`<span class="sm-site"><b>${tx(ORIGIN.label)}</b><i></i></span>`),
       interactive: false,
     }).addTo(m)
 
-    // 대상지가 남쪽 끝이고 이름표가 그 아래에 붙으므로 아래만 더 비운다.
-    // 칸 크기가 aspect-ratio 로 정해지므로 레이아웃이 끝난 뒤 한 번 더 맞춘다 —
-    // 그러지 않으면 초기 측정값으로 잡혀 대상지 이름이 아래로 잘린다.
-    const bounds = L.latLngBounds([origin, ...STOPS.map((s) => [s.lat, s.lng])])
+    // 칸 크기가 aspect-ratio 로 정해지므로 레이아웃이 끝난 뒤 다시 맞춘다 —
+    // 그러지 않으면 초기 측정값으로 잡혀 이름표가 화면 밖으로 나간다.
+    // 대상지와 두 정류장만 담으면 182 m 라 너무 바짝 붙는다.
+    // 반쯤 넓혀야 공원과 동일로가 함께 들어오고 「공원 안 건물」이라는 것이 읽힌다.
+    const bounds = L.latLngBounds([origin, ...PINS.map((p) => [p.lat, p.lng])]).pad(0.5)
     const fit = () => {
       m.invalidateSize({ animate: false })
-      m.fitBounds(bounds, { paddingTopLeft: [18, 18], paddingBottomRight: [18, 74] })
+      m.fitBounds(bounds, { paddingTopLeft: [40, 34], paddingBottomRight: [40, 40] })
     }
     fit()
 
@@ -106,7 +113,7 @@ export default function SignalMap() {
       m.remove()
       map.current = null
     }
-  }, [t, lang])
+  }, [tx, lang])
 
   if (!KEY) return null
 
@@ -114,8 +121,8 @@ export default function SignalMap() {
     <figure className="sm">
       <div ref={box} className="sm-box" />
       <figcaption className="sm-k">
-        <span className="k1">{t('sm.size')}</span>
         <span className="k3">{t('sm.low', { n: CONTROL.idx.toFixed(1) })}</span>
+        <em>{t('sm.away')}</em>
       </figcaption>
     </figure>
   )
