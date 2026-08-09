@@ -126,13 +126,13 @@ export const PROGRAMS = [
       'Polo giovanile a 629 m confermato nel 2024; il centro giovani di Sanggye è a −22 p.p.'),
   },
   {
-    id: 'sport', state: 'open', lead: true,
+    id: 'sport', state: 'open', lead: true, v: '+51%p',
     label: K('생활체육 · 활동', 'Sport di base e attività'),
     why: K('중계구민체육센터가 대조군 대비 +51%p — 노원구 시설 중 최상위 상승',
       'Il centro sportivo di Junggye è a +51 p.p.: la crescita più alta fra le strutture del distretto'),
   },
   {
-    id: 'work', state: 'open', lead: true,
+    id: 'work', state: 'open', lead: true, v: '+35%p',
     label: K('창업 · 일자리', 'Impresa e lavoro'),
     why: K('서울창업디딤터 +35%p · 어르신 일자리 참여가 인근 시설의 실제 프로그램이다',
       'Il centro startup è a +35 p.p.; il lavoro per anziani è già un programma delle strutture vicine'),

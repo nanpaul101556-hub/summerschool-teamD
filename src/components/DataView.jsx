@@ -10,13 +10,14 @@
 
 import { useState } from 'react'
 
-import { CARDS, CONCLUSION, EVENT } from '../data/evidence'
+import { CARDS, EVENT } from '../data/evidence'
 import { LAYERS } from '../data/method'
 import { sheetOf } from '../data/sheets'
 import { useLang } from '../i18n'
 import AppFrame from './AppFrame'
 import DataSheet from './DataSheet'
 import MethodMap from './MethodMap'
+import Outcome from './Outcome'
 
 /** 등급 — 계산은 다섯 다 섰고, 자료가 연결된 것만 실측이다 */
 const GRADE = { have: 'verified', missing: 'collecting', flat: 'hypothesis' }
@@ -134,18 +135,7 @@ export default function DataView({ site, onStep, onReset, onNext }) {
           })}
         </div>
 
-        <article className="ev2-end">
-          <div className="ev2-no num">→</div>
-          <div className="ev2-end-b">
-            <h2>{tx(CONCLUSION.head)}</h2>
-            <ol>
-              {CONCLUSION.yes.map((y) => (
-                <li key={tx(y)}>{tx(y)}</li>
-              ))}
-            </ol>
-            <div className="but">{tx(CONCLUSION.but)}</div>
-          </div>
-        </article>
+        <Outcome />
       </div>
 
       {sheet && <DataSheet id={sheet} onClose={() => setSheet(null)} />}

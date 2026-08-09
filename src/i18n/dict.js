@@ -140,11 +140,8 @@ export const DICT = {
     'vd.pgHow': '후보는 우리가 고른 것이 아닙니다. 인구 추계가 가장 높게 요구하는 기능부터 올리고, '
       + '걸어서 닿는 거리에 이미 있는 것을 뺀 나머지입니다.',
     'vd.callCap': '모은 자료가 말하는 것',
-    'vd.callHead': '지금은 잘 쓰이고 있다 — 다만 이 용도로 계속은 아니다',
-    'vd.callBody':
-      '사람은 더 왔고 예산도 따라왔습니다. 그래서 지금 바꿀 이유가 없습니다. '
-      + '다만 코로나 전으로는 아직 못 돌아왔고, 이용자층은 앞으로 통째로 바뀝니다. '
-      + '「좋다」와 「계속 좋다」는 다른 말입니다.',
+    'vd.callHead': '잘 쓰이고 있다 — 다만 {y}년에는 용도를 바꿔야 한다',
+    'vd.eqOut': '용도를 다시 보는 해',
     'vd.tally': '신호를 세면',
     'vd.tallyNote': '좋은 것만 세지 않습니다. 같은 승하차 자료도 12개월로 보면 오르고 2019년과 견주면 못 돌아왔습니다 — 둘 다 적었습니다.',
     'vd.d.good': '좋다',
@@ -244,6 +241,9 @@ export const DICT = {
     'mf.problem': '지금까지',
     'mf.answer': '그래서 만든 것',
     'ms.live': '실시간 호출',
+    'oc.now': '지금',
+    'oc.when': '다음 점검',
+    'oc.into': '그때',
     'sm.title': '어디서 재는가',
     'sm.site': '대상지',
     'sm.ctrl': '{n}개 정류장 평균',
@@ -622,11 +622,8 @@ export const DICT = {
     'vd.pgHow': 'I candidati non li scegliamo noi: si parte dalle funzioni che le proiezioni demografiche '
       + 'richiedono di più e si tolgono quelle già raggiungibili a piedi.',
     'vd.callCap': 'Ciò che dicono i dati raccolti',
-    'vd.callHead': 'Oggi è ben utilizzato — ma non lo sarà per sempre così',
-    'vd.callBody':
-      'È venuta più gente e il bilancio ha seguito: non c\'è motivo di cambiare ora. '
-      + 'Però non si è tornati ai livelli pre-Covid e l\'utenza cambierà del tutto. '
-      + '«Funziona» e «funzionerà sempre» non sono la stessa cosa.',
+    'vd.callHead': 'Ben utilizzato — ma nel {y} la destinazione va cambiata',
+    'vd.eqOut': 'Anno del riesame',
     'vd.tally': 'Contando i segnali',
     'vd.tallyNote': 'Non contiamo solo il buono: lo stesso dato sale su dodici mesi e non è tornato rispetto al 2019. Sono scritti entrambi.',
     'vd.d.good': 'Positivo',
@@ -728,6 +725,9 @@ export const DICT = {
     'mf.problem': 'Finora',
     'mf.answer': 'Ciò che abbiamo costruito',
     'ms.live': 'Chiamata in tempo reale',
+    'oc.now': 'Oggi',
+    'oc.when': 'Prossimo controllo',
+    'oc.into': 'Allora',
     'sm.title': 'Dove si misura',
     'sm.site': 'Sito',
     'sm.ctrl': 'Media di {n} fermate',

@@ -10,14 +10,15 @@
  *   ② 신호        축마다 좋다·나쁘다와 그렇게 본 기간
  *   ③ 그래서      두 신호가 합쳐 무엇이 되는가
  *   ④ 그런데      왜 「지금 좋다」가 「계속 좋다」가 아닌가
- *   ⑤ 언제        다시 보는 시점 — 우리가 아니라 법과 이력이 정한다
+ *   ⑤ 언제        마지막 개입 + 법정 주기 = 다시 보는 해. 문단이 아니라 식이다
  *   ⑥ 무엇으로    그때 열려 있는 용도
  *
  * 좋은 것만 세지 않는다. 같은 승하차 자료도 12개월로 보면 오르고 2019년과
  * 견주면 못 돌아왔다. 둘 다 사실이므로 ② 에 둘 다 놓는다.
  */
 
-import { CALL, DRIFT, PHASES, SIGNALS, tally } from '../data/verdict'
+import { DRIFT, PHASES, SIGNALS, tally } from '../data/verdict'
+import { NEXT_YEAR, WHEN } from '../data/outcome'
 import { READS, UNUSED } from '../data/derive'
 import { PROGRAMS } from '../data/plans'
 import { useLang } from '../i18n'
@@ -73,8 +74,7 @@ export default function VerdictView({ site, onStep, onReset, onNext }) {
         {/* ① 판정 ─────────────────────────────── */}
         <section className="vj-call">
           <span className="cap">{t('vd.callCap')}</span>
-          <h2>{t('vd.callHead')}</h2>
-          <p>{t('vd.callBody')}</p>
+          <h2>{t('vd.callHead', { y: NEXT_YEAR })}</h2>
           <ul className="vj-cnt">
             {counts.map(({ d, n }) => (
               <li key={d} className={d}>
@@ -147,7 +147,19 @@ export default function VerdictView({ site, onStep, onReset, onNext }) {
             <span>{t('vd.phSub')}</span>
           </div>
 
-          <p className="vj-why">{tx(CALL.body)}</p>
+          {/* 문단으로 설명하면 읽어야 안다. 식으로 놓으면 보면 안다. */}
+          <p className="vj-eq">
+            {WHEN.rows.slice(0, 2).map((r) => (
+              <span key={r.id}>
+                <b className="num">{r.v}</b>
+                <em>{typeof r.k === 'string' ? r.k : tx(r.k)}</em>
+              </span>
+            ))}
+            <span className="out">
+              <b className="num">{NEXT_YEAR}</b>
+              <em>{t('vd.eqOut')}</em>
+            </span>
+          </p>
 
           <div className="ph-l">
             {PHASES.map((p) => (

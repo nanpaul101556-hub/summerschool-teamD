@@ -3527,3 +3527,49 @@ button,.dl{transition:transform .2s ease,background-color .2s ease,
 .ph-l article.key .ph-watch{border-top-color:var(--rule-2);color:var(--ink-3)}
 .ph-l article.key .ph-watch span{border-color:var(--rule)}
 .ph-l article.key .ph-watch span{border-color:var(--rule);color:var(--ink-3)}
+
+/* ===== 03 결과 — 글이 아니라 값으로 끝낸다 ===== */
+.oc{margin-top:var(--s6);border-top:2px solid var(--ink);padding-top:var(--s5)}
+.oc-g{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.1fr) minmax(0,1fr);
+  gap:1px;background:var(--rule-2);border-radius:var(--r-lg);overflow:hidden}
+.oc-c{background:var(--tile-1);padding:var(--s5) var(--s4);display:flex;
+  flex-direction:column;min-width:0}
+.oc-c.big{background:var(--tile-2)}
+.oc-c .cap{font-size:11px;letter-spacing:.12em;text-transform:uppercase;
+  color:var(--ink-4);margin-bottom:10px}
+.oc-c>strong{font-size:46px;font-weight:700;letter-spacing:-.05em;line-height:1;
+  color:var(--blue-on-dark);margin-bottom:6px}
+.oc-c>b{font-size:17px;font-weight:700;letter-spacing:-.03em;line-height:1.3;
+  color:var(--ink);margin-bottom:var(--s3);text-wrap:balance}
+.oc-c ul{list-style:none;margin:auto 0 0;padding:var(--s3) 0 0;
+  border-top:1px solid var(--rule-2);display:flex;flex-direction:column;gap:1px}
+.oc-c li{display:grid;grid-template-columns:84px minmax(0,1fr);
+  align-items:baseline;column-gap:11px;padding:8px 0}
+.oc-c li b{font-size:18px;font-weight:700;letter-spacing:-.04em;text-align:right;
+  color:var(--ink-2);font-variant-numeric:tabular-nums}
+.oc-c li.up b{color:var(--blue-on-dark)}
+.oc-c li.down b{color:var(--ink)}
+.oc-c li.down b::after{content:' ▾';font-size:10px;vertical-align:2px}
+.oc-c li .k{font-size:13px;font-weight:600;letter-spacing:-.02em;color:var(--ink-2)}
+.oc-c li .d{grid-column:2;font-size:11px;line-height:1.45;color:var(--ink-4)}
+.oc-s{margin:12px 0 0;font-size:10.5px;line-height:1.6;color:var(--ink-4)}
+
+@media (max-width:900px){
+  .oc-g{grid-template-columns:1fr}
+  .oc-c>strong{font-size:36px}
+}
+
+/* ⑤ 시점은 계산이다 — 문단 대신 식으로 놓는다 */
+.vj-eq{display:flex;align-items:center;flex-wrap:wrap;gap:10px 16px;
+  margin:0 0 var(--s4);padding:16px 18px;background:var(--tile-3);
+  border-radius:var(--r-md)}
+.vj-eq>span{display:flex;flex-direction:column;gap:2px;position:relative}
+.vj-eq>span+span{padding-left:26px}
+.vj-eq>span+span::before{content:'+';position:absolute;left:6px;top:50%;
+  transform:translateY(-50%);font-size:15px;color:var(--ink-4)}
+.vj-eq>span.out::before{content:'='}
+.vj-eq b{font-size:22px;font-weight:700;letter-spacing:-.04em;color:var(--ink-2);
+  font-variant-numeric:tabular-nums;line-height:1.1}
+.vj-eq em{font-style:normal;font-size:11.5px;color:var(--ink-4)}
+.vj-eq .out b{font-size:30px;color:var(--blue-on-dark)}
+.vj-eq .out em{color:var(--blue-on-dark)}

@@ -302,33 +302,3 @@ export function tally() {
   return t
 }
 
-/**
- * 종합 — 다른 건물이 되어야 하는가, 현황을 유지하면 되는가.
- * 두 답이 갈리는 지점을 감추지 않는다.
- */
-export const CONCLUSION = {
-  key: 'keep',
-  head: K('지금은 잘 쓰이고 있다 — 다만 이 용도로 계속은 아니다',
-    'Oggi è ben utilizzato — ma non lo sarà per sempre con questa destinazione'),
-  yes: [
-    K('건물이 바뀐 뒤 승하차가 노원구 평균보다 5.3%p 더 올랐다 — 사람이 더 온다 [검증]',
-      'Dopo il cambio i flussi salgono 5,3 p.p. sopra la media: viene più gente [verificato]'),
-    K('예산은 2022년 1.5억 → 2025년 3.6억(+143%), 편성대로 새 용도를 넣는 데 쓰였다 — 예산이 이 건물을 뒷받침한다 [검증]',
-      'Il bilancio sale da 0,15 a 0,36 mld (+143%), speso come previsto per inserire nuovi usi: il bilancio sostiene l\'edificio [verificato]'),
-    K('준공 뒤 세 번 용도를 갈아 끼웠고 그때마다 통행이 꺼지지 않았다 — 이 건물은 새 용도를 받아낸다 [검증]',
-      'Ha cambiato uso tre volte e i flussi non si sono mai spenti: questo edificio accoglie nuove destinazioni [verificato]'),
-    K('민원·출입·만족도 셋은 아직 연결 대기다 — 방향을 주장하지 않는다. 자료가 오면 그때 판정에 들어간다 [수집 중]',
-      'Reclami, accessi e soddisfazione restano da collegare: non ne affermiamo la direzione. Entreranno nel giudizio quando arriveranno [in raccolta]'),
-    K('종합하면, 이 건물은 지금 제 용도로 잘 쓰이고 예산도 맞게 운영되고 있다',
-      'In sintesi, oggi l\'edificio è ben utilizzato per la sua destinazione e gestito coerentemente col bilancio'),
-  ],
-  but: K(
-    '그러나 지금 좋다고 계속 좋은 것은 아니다. 고령 비율은 2025년 20.9%에서 2042년 36.2%로 오르고, '
-    + '서울·노원 상위계획은 「용도를 미리 못 박지 말라」고 한다. 이용자층이 통째로 바뀌면 지금 용도도 어긋난다. '
-    + '이 건물은 2018·2022·2025에 이미 세 번 용도를 갈아 끼웠다. 다음은 네 번째다.',
-    'Ma il fatto che oggi funzioni non significa che funzionerà sempre. Gli over 65 salgono dal 20,9% (2025) '
-    + 'al 36,2% (2042) e i piani superiori di Seoul e Nowon dicono di non fissare in anticipo le destinazioni. '
-    + 'Quando l\'utenza cambia del tutto, anche questa destinazione sfasa. '
-    + 'Questo edificio ha già cambiato uso tre volte — 2018, 2022, 2025: la prossima sarà la quarta.',
-  ),
-}
