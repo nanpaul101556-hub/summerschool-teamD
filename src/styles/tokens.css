@@ -3232,7 +3232,8 @@ button,.dl{transition:transform .2s ease,background-color .2s ease,
 .mf>header h3{margin:0;font-size:21px;letter-spacing:-.03em}
 
 .mf-x{display:grid;grid-template-columns:minmax(0,1fr) 52px minmax(0,1.15fr);
-  align-items:center;gap:var(--s2);margin-bottom:var(--s5)}
+  align-items:start;gap:var(--s2);margin-bottom:var(--s5)}
+.mf-ar{align-self:center}
 .mf .cap{display:block;font-size:11px;letter-spacing:.12em;text-transform:uppercase;
   color:var(--ink-4);margin-bottom:9px}
 
@@ -3262,12 +3263,66 @@ button,.dl{transition:transform .2s ease,background-color .2s ease,
 .mf-ar svg{display:block;width:100%;height:16px}
 .mf-ar path{fill:none;stroke:var(--ink-3);stroke-width:1.4}
 
+.mf-r{display:flex;flex-direction:column;gap:8px;min-width:0}
 .mf-a{background:var(--tile-2);border:1px solid var(--blue-on-dark);
   border-radius:var(--r-lg);padding:var(--s4) var(--s5)}
 .mf-a .cap{color:var(--blue-on-dark)}
 .mf-a b{display:block;font-size:26px;letter-spacing:-.035em;line-height:1.2;
   margin-bottom:7px}
 .mf-a .d{font-size:14px;line-height:1.6;color:var(--ink-2)}
+
+/* 어디서 재는가 — 왼쪽 그림이 시간이면 이것은 공간이다 */
+.sm{margin:0;background:var(--tile-3);border-radius:var(--r-md);
+  padding:10px 12px 8px;min-width:0}
+.sm-h{display:flex;align-items:baseline;justify-content:space-between;gap:10px;
+  margin-bottom:7px}
+.sm-h b{font-size:12.5px;letter-spacing:-.02em;color:var(--ink-2)}
+.sm-h span{font-size:10px;color:var(--ink-4);font-variant-numeric:tabular-nums}
+/* 지도는 정사각에 가깝게 — 정류장이 남북으로 늘어서 있어 옆으로 넓으면 축척이 튄다 */
+.sm-b{display:grid;grid-template-columns:minmax(0,235px) minmax(0,1fr);
+  gap:12px;align-items:start}
+.sm-box{aspect-ratio:1;border-radius:var(--r-sm);overflow:hidden;background:#111}
+.sm-box .leaflet-container{background:#111}
+
+.sm-l{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:1px}
+.sm-l li{display:grid;grid-template-columns:minmax(0,1fr) 42px 46px 34px;
+  align-items:center;gap:7px;padding:5px 0;border-bottom:1px solid var(--rule-2)}
+.sm-l li:last-child{border-bottom:0}
+.sm-l .nm{display:flex;flex-direction:column;min-width:0}
+.sm-l .nm b{font-size:11.5px;font-weight:600;letter-spacing:-.02em;color:var(--ink-2);
+  overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.sm-l .nm em{font-style:normal;font-size:9.5px;color:var(--ink-4)}
+.sm-l .bar{height:4px;border-radius:2px;background:var(--tile-1);overflow:hidden}
+.sm-l .bar i{display:block;height:100%;background:var(--ink-3);border-radius:2px}
+.sm-l .v{font-size:10.5px;color:var(--ink-3);text-align:right;
+  font-variant-numeric:tabular-nums}
+.sm-l .ix{font-size:13px;font-weight:700;color:var(--ink-2);text-align:right;
+  letter-spacing:-.03em;font-variant-numeric:tabular-nums}
+.sm-l li.low .nm b,.sm-l li.low .ix{color:var(--blue-on-dark)}
+.sm-l li.low .bar i{background:var(--blue-on-dark)}
+.sm-l li.ctrl{border-top:1px solid var(--rule);margin-top:3px;padding-top:7px}
+.sm-l li.ctrl .nm b,.sm-l li.ctrl .ix{color:var(--ink-4)}
+.sm-k{display:flex;align-items:center;gap:12px;flex-wrap:wrap;
+  margin-top:7px;font-size:10px;color:var(--ink-3)}
+.sm-k span{display:flex;align-items:center;gap:5px}
+.sm-k span::before{content:'';flex:none;width:9px;height:9px;border-radius:50%;
+  border:1px solid var(--ink-3)}
+.sm-k .k1::before{width:11px;height:11px}
+.sm-k .k2::before{display:none}
+.sm-k .k3::before{border-color:var(--blue-on-dark);background:rgba(0,102,204,.45)}
+.sm-k em{font-style:normal;color:var(--ink-4);margin-left:auto;text-align:right}
+
+/* 지도 위 글자 — 위성 배경이라 반드시 그림자를 깐다 */
+.sm-n,.sm-site{position:absolute;font-family:var(--f);white-space:nowrap;
+  text-shadow:0 1px 3px rgba(0,0,0,.95),0 0 7px rgba(0,0,0,.75);pointer-events:none}
+.sm-n{transform:translate(-50%,-50%);font-size:10px;font-weight:700;
+  color:#fff;font-variant-numeric:tabular-nums}
+.sm-n.low{color:#9fd0ff}
+.sm-site{transform:translate(-50%,0);display:flex;flex-direction:column;
+  align-items:center;gap:3px}
+.sm-site b{font-size:10.5px;font-weight:700;color:#fff;letter-spacing:-.02em}
+.sm-site i{width:7px;height:7px;border-radius:50%;background:#fff;
+  box-shadow:0 0 0 2.5px rgba(0,0,0,.65)}
 
 /* 자의 네 단계 — 한 줄로 흘린다 */
 .mf-f{border-top:1px solid var(--rule-2);padding-top:var(--s4)}

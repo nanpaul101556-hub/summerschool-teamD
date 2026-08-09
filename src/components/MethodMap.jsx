@@ -9,10 +9,14 @@
  *
  * 자의 네 단계는 세로로 쌓지 않고 한 줄로 흘린다. 계산은 순서가 전부이므로
  * 왼쪽에서 오른쪽으로 읽히면 그것으로 설명이 끝난다.
+ *
+ * 그림 둘은 축이 다르다 — 왼쪽 DriftFigure 가 시간, 오른쪽 SignalMap 이 공간이다.
+ * 「동네는 계속 변한다」와 「그래서 여기를 이렇게 잰다」가 나란히 놓인다.
  */
 
 import { CHAIN, FRAME } from '../data/method'
 import DriftFigure from './DriftFigure'
+import SignalMap from './SignalMap'
 import { useLang } from '../i18n'
 
 export default function MethodMap() {
@@ -47,10 +51,13 @@ export default function MethodMap() {
           </svg>
         </div>
 
-        <div className="mf-a">
-          <span className="cap">{t('mf.answer')}</span>
-          <b>{tx(answer.head)}</b>
-          <span className="d">{tx(answer.body)}</span>
+        <div className="mf-r">
+          <div className="mf-a">
+            <span className="cap">{t('mf.answer')}</span>
+            <b>{tx(answer.head)}</b>
+            <span className="d">{tx(answer.body)}</span>
+          </div>
+          <SignalMap />
         </div>
       </div>
 

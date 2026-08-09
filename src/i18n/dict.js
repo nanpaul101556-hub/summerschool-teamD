@@ -226,6 +226,12 @@ export const DICT = {
     'df.src': '노원구 인구 추계 · 세출예산',
     'mf.problem': '지금까지',
     'mf.answer': '그래서 만든 것',
+    'sm.title': '어디서 재는가',
+    'sm.site': '대상지',
+    'sm.ctrl': '{n}개 정류장 평균',
+    'sm.size': '원 크기 — 그 달 승하차',
+    'sm.num': '숫자 — 회복률',
+    'sm.low': '파랑 — 노원구 평균 {n} 아래',
     'mm.title': '무엇으로 「만족한다」를 재는가',
     'mm.sub':
       '만족은 직접 잴 수 없습니다. 물어보면 말은 듣지만 사람은 말과 다르게 움직입니다. '
@@ -685,6 +691,12 @@ export const DICT = {
     'df.src': 'Proiezioni demografiche di Nowon · bilancio',
     'mf.problem': 'Finora',
     'mf.answer': 'Ciò che abbiamo costruito',
+    'sm.title': 'Dove si misura',
+    'sm.site': 'Sito',
+    'sm.ctrl': 'Media di {n} fermate',
+    'sm.size': 'Cerchio — saliti e discesi nel mese',
+    'sm.num': 'Numero — tasso di ripresa',
+    'sm.low': 'Blu — sotto la media di Nowon, {n}',
     'mm.title': 'Come si misura la soddisfazione',
     'mm.sub':
       'La soddisfazione non si misura direttamente: chiedendo si ottengono parole, ma le persone '
