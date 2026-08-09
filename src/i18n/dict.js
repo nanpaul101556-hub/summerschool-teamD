@@ -206,14 +206,19 @@ export const DICT = {
     'tm.hookL': '{y}년으로 돌아가 보면',
     'ev.title': '지금 이 건물, 제 용도로 잘 쓰이고 있는가',
     'ev.sub': '다섯 갈래를 같은 방식으로 묻고, 근거마다 등급을 밝힙니다.',
-    'tj.gradeTitle': '근거 등급',
-    'tj.gradeNote': '확실하지 않은 것을 확실한 척하지 않는다. 등급을 밝혀야 이 도구를 믿을 수 있다.',
-    'tj.g.verified': '검증됨',
-    'tj.g.verifiedD': '대조군을 두고 잰 것',
-    'tj.g.collecting': '수집 중',
-    'tj.g.collectingD': '받는 절차가 정해진 것',
-    'tj.g.hypothesis': '가설',
-    'tj.g.hypothesisD': '단면만 있어 추세는 미검증',
+    'tj.gradeTitle': '어디까지 검증됐는가',
+    'tj.gradeNote':
+      '계산과 자료를 나눠 밝힙니다. 다섯 축 전부 같은 자를 대고 돌아가며 '
+      + '화면의 수치는 스크립트 출력과 일치합니다. 다만 실측 자료가 연결된 것은 둘이고, '
+      + '판정도 그 둘만으로 세웠습니다.',
+    'tj.axCalc': '계산',
+    'tj.axCalcD': '같은 자를 대고 돌아간다',
+    'tj.axData': '자료',
+    'tj.axDataD': '나머지는 받는 절차가 정해져 있다',
+    'tj.axDone': '검증 완료',
+    'tj.axLinked': '실측 연결',
+    'tj.g.verified': '실측 검증 완료',
+    'tj.g.collecting': '계산 검증 완료',
     'mm.title': '무엇으로 「만족한다」를 재는가',
     'mm.sub':
       '만족은 직접 잴 수 없습니다. 물어보면 말은 듣지만 사람은 말과 다르게 움직입니다. '
@@ -649,14 +654,19 @@ export const DICT = {
     'tm.hookL': 'Tornando al {y}',
     'ev.title': 'Questo edificio serve ancora al suo scopo?',
     'ev.sub': 'Cinque voci interrogate nello stesso modo, ciascuna con il proprio grado di prova.',
-    'tj.gradeTitle': 'Grado della prova',
-    'tj.gradeNote': 'Non facciamo passare per certo ciò che non lo è: dichiarare il grado è ciò che rende affidabile lo strumento.',
-    'tj.g.verified': 'verificato',
-    'tj.g.verifiedD': 'misurato con un gruppo di controllo',
-    'tj.g.collecting': 'in raccolta',
-    'tj.g.collectingD': 'procedura di acquisizione definita',
-    'tj.g.hypothesis': 'ipotesi',
-    'tj.g.hypothesisD': 'solo istantanea, tendenza non verificata',
+    'tj.gradeTitle': 'Fin dove è verificato',
+    'tj.gradeNote':
+      'Distinguiamo il calcolo dal dato. Tutti e cinque gli assi girano con lo stesso metro e i valori '
+      + 'a schermo coincidono con l\'output degli script. Gli assi con dato misurato sono però due, '
+      + 'e su quei due poggia il giudizio.',
+    'tj.axCalc': 'Calcolo',
+    'tj.axCalcD': 'gira con lo stesso metro',
+    'tj.axData': 'Dato',
+    'tj.axDataD': 'per gli altri la procedura è definita',
+    'tj.axDone': 'verificato',
+    'tj.axLinked': 'misurato e collegato',
+    'tj.g.verified': 'misurato e verificato',
+    'tj.g.collecting': 'calcolo verificato',
     'mm.title': 'Come si misura la soddisfazione',
     'mm.sub':
       'La soddisfazione non si misura direttamente: chiedendo si ottengono parole, ma le persone '

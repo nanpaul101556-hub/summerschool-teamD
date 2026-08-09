@@ -112,6 +112,7 @@ function SampleTable({ tab }) {
 export default function DataView({ site, onStep, onReset, onNext }) {
   const { t, tx } = useLang()
   const [sheet, setSheet] = useState(null)
+  const measuredCount = CARDS.filter((c) => c.status === 'have').length
 
   const side = (
     <>
@@ -123,16 +124,23 @@ export default function DataView({ site, onStep, onReset, onNext }) {
 
       <section>
         <h3 className="lab">{t('tj.gradeTitle')}</h3>
-        <dl className="tj-gr">
-          {ORDER.filter((g) => CARDS.some((c) => gradeOf(c) === g)).map((g) => (
-            <div key={g}>
-              <dt className={g}>{t(`tj.g.${g}`)}</dt>
-              <dd>
-                <b className="num">{CARDS.filter((c) => gradeOf(c) === g).length}</b>
-                {t(`tj.g.${g}D`)}
-              </dd>
-            </div>
-          ))}
+        <dl className="tj-ax">
+          <div className="done">
+            <dt>{t('tj.axCalc')}</dt>
+            <dd>
+              <b className="num">{CARDS.length}/{CARDS.length}</b>
+              <span className="s">{t('tj.axDone')}</span>
+              <span className="d">{t('tj.axCalcD')}</span>
+            </dd>
+          </div>
+          <div>
+            <dt>{t('tj.axData')}</dt>
+            <dd>
+              <b className="num">{measuredCount}/{CARDS.length}</b>
+              <span className="s">{t('tj.axLinked')}</span>
+              <span className="d">{t('tj.axDataD')}</span>
+            </dd>
+          </div>
         </dl>
         <p className="note">{t('tj.gradeNote')}</p>
       </section>
