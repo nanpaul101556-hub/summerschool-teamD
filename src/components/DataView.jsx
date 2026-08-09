@@ -19,6 +19,7 @@ import { n } from '../lib/format'
 import AppFrame from './AppFrame'
 import DataSheet from './DataSheet'
 import MethodMap from './MethodMap'
+import MiniTrend from './MiniTrend'
 import { Bars } from './MiniChart'
 
 /**
@@ -86,6 +87,7 @@ function SampleTable({ tab }) {
         <span className="samp">{t('ev.sample')}</span>
         <span className="ev2-samp-h">{tx(tab.head)}</span>
       </div>
+      {tab.chart ? <MiniTrend chart={tab.chart} /> : (
       <table className="ev2-tab">
         <thead>
           <tr>
@@ -104,6 +106,7 @@ function SampleTable({ tab }) {
           ))}
         </tbody>
       </table>
+      )}
       <p className="ev2-samp-n">{tx(tab.note)}</p>
     </div>
   )

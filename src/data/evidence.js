@@ -215,28 +215,48 @@ export const CARDS = [
     title: K('말로 물은 만족도', 'La soddisfazione dichiarata'),
     ask: K('주민은 문화환경에 만족한다고 답하는가', 'I residenti si dicono soddisfatti?'),
     tab: {
-      head: K('서울서베이 문화환경 만족도 · 5점 척도 · 노원구와 서울시 평균',
-        'Soddisfazione culturale (Seoul Survey), scala 1-5: Nowon e media cittadina'),
+      head: K('서울서베이 문화환경 만족도 · 5점 척도 · 2016–2025',
+        'Soddisfazione culturale (Seoul Survey), scala 1-5, 2016-2025'),
       cols: [
         K('연도', 'Anno'),
         K('노원구', 'Nowon'),
         K('서울시', 'Seoul'),
         K('격차', 'Divario'),
       ],
-      scale: 100,
-      rows: [
-        { label: K('2021', '2021'), before: 304, after: 313, d: -0.09 },
-        { label: K('2022', '2022'), before: 316, after: 334, d: -0.18 },
-        { label: K('2023', '2023'), before: 327, after: 345, d: -0.18 },
-        { label: K('2024', '2024'), before: 337, after: 355, d: -0.18 },
-        { label: K('2025', '2025'), before: 342, after: 347, d: -0.05, lead: true },
-      ],
-      unitD: 'pt',
+      chart: {
+        lo: 2.9,
+        hi: 3.7,
+        aLabel: K('노원구', 'Nowon'),
+        bLabel: K('서울시 평균', 'Media di Seoul'),
+        // 값은 satis_SAMPLE.csv 그대로다. 위치만 옮긴다.
+        rows: [
+          { k: '2016', a: 3.17, b: 3.23 },
+          { k: '2017', a: 3.25, b: 3.22 },
+          { k: '2018', a: 3.17, b: 3.35 },
+          { k: '2019', a: 3.21, b: 3.39 },
+          { k: '2020', a: 3.15, b: 3.12 },
+          { k: '2021', a: 3.04, b: 3.13 },
+          { k: '2022', a: 3.16, b: 3.34 },
+          { k: '2023', a: 3.27, b: 3.45 },
+          { k: '2024', a: 3.37, b: 3.55 },
+          { k: '2025', a: 3.42, b: 3.47 },
+        ],
+        // 예산줄에서 확인된 개입만 세운다
+        marks: [
+          { k: '2022', label: K('사무동', 'Uffici') },
+          { k: '2025', label: K('노인회관', 'Centro anziani') },
+        ],
+      },
       note: K(
-        '연 1회 조사라 전후 12개월을 만들 수 없다. 서울시 평균을 대조군으로 두고 격차를 본다 — '
-        + '이것이 이 자료의 원래 쓰임이다.',
-        'Indagine annuale: non si formano 12 mesi prima e dopo. Si usa la media cittadina come controllo '
-        + 'e si osserva il divario, che è l’uso proprio di questo dato.',
+        '2021년 3.04로 바닥을 치고 2025년 3.42까지 올랐다. 같은 해 서울시와의 격차도 '
+        + '−0.18에서 −0.05로 좁아진다. 연 1회 조사라 전후 12개월을 만들 수 없으므로 '
+        + '서울시 평균을 대조군으로 두고 격차의 움직임을 본다. '
+        + '실제 자료에서도 개입한 해 뒤에 이 격차가 좁아져야 「개입이 만족으로 이어졌다」가 성립한다.',
+        'Tocca il minimo nel 2021 (3,04) e risale a 3,42 nel 2025; nello stesso anno il divario '
+        + 'con Seoul si riduce da −0,18 a −0,05. Essendo un\'indagine annuale si usa la media '
+        + 'cittadina come controllo e si osserva il movimento del divario. '
+        + 'Solo se anche nel dato reale il divario si stringe dopo gli interventi si potrà dire '
+        + 'che l\'intervento si è tradotto in soddisfazione.',
       ),
     },
     facts: [
