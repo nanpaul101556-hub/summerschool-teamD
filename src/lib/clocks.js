@@ -114,7 +114,14 @@ export const MEET_YEARS = PHYS_SPANS
   .filter(Boolean)
   .sort((x, y) => x.a - y.a)
 
-export const span = (s) => (s.a === s.b ? `${s.a}` : `${s.a}–${String(s.b).slice(2)}`)
+/**
+ * 구간을 시작 해 하나로 적는다.
+ *
+ * 2028–29 처럼 두 해를 다 적으면 읽는 사람이 「어느 해인가」를 다시 물어야 한다.
+ * 폭은 막대 길이가 이미 보여 주므로 글자는 시작 해만 든다.
+ * 폭이 왜 있는지는 곡선 아래 단서에 적어 둔다.
+ */
+export const span = (s) => `${s.a}`
 
 /** 가장 큰 결정이 걸리는 자리 — 구조 수명이 닿는 해 */
 export const BIG = MEET_YEARS.find((m) => m.layer === 'str') || MEET_YEARS.at(-1)

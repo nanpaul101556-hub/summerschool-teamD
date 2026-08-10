@@ -14,12 +14,13 @@ import { useState } from 'react'
 
 import { SITE } from '../data/site'
 import {
-  BUILT, CLOSING, FORMULA, FUNDING, LAW, NOW, PAST, SCOPE, WHY_NOW,
+  BUILT, CLOSING, FUNDING, LAW, NOW, PAST, SCOPE, WHY_NOW,
   checkYears,
 } from '../data/timeline'
 import { useLang } from '../i18n'
 import { eligibleIncentives } from '../lib/constraint'
 import AppFrame from './AppFrame'
+import CostFrame from './CostFrame'
 import LifeLeft from './LifeLeft'
 import ValueCurve from './ValueCurve'
 import TwoClocks from './TwoClocks'
@@ -181,19 +182,8 @@ export default function LccView({ site, onStep, onReset }) {
           ))}
         </ol>
 
-        {/* ── 어디서 막히는가 ─────────────────────── */}
-        <section className="tm-fm">
-          <h3 className="tm-sec">{t('tm.fmTitle')}</h3>
-          <div className="tm-fm-r">
-            {FORMULA.parts.map((p, i) => (
-              <span key={`${p.t}-${i}`} className={`pt ${p.k}`}>
-                <b>{p.t}</b>
-                {p.note && <em>{tx(p.note)}</em>}
-              </span>
-            ))}
-          </div>
-          <p className="note">{tx(FORMULA.note)}</p>
-        </section>
+        {/* ── 이 비용 구조로 계산된다 · 얼마나 채워졌나 ── */}
+        <CostFrame />
 
         {/* ── 구가 실제로 내는 몫 ──────────────────── */}
         <section className="tm-fund">

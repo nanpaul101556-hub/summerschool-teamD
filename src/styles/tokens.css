@@ -3763,3 +3763,41 @@ button,.dl{transition:transform .2s ease,background-color .2s ease,
    뒤에 와서 relative 로 덮으면 inset 이 죽고 지도 높이가 0 이 된다.
    isolation 은 position 과 무관하게 언제나 쌓임 맥락을 만든다. */
 .leaflet-container{isolation:isolate}
+
+/* ── 05 비용 구조 · 완성도 (CostFrame) ──────────────────
+   색으로 강조하지 않는다는 원칙을 지키되, 미확보만 --blue-on-dark 로
+   드러낸다 — 「여기가 아직 빈 곳」을 숨기지 않는 것이 이 화면의 정직이다. */
+.cf{margin-bottom:var(--s5)}
+.cf-h{margin-bottom:var(--s3)}
+.cf-h span{display:block;font-size:12px;color:var(--ink-3);margin-top:4px}
+
+.cf-ready{margin-bottom:var(--s4)}
+.cf-bar{display:flex;height:8px;gap:2px;margin-bottom:9px}
+.cf-bar i{display:block}
+.cf-bar .ok{background:var(--ink)}
+.cf-bar .warn{background:var(--ink-3)}
+.cf-bar .gap{background:var(--blue-on-dark)}
+.cf-keys{display:flex;gap:14px;align-items:baseline;font-size:11px}
+.cf-keys .ok{color:var(--ink)}
+.cf-keys .warn{color:var(--ink-3)}
+.cf-keys .gap{color:var(--blue-on-dark)}
+.cf-keys b{margin-left:auto;font-size:15px;letter-spacing:-.02em;color:var(--ink)}
+
+.cf-tree{display:grid;grid-template-columns:repeat(auto-fit,minmax(190px,1fr));
+  gap:var(--s3) var(--s4);border-top:1px solid var(--rule);padding-top:var(--s3)}
+.cf-br h4{margin:0 0 9px;font-size:12px;font-weight:600;color:var(--ink)}
+.cf-g{margin-bottom:11px}
+.cf-gl{display:block;font-size:9px;letter-spacing:.05em;text-transform:uppercase;
+  color:var(--ink-3);margin-bottom:4px}
+.cf-g ul{list-style:none;margin:0;padding:0}
+.cf-g li{display:flex;justify-content:space-between;align-items:baseline;gap:8px;
+  padding:3px 0;font-size:11.5px;border-bottom:1px solid var(--rule-2)}
+.cf-g li:last-child{border-bottom:0}
+.cf-g li .nm{color:var(--ink-2)}
+.cf-g li .tag{font-size:9px;white-space:nowrap}
+.cf-g li.ok .nm,.cf-g li.ok .tag{color:var(--ink)}
+.cf-g li.warn .tag{color:var(--ink-3)}
+.cf-g li.gap .nm{color:var(--ink-3)}
+.cf-g li.gap .tag{color:var(--blue-on-dark)}
+
+.cf-note{margin-top:var(--s3);font-size:11.5px;line-height:1.6;color:var(--ink-2)}

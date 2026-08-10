@@ -8,7 +8,7 @@
  * 세 칸으로 끝낸다 — 지금 · 언제 · 무엇으로.
  *
  *   지금      현 용도에 적합하다      +5.3%p  +143%  82.5▾
- *   2028년    적합성을 다시 잰다       손댄 간격 3년 · 마지막 개입 2025 · 고령 36.2%
+ *   2028년    적합성을 다시 잰다       손댄 간격 3~4년 · 마지막 개입 2025 · 고령 36.2%
  *   그다음    이 용도로 대응한다       +51%p  +35%p
  *
  * 값은 하나도 여기서 만들지 않는다. 전부 다른 파일에서 끌어온다.
@@ -30,12 +30,12 @@ const card = (id) => CARDS.find((c) => c.id === id)
 const LAST = PAST.filter((p) => p.kind === 'work').at(-1)
 
 /**
- * 다음에 손댈 때 — 한 해로 못 박지 않고 구간으로 적는다.
+ * 다음에 손댈 때.
  *
  * 관측이 둘뿐이다. 2018 → 2022 가 4년, 2022 → 2025 가 3년.
- * 처음에는 최근값 3년만 써서 2028 이라고 적었는데, 왜 3이고 4가 아닌지에
- * 근거가 없었다. 둘 중 하나를 고르는 순간 그건 우리가 만든 값이다.
- * 그래서 짧은 쪽과 긴 쪽을 모두 남겨 2028–29 로 적는다.
+ * 화면에는 짧은 쪽으로 2028년을 든다 — 두 해를 다 적으면 읽는 사람이
+ * 「그래서 어느 해인가」를 다시 물어야 한다. 긴 쪽이면 2029년이라는 것과
+ * 관측이 둘뿐이라는 것은 곡선 아래 단서에 그대로 적는다.
  *
  * 법정 점검 일정과는 무관하다. 시행령 제8조① 3호의 정기점검 대상은
  * 바닥면적 합계 5,000 m² 이상인 다중이용 건축물이고 이 건물의 연면적을
@@ -48,8 +48,14 @@ const GAP_MAX = Math.max(...GAPS)
 export const NEXT_FROM = LAST.year + GAP_MIN
 export const NEXT_TO = LAST.year + GAP_MAX
 
-/** 화면에 크게 놓는 문자열 — 2028–29 */
-export const NEXT_LABEL = `${NEXT_FROM}–${String(NEXT_TO).slice(2)}`
+/**
+ * 화면에 크게 놓는 해 — 짧은 쪽을 쓴다.
+ *
+ * 관측한 간격은 4년과 3년, 둘뿐이다. 두 해를 다 적으면(2028–29) 읽는 사람이
+ * 「어느 해인가」를 다시 물어야 하므로 짧은 쪽 하나만 든다.
+ * 긴 쪽을 쓰면 2029년이라는 것은 아래 단서에 적어 둔다.
+ */
+export const NEXT_LABEL = `${NEXT_FROM}`
 
 const SITE = STOPS.find((s) => s.lead)
 const AGED = POPULATION.find((p) => p.year === 2042)
@@ -124,13 +130,13 @@ export const OUT_SRC = K(
  * 화면에서 지우면 「법이 정한 해」로 읽히므로 결과 칸 아래에 그대로 둔다.
  */
 export const OUT_CAVEAT = K(
-  `한 해로 못 박지 않는다. 관측한 간격이 4년과 3년, 둘뿐이라 짧은 쪽과 긴 쪽을 `
-  + `모두 남겨 ${NEXT_FROM}–${NEXT_TO}년으로 적는다. `
+  `관측한 간격은 4년과 3년, 둘뿐이다. 화면에는 짧은 쪽으로 ${NEXT_FROM}년을 들었고 `
+  + `긴 쪽이면 ${NEXT_TO}년이다. `
   + `법정 점검 일정도 아니다 — ${LAW.scopeArt} 의 정기점검 대상은 바닥면적 합계 `
   + '5,000 m² 이상인 다중이용 건축물인데, 이 건물의 연면적을 건축물대장에서 '
   + '확인하지 못해 대상 여부부터 미확정이다.',
-  'Non fissiamo un anno solo: gli intervalli osservati sono due, quattro e tre anni, '
-  + `quindi teniamo entrambi gli estremi — ${NEXT_FROM}–${NEXT_TO}. `
+  `Gli intervalli osservati sono due, quattro e tre anni: a schermo prendiamo il più breve, `
+  + `il ${NEXT_FROM}; con quello lungo sarebbe il ${NEXT_TO}. `
   + 'Non è nemmeno una scadenza di legge: il controllo periodico riguarda gli edifici '
   + 'a grande affluenza oltre i 5.000 m² e non abbiamo verificato la superficie.',
 )
