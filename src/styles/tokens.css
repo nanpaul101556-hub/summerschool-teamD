@@ -3751,3 +3751,10 @@ button,.dl{transition:transform .2s ease,background-color .2s ease,
 .vc-k .str b{color:var(--blue-on-dark)}
 .vc-n{margin:12px 0 0;padding-top:12px;border-top:1px solid var(--rule-2);
   font-size:12.5px;line-height:1.75;color:var(--ink-3);max-width:88ch;white-space:pre-line}
+
+
+/* 지도를 자기 칸 안에 가둔다.
+   Leaflet 은 내부에 pane 400 · control 1000 짜리 층을 만드는데, 컨테이너가
+   쌓임 맥락을 만들지 않으면 그 숫자가 페이지 전체와 겨룬다. 그래서 근거 시트
+   (.dsh z 60) 를 열면 그 위로 위성 타일이 올라왔다. isolate 하나로 갇힌다. */
+.leaflet-container{isolation:isolate;position:relative;z-index:0}
