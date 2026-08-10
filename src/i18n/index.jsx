@@ -5,7 +5,7 @@
  * 키가 없으면 키 자체를 돌려준다 — 빈칸이 나오면 못 찾지만 키가 보이면 찾는다.
  *
  * 데이터 쪽 문구(용도명·전제·근거 등)는 사전에 넣지 않고 data 파일이
- * ko/it 두 벌을 들고 있다. tx(obj) 로 현재 언어를 꺼낸다.
+ * ko/it/en 세 벌을 들고 있다. tx(obj) 로 현재 언어를 꺼낸다.
  */
 
 import { createContext, useCallback, useContext, useMemo, useState } from 'react'
@@ -43,11 +43,14 @@ export function LangProvider({ children }) {
       return raw.replace(/\{(\w+)\}/g, (m, k) => (vars[k] != null ? String(vars[k]) : m))
     }
 
-    /** 데이터가 들고 있는 { ko, it } 에서 현재 언어를 꺼낸다. */
+    /**
+     * 데이터가 들고 있는 { ko, it, en } 에서 현재 언어를 꺼낸다.
+     * 아직 옮기지 못한 문구는 영어 → 한국어 순으로 물러난다 — 빈칸보다 낫다.
+     */
     const tx = (obj) => {
       if (obj == null) return ''
       if (typeof obj === 'string') return obj
-      return obj[lang] ?? obj.ko ?? ''
+      return obj[lang] ?? obj.en ?? obj.ko ?? ''
     }
 
     return { lang, setLang, t, tx, langs: LANGS }

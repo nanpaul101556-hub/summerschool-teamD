@@ -10,6 +10,7 @@
 
 export const LANGS = [
   { key: 'ko', label: '한국어', short: 'KO' },
+  { key: 'en', label: 'English', short: 'EN' },
   { key: 'it', label: 'Italiano', short: 'IT' },
 ]
 
@@ -194,8 +195,8 @@ export const DICT = {
       + '계획이 우리 방식을 지시한 것은 아닙니다.',
 
     // 03 정량 근거
-    'vc.title': '가치는 준공 때가 가장 높다',
-    'vc.sub': '잔존 수명 · {built}년 준공을 100으로 둡니다',
+    'vc.title': '물리 수명은 준공 때가 가장 높다',
+    'vc.sub': '잔존 서비스수명(RSL) · 새것이 100 · 고치면 되돌아갈 뿐 넘지 못합니다',
     'vc.now': '지금 {y}',
     'vc.acc': '회계 내용연수 40년 · 법인세법 시행규칙 별표5',
     'vc.note':
@@ -723,8 +724,8 @@ export const DICT = {
       + 'non è il piano a prescrivere il nostro metodo.',
 
     // 03 evidenze quantitative
-    'vc.title': 'Il valore è al massimo alla costruzione',
-    'vc.sub': 'Vita utile residua · il {built}, anno di costruzione, vale 100',
+    'vc.title': 'La vita utile fisica è massima alla costruzione',
+    'vc.sub': 'Vita utile residua (RSL) · il nuovo vale 100 · si può solo ripristinare, non superare',
     'vc.now': 'Oggi, {y}',
     'vc.acc': 'Vita utile fiscale 40 anni · normativa tributaria coreana',
     'vc.note':
@@ -1066,5 +1067,541 @@ export const DICT = {
     'kept.height': 'Altezza di piano',
     'kept.load': 'Carico di solaio',
     'kept.power': 'Potenza elettrica',
+  },
+  en: {
+    'app.brand': 'Adaptive Building Pre-Assessment',
+    'app.team': 'Team D',
+    'app.changeSite': 'Change site',
+
+    'step.site': 'Site',
+    'step.region': 'Local data',
+    'step.evidence': 'Evidence trail',
+    'step.plan': 'Upper-tier plans',
+    'step.data': 'Quantitative evidence',
+    'step.verdict': 'Verdict',
+    'step.options': 'Conversion options',
+    'step.lcc': 'Life cycle',
+
+    // 06 생애주기
+    'lc.title': 'What happens if we act, and when',
+    'lc.sub': 'Left alone it declines; work brings it back; then it declines again.',
+    'lc.coefTitle': 'The two coefficients behind the curve',
+    'lc.decay': 'Annual decline',
+    'lc.decaySrc': 'Trend 2015–2019 (104 → 100)',
+    'lc.lift': 'Rebound from works',
+    'lc.liftSrc': 'Against the control group after the 2024 works',
+    'lc.coefNote':
+        'Both were measured on this building. The future stretch simply repeats them — '
+        + 'it is a projection, not a fact.',
+    'lc.costTitle': 'Where the costs come from',
+    'lc.costNote':
+        'All figures are actual spending or appropriations from the Nowon district budget. '
+        + 'No borrowed unit-price tables.',
+    'lc.hint': 'Hover the curve to see why a given year holds that value',
+    'lc.tip.real': 'Measured · boardings, OA-12913',
+    'lc.tip.decay': 'Left alone it loses 1.15% a year',
+    'lc.tip.floor': 'Floor · a conservative reading of the observed low (63)',
+    'lc.tip.lift': 'Works lift it {n} pp, then the decay resumes',
+    'lc.tip.cost': 'Cost of works',
+    'lc.tip.guess': 'The structural cost is estimated from new-build cases',
+    'lc.cmpTitle': 'Scenarios',
+    'lc.cost': 'Total cost',
+    'lc.mean': 'Mean use',
+    'lc.eok': '00 mn KRW',
+    'lc.gapTitle': 'What is still missing',
+    'lc.gapBody':
+        'With the building\'s own entry records we could draw this curve from them instead of '
+        + 'bus-stop flows. The denominator would become the single building, which is far more '
+        + 'precise. The facility operator\'s user statistics are what belongs here.',
+    'lc.chartTitle': 'Use curve and intervention years',
+    'lc.chartSub': 'July 2019 = 100 · measured 2015–2026 · projected 2026–2060',
+    'lc.real': 'Measured',
+    'lc.pred': 'Projected',
+    'lc.tblTitle': 'What you get and what you pay',
+    'lc.tblSub': 'Mean use is the average level across 34 years',
+    'lc.sc': 'Scenario',
+    'lc.works': 'Works',
+    'lc.endv': 'In 2060',
+    'lc.eff': 'per 10 bn KRW',
+    'lc.tblNote':
+        'Left alone, the 34-year mean falls to {n}. Works buy the amount by which the curve is lifted.',
+    'lc.endH': 'Act before the curve reaches the threshold and it climbs again',
+    'lc.endB':
+        'Left alone, the 34-year mean falls to 64.4 and hits the floor in 2052. '
+        + 'Acting in 2031, 2039, 2045 and 2054 as the verdict recommends holds the mean at 70.5. '
+        + 'The difference is 6.1, bought for 25 bn KRW. '
+        + 'Only two of those are major works — 2039 and 2054 — and both ride the plant cycle.',
+
+
+    // 05 전환 대안
+    'sh.title': 'When, and into what, should it change',
+    'sh.sub': 'We did not choose the timing: the building\'s physical cycles did.',
+    'sh.building': 'Building',
+    'sh.built': 'Completed',
+    'sh.age': 'Age',
+    'sh.years': 'yrs',
+    'sh.trigger': 'Conversion trigger',
+    'sh.tgNow': 'Now',
+    'sh.tgLine': 'Threshold',
+    'sh.chosen': 'Layers touched by option {key}',
+    'sh.cycTitle': 'Physical cycles of this building',
+    'sh.cycSub': 'Duffy layer lifespans — structure 50 yrs · services 15 yrs · fit-out 5–7 yrs (Askar 2021, p.17)',
+    'sh.eok': '00 mn KRW',
+    'sh.pgTitle': 'What it could become',
+    'sh.pgSub': 'Functions already within walking distance are removed',
+    'sh.taken': 'Already there',
+    'sh.open': 'Open',
+    'sh.pgNote':
+      'Five slots are already filled. Elderly services in particular: the Junggye senior centre '
+      + 'opened in 2026, and a senior hall was inserted into this very building, making two. '
+      + 'What remains is community sport and enterprise/jobs — both uses whose take-up is '
+      + 'actually rising in Nowon.',
+    'sh.opTitle': 'How deep should the intervention go',
+    'sh.opSub': 'The deeper you cut, the wider it opens now and the narrower it gets later',
+    'sh.good': 'What you gain',
+    'sh.bad': 'What you pay',
+    'sh.rev': 'How reversible',
+    'sh.rev1': 'Hard',
+    'sh.rev2': 'Moderate',
+    'sh.rev3': 'Easy',
+    'sh.endH': 'The value of flexibility is keeping the next conversion open',
+    'sh.endB':
+      'Option C opens the widest now but fixes the structure and locks the next fifty years. '
+      + 'Option A is narrow now but can be changed again at any time. '
+      + 'Option B does the work once, on the plant cycle, and leaves the structure alone — '
+      + 'exactly what Nowon already did in 2024, and it returned +5 pp in flows.',
+
+
+    // 04 판정
+    'dv.title': 'Where this verdict came from',
+    'dv.sub': 'From what was measured to the conclusion, with the steps left in place',
+    'dv.c1': '\u2460 What was measured',
+    'dv.c2': '\u2461 What it says',
+    'dv.c3': '\u2462 Taken together',
+    'dv.from': 'Screen {n}',
+    'dv.g.verified': 'Measured',
+    'dv.g.law': 'Statute',
+    'vd.title': 'Is this building fit for its current use?',
+    'vd.sub': 'Six signals sorted into fit or falling short, then counted into a verdict.',
+    'vd.inTitle': 'Inputs to the verdict',
+    'vd.inSub': 'Five axes on one frame',
+    'vd.inNote': 'Only {n} of {m} were actually measured. The rest are empty.',
+    'vd.none': 'Awaiting data',
+    'vd.pgTitle': 'What use should it change to',
+    'vd.pgSub': 'Functions already within walking distance drop out of the shortlist',
+    'vd.pgTaken': 'Already there',
+    'vd.pgOpen': 'Open',
+    'vd.pgNote':
+      'Five slots are already filled. The Junggye senior centre opened in 2026 and a senior hall '
+      + 'was inserted into this building, making two. What remains is community sport and '
+      + 'enterprise/jobs — both uses whose take-up is actually rising in Nowon.',
+    'vd.pgHow': 'We did not pick the shortlist. It is what remains after ranking the functions the '
+      + 'population projection demands most and subtracting those already within walking distance.',
+    'vd.callCap': 'What the collected data says',
+    'vd.callHead': 'Fit for its current use — but it must be redecided in {y}',
+    'vd.eqOut': 'Window for the re-assessment',
+    'vd.tally': 'Counting the signals',
+    'vd.tallyNote': 'We do not count only what is fit. The same boardings data rises over twelve months and has not returned to 2019 — both are written down.',
+    'vd.d.good': 'Fit',
+    'vd.d.bad': 'Short',
+    'vd.d.wait': 'Accruing',
+    'vd.sigTitle': 'What is fit and what falls short',
+    'vd.sigSub': 'Each axis states the period it was read over',
+    'vd.readTitle': 'So what does it say',
+    'vd.readSub': 'Statements no single signal can carry — they need two',
+    'vd.driftTitle': 'But why not fit forever',
+    'vd.driftSub': 'Being fit today and staying fit are not the same thing',
+    'vd.phTitle': 'What gets remeasured, and when',
+    'vd.phSub': 'We do not name years — we attach to the observed cycle',
+    'vd.k.hold': 'Hold',
+    'vd.k.plan': 'Prepare',
+    'vd.k.work': 'Build',
+    'vd.watch': 'Watch',
+    'vd.next': 'See how this prescription draws on the life-cycle curve',
+    'step.rhino': 'Modelling',
+    'step.future': 'Change over time',
+
+    // 02 상위계획
+    'plan.title': 'The plans that govern this place',
+    'plan.sub': 'Enter a site and the plans that govern it are called up — from Seoul to Nowon, then down to this plot.',
+    'plan.quotes': 'Cited clauses',
+    'plan.pages': 'Marked pages',
+    'plan.marksNote': 'Evidence is marked at {n} places in the PDFs. Click a page to enlarge it.',
+    'plan.from': 'Site entered',
+    'plan.see': 'Open source',
+    'plan.close': 'Close',
+    'plan.next': 'Now down to what we measured ourselves',
+    'plan.mapOpen': 'Open mind map',
+    'plan.mapHint': 'Which clause produced which direction, on one screen',
+    'plan.mapTitle': 'What came from what',
+    'plan.mapSub': 'Site to plan, plan to clause, clause to direction',
+    'plan.mapCol1': 'Site',
+    'plan.mapCol2': 'Plan',
+    'plan.mapCol3': 'Clause',
+    'plan.mapCol4': 'Direction it implies',
+    'plan.mapCol5': 'What we do about it',
+    'plan.summary': 'Summary',
+    'plan.shifts': 'So what has to change',
+    'plan.popTitle': 'Population of Nowon',
+    'plan.popChart': 'Share aged 65+ and under 14',
+    'plan.popNote': '20.9% in 2025 → 36.2% in 2042. Minors fall from 8.8% to 7.5%, roughly a fivefold gap.',
+    'plan.honestTitle': 'Borrowed principles, not instructions',
+    'plan.honestBody':
+      'Some cited clauses come from a different context. The zoning clause is city-scale, and the '
+      + 'idle-facility clause sits in a housing-supply argument. We are borrowing the principle; '
+      + 'the plans did not prescribe our method.',
+
+    // 03 정량 근거
+    'vc.title': 'Physical life is highest at completion',
+    'vc.sub': 'Remaining service life (RSL) · new = 100 · repairs return to it, never beyond',
+    'vc.now': 'Now, {y}',
+    'vc.acc': 'Fiscal service life 40 yrs · Korean corporate tax rules, table 5',
+    'vc.note':
+      'Each layer is drawn separately. Merging them into one line would mean deciding the weight '
+      + 'of each layer ourselves, and that would create an invented number. The structure is never '
+      + 'replaced, so it falls once from {built} — and that line reaches zero in 2039. As of {now}, '
+      + 'structure has 26% left, services 53%, fit-out 83%.\n'
+      + 'In the past stretch the sawtooth for services and fit-out assumes replacement on schedule. '
+      + 'Only three interventions are verified in the sources — 2018, 2022, 2025 — and the 2025 one '
+      + 'lines up with the fit-out cycle.',
+    'll.title': 'How much physical life is left',
+    'll.sub': 'Each layer has its own lifespan — it wears down as it is used, it does not drop suddenly',
+    'll.of': 'Life {life} yrs · from {last}',
+    'll.left': 'yrs left',
+    'll.due.fit': 'Fit-out replacement',
+    'll.due.svc': 'Plant replacement',
+    'll.due.str': 'Structural life reached',
+    'll.note':
+      'As of {now}. Physical value wears down linearly, layer by layer — no coefficients are '
+      + 'applied and there is no room for any. A drop steeper than this would mean an accident: '
+      + 'a fire or a collapse. Only for services is the last replacement date unverified, so it is '
+      + 'counted from completion.',
+    'lcx.title': 'Left alone, use keeps draining away',
+    'lcx.sub': 'Bus-stop boardings index · 2026 = 100 · this is not physical performance',
+    'tc.title': 'Act in the years where the two clocks meet',
+    'tc.sub': 'A building ages at one speed; a neighbourhood changes at another',
+    'tc.phys': 'Physical clock',
+    'tc.physD': 'How fast the building ages',
+    'tc.dem': 'Demand clock',
+    'tc.demD': 'How fast the neighbourhood changes',
+    'tc.onlyH': 'Measure only',
+    'tc.onlyD': 'No physical cycle coincides — remeasure fitness without touching the building',
+    'tc.withDem': 'coincides with the {s} re-assessment',
+    'tc.h.fit': 'Fit-out replacement + conversion',
+    'tc.h.svc': 'Plant replacement + conversion',
+    'tc.h.str': 'Structural life reached — the biggest decision',
+    'tc.why':
+      'Watch one clock only and you open the site twice: once to change the use, and a few years '
+      + 'later again for the plant. Do it all where the cycles meet and two jobs become one. '
+      + '{big} is the decisive one — the structure reaches its life and the use cycle ({gap}) '
+      + 'comes round at about the same time.',
+    'lcx.plan': 'Acting at the coincidences: mean {n}',
+    'lcx.none': 'Left alone: mean {n}',
+    'tm.title': 'When should it be worked on',
+    'tm.sub': 'Not an amount but a moment. The moment is set by law and by this building\'s record.',
+    'tm.head': 'From completion to now, and forward',
+    'tm.headV': 'Built in {built}, and its use has been swapped three times',
+    'tm.lawTitle': 'The cycle the law sets',
+    'tm.lawNote': 'This cycle only binds buildings of high public occupancy — cultural and assembly '
+      + 'uses need a floor area over 5,000 m², and we have not verified this building\'s area. '
+      + 'Since even eligibility is unconfirmed, the dates below come from the building\'s record, '
+      + 'not from the statute.',
+    'tm.gapTitle': 'What this building does not have',
+    'tm.incTitle': 'Programmes available when work is done',
+    'tm.incNote':
+      'These are not our estimates but conditions the programmes themselves set. Once the timing '
+      + 'of works is fixed, what support can be drawn on is decided here.',
+    'tm.scopeTitle': 'What we do and what we do not',
+    'tm.fmTitle': 'Where the amount gets stuck',
+    'tm.fundTitle': 'What the district actually pays',
+    'tm.now': 'Now',
+    'tm.legCheck': 'Statutory inspection · every {n} yrs',
+    'tm.legPast': 'Past moments',
+    'tm.pastTitle': 'Past moments — every one verified in a source',
+    'tm.yrs': 'yr',
+    'tm.obsGap': 'Interval between this building\'s interventions',
+    'tm.obsGapD': '2018 → 2022 → 2025 · {a} and {b} years',
+    'tm.yrUnit': ' yrs',
+    'tm.fromLaw': 'Inspection cycle set by law',
+    'tm.checkAt': '{art} · periodic inspection every {n} yrs',
+    'tm.hookL': 'Going back to {y}',
+    'ev.title': 'Is this building being used well for its purpose?',
+    'ev.sub': 'Five axes asked the same way, each with its grade stated.',
+    'tj.gradeTitle': 'How far it is verified',
+    'tj.gradeNote':
+      'Calculation and data are stated separately. All five axes use the same measure and the '
+      + 'numbers on screen match the script output. Update frequency differs by axis, so each card '
+      + 'carries its source underneath.',
+    'tj.axCalc': 'Calculation',
+    'tj.axCalcD': 'The same measure on every axis',
+    'tj.axData': 'Data',
+    'tj.axDataD': 'All five axes are attached to a source',
+    'tj.axDone': 'Verified',
+    'tj.axLinked': 'Live source',
+    'tj.g.verified': 'Measured and verified',
+    'tj.g.collecting': 'Calculation verified',
+    'mf.title': 'Why this evidence is needed',
+    'df.aria': 'The share of older residents in Nowon rises smoothly; the building moves only in the years it was touched',
+    'df.town': 'Neighbourhood — share aged 65+',
+    'df.bldg': 'Building — years touched',
+    'df.src': 'Nowon population projection · district budget',
+    'mf.problem': 'Until now',
+    'mf.answer': 'So we built this',
+    'ms.live': 'Live call',
+    'oc.now': 'Now',
+    'oc.when': 'In {y}',
+    'oc.into': 'Then',
+    'sm.title': 'Where it is measured',
+    'sm.site': 'Site',
+    'sm.ctrl': 'Mean of {n} stops',
+    'sm.away': 'The three controls are 1.7–2.3 km north, off this frame',
+    'sm.size': 'Circle size — boardings that month',
+    'sm.num': 'Number — recovery index',
+    'sm.low': 'Blue — below the Nowon mean of {n}',
+    'mm.title': 'How do you measure "satisfied"?',
+    'mm.sub':
+      'Satisfaction cannot be measured directly. Ask, and you hear words — but people move '
+      + 'differently from how they speak. So we ask on three levels, across five axes.',
+    'mm.hint': 'Click an axis to unfold what it measures and why that signals satisfaction',
+    'mm.measures': 'What it measures',
+    'mm.why': 'Why that signals satisfaction',
+    'mm.blind': 'What it cannot tell us',
+    'mt.aria': 'Two lines, Nowon and the Seoul average, and the gap between them',
+    'mt.gap': 'Gap',
+    'ev.head': 'Reference event',
+    'ev.axes': 'Five axes',
+    'ev.eventTitle': 'What we split it on',
+    'ev.before': 'Before',
+    'ev.after': 'After',
+    'ev.ctrl': 'Nowon as a whole',
+    'ev.excess': 'Excess',
+    'ev.keep': 'Toward keeping it',
+    'ev.change': 'Toward changing it',
+    'ev.noVerdict': 'Verdict withheld',
+    'ev.statusTitle': 'How much of this is measured',
+    'ev.statusNote':
+      'Of six axes only two — boardings and budget — were actually measured. The other four are '
+      + 'tables set up in advance for when the data arrives; only those two enter the verdict.',
+    'ev.mapCap': 'V-World ortho · coordinates from place search, distances measured from the site',
+    'ev.sample': 'Demo',
+    'ev.sampleHint': 'Replaced automatically once the source is connected',
+    'ev.sampleWarn':
+      'These figures demonstrate the pipeline. Connect the real source and this table fills with '
+      + 'measured values, and only then does it enter the verdict. The current values do not.',
+    'ev.see': 'See evidence',
+    'ev.sheet': 'Evidence sheet',
+    'dsh.asked': 'What we asked and what came back',
+    'ev.what': 'What was measured',
+    'ev.raw': 'Raw data',
+    'ev.calc': 'How it was calculated',
+    'ev.origin': 'Source',
+    'ev.rawSrc': 'Original',
+    'ev.fileSrc': 'Processed file',
+    'ev.scriptSrc': 'Script',
+    'ev.repo': 'Open the original in the data repository',
+    'ev.limit': 'Limits',
+    'ev.missNote': 'This axis is not filled yet. We wrote down what blocked it instead.',
+    'ev.but': 'However',
+    // 03 근거 계보
+    'evidence.title': 'Where this conclusion came from',
+    'evidence.sub': 'From raw data to options, every step laid out.',
+    'evidence.howTitle': 'How to read it',
+    'evidence.how1': 'It flows left to right: raw data → processing → output → test → finding → option.',
+    'evidence.how2': 'Click a node and only its lineage stays lit.',
+    'evidence.how3': 'Drag to move, scroll to zoom.',
+    'evidence.nullTitle': 'Analyses that found nothing are kept too',
+    'evidence.nullBody':
+      'Finding no effect in buses and housing prices is why we moved to the bike-share data. '
+      + 'Delete that chain and there is no way to explain why we chose this method.',
+
+    'prov.c.source': 'Raw data',
+    'prov.c.script': 'Processing',
+    'prov.c.dataset': 'Output',
+    'prov.c.test': 'Test',
+    'prov.c.finding': 'Finding',
+    'prov.c.option': 'Option',
+
+    'prov.k.source': 'Raw data',
+    'prov.k.script': 'Processing script',
+    'prov.k.dataset': 'Output dataset',
+    'prov.k.test': 'Test',
+    'prov.k.finding': 'Finding',
+    'prov.k.option': 'Option',
+
+    'prov.rel.flow': 'Flow',
+    'prov.rel.retry': 'Retry',
+    'prov.rel.back': 'Supports',
+    'prov.rel.against': 'Contradicts',
+
+    'prov.fit': 'Fit to view',
+    'prov.clear': 'Clear selection',
+    'prov.limit': 'Limits',
+    'prov.from': 'Came from',
+    'prov.to': 'Led to',
+    'prov.src': 'Location',
+    'prov.nullTitle': 'No signal found',
+    'prov.nullNote': 'No effect is also a result. We leave it visible rather than hide it.',
+    'prov.nullCount': 'No signal',
+
+    // 01 랜딩
+    'landing.title': 'Enter a site',
+    'landing.ph': 'Street or lot address',
+    'landing.aria': 'Site address',
+    'landing.go': 'Go',
+    'landing.searching': 'Searching…',
+    'landing.curated': 'Site with prepared data',
+    'landing.noKey': 'No V-World key, so addresses cannot be looked up. Check VITE_VWORLD_KEY in .env.',
+    'landing.notFound': 'Address not found',
+
+    // 지도
+    'map.simple': 'Plain',
+    'map.base': 'Standard',
+    'map.sat': 'Satellite',
+    'map.night': 'Night',
+    'map.noKey': 'No API key',
+    'map.noKeyHint': 'Put VITE_VWORLD_KEY in .env and restart the dev server',
+    'map.tileFail': 'Tiles failed to load — check that this domain is registered on the key',
+    'map.parcel': 'Lot {jibun} · continuous cadastral map {gosi}',
+
+    // 02 대상지
+    'site.hookTitle': 'Remember this year',
+    'site.hookAge': 'year {n}',
+    'site.hookBody':
+      'This building sits inside a park, so it cannot be enlarged. When a new build was considered '
+      + 'in 2018 the reason given for turning back to refurbishment was exactly that — "it is inside '
+      + 'a park, so it cannot even be extended." A building that cannot grow can only be re-used. '
+      + 'This year comes back on the final screen.',
+    'site.histTitle': 'Moments this building has passed',
+    'site.histYr': 'yr',
+    'site.histNote':
+      'Every one verified in a source — district council minutes, the budget, the open-data portal. '
+      + 'Since completion the use has been swapped three times, and those intervals become the '
+      + 'evidence on the final screen.',
+    'site.specs': 'Specifications',
+    'site.jibun': 'Lot number',
+    'site.parcelArea': 'Lot area',
+    'site.fromBoundary': 'From boundary',
+    'site.landPrice': 'Official land price',
+    'site.zoning': 'Zoning',
+    'site.bcr': 'Building coverage ratio',
+    'site.far': 'Floor area ratio',
+    'site.maxFloorArea': 'Maximum floor area',
+    'site.missing': 'Not obtained',
+    'site.byLaw': 'Seoul Urban Planning Ordinance',
+    'site.eased': 'As an urban planning facility the ratio is eased to {n}%, giving {a}',
+    'site.curatedNote':
+      'Lot number, area and land price come live from the continuous cadastral map; zoning from the '
+      + 'land-use plan. Coverage and floor area ratios apply articles 44 and 48 of the Seoul Urban '
+      + 'Planning Ordinance as written.',
+    'site.uncuratedNote': 'For this site only cadastral information was queried. Population, upper-tier plans and programme eligibility are available only for sites with prepared data.',
+    'site.institutions': 'Applicable programmes',
+    'site.applies': 'Applies',
+    'site.notApplies': 'Not eligible',
+    'site.plans': 'What the medium-term plans require',
+    'site.trend': 'Where the trend points',
+
+    // 03 지역
+    'region.title': 'Data coverage',
+    'region.sub': '{n} items on the local axis · options are computed only from what is in hand',
+    'region.have': 'Held',
+    'region.partial': 'Partial',
+    'region.none': 'Not linked',
+    'region.pop': 'Population by age',
+    'region.popNote': 'Over sixteen years the share aged 65+ rises from {a}% to {b}%. Population decline ranks {rank} of {total} Seoul districts, and by 2042 older residents outnumber minors roughly fivefold.',
+    'region.vulnerable': 'Vulnerable groups',
+    'region.acts': 'What happens in the park',
+    'region.actsNote': '{n} observations · these are observations of older users, so the overall scale is unknown.',
+    'region.byTime': 'Use by time of day',
+    'region.excluded': 'Data deliberately not used',
+    'region.excludedNote': 'What is missing from a list and what was decided against are different things.',
+    'region.excludedTag': 'Excluded',
+    'region.elder': 'Aged 65+',
+    'region.youth': 'Minors',
+
+    // 04 대안
+    'opt.title': 'Where the data points',
+    'opt.sub': 'The near stretch is set by the population projection; the divergence starts where the data runs out',
+    'opt.ladder': 'Size decides the options',
+    'opt.ladderNote': '{n} options stand up at the planned {area} m². The larger the span, the higher the minimum area a conversion needs, in steps.',
+    'opt.selected': 'Selected · option {key}',
+    'opt.absorbs': 'Absorbed by the building',
+    'opt.uses': '{n} uses',
+    'opt.span': 'Span',
+    'opt.load': 'Load',
+    'opt.height': 'Floor height',
+    'opt.required': 'Floor area required',
+    'opt.ok': 'Stands up at the planned {area} m².',
+    'opt.short': 'At the planned {area} m² it is {n} m² short. This option needs a larger scheme.',
+    'opt.premise': 'Premise',
+    'opt.recommended': 'Recommended by the data',
+    'opt.verdictOk': 'Stands up',
+    'opt.benefit': 'Upside',
+    'opt.risk': 'Risk',
+    'opt.forkTitle': 'Where the options diverge',
+    'opt.forkNote': 'The three options are identical in 2031 because the published population projection settles it. The first fork comes in 2036, over whether the building absorbs community demand or passes it to a neighbour; the second comes in 2046, a bet made where the data stops. The three options were not chosen — they are the paths left by those two decisions.',
+    'opt.forkTag': 'Two decisions',
+    'opt.own': 'Absorbed here',
+    'opt.link': 'Passed to a neighbour',
+    'opt.bet': 'Bet',
+    'opt.dataSide': 'Published data',
+    'opt.betSide': 'No data · a bet',
+    'opt.forkLegend': '2 forks · {n} paths remaining',
+    'opt.pick': 'Choose an option',
+    'opt.next': 'Model option {key}',
+    'opt.areaNote': 'The minimum conversion area is 2×2 bays of the span — the smallest unit that can produce a column-free room.',
+
+    // 05 모델링
+    'rh.title': 'Modelling option {key}',
+    'rh.plan': 'Floor plan',
+    'rh.model': 'Model',
+    'rh.connected': 'Rhino connected',
+    'rh.disconnected': 'Not connected',
+    'rh.noPlan': 'No drawing',
+    'rh.planning': 'Drawing',
+    'rh.noModel': 'No model',
+    'rh.modeling': 'Modelling',
+    'rh.planHint': 'Run the modelling and Rhino draws the plan',
+    'rh.modelHint': 'Generated in Rhino to the specification of option {key}',
+    'rh.building': 'Modelling option {key} — generating in Rhino and extracting drawings',
+    'rh.massing': 'Massing',
+    'rh.grid': 'Grid',
+    'rh.floors': 'Height · storeys',
+    'rh.filled': 'Bays filled',
+    'rh.spare': 'Frames left empty',
+    'rh.spareTag': 'Spare',
+    'rh.massNote': 'The frame goes up across the whole grid while the envelope covers only {n} bays. The {s} bays left empty are the room a conversion will use — like Folie N6, the frame is larger than the envelope. The ground floor has no slab and stays open.',
+    'rh.recheck': 'Check connection',
+    'rh.rebuild': 'Rebuild',
+    'rh.auto': 'Auto-generate',
+    'rh.on': 'On',
+    'rh.off': 'Off',
+    'rh.download': 'Download',
+    'rh.make3dm': 'Make 3dm',
+    'rh.get3dm': 'Download · {size}',
+    'rh.log': 'Log',
+    'rh.empty': 'Nothing yet',
+    'rh.bridgeTitle': 'Run the bridge',
+    'rh.bridgeNote': 'A browser cannot open a TCP socket, so a relay is needed. Run the command below in a terminal, then start mcpstart in Rhino.',
+    'rh.state.idle': 'Not checked',
+    'rh.state.checking': 'Checking',
+    'rh.state.ready': 'Connected',
+    'rh.state.noRhino': 'Bridge running · Rhino not responding',
+    'rh.state.down': 'Bridge not running',
+
+    // 06 시간 변화
+    'fu.title': 'Unchanged across all three horizons',
+    'fu.sub': 'For option {key} · these four values cannot be changed later',
+    'fu.keptNote': 'So they are set from the start to the heaviest use. The price of that spare capacity is that whatever arrives in fifty years can be absorbed.',
+    'fu.byTime': 'Use by horizon',
+    'fu.grounded': 'Grounded',
+    'fu.notPredicted': 'Not predicted',
+    'fu.byTimeNote': 'Population projections are published data, so we state them; the far future we do not predict.',
+    'fu.changes': 'What changes',
+    'fu.zoom': 'Enlarge {after}',
+    'fu.close': 'Close',
+    'kept.span': 'Column grid',
+    'kept.height': 'Floor height',
+    'kept.load': 'Floor load',
+    'kept.power': 'Power supply',
   },
 }

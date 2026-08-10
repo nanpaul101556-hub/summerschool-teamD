@@ -20,7 +20,6 @@ import {
 import { useLang } from '../i18n'
 import { eligibleIncentives } from '../lib/constraint'
 import AppFrame from './AppFrame'
-import LccChart from './LccChart'
 import LifeLeft from './LifeLeft'
 import ValueCurve from './ValueCurve'
 import TwoClocks from './TwoClocks'
@@ -111,13 +110,14 @@ export default function LccView({ site, onStep, onReset }) {
           <b>{t('tm.headV', { built: BUILT, n: LAW.cycle })}</b>
         </div>
 
+        {/* 물리 수명 하나로 흐른다 — 곡선(층별 잔존) → 막대(얼마 남았나) → 두 시계(언제 겹치나).
+            이용지수(정류장 승하차) 곡선은 걷어냈다. 그건 수요이지 건물 상태가 아니라,
+            생애주기 화면에 섞으면 「가치」로 오독된다. 여기 세 그림의 y축은 모두 물리다. */}
         <ValueCurve />
 
         <LifeLeft />
 
         <TwoClocks />
-
-        <LccChart />
 
         {/* ── 축 ─────────────────────────────────────────── */}
         <div className="tm-axis">
