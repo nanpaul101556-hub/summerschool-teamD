@@ -167,3 +167,59 @@ export const LIFE_LEFT = PHYSICAL.map((p) => {
     due: last + life,
   }
 }).sort((a, b) => a.due - b.due)
+
+/**
+ * 잔존 수명 곡선 — 준공을 100 으로 두고 층마다 따로 그린다.
+ *
+ * 한 줄로 합치려면 층별 가치 비중을 우리가 정해야 하고, 그 순간 지어낸 값이
+ * 하나 생긴다. 세 선을 그대로 두면 가중치가 필요 없다.
+ *
+ * 교체 주기는 전부 준공(1989)부터 센다. 설비 1989·2004·2019·2034,
+ * 내장 1989 … 2019·2025·2031 — 내장의 2025 는 노인회관 입주와 맞아떨어진다.
+ * 구조는 교체가 없으므로 준공부터 한 번 내려가기만 한다. 그래서 이 선이
+ * 「가치는 준공 때가 가장 높다」를 그림 그대로 말한다.
+ */
+const CURVE_TO = 2045
+
+/** 그 해의 잔존율 — 마지막 교체부터 수명까지 선형 */
+export const residual = (id, y) => {
+  const p = PHYSICAL.find((x) => x.id === id)
+  const life = (p.life[0] + p.life[1]) / 2
+  if (y < BUILT) return 1
+  if (id === 'str') return Math.max(0, 1 - (y - BUILT) / life)
+  return 1 - ((y - BUILT) % life) / life
+}
+
+/** 톱니를 각지게 그리려면 교체 직전·직후 두 점이 다 있어야 한다 */
+const lineOf = (id) => {
+  const p = PHYSICAL.find((x) => x.id === id)
+  const life = (p.life[0] + p.life[1]) / 2
+  const pts = []
+  for (let y = BUILT; y <= CURVE_TO; y += 1) {
+    if (id !== 'str' && y > BUILT && (y - BUILT) % life === 0) {
+      pts.push({ y, v: 0 })          // 교체 직전 — 바닥
+    }
+    pts.push({ y, v: residual(id, y) })
+  }
+  return pts
+}
+
+export const LAYER_LINES = PHYSICAL.map((p) => ({
+  id: p.id,
+  label: p.label,
+  cycle: p.cycle,
+  pts: lineOf(p.id),
+})).reverse()   // 구조를 먼저 그려 가는 선이 위로 오게 한다
+
+/**
+ * 회계상 내용연수 — 법인세법 시행규칙 별표5.
+ * 철근콘크리트조 기준내용연수 40년 (내용연수범위 30~50년).
+ * 회계로는 2029년에 다 상각되는데 물리로는 2039년까지 남는다.
+ */
+export const ACCOUNTING_LIFE = 40
+
+export const ACCOUNTING = [
+  { y: BUILT, v: 1 },
+  { y: BUILT + ACCOUNTING_LIFE, v: 0 },
+  { y: CURVE_TO, v: 0 },
+]

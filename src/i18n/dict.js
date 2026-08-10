@@ -194,6 +194,17 @@ export const DICT = {
       + '계획이 우리 방식을 지시한 것은 아닙니다.',
 
     // 03 정량 근거
+    'vc.title': '가치는 준공 때가 가장 높다',
+    'vc.sub': '잔존 수명 · {built}년 준공을 100으로 둡니다',
+    'vc.now': '지금 {y}',
+    'vc.acc': '회계 내용연수 40년 · 법인세법 시행규칙 별표5',
+    'vc.note':
+      '층마다 따로 그립니다. 하나로 합치려면 층별 가치 비중을 저희가 정해야 하고, '
+      + '그러면 지어낸 값이 하나 생깁니다. 구조는 교체가 없어 {built}년부터 한 번 '
+      + '내려가기만 합니다 — 그 선이 2039년에 0에 닿습니다. {now}년 지금 구조는 26%, '
+      + '설비는 53%, 내장은 83% 남았습니다.\n'
+      + '지나온 구간의 설비·내장 톱니는 주기대로 교체됐다고 본 것입니다. 원문에서 확인한 '
+      + '개입은 2018·2022·2025 셋뿐이고, 그중 2025년이 내장 주기와 맞아떨어집니다.',
     'll.title': '물리적으로 얼마나 남았는가',
     'll.sub': '층마다 수명이 다릅니다 — 쓴 만큼 줄어들 뿐, 갑자기 떨어지지 않습니다',
     'll.of': '수명 {life}년 · {last}년부터',
@@ -712,6 +723,18 @@ export const DICT = {
       + 'non è il piano a prescrivere il nostro metodo.',
 
     // 03 evidenze quantitative
+    'vc.title': 'Il valore è al massimo alla costruzione',
+    'vc.sub': 'Vita utile residua · il {built}, anno di costruzione, vale 100',
+    'vc.now': 'Oggi, {y}',
+    'vc.acc': 'Vita utile fiscale 40 anni · normativa tributaria coreana',
+    'vc.note':
+      'Ogni strato è tracciato a parte: per unirli in una sola curva dovremmo decidere noi '
+      + 'quanto pesa ciascuno, e nascerebbe un valore inventato. La struttura non si sostituisce, '
+      + 'quindi scende una volta sola dal {built} e tocca lo zero nel 2039. Nel {now} restano: '
+      + 'struttura 26%, impianti 53%, finiture 83%.\n'
+      + 'Nel tratto passato i denti di sega di impianti e finiture assumono sostituzioni regolari. '
+      + 'Gli interventi verificati sui documenti sono tre — 2018, 2022, 2025 — e il 2025 coincide '
+      + 'con il ciclo delle finiture.',
     'll.title': 'Quanta vita utile resta, strato per strato',
     'll.sub': 'Ogni strato ha una durata diversa: si consuma per quanto lo si usa, non crolla di colpo',
     'll.of': 'Durata {life} anni · dal {last}',

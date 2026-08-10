@@ -22,6 +22,7 @@ import { eligibleIncentives } from '../lib/constraint'
 import AppFrame from './AppFrame'
 import LccChart from './LccChart'
 import LifeLeft from './LifeLeft'
+import ValueCurve from './ValueCurve'
 import TwoClocks from './TwoClocks'
 
 const FROM = BUILT
@@ -109,6 +110,8 @@ export default function LccView({ site, onStep, onReset }) {
           <span className="l">{t('tm.head')}</span>
           <b>{t('tm.headV', { built: BUILT, n: LAW.cycle })}</b>
         </div>
+
+        <ValueCurve />
 
         <LifeLeft />
 
