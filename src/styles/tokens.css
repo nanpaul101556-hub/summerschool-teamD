@@ -3756,5 +3756,10 @@ button,.dl{transition:transform .2s ease,background-color .2s ease,
 /* 지도를 자기 칸 안에 가둔다.
    Leaflet 은 내부에 pane 400 · control 1000 짜리 층을 만드는데, 컨테이너가
    쌓임 맥락을 만들지 않으면 그 숫자가 페이지 전체와 겨룬다. 그래서 근거 시트
-   (.dsh z 60) 를 열면 그 위로 위성 타일이 올라왔다. isolate 하나로 갇힌다. */
-.leaflet-container{isolation:isolate;position:relative;z-index:0}
+   (.dsh z 60) 를 열면 그 위로 위성 타일이 올라왔다.
+
+   isolation 만 준다. position 이나 z-index 를 같이 주면 안 된다 —
+   .mapcanvas 는 position:absolute; inset:0 으로 칸을 채우는데, 이 규칙이
+   뒤에 와서 relative 로 덮으면 inset 이 죽고 지도 높이가 0 이 된다.
+   isolation 은 position 과 무관하게 언제나 쌓임 맥락을 만든다. */
+.leaflet-container{isolation:isolate}

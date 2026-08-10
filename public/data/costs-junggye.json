@@ -1,0 +1,66 @@
+{
+  "_meta": {
+    "building": "중계문화공원 구민회관 (1989 준공)",
+    "unit": "억원 (once=총액, annual=연액, cycle=회당액)",
+    "note": "값은 근거가 확인된 것만 채운다. value:null 은 미확보 — 지어내지 않는다.",
+    "formula": "백병훈·조중연(2014) 식(1)",
+    "updated": "2026-08-10"
+  },
+  "checkDiagnosis": {
+    "value": null,
+    "status": "confirmed",
+    "source": "시설물의 안전 및 유지관리에 관한 특별법",
+    "basis": "3년 주기 정기점검은 법정. 회당 점검·진단 단가만 넣으면 확정된다."
+  },
+  "generalManagement": {
+    "value": null,
+    "status": "confirmed",
+    "source": "법정관리비 기준",
+    "basis": "연면적 확인되면 연 관리비 산정 가능."
+  },
+  "electric": {
+    "value": null,
+    "status": "confirmed",
+    "source": "국토부 건물에너지 EUI × 한전 요금",
+    "basis": "용도·연면적 확정 시 EUI(kWh/㎡·yr)에 요금 곱해 연액 산정."
+  },
+  "water": {
+    "value": null,
+    "status": "confirmed",
+    "source": "상수도 요금",
+    "basis": "용도별 사용량 원단위 필요."
+  },
+  "gas": {
+    "value": null,
+    "status": "confirmed",
+    "source": "도시가스 요금 × 난방 EUI",
+    "basis": "난방 EUI 확정 시 산정."
+  },
+  "generalRepair": {
+    "value": null,
+    "status": "estimate",
+    "source": "전등·공구·소모품 실비 (논문 5.3 일상수선비)",
+    "basis": "연면적 대비 원단위 참조값 필요."
+  },
+  "preventive": {
+    "value": null,
+    "status": "estimate",
+    "source": "청소·수질·공기질·조경·승강기 실비",
+    "basis": "승강기 유무 등 설비 구성 확인 필요."
+  },
+  "repairReinforced": {
+    "value": null,
+    "status": "estimate",
+    "source": "주택법 시행규칙 장기수선계획 수립기준(주기) × 물량 × 단가",
+    "basis": "주기는 법정(내벽·외벽·옥외). 물량(㎡)과 단가가 미확보."
+  },
+  "plan": { "value": null, "status": "missing", "source": "사업자 제시 / 조달청 표준시장단가", "basis": "기존 건물이라 초기공사비는 개입 시점 공사비로 대체될 수 있음." },
+  "design": { "value": null, "status": "missing", "source": "사업자 제시", "basis": "" },
+  "construction": { "value": null, "status": "missing", "source": "용도별 ㎡당 공사비 — 조달청 표준시장단가", "basis": "★ 미확보 단가 1종. 확보 시 개입비용 확정." },
+  "supervision": { "value": null, "status": "missing", "source": "사업자 제시", "basis": "" },
+  "demolitionCost": { "value": null, "status": "missing", "source": "해체 폐기물량 × 처리단가", "basis": "" },
+  "recycling": { "value": null, "status": "missing", "source": "재활용 물량 × 단가", "basis": "" },
+  "conversion": { "value": null, "status": "estimate", "source": "개보수 vs 신축·이전 차액 — 장수명주택 +18% 참조값(공동주택, 그대로 못 씀)", "basis": "★ 미확보 단가 2종(재건축·대수선). 우리 용도로 재계산 필요." },
+  "expectRestoration": { "value": null, "status": "missing", "source": "재해 νL × 파괴확률 P × 복구단가 (지진·화재)", "basis": "1989 준공=내진 이전 가능. 파괴확률은 퍼지사건수분석(논문 4.1.2) 또는 전문가 설문." },
+  "expectIndirect": { "value": null, "status": "missing", "source": "이용자 수 × 대체시설 거리 × 중단일수", "basis": "이용자 데이터는 정류장 승하차로 근사 가능." }
+}
