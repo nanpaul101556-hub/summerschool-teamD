@@ -230,3 +230,94 @@ export const ACCOUNTING = [
   { y: BUILT + ACCOUNTING_LIFE, v: 0 },
   { y: CURVE_TO, v: 0 },
 ]
+
+/**
+ * 합성 곡선 — 준공에서 내려오다가, 손대면 그만큼 되돌아간다.
+ *
+ * 층별 선 셋만 놓으면 「그래서 이 건물은 지금 어떤가」가 한 줄로 안 잡힌다.
+ * 세 층을 하나로 합쳐 한 선으로 그린다.
+ *
+ * 무게는 셋을 같게 둔다. 층별 공사비 비중을 쓰는 것이 정석이지만 그 자료가
+ * 없다 — 설비 94.2억은 옆 건물 실적이고 구조 180억은 신축에서 역산한 추정이라
+ * 둘 다 이 건물 값이 아니다. 없는 자료를 대신할 숫자를 만드는 대신 같은 무게로
+ * 두고 그 사실을 화면에 적는다. 무게가 바뀌면 톱니의 깊이가 달라지지만
+ * 톱니가 서는 해는 그대로다 — 이 화면이 말하는 것은 그 해다.
+ *
+ * 1989 → 2026   지나온 구간. 주기대로 갈았다고 보고 그린다.
+ * 2026 → 2039   두 갈래. 손대지 않으면 계속 내려가고, 판정대로 손대면 반등한다.
+ *
+ * 2039 에서 끊는다. 구조 수명이 닿는 해이고, 대수선이 수명을 얼마나 되돌리는지는
+ * 우리가 정할 값이 아니다. 거기서부터는 존치냐 재건축이냐의 결정이다.
+ */
+const LIFE = (id) => {
+  const p = PHYSICAL.find((x) => x.id === id)
+  return (p.life[0] + p.life[1]) / 2
+}
+
+/** 지금 기준 마지막 교체 — 주기대로 갈아 왔다고 본다 */
+const LAST_OF = (id) => {
+  const p = PHYSICAL.find((x) => x.id === id)
+  const life = LIFE(id)
+  return id === 'str' ? BUILT : p.from + Math.floor((NOW - p.from) / life) * life
+}
+
+/**
+ * 판정이 그 층을 손대는 해 — 두 시계가 겹치는 자리 그대로다.
+ *
+ * 구조(2039)는 뺀다. 대수선이 구조 수명을 얼마나 되돌리는지는 우리가 정할 값이
+ * 아니고, 넣는 순간 곡선의 마지막 반등이 통째로 지어낸 값이 된다.
+ * 2039 는 반등이 아니라 곡선이 끝나는 해다 — 존치냐 재건축이냐를 거기서 정한다.
+ */
+const PLAN_AT = Object.fromEntries(
+  MEET_YEARS.filter((m) => m.layer !== 'str').map((m) => [m.layer, m.a]),
+)
+
+/**
+ * 앞으로의 잔존율. plan 이면 계획된 해에 그 층이 100 으로 돌아간다.
+ * before 는 교체 직전 값 — 톱니를 각지게 그리려면 한 해에 두 점이 필요하다.
+ */
+const ahead = (id, y, plan, before) => {
+  const life = LIFE(id)
+  const hit = PLAN_AT[id]
+  const done = plan && hit && (before ? y > hit : y >= hit)
+  const base = done ? hit : LAST_OF(id)
+  return Math.max(0, 1 - (y - base) / life)
+}
+
+const mean = (fn) => (PHYSICAL.reduce((a, p) => a + fn(p.id), 0) / PHYSICAL.length)
+
+export const COMPOSITE_END = BIG.a
+
+/** 지나온 구간 — 주기대로 갈아 온 톱니 */
+export const COMPOSITE_PAST = (() => {
+  const pts = []
+  for (let y = BUILT; y <= NOW; y += 1) {
+    for (const p of PHYSICAL) {
+      const life = LIFE(p.id)
+      if (p.id !== 'str' && y > BUILT && (y - p.from) % life === 0) {
+        pts.push({ y, v: mean((id) => (id === p.id ? 0 : residual(id, y))) })
+        break
+      }
+    }
+    pts.push({ y, v: mean((id) => residual(id, y)) })
+  }
+  return pts
+})()
+
+/** 앞으로의 두 갈래 */
+export const COMPOSITE = ['none', 'plan'].map((key) => {
+  const plan = key === 'plan'
+  const pts = []
+  for (let y = NOW; y <= COMPOSITE_END; y += 1) {
+    if (plan && Object.values(PLAN_AT).includes(y) && y > NOW) {
+      pts.push({ y, v: mean((id) => ahead(id, y, true, true)) })
+    }
+    pts.push({ y, v: mean((id) => ahead(id, y, plan, false)) })
+  }
+  return { key, pts }
+})
+
+/** 화면에 적을 두 값 — 2039 년에 어디에 서 있는가 */
+export const COMPOSITE_END_V = Object.fromEntries(
+  COMPOSITE.map((c) => [c.key, c.pts.at(-1).v]),
+)

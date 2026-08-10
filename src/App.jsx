@@ -4,6 +4,7 @@ import { useState } from 'react'
 
 import { STEPS } from './components/AppFrame'
 import DataView from './components/DataView'
+import Intro from './components/Intro'
 import Landing from './components/Landing'
 import LccView from './components/LccView'
 import PlanView from './components/PlanView'
@@ -23,14 +24,17 @@ import './styles/tokens.css'
 const FLOW = STEPS.map((s) => s.key)
 
 export default function App() {
+  const [intro, setIntro] = useState(true)
   const [site, setSite] = useState(null)
   const [stage, setStage] = useState('site')
 
+  /** 처음으로 돌아가도 인트로는 다시 틀지 않는다 — 발표 중 되감기가 번거롭다 */
   const reset = () => {
     setSite(null)
     setStage('site')
   }
 
+  if (intro) return <Intro onDone={() => setIntro(false)} />
   if (!site) return <Landing onFound={setSite} />
 
   const i = FLOW.indexOf(stage)

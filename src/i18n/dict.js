@@ -196,16 +196,23 @@ export const DICT = {
 
     // 03 정량 근거
     'vc.title': '물리 수명은 준공 때가 가장 높다',
-    'vc.sub': '잔존 서비스수명(RSL) · 새것이 100 · 고치면 되돌아갈 뿐 넘지 못합니다',
+    'vc.sub': '잔존 서비스수명(RSL) · {built}년 준공이 100 · 고치면 되돌아갈 뿐 넘지 못합니다',
     'vc.now': '지금 {y}',
     'vc.acc': '회계 내용연수 40년 · 법인세법 시행규칙 별표5',
     'vc.note':
-      '층마다 따로 그립니다. 하나로 합치려면 층별 가치 비중을 저희가 정해야 하고, '
-      + '그러면 지어낸 값이 하나 생깁니다. 구조는 교체가 없어 {built}년부터 한 번 '
-      + '내려가기만 합니다 — 그 선이 2039년에 0에 닿습니다. {now}년 지금 구조는 26%, '
-      + '설비는 53%, 내장은 83% 남았습니다.\n'
-      + '지나온 구간의 설비·내장 톱니는 주기대로 교체됐다고 본 것입니다. 원문에서 확인한 '
-      + '개입은 2018·2022·2025 셋뿐이고, 그중 2025년이 내장 주기와 맞아떨어집니다.',
+      '굵은 선은 세 층의 평균 잔존 수명입니다. 층별 비중은 이 건물의 공사비 자료가 '
+      + '없어 셋을 같은 무게로 두었습니다 — 비중이 바뀌면 톱니의 깊이가 달라지지만 '
+      + '톱니가 서는 해는 그대로입니다. 이 화면이 말하는 것은 그 해입니다.\n'
+      + '{built}년 준공에서 100으로 출발해 지금 {now}년에 옅은 선 셋의 평균만큼 내려와 '
+      + '있습니다. 여기서 두 갈래가 됩니다. 손대지 않으면 계속 내려가고, 판정대로 '
+      + '2031년 내장과 2034년 설비를 갈면 그때마다 되돌아갑니다. 새것이 100이 천장이라 '
+      + '그 위로는 못 올라갑니다.\n'
+      + '곡선은 {end}년에서 끝납니다. 구조 수명이 닿는 해이고, 대수선이 그 수명을 얼마나 '
+      + '되돌리는지는 저희가 정할 값이 아니라 반등을 그리지 않았습니다. 지나온 구간의 '
+      + '설비·내장 톱니는 주기대로 갈았다고 본 것이며, 원문에서 확인한 개입은 '
+      + '2018·2022·2025 셋뿐입니다.',
+    'vc.kPlan': '판정대로 손대면 {y}년에 {n}%',
+    'vc.kNone': '손대지 않으면 {n}%',
     'll.title': '물리적으로 얼마나 남았는가',
     'll.sub': '층마다 수명이 다릅니다 — 쓴 만큼 줄어들 뿐, 갑자기 떨어지지 않습니다',
     'll.of': '수명 {life}년 · {last}년부터',
@@ -734,17 +741,23 @@ export const DICT = {
 
     // 03 evidenze quantitative
     'vc.title': 'La vita utile fisica è massima alla costruzione',
-    'vc.sub': 'Vita utile residua (RSL) · il nuovo vale 100 · si può solo ripristinare, non superare',
+    'vc.sub': 'Vita utile residua (RSL) · il {built} vale 100 · si può solo ripristinare, non superare',
     'vc.now': 'Oggi, {y}',
     'vc.acc': 'Vita utile fiscale 40 anni · normativa tributaria coreana',
     'vc.note':
-      'Ogni strato è tracciato a parte: per unirli in una sola curva dovremmo decidere noi '
-      + 'quanto pesa ciascuno, e nascerebbe un valore inventato. La struttura non si sostituisce, '
-      + 'quindi scende una volta sola dal {built} e tocca lo zero nel 2039. Nel {now} restano: '
-      + 'struttura 26%, impianti 53%, finiture 83%.\n'
-      + 'Nel tratto passato i denti di sega di impianti e finiture assumono sostituzioni regolari. '
-      + 'Gli interventi verificati sui documenti sono tre — 2018, 2022, 2025 — e il 2025 coincide '
-      + 'con il ciclo delle finiture.',
+      'La linea spessa è la media della vita residua dei tre strati. Non avendo dati di costo '
+      + 'per questo edificio, i tre pesano allo stesso modo: cambiando i pesi cambia la profondità '
+      + 'dei denti, non l\'anno in cui cadono — ed è l\'anno che questa schermata afferma.\n'
+      + 'Si parte da 100 alla costruzione nel {built} e nel {now} si è scesi alla media delle tre '
+      + 'linee chiare. Da qui la curva si divide: senza interventi continua a scendere; seguendo il '
+      + 'giudizio, finiture nel 2031 e impianti nel 2034 la riportano su. Il nuovo, 100, resta il '
+      + 'tetto: non si sale oltre.\n'
+      + 'La curva termina nel {end}, quando la struttura arriva a fine vita. Di quanto una grande '
+      + 'ristrutturazione la riporti indietro non spetta a noi deciderlo, quindi nessun rimbalzo è '
+      + 'disegnato. Nel tratto passato i denti di impianti e finiture assumono sostituzioni regolari; '
+      + 'gli interventi verificati sono tre — 2018, 2022, 2025.',
+    'vc.kPlan': 'Con gli interventi: {n}% nel {y}',
+    'vc.kNone': 'Senza interventi: {n}%',
     'll.title': 'Quanta vita utile resta, strato per strato',
     'll.sub': 'Ogni strato ha una durata diversa: si consuma per quanto lo si usa, non crolla di colpo',
     'll.of': 'Durata {life} anni · dal {last}',
@@ -1272,17 +1285,23 @@ export const DICT = {
 
     // 03 정량 근거
     'vc.title': 'Physical life is highest at completion',
-    'vc.sub': 'Remaining service life (RSL) · new = 100 · repairs return to it, never beyond',
+    'vc.sub': 'Remaining service life (RSL) · {built} = 100 · repairs return to it, never beyond',
     'vc.now': 'Now, {y}',
     'vc.acc': 'Fiscal service life 40 yrs · Korean corporate tax rules, table 5',
     'vc.note':
-      'Each layer is drawn separately. Merging them into one line would mean deciding the weight '
-      + 'of each layer ourselves, and that would create an invented number. The structure is never '
-      + 'replaced, so it falls once from {built} — and that line reaches zero in 2039. As of {now}, '
-      + 'structure has 26% left, services 53%, fit-out 83%.\n'
-      + 'In the past stretch the sawtooth for services and fit-out assumes replacement on schedule. '
-      + 'Only three interventions are verified in the sources — 2018, 2022, 2025 — and the 2025 one '
-      + 'lines up with the fit-out cycle.',
+      'The heavy line is the mean remaining life of the three layers. With no cost data for this '
+      + 'building the three are weighted equally — changing the weights changes how deep the teeth '
+      + 'cut, not the year they fall on, and the year is what this screen asserts.\n'
+      + 'It starts at 100 at completion in {built} and by {now} has fallen to the mean of the three '
+      + 'faint lines. From here it splits: left alone it keeps falling; following the verdict, '
+      + 'fit-out in 2031 and plant in 2034 bring it back each time. New, at 100, is the ceiling — '
+      + 'nothing rises above it.\n'
+      + 'The curve ends in {end}, when the structure reaches its life. How far a major refurbishment '
+      + 'would set that back is not ours to decide, so no rebound is drawn. In the past stretch the '
+      + 'teeth for plant and fit-out assume replacement on schedule; three interventions are '
+      + 'verified — 2018, 2022, 2025.',
+    'vc.kPlan': 'With the works: {n}% in {y}',
+    'vc.kNone': 'Left alone: {n}%',
     'll.title': 'How much physical life is left',
     'll.sub': 'Each layer has its own lifespan — it wears down as it is used, it does not drop suddenly',
     'll.of': 'Life {life} yrs · from {last}',
@@ -1316,6 +1335,16 @@ export const DICT = {
       + 'comes round at about the same time.',
     'lcx.plan': 'Acting at the coincidences: mean {n}',
     'lcx.none': 'Left alone: mean {n}',
+    'cf.title': 'This is the cost structure it is calculated on',
+    'cf.sub': 'Cost breakdown after Baek & Cho (2014) · present value over 50 years',
+    'cf.ready': '{n}% in hand',
+    'cf.confirmed': 'In hand {n}',
+    'cf.estimate': 'Reference {n}',
+    'cf.missing': 'Missing {n}',
+    'cf.note':
+      'We do not give a total yet — it fills in once two unit costs are obtained: '
+      + 'construction cost per m² by use, and the rebuild/major-refurbishment rate. '
+      + 'What is fixed today is the timing (statutory cycles) and this structure.',
     'tm.title': 'When should it be worked on',
     'tm.sub': 'Not an amount but a moment. The moment is set by law and by this building\'s record.',
     'tm.head': 'From completion to now, and forward',

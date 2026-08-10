@@ -3729,26 +3729,47 @@ button,.dl{transition:transform .2s ease,background-color .2s ease,
 .vc-ax{fill:var(--ink-4);font-size:10px;font-family:var(--f)}
 .vc-now{stroke:var(--blue-on-dark);stroke-width:1.5;stroke-dasharray:4 3}
 .vc-nowt{fill:var(--blue-on-dark);font-size:11px;font-weight:700;font-family:var(--f)}
+
+/* 손댄 해 — 세로선과 그 위의 연도·층 이름 */
+.vc-w{stroke:var(--blue-on-dark);stroke-width:1;stroke-dasharray:3 4;opacity:.4}
+.vc-wy{fill:var(--blue-on-dark);font-size:11px;font-weight:700;font-family:var(--f);
+  font-variant-numeric:tabular-nums}
 .vc-acc{fill:none;stroke:var(--ink-4);stroke-width:1.4;stroke-dasharray:6 4;opacity:.7}
+/* 층별 — 굵은 선이 왜 그 해에 꺾이는지의 근거. 옅게 깔아만 둔다. */
 .vc-l{fill:none;stroke-linejoin:round}
-.vc-l.str{stroke:var(--blue-on-dark);stroke-width:3.4}
-.vc-l.svc{stroke:rgba(255,255,255,.42);stroke-width:1.5}
-.vc-l.fit{stroke:rgba(255,255,255,.15);stroke-width:1}
-.vc-d.str{fill:var(--blue-on-dark)}
-.vc-d.svc{fill:rgba(255,255,255,.75)}
-.vc-d.fit{fill:rgba(255,255,255,.4)}
+.vc-l.str{stroke:rgba(255,255,255,.26);stroke-width:1.3}
+.vc-l.svc{stroke:rgba(255,255,255,.17);stroke-width:1.1}
+.vc-l.fit{stroke:rgba(255,255,255,.10);stroke-width:1}
+
+/* 합성 — 이 화면의 주인공. fill 을 끄지 않으면 톱니가 검은 덩어리로 칠해진다. */
+.vc-c{fill:none;stroke-linejoin:round;stroke-linecap:round}
+.vc-c.past{stroke:var(--ink-2);stroke-width:2.6}
+.vc-c.none{stroke:var(--ink-4);stroke-width:2;stroke-dasharray:5 4}
+.vc-c.plan{stroke:var(--blue-on-dark);stroke-width:3.2}
+.vc-cd{fill:var(--blue-on-dark)}
+.vc-endp{fill:var(--blue-on-dark);font-size:12px;font-weight:700;font-family:var(--f);
+  font-variant-numeric:tabular-nums}
+.vc-endn{fill:var(--ink-4);font-size:11px;font-weight:600;font-family:var(--f);
+  font-variant-numeric:tabular-nums}
+.vc-wl{fill:var(--ink-4);font-size:9.5px;font-family:var(--f)}
 .vc-k{display:flex;align-items:center;gap:18px;flex-wrap:wrap;margin-top:10px;
   font-size:11.5px;color:var(--ink-3)}
 .vc-k span{display:flex;align-items:center;gap:7px}
 .vc-k span::before{content:'';width:16px;height:3px;border-radius:2px;flex:none}
-.vc-k .str::before{background:var(--blue-on-dark)}
-.vc-k .svc::before{background:rgba(255,255,255,.42);height:2px}
-.vc-k .fit::before{background:rgba(255,255,255,.15);height:2px}
+.vc-k .plan::before{background:var(--blue-on-dark)}
+.vc-k .plan{color:var(--blue-on-dark);font-weight:600}
+.vc-k .none::before{background:var(--ink-4);height:0;
+  border-top:2px dashed var(--ink-4)}
+.vc-k .str::before{background:rgba(255,255,255,.30);height:2px}
+.vc-k .svc::before{background:rgba(255,255,255,.62);height:2px}
+.vc-k .fit::before{background:rgba(255,255,255,.4);height:2px}
 .vc-k .acc::before{background:var(--ink-4);height:0;border-top:1.5px dashed var(--ink-4)}
 .vc-k .acc{color:var(--ink-4);margin-left:auto}
 .vc-k b{font-weight:700;letter-spacing:-.02em;font-variant-numeric:tabular-nums;
   color:var(--ink-2)}
-.vc-k .str b{color:var(--blue-on-dark)}
+.vc-k .cyc{font-style:normal;color:var(--ink-4)}
+.vc-k .cyc{font-style:normal;font-size:10px;color:rgba(255,255,255,.5);
+  font-variant-numeric:tabular-nums}
 .vc-n{margin:12px 0 0;padding-top:12px;border-top:1px solid var(--rule-2);
   font-size:12.5px;line-height:1.75;color:var(--ink-3);max-width:88ch;white-space:pre-line}
 
@@ -3801,3 +3822,35 @@ button,.dl{transition:transform .2s ease,background-color .2s ease,
 .cf-g li.gap .tag{color:var(--blue-on-dark)}
 
 .cf-note{margin-top:var(--s3);font-size:11.5px;line-height:1.6;color:var(--ink-2)}
+
+/* ── 인트로 — 첫 화면 앞에 오는 영상 ─────────────────────────
+   화면을 통째로 덮는다. 영상이 끝나면 옅어지며 랜딩에 자리를 내준다. */
+.intro{position:fixed;inset:0;z-index:9999;background:#000;
+  display:flex;align-items:center;justify-content:center;
+  opacity:1;transition:opacity .52s ease}
+.intro.out{opacity:0;pointer-events:none}
+
+/* 잘리지 않게 담는다 — 영상의 화면비를 우리가 바꾸지 않는다 */
+.intro-video{width:100%;height:100%;object-fit:contain;background:#000;display:block}
+
+.intro-ui{position:absolute;right:var(--s4);bottom:var(--s4);
+  display:flex;gap:var(--s2);opacity:.5;transition:opacity .2s}
+.intro:hover .intro-ui{opacity:1}
+
+.intro-btn{font:inherit;font-size:11.5px;letter-spacing:.02em;
+  color:rgba(255,255,255,.82);background:rgba(0,0,0,.35);
+  border:1px solid rgba(255,255,255,.28);border-radius:2px;
+  padding:7px 13px;cursor:pointer;backdrop-filter:blur(6px);
+  transition:background .15s,border-color .15s,color .15s}
+.intro-btn:hover{background:rgba(255,255,255,.14);
+  border-color:rgba(255,255,255,.5);color:#fff}
+.intro-btn.skip{border-color:rgba(255,255,255,.4)}
+
+@media (max-width:640px){
+  .intro-ui{right:var(--s3);bottom:var(--s3);opacity:1}
+}
+
+/* 모션을 줄이라고 한 사용자에게 페이드는 불필요하다 */
+@media (prefers-reduced-motion:reduce){
+  .intro{transition:none}
+}
