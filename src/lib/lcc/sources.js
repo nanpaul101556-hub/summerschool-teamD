@@ -6,7 +6,7 @@
  * costModel 의 leaf.key 와 여기 키가 1:1로 맞물린다.
  */
 
-const K = (ko, it) => ({ ko, it })
+const K = (ko, it, en) => ({ ko, it, en })
 
 /**
  * status 의 뜻 — 화면은 이 값으로 확보/미확보를 색으로 가른다.

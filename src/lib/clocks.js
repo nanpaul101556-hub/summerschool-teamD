@@ -24,13 +24,13 @@
 
 import { BUILT, PAST } from '../data/timeline'
 
-const K = (ko, it) => ({ ko, it })
+const K = (ko, it, en) => ({ ko, it, en })
 
 export const HORIZON = 2042
 export const NOW = 2026
 
 /** 마지막으로 손댄 해 — 준공은 개입이 아니다 */
-const LAST = PAST.filter((p) => p.kind === 'work').at(-1).year
+export const LAST = PAST.filter((p) => p.kind === 'work').at(-1).year
 
 /**
  * 물리 시계 — 층마다 수명이 다르다.
@@ -39,22 +39,24 @@ const LAST = PAST.filter((p) => p.kind === 'work').at(-1).year
 export const PHYSICAL = [
   {
     id: 'fit', from: LAST, life: [5, 7], sure: true,
-    label: K('내장', 'Finiture'),
-    cycle: K('5~7년', '5–7 anni'),
-    base: K(`${LAST}년 노인회관 입주부터`, `Dal ${LAST}, ingresso del centro anziani`),
+    label: K('내장', 'Finiture', 'Fit-out'),
+    cycle: K('5~7년', '5–7 anni', '5–7 yrs'),
+    base: K(`${LAST}년 노인회관 입주부터`, `Dal ${LAST}, ingresso del centro anziani`,
+      `From ${LAST}, when the senior hall moved in`),
   },
   {
     id: 'svc', from: BUILT, life: [15, 15], sure: false,
-    label: K('설비', 'Impianti'),
-    cycle: K('15년', '15 anni'),
+    label: K('설비', 'Impianti', 'Services'),
+    cycle: K('15년', '15 anni', '15 yrs'),
     base: K(`마지막 교체일 미확인 — 준공(${BUILT})부터 센다`,
-      `Data dell’ultima sostituzione non verificata: si conta dall’agibilità (${BUILT})`),
+      `Data dell’ultima sostituzione non verificata: si conta dall’agibilità (${BUILT})`,
+      `Last replacement date unverified — counted from completion (${BUILT})`),
   },
   {
     id: 'str', from: BUILT, life: [50, 50], sure: true,
-    label: K('구조', 'Struttura'),
-    cycle: K('50년', '50 anni'),
-    base: K(`준공 ${BUILT}년부터`, `Dall’agibilità del ${BUILT}`),
+    label: K('구조', 'Struttura', 'Structure'),
+    cycle: K('50년', '50 anni', '50 yrs'),
+    base: K(`준공 ${BUILT}년부터`, `Dall’agibilità del ${BUILT}`, `From completion in ${BUILT}`),
   },
 ]
 
@@ -62,10 +64,11 @@ export const PHYSICAL = [
 export const DEMAND = {
   from: LAST,
   gap: [3, 4],
-  label: K('용도 재판정', 'Riesame della destinazione'),
-  cycle: K('3~4년', '3–4 anni'),
+  label: K('용도 재판정', 'Riesame della destinazione', 'Use re-assessment'),
+  cycle: K('3~4년', '3–4 anni', '3–4 yrs'),
   base: K('2018 → 2022 → 2025 에서 관측 · 두 번뿐',
-    'Osservato su 2018 → 2022 → 2025: solo due intervalli'),
+    'Osservato su 2018 → 2022 → 2025: solo due intervalli',
+    'Observed on 2018 → 2022 → 2025: only two intervals'),
 }
 
 /**
@@ -307,19 +310,31 @@ export const HORIZON_END = HORIZONS.at(-1).year
 /** 구조 수명이 닿는 해. 여기서부터는 우리가 모델링하지 않는다. */
 export const COMPOSITE_END = BIG.a
 
-/** 지나온 구간 — 주기대로 갈아 온 톱니 */
+/**
+ * 지나온 구간 — 확인된 공사가 있는 해에만 되돌아간다.
+ *
+ * 한때 여기에 주기대로 갈아 온 톱니를 그렸다. 준공부터 6년·15년을 되풀이하니
+ * 1995·2001·2004… 마다 반등이 서는데, 그 공사들은 원문에서 확인한 것이 아니라
+ * 주기에서 나온 것이다. 확인된 개입은 2018 리모델링 결정, 2022 사무동,
+ * 2025 노인회관 입주 셋뿐이고, 그중 층 하나가 통째로 되돌아갔다고 말할 수 있는
+ * 것은 마지막 하나다 — 2022 사무동은 실집행 0.98억의 부분 공사다.
+ *
+ *   1989 → 2025   기록이 없다. 톱니를 지어내는 대신 내려가는 추세 한 줄로 둔다.
+ *   2025          확인된 공사. 내장이 100 으로 돌아가고 굵은 선이 그만큼 반등한다.
+ *   2026          지금. 여기서 두 갈래로 갈린다.
+ *
+ * 층별 옅은 선은 주기 그대로 둔다 — 주기가 어떻게 도는지는 거기서 읽는다.
+ * 2026 의 값은 옅은 선 셋의 평균 그대로이므로 앞으로의 두 갈래와 이어진다.
+ */
 export const COMPOSITE_PAST = (() => {
+  /** 공사 직전 — 내장은 다 닳았고 나머지는 그 해의 잔존만큼 남았다 */
+  const pre = mean((id) => (id === 'fit' ? 0 : residual(id, LAST)))
   const pts = []
-  for (let y = BUILT; y <= NOW; y += 1) {
-    for (const p of PHYSICAL) {
-      const life = LIFE(p.id)
-      if (p.id !== 'str' && y > BUILT && (y - p.from) % life === 0) {
-        pts.push({ y, v: mean((id) => (id === p.id ? 0 : residual(id, y))) })
-        break
-      }
-    }
-    pts.push({ y, v: mean((id) => residual(id, y)) })
+  for (let y = BUILT; y < LAST; y += 1) {
+    pts.push({ y, v: 1 - (1 - pre) * ((y - BUILT) / (LAST - BUILT)) })
   }
+  pts.push({ y: LAST, v: pre })                    // 바닥 — 반등을 각지게 세운다
+  for (let y = LAST; y <= NOW; y += 1) pts.push({ y, v: mean((id) => residual(id, y)) })
   return pts
 })()
 

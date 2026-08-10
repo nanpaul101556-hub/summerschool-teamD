@@ -15,7 +15,7 @@
 
 import { CARDS } from './evidence.js'
 
-const K = (ko, it) => ({ ko, it })
+const K = (ko, it, en) => ({ ko, it, en })
 
 /** 판정의 입력 — 네 갈래를 같은 틀로 놓는다 */
 export const INPUTS = [

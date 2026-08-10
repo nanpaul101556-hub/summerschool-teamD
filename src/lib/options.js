@@ -15,7 +15,7 @@
 import { USES } from '../data/requirements'
 import { backCalculate, minAdaptableArea } from './adaptability'
 
-const K = (ko, it) => ({ ko, it })
+const K = (ko, it, en) => ({ ko, it, en })
 
 /** 건물이 직접 받는 용도(own)와 주변으로 넘기는 용도(link) */
 const PLANS = [

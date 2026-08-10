@@ -10,7 +10,7 @@
  *                          → 1989년 준공인 이 건물에는 그 문서가 아예 없다
  */
 
-const K = (ko, it) => ({ ko, it })
+const K = (ko, it, en) => ({ ko, it, en })
 
 export const BUILT = 1989
 export const NOW = 2026

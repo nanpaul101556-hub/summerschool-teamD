@@ -9,7 +9,7 @@
  * 근거가 확정되지 않은 값은 status 로 표시해 화면이 그대로 드러내게 한다.
  */
 
-const K = (ko, it) => ({ ko, it })
+const K = (ko, it, en) => ({ ko, it, en })
 
 /**
  * 분석기간 T — 몇 년을 내다보는가.
@@ -20,7 +20,7 @@ export const HORIZON = {
   from: 1989,            // 준공년. t=0 기준은 계산 시 NOW 로 옮긴다
   status: 'confirmed',
   source: 'ISO 15686-5 · 백병훈·조중연(2014) 분석기간 50년 · 국내 관행 40~50년',
-  label: K('분석기간 50년', 'Orizzonte 50 anni'),
+  label: K('분석기간 50년', 'Orizzonte 50 anni', 'Analysis period 50 years'),
 }
 
 /**
@@ -34,10 +34,11 @@ export const DISCOUNT = {
   rate: 0.045,
   status: 'estimate',
   source: '백병훈·조중연(2014) 적용값 4.5% — 현행값은 기재부 예비타당성조사 수행 총괄지침에서 확인 필요',
-  label: K('할인율 4.5% (잠정)', 'Tasso di sconto 4,5% (provvisorio)'),
+  label: K('할인율 4.5% (잠정)', 'Tasso di sconto 4,5% (provvisorio)',
+    'Discount rate 4.5% (provisional)'),
   /** 결과가 여기에 민감하므로 반드시 이 범위로 민감도 분석 */
   sensitivity: [0.03, 0.045, 0.055],
 }
 
 /** 금액 표기 단위 — 억원 */
-export const UNIT = K('억원', 'mld di won')
+export const UNIT = K('억원', 'mld di won', '00 mn KRW')

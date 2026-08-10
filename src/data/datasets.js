@@ -9,7 +9,7 @@
  * impact 는 「없으면 무엇을 못 하는가」다. 이걸 적어야 목록이 우선순위가 된다.
  */
 
-const K = (ko, it) => ({ ko, it })
+const K = (ko, it, en) => ({ ko, it, en })
 
 export const AXES = [
   {

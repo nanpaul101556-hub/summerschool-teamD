@@ -10,7 +10,7 @@
  * 수치는 전부 실제 파일에서 센 것이다. 추정치를 쓰지 않는다.
  */
 
-const K = (ko, it) => ({ ko, it })
+const K = (ko, it, en) => ({ ko, it, en })
 
 /** 노드 종류. 색이 아니라 테두리·타이포로 구분한다 (Deck Minimal) */
 export const KINDS = {

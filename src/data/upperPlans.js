@@ -9,7 +9,7 @@
  * 인용문은 PDF 에서 그대로 옮겼다. 페이지 이미지는 source file/_pages.py 로 뽑는다.
  */
 
-const K = (ko, it) => ({ ko, it })
+const K = (ko, it, en) => ({ ko, it, en })
 
 /** 깔때기의 세 단 */
 export const LEVELS = [
@@ -350,7 +350,7 @@ export const PLAN_STATS = {
  * 말하지 않는다. 복합센터로 만든다 · 청년 몫을 비우지 않는다 · 도보권에 없는 것만
  * 넣는다 — 이 셋은 이 건물에만 맞는 말이고, 그래서 05 의 용도 후보로 이어진다.
  */
-const D = (ko, it) => ({ ko, it })
+const D = (ko, it, en) => ({ ko, it, en })
 
 export const DUTY = [
   {

@@ -11,7 +11,7 @@
  *   src    파일 경로와 공개 위치
  */
 
-const K = (ko, it) => ({ ko, it })
+const K = (ko, it, en) => ({ ko, it, en })
 
 /** 대상지 — 모든 거리의 기준점 */
 export const ORIGIN = {

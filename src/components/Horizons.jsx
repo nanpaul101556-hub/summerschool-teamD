@@ -15,8 +15,12 @@
  * 금액은 아직 적지 않는다. 단가 두 종(용도별 ㎡당 공사비 · 재건축 단가)이
  * 없어 costs-junggye.json 열일곱 항목이 전부 비어 있다. 대신 그 지평 안에
  * 어떤 비용 항목이 발생하는지까지만 적는다 — 구조는 서 있고 값만 없다.
+ *
+ * 카드마다 근거를 함께 든다. 「우리가 고른 숫자가 아니다」는 말은 옆에 문서명이
+ * 붙어야 성립한다. 실린 것은 전부 원문에서 확인한 것이다 — data/horizonSources.js.
  */
 
+import { HZ_SOURCES, HZ_SOURCES_FOOT } from '../data/horizonSources'
 import { COMPOSITE_END, HORIZON_ROWS, NOW } from '../lib/clocks'
 import { useLang } from '../i18n'
 
@@ -68,10 +72,30 @@ export default function Horizons() {
                 </li>
               )}
             </ul>
+
+            {/* 근거 — 이 지평의 숫자가 어느 문서에서 나왔는가 */}
+            <div className="hz-src">
+              <span className="lab">{t('hz.srcLab')}</span>
+              <dl>
+                {HZ_SOURCES[h.id].map((e) => (
+                  <div key={tx(e.k)}>
+                    <dt>{tx(e.k)}</dt>
+                    <dd>
+                      <b>{tx(e.v)}</b>
+                      <cite>
+                        {e.doc && <span className="doc">{tx(e.doc)}</span>}
+                        {tx(e.s)}
+                      </cite>
+                    </dd>
+                  </div>
+                ))}
+              </dl>
+            </div>
           </article>
         ))}
       </div>
 
+      <p className="hz-sf">{tx(HZ_SOURCES_FOOT)}</p>
       <p className="hz-n">{t('hz.note')}</p>
     </section>
   )

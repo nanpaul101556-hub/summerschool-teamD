@@ -8,7 +8,7 @@
  * 즉 이 표는 「조회된 용도지역 → 법정 한도」를 잇는 자리다.
  */
 
-const K = (ko, it) => ({ ko, it })
+const K = (ko, it, en) => ({ ko, it, en })
 
 /** 조례가 정한 한도. 서울도심은 상업지역에서만 값이 갈린다. */
 export const ZONES = {

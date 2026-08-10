@@ -22,7 +22,7 @@ import { POPULATION } from './population'
 import { CONTROL, STOPS } from './stops'
 import { LAW, PAST, RHYTHM } from './timeline'
 
-const K = (ko, it) => ({ ko, it })
+const K = (ko, it, en) => ({ ko, it, en })
 
 const card = (id) => CARDS.find((c) => c.id === id)
 
@@ -63,23 +63,25 @@ const OPEN = PROGRAMS.filter((p) => p.state === 'open')
 
 /** ① 지금 — 현 용도에 맞는가 */
 export const NOW = {
-  head: K('현 용도에 적합하다', 'Idoneo alla destinazione attuale'),
+  head: K('현 용도에 적합하다', 'Idoneo alla destinazione attuale', 'Fit for its current use'),
   rows: [
     {
       id: 'bus', dir: 'up', v: card('bus').brief.v,
-      k: K('승하차', 'Flussi'),
-      d: K('노원구 대조군 대비 초과', 'Oltre il controllo distrettuale'),
+      k: K('승하차', 'Flussi', 'Boardings'),
+      d: K('노원구 대조군 대비 초과', 'Oltre il controllo distrettuale', 'Excess over the Nowon control'),
     },
     {
       id: 'budget', dir: 'up', v: card('budget').brief.v,
-      k: K('예산', 'Bilancio'),
-      d: K('2022년 1.5억 → 2025년 3.6억', 'Da 0,15 a 0,36 mld, 2022 → 2025'),
+      k: K('예산', 'Bilancio', 'Budget'),
+      d: K('2022년 1.5억 → 2025년 3.6억', 'Da 0,15 a 0,36 mld, 2022 → 2025',
+        'From 150 to 360 mn KRW, 2022 → 2025'),
     },
     {
       id: 'recover', dir: 'down', v: SITE.idx.toFixed(1),
-      k: K('회복률', 'Ripresa'),
+      k: K('회복률', 'Ripresa', 'Recovery'),
       d: K(`노원구 평균 ${CONTROL.idx.toFixed(1)} 아래`,
-        `Sotto la media di Nowon, ${CONTROL.idx.toFixed(1)}`),
+        `Sotto la media di Nowon, ${CONTROL.idx.toFixed(1)}`,
+        `Below the Nowon mean of ${CONTROL.idx.toFixed(1)}`),
     },
   ],
 }
@@ -87,33 +89,35 @@ export const NOW = {
 /** ② 언제 — 우리가 정하지 않는다 */
 export const WHEN = {
   v: NEXT_LABEL,
-  head: K('적합성을 다시 잰다', 'Si rimisura l’idoneità'),
+  head: K('적합성을 다시 잰다', 'Si rimisura l’idoneità', 'Fitness is remeasured'),
   rows: [
     {
       id: 'gap', v: `${GAP_MIN}~${GAP_MAX}년`,
-      k: K('이 건물이 손댄 간격', 'Intervallo fra gli interventi'),
+      k: K('이 건물이 손댄 간격', 'Intervallo fra gli interventi', 'Interval between interventions'),
       d: K('2018 → 2022 → 2025 · 관측 두 번',
-        '2018 → 2022 → 2025 · due osservazioni'),
+        '2018 → 2022 → 2025 · due osservazioni',
+        '2018 → 2022 → 2025 · two observations'),
     },
     {
       id: 'last', v: `${LAST.year}`,
-      k: K('마지막 개입', 'Ultimo intervento'),
+      k: K('마지막 개입', 'Ultimo intervento', 'Last intervention'),
       d: LAST.label,
     },
     {
       id: 'aged', v: `${AGED.elder}%`,
-      k: K(`${AGED.year}년 고령 비율`, `Over 65 nel ${AGED.year}`),
-      d: K('2024년 20.4%에서', 'Dal 20,4% del 2024'),
+      k: K(`${AGED.year}년 고령 비율`, `Over 65 nel ${AGED.year}`, `Share aged 65+ in ${AGED.year}`),
+      d: K('2024년 20.4%에서', 'Dal 20,4% del 2024', 'Up from 20.4% in 2024'),
     },
   ],
 }
 
 /** ③ 무엇으로 — 걸어서 닿는 거리에 없는 것만 남는다 */
 export const INTO = {
-  head: K('이 용도로 대응한다', 'Si risponde con queste destinazioni'),
+  head: K('이 용도로 대응한다', 'Si risponde con queste destinazioni', 'Respond with these uses'),
   rows: OPEN.map((p) => ({
     id: p.id, v: p.v, k: p.label,
-    d: K('인근 같은 용도 시설의 실측 증감', 'Variazione misurata in strutture analoghe vicine'),
+    d: K('인근 같은 용도 시설의 실측 증감', 'Variazione misurata in strutture analoghe vicine',
+      'Measured change at nearby facilities of the same use'),
   })),
 }
 

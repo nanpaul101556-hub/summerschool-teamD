@@ -13,7 +13,7 @@
  * 시점은 우리가 정하지 않는다. 건물의 물리 주기가 정한다.
  */
 
-const K = (ko, it) => ({ ko, it })
+const K = (ko, it, en) => ({ ko, it, en })
 
 /** 대상지 건물 — 이미지(현황분석)와 예산 자료에서 확인한 사실 */
 export const BUILDING = {

@@ -13,7 +13,7 @@
  *   event   위험사건 발생 시 (확률로 기대값 산정)
  */
 
-const K = (ko, it) => ({ ko, it })
+const K = (ko, it, en) => ({ ko, it, en })
 const leaf = (key, ko, it, timing, extra = {}) => ({ key, label: K(ko, it), timing, ...extra })
 
 /** 관리주체비용 — 초기공사 + 유지관리 + 에너지 + 해체폐기 */

@@ -203,16 +203,28 @@ export const DICT = {
       '굵은 선은 세 층의 평균 잔존 수명입니다. 층별 비중은 이 건물의 공사비 자료가 '
       + '없어 셋을 같은 무게로 두었습니다 — 비중이 바뀌면 톱니의 깊이가 달라지지만 '
       + '톱니가 서는 해는 그대로입니다. 이 화면이 말하는 것은 그 해입니다.\n'
-      + '{built}년 준공에서 100으로 출발해 지금 {now}년에 옅은 선 셋의 평균만큼 내려와 '
-      + '있습니다. 여기서 두 갈래가 됩니다. 손대지 않으면 계속 내려가고, 판정대로 '
+      + '{built}년 준공에서 100으로 출발해 계속 내려오다가 2025년에 한 번 되돌아갑니다. '
+      + '원문에서 확인한 개입은 2018년 리모델링 결정 · 2022년 사무동 · 2025년 노인회관 입주 '
+      + '셋인데, 층 하나가 통째로 되돌아갔다고 말할 수 있는 것은 2025년뿐입니다 '
+      + '(2022년 사무동은 실집행 0.98억의 부분 공사). 그 앞 구간은 유지보수 기록이 남아 있지 '
+      + '않아 톱니를 지어내지 않고 내려가는 추세 한 줄로 두었습니다.\n'
+      + '지금 {now}년에서 두 갈래가 됩니다. 손대지 않으면 계속 내려가고, 판정대로 '
       + '2031년 내장과 2034년 설비를 갈면 그때마다 되돌아갑니다. 새것이 100이 천장이라 '
       + '그 위로는 못 올라갑니다.\n'
       + '곡선은 {end}년에서 끝납니다. 구조 수명이 닿는 해이고, 대수선이 그 수명을 얼마나 '
-      + '되돌리는지는 저희가 정할 값이 아니라 반등을 그리지 않았습니다. 지나온 구간의 '
-      + '설비·내장 톱니는 주기대로 갈았다고 본 것이며, 원문에서 확인한 개입은 '
-      + '2018·2022·2025 셋뿐입니다.',
+      + '되돌리는지는 저희가 정할 값이 아니라 반등을 그리지 않았습니다.',
     'vc.kPlan': '판정대로 손대면 {y}년에 {n}%',
     'vc.kNone': '손대지 않으면 {n}%',
+
+    // 05 생애주기 필름 — 곡선을 눌러 여는, 스크롤로 넘기는 영상
+    'lf.open': '영상으로 보기',
+    'lf.title': '생애주기 필름',
+    'lf.sub': '스크롤 한 칸이 한 프레임 · 노원구민회관 1989년 준공',
+    'lf.close': '닫기',
+    'lf.hint': '아래로 굴리면 한 프레임씩 넘어갑니다',
+    'lf.frame': '프레임 {n} / {total}',
+    'lf.loading': '영상을 받는 중',
+    'lf.noRate': '단가 미확보',
     'hz.title': '분석 지평 — 지금부터 앞을 본다',
     'hz.sub': '{now}년 기준 · 셋 다 우리가 고른 숫자가 아니라 법정 주기와 물리 만기가 끊은 자리입니다',
     'hz.say.short': '물리 만기가 하나도 없습니다. 손대지 않고 재기만 하는 구간입니다.',
@@ -224,6 +236,7 @@ export const DICT = {
     'hz.noLift': '이 안에 만기가 없습니다',
     'hz.due': '만기',
     'hz.structure': '구조 수명 도래 — 존치냐 재건축이냐',
+    'hz.srcLab': '근거',
     'hz.note':
       '값은 세 층의 평균 잔존 수명입니다. 금액은 아직 적지 않습니다 — 용도별 ㎡당 '
       + '공사비와 재건축 단가 두 종이 없어 비용 항목 열일곱 개가 전부 비어 있습니다. '
@@ -765,16 +778,30 @@ export const DICT = {
       'La linea spessa è la media della vita residua dei tre strati. Non avendo dati di costo '
       + 'per questo edificio, i tre pesano allo stesso modo: cambiando i pesi cambia la profondità '
       + 'dei denti, non l\'anno in cui cadono — ed è l\'anno che questa schermata afferma.\n'
-      + 'Si parte da 100 alla costruzione nel {built} e nel {now} si è scesi alla media delle tre '
-      + 'linee chiare. Da qui la curva si divide: senza interventi continua a scendere; seguendo il '
-      + 'giudizio, finiture nel 2031 e impianti nel 2034 la riportano su. Il nuovo, 100, resta il '
-      + 'tetto: non si sale oltre.\n'
+      + 'Si parte da 100 alla costruzione nel {built} e si scende senza interruzioni fino a un unico '
+      + 'rimbalzo nel 2025. Gli interventi verificati sono tre — la decisione di ristrutturare del '
+      + '2018, gli uffici del 2022, l\'ingresso del centro anziani del 2025 — ma solo per il 2025 si '
+      + 'può dire che uno strato sia tornato a nuovo (gli uffici del 2022 sono un intervento parziale, '
+      + '0,098 mld spesi). Del tratto precedente non resta alcun registro di manutenzione: invece di '
+      + 'inventare denti, lo lasciamo come una sola linea in discesa.\n'
+      + 'Nel {now} la curva si divide: senza interventi continua a scendere; seguendo il giudizio, '
+      + 'finiture nel 2031 e impianti nel 2034 la riportano su. Il nuovo, 100, resta il tetto: '
+      + 'non si sale oltre.\n'
       + 'La curva termina nel {end}, quando la struttura arriva a fine vita. Di quanto una grande '
       + 'ristrutturazione la riporti indietro non spetta a noi deciderlo, quindi nessun rimbalzo è '
-      + 'disegnato. Nel tratto passato i denti di impianti e finiture assumono sostituzioni regolari; '
-      + 'gli interventi verificati sono tre — 2018, 2022, 2025.',
+      + 'disegnato.',
     'vc.kPlan': 'Con gli interventi: {n}% nel {y}',
     'vc.kNone': 'Senza interventi: {n}%',
+
+    // 05 il filmato del ciclo di vita — si apre dalla curva, si scorre a fotogrammi
+    'lf.open': 'Guarda il filmato',
+    'lf.title': 'Il filmato del ciclo di vita',
+    'lf.sub': 'Uno scatto di rotella, un fotogramma · Centro civico di Nowon, 1989',
+    'lf.close': 'Chiudi',
+    'lf.hint': 'Scorri verso il basso: avanza un fotogramma alla volta',
+    'lf.frame': 'Fotogramma {n} / {total}',
+    'lf.loading': 'Caricamento del filmato',
+    'lf.noRate': 'Prezzo non reperito',
     'hz.title': 'Orizzonti di analisi — si guarda avanti da oggi',
     'hz.sub': 'Riferito al {now} · nessuno dei tre è scelto da noi: li fissano il ciclo di legge e le scadenze fisiche',
     'hz.say.short': 'Nessuna scadenza fisica cade qui dentro: si misura soltanto, senza intervenire.',
@@ -786,6 +813,7 @@ export const DICT = {
     'hz.noLift': 'Nessuna scadenza qui dentro',
     'hz.due': 'a scadenza',
     'hz.structure': 'Fine vita strutturale — conservare o ricostruire',
+    'hz.srcLab': 'Fonti',
     'hz.note':
       'I valori sono la media della vita residua dei tre strati. Non indichiamo ancora importi: '
       + 'mancano due costi unitari (costo al m² per uso e costo di ricostruzione) e le diciassette '
@@ -1328,16 +1356,29 @@ export const DICT = {
       'The heavy line is the mean remaining life of the three layers. With no cost data for this '
       + 'building the three are weighted equally — changing the weights changes how deep the teeth '
       + 'cut, not the year they fall on, and the year is what this screen asserts.\n'
-      + 'It starts at 100 at completion in {built} and by {now} has fallen to the mean of the three '
-      + 'faint lines. From here it splits: left alone it keeps falling; following the verdict, '
-      + 'fit-out in 2031 and plant in 2034 bring it back each time. New, at 100, is the ceiling — '
-      + 'nothing rises above it.\n'
+      + 'It starts at 100 at completion in {built} and falls without interruption until a single '
+      + 'rebound in 2025. Three interventions are verified — the 2018 decision to refurbish, the '
+      + '2022 office wing, the 2025 arrival of the seniors\' centre — but only for 2025 can we say a '
+      + 'whole layer went back to new (the 2022 office work was partial, 0.098 bn actually spent). '
+      + 'For the stretch before it no maintenance record survives, so rather than invent teeth we '
+      + 'leave it as one falling line.\n'
+      + 'At {now} the curve splits: left alone it keeps falling; following the verdict, fit-out in '
+      + '2031 and plant in 2034 bring it back each time. New, at 100, is the ceiling — nothing rises '
+      + 'above it.\n'
       + 'The curve ends in {end}, when the structure reaches its life. How far a major refurbishment '
-      + 'would set that back is not ours to decide, so no rebound is drawn. In the past stretch the '
-      + 'teeth for plant and fit-out assume replacement on schedule; three interventions are '
-      + 'verified — 2018, 2022, 2025.',
+      + 'would set that back is not ours to decide, so no rebound is drawn.',
     'vc.kPlan': 'With the works: {n}% in {y}',
     'vc.kNone': 'Left alone: {n}%',
+
+    // 05 life-cycle film — opened from the curve, scrubbed by scroll
+    'lf.open': 'Watch the film',
+    'lf.title': 'Life-cycle film',
+    'lf.sub': 'One notch of scroll, one frame · Nowon Civic Hall, built 1989',
+    'lf.close': 'Close',
+    'lf.hint': 'Scroll down — it advances one frame at a time',
+    'lf.frame': 'Frame {n} / {total}',
+    'lf.loading': 'Loading the film',
+    'lf.noRate': 'No unit rate secured',
     'hz.title': 'Analysis horizons — looking forward from today',
     'hz.sub': 'As of {now} · none of the three is our choice: the statutory cycle and the physical due dates set them',
     'hz.say.short': 'No physical life ends inside this window. It is a stretch for measuring, not for building.',
@@ -1349,6 +1390,7 @@ export const DICT = {
     'hz.noLift': 'Nothing comes due in here',
     'hz.due': 'due',
     'hz.structure': 'Structural life reached — keep or rebuild',
+    'hz.srcLab': 'Sources',
     'hz.note':
       'The values are the mean remaining life of the three layers. No amounts yet — two unit costs '
       + 'are missing (construction cost per m² by use, and the rebuild rate), so all seventeen cost '

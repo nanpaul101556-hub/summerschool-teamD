@@ -6,7 +6,7 @@
  * 그래서 구조체를 바꿀 수 있게 만드는 것이 답이 된다.
  */
 
-const K = (ko, it) => ({ ko, it })
+const K = (ko, it, en) => ({ ko, it, en })
 
 export const BASE_YEAR = 2026
 

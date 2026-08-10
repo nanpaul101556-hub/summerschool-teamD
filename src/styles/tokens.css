@@ -3747,6 +3747,7 @@ button,.dl{transition:transform .2s ease,background-color .2s ease,
 .vc-c.none{stroke:var(--ink-4);stroke-width:2;stroke-dasharray:5 4}
 .vc-c.plan{stroke:var(--blue-on-dark);stroke-width:3.2}
 .vc-cd{fill:var(--blue-on-dark)}
+.vc-cd.past{fill:var(--ink-2)}
 .vc-endp{fill:var(--blue-on-dark);font-size:12px;font-weight:700;font-family:var(--f);
   font-variant-numeric:tabular-nums}
 .vc-endn{fill:var(--ink-4);font-size:11px;font-weight:600;font-family:var(--f);
@@ -3888,7 +3889,21 @@ button,.dl{transition:transform .2s ease,background-color .2s ease,
 .hz-in li.none{color:var(--ink-4)}
 .hz-in li.big{color:var(--blue-on-dark)}
 .hz-in li.big b{color:var(--blue-on-dark)}
-.hz-n{margin:var(--s3) 0 0;font-size:12px;line-height:1.75;color:var(--ink-4);
+/* 근거 — 카드 안, 그 지평의 숫자가 어느 문서에서 나왔는가 */
+.hz-src{margin-top:var(--s3);padding-top:11px;border-top:1px solid var(--rule-2)}
+.hz-src .lab{display:block;margin-bottom:8px;font-size:9.5px;letter-spacing:.14em;
+  text-transform:uppercase;color:var(--ink-4)}
+.hz-src dl{margin:0;display:flex;flex-direction:column;gap:8px}
+.hz-src dt{font-size:10.5px;color:var(--ink-4);margin-bottom:1px}
+.hz-src dd{margin:0;display:flex;flex-direction:column;gap:1px}
+.hz-src dd b{font-size:11.5px;font-weight:600;line-height:1.45;color:var(--ink-2);
+  font-variant-numeric:tabular-nums}
+.hz-src cite{font-style:normal;font-size:10px;line-height:1.5;color:var(--ink-4)}
+.hz-src cite .doc{display:block;color:var(--ink-4);opacity:.8}
+.hz-c.decide .hz-src dd b{color:var(--ink-2)}
+.hz-sf{margin:var(--s3) 0 0;font-size:11.5px;line-height:1.7;color:var(--ink-4);
+  max-width:92ch}
+.hz-n{margin:10px 0 0;font-size:12px;line-height:1.75;color:var(--ink-4);
   max-width:92ch;white-space:pre-line}
 
 /* 곡선 아래 지평 눈금 */
@@ -3896,3 +3911,142 @@ button,.dl{transition:transform .2s ease,background-color .2s ease,
 .vc-hzt{fill:var(--ink-4);font-size:10px;font-family:var(--f)}
 
 @media (max-width:900px){ .hz-g{grid-template-columns:1fr} }
+
+/* ============================================================
+   05 생애주기 필름 — 곡선을 눌러 여는, 스크롤로 넘기는 영상
+   스크롤 한 칸이 한 프레임이다. 재생 버튼을 두지 않는다.
+   ============================================================ */
+
+/* 곡선 전체가 버튼이다 */
+.vc-fig{position:relative}
+.vc-open{position:absolute;inset:0;width:100%;background:transparent;border:0;
+  padding:0;cursor:pointer;display:flex;align-items:flex-end;justify-content:flex-end;
+  border-radius:var(--r-md);transition:background .18s}
+.vc-open span{display:inline-flex;align-items:center;gap:7px;margin:0 4px 2px;
+  padding:6px 12px 6px 10px;border-radius:999px;font-family:var(--f);font-size:11.5px;
+  font-weight:600;letter-spacing:-.01em;color:var(--ink-2);
+  background:rgba(255,255,255,.08);border:1px solid var(--rule);
+  backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);
+  opacity:.62;transition:opacity .18s,color .18s,background .18s}
+.vc-open i{width:0;height:0;flex:none;
+  border-left:7px solid currentColor;border-top:4.5px solid transparent;
+  border-bottom:4.5px solid transparent}
+.vc-open:hover{background:rgba(41,151,255,.05)}
+.vc-open:hover span{opacity:1;color:var(--blue-on-dark);background:rgba(41,151,255,.14)}
+.vc-open:focus-visible{outline:2px solid var(--blue-focus);outline-offset:-2px}
+.vc-open:focus-visible span{opacity:1}
+
+/* ── 무대 ─────────────────────────────────────────── */
+.lf{position:fixed;inset:0;z-index:200;background:var(--canvas);--p:0}
+.lf-scroll{height:100%;overflow-y:auto;overflow-x:hidden;outline:0;
+  overscroll-behavior:contain}
+.lf-rail{position:relative}
+.lf-stage{position:sticky;top:0;height:100dvh;overflow:hidden;
+  background:var(--canvas)}
+
+.lf-v{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;
+  /* 스크럽은 매 프레임 다시 그린다 — 합성 레이어로 올려 둔다 */
+  will-change:transform;transform:translateZ(0)}
+
+/* 글자가 얹히는 두 자리만 눌러 둔다. 그림 한가운데는 건드리지 않는다. */
+.lf-veil{position:absolute;inset:0;pointer-events:none;
+  background:
+    linear-gradient(180deg,rgba(0,0,0,.62) 0,rgba(0,0,0,0) 22%),
+    linear-gradient(0deg,rgba(0,0,0,.78) 0,rgba(0,0,0,0) 34%),
+    linear-gradient(90deg,rgba(0,0,0,.58) 0,rgba(0,0,0,0) 48%)}
+
+/* ── 머리 ─────────────────────────────────────────── */
+.lf-top{position:absolute;top:0;left:0;right:0;display:flex;align-items:flex-start;
+  justify-content:space-between;gap:var(--s5);padding:var(--s5) var(--s6)}
+.lf-id{display:flex;flex-direction:column;gap:2px;min-width:0}
+.lf-id b{font-size:15px;font-weight:700;letter-spacing:-.02em;color:var(--ink)}
+.lf-id span{font-size:11.5px;color:rgba(255,255,255,.6)}
+.lf-x{display:inline-flex;align-items:center;gap:8px;flex:none;cursor:pointer;
+  font-family:var(--f);font-size:12px;font-weight:600;color:var(--ink-2);
+  padding:7px 13px;border-radius:999px;border:1px solid var(--rule);
+  background:rgba(255,255,255,.07);
+  backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);
+  transition:background .18s,color .18s}
+.lf-x i{font-style:normal;font-size:9.5px;letter-spacing:.08em;text-transform:uppercase;
+  color:rgba(255,255,255,.42)}
+.lf-x:hover{background:rgba(255,255,255,.14);color:var(--ink)}
+.lf-x:focus-visible{outline:2px solid var(--blue-focus);outline-offset:2px}
+
+/* ── 자막 — 장이 바뀔 때만 다시 선다 ───────────────── */
+.lf-cap{position:absolute;left:var(--s6);top:50%;transform:translateY(-50%);
+  width:min(430px,42vw);display:flex;flex-direction:column;gap:var(--s3);
+  animation:lf-in .5s cubic-bezier(.16,1,.3,1) both}
+@keyframes lf-in{from{opacity:0;transform:translateY(calc(-50% + 14px))}}
+.lf-k{font-size:10px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;
+  color:var(--blue-on-dark)}
+.lf-cap h3{margin:0;font-size:29px;line-height:1.18;letter-spacing:-.035em;
+  font-weight:700;color:var(--ink);text-wrap:balance}
+.lf-cap p{margin:0;font-size:13.5px;line-height:1.72;color:rgba(255,255,255,.78)}
+
+.lf-rows{margin:0;display:grid;grid-template-columns:1fr 1fr;gap:1px;
+  background:var(--rule-2);border:1px solid var(--rule-2);border-radius:var(--r-md);
+  overflow:hidden}
+.lf-rows > div{display:flex;flex-direction:column;gap:3px;padding:10px 12px;
+  background:rgba(0,0,0,.42);
+  backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px)}
+.lf-rows dt{font-size:10px;letter-spacing:.02em;color:rgba(255,255,255,.5)}
+.lf-rows dd{margin:0;font-size:15px;font-weight:700;letter-spacing:-.025em;
+  color:var(--ink)}
+.lf-rows dd.gap{font-size:12px;font-weight:600;color:var(--warn);letter-spacing:-.01em}
+
+.lf-foot{font-size:11px !important;line-height:1.68 !important;
+  color:rgba(255,255,255,.5) !important;padding-left:11px;
+  border-left:2px solid var(--rule)}
+
+/* ── 발 — 장 이동 · 프레임 · 진행 ──────────────────── */
+.lf-bot{position:absolute;left:var(--s6);right:var(--s6);bottom:var(--s5);
+  display:flex;align-items:flex-end;justify-content:space-between;gap:var(--s5)}
+.lf-chs{display:flex;gap:7px;flex-wrap:wrap}
+.lf-chs button{display:inline-flex;align-items:center;gap:8px;cursor:pointer;
+  font-family:var(--f);padding:7px 14px 7px 11px;border-radius:999px;
+  border:1px solid var(--rule-2);background:rgba(255,255,255,.05);color:var(--ink-4);
+  backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);
+  transition:color .2s,background .2s,border-color .2s}
+.lf-chs em{font-style:normal;font-size:10px;font-weight:700;letter-spacing:.02em}
+.lf-chs span{font-size:11.5px;font-weight:600;letter-spacing:-.01em;white-space:nowrap}
+.lf-chs button:hover{color:var(--ink-2);background:rgba(255,255,255,.1)}
+.lf-chs button.on{color:var(--ink);background:rgba(41,151,255,.16);
+  border-color:rgba(41,151,255,.4)}
+.lf-chs button.on em{color:var(--blue-on-dark)}
+.lf-chs button:focus-visible{outline:2px solid var(--blue-focus);outline-offset:2px}
+
+.lf-meter{display:flex;flex-direction:column;align-items:flex-end;gap:7px;
+  flex:none;width:min(240px,32vw)}
+.lf-meter span{font-size:10.5px;letter-spacing:.04em;color:rgba(255,255,255,.5)}
+.lf-bar{width:100%;height:2px;background:var(--rule-2);border-radius:2px;
+  overflow:hidden}
+.lf-bar i{display:block;height:100%;width:calc(var(--p) * 100%);
+  background:var(--blue-on-dark)}
+
+/* ── 안내 ─────────────────────────────────────────── */
+.lf-hint,.lf-load{position:absolute;left:50%;bottom:112px;transform:translateX(-50%);
+  padding:8px 16px;border-radius:999px;font-size:11.5px;font-weight:600;
+  letter-spacing:-.01em;color:var(--ink-2);border:1px solid var(--rule);
+  background:rgba(0,0,0,.5);
+  backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);
+  animation:lf-bob 2.4s ease-in-out infinite}
+.lf-load{bottom:auto;top:50%;animation:none;color:var(--ink-4)}
+@keyframes lf-bob{50%{transform:translate(-50%,5px)}}
+
+@media (max-width:900px){
+  .lf-top{padding:var(--s4)}
+  .lf-cap{left:var(--s4);right:var(--s4);width:auto;top:auto;bottom:150px;
+    transform:none;gap:var(--s2)}
+  @keyframes lf-in{from{opacity:0;transform:translateY(14px)}}
+  .lf-cap h3{font-size:21px}
+  .lf-cap p{font-size:12.5px}
+  .lf-bot{left:var(--s4);right:var(--s4);bottom:var(--s4);flex-direction:column;
+    align-items:stretch;gap:var(--s3)}
+  .lf-meter{width:100%;align-items:stretch}
+  .lf-hint{bottom:150px}
+}
+
+@media (prefers-reduced-motion:reduce){
+  .lf-cap{animation:none}
+  .lf-hint{animation:none}
+}
