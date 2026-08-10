@@ -213,6 +213,23 @@ export const DICT = {
       + '2018·2022·2025 셋뿐입니다.',
     'vc.kPlan': '판정대로 손대면 {y}년에 {n}%',
     'vc.kNone': '손대지 않으면 {n}%',
+    'hz.title': '분석 지평 — 지금부터 앞을 본다',
+    'hz.sub': '{now}년 기준 · 셋 다 우리가 고른 숫자가 아니라 법정 주기와 물리 만기가 끊은 자리입니다',
+    'hz.say.short': '물리 만기가 하나도 없습니다. 손대지 않고 재기만 하는 구간입니다.',
+    'hz.say.mid': '내장과 설비가 둘 다 만기에 닿습니다. 손대는 구간이고, 손댄 쪽과 안 댄 쪽이 여기서 벌어집니다.',
+    'hz.say.long': '구조 수명이 이 안에 들어옵니다. 존치냐 재건축이냐를 이 지평 안에서 정해야 합니다.',
+    'hz.plan': '손대면',
+    'hz.none': '손대지 않으면',
+    'hz.beyond': '결정 영역',
+    'hz.noLift': '이 안에 만기가 없습니다',
+    'hz.due': '만기',
+    'hz.structure': '구조 수명 도래 — 존치냐 재건축이냐',
+    'hz.note':
+      '값은 세 층의 평균 잔존 수명입니다. 금액은 아직 적지 않습니다 — 용도별 ㎡당 '
+      + '공사비와 재건축 단가 두 종이 없어 비용 항목 열일곱 개가 전부 비어 있습니다. '
+      + '구조는 아래에 세워 두었고, 단가가 오면 이 세 지평에 금액이 채워집니다.\n'
+      + '20년 지평은 구조 수명(2039)을 넘어섭니다. 대수선이 수명을 얼마나 되돌리는지는 '
+      + '저희가 정할 값이 아니라 그 뒤 구간은 「결정 영역」으로 두었습니다.',
     'll.title': '물리적으로 얼마나 남았는가',
     'll.sub': '층마다 수명이 다릅니다 — 쓴 만큼 줄어들 뿐, 갑자기 떨어지지 않습니다',
     'll.of': '수명 {life}년 · {last}년부터',
@@ -758,6 +775,25 @@ export const DICT = {
       + 'gli interventi verificati sono tre — 2018, 2022, 2025.',
     'vc.kPlan': 'Con gli interventi: {n}% nel {y}',
     'vc.kNone': 'Senza interventi: {n}%',
+    'hz.title': 'Orizzonti di analisi — si guarda avanti da oggi',
+    'hz.sub': 'Riferito al {now} · nessuno dei tre è scelto da noi: li fissano il ciclo di legge e le scadenze fisiche',
+    'hz.say.short': 'Nessuna scadenza fisica cade qui dentro: si misura soltanto, senza intervenire.',
+    'hz.say.mid': 'Finiture e impianti arrivano entrambi a scadenza. È il tratto in cui si interviene, ed è qui che le due ipotesi si separano.',
+    'hz.say.long': 'La fine vita strutturale rientra in questo orizzonte: conservare o ricostruire va deciso entro qui.',
+    'hz.plan': 'Con gli interventi',
+    'hz.none': 'Senza interventi',
+    'hz.beyond': 'Zona di decisione',
+    'hz.noLift': 'Nessuna scadenza qui dentro',
+    'hz.due': 'a scadenza',
+    'hz.structure': 'Fine vita strutturale — conservare o ricostruire',
+    'hz.note':
+      'I valori sono la media della vita residua dei tre strati. Non indichiamo ancora importi: '
+      + 'mancano due costi unitari (costo al m² per uso e costo di ricostruzione) e le diciassette '
+      + 'voci di costo sono tutte vuote. La struttura è impostata qui sotto: appena arrivano i '
+      + 'costi, questi tre orizzonti si riempiono di importi.\n'
+      + 'L\'orizzonte a vent\'anni supera la fine vita strutturale del 2039. Di quanto una grande '
+      + 'ristrutturazione la riporti indietro non spetta a noi deciderlo, quindi quel tratto resta '
+      + '«zona di decisione».',
     'll.title': 'Quanta vita utile resta, strato per strato',
     'll.sub': 'Ogni strato ha una durata diversa: si consuma per quanto lo si usa, non crolla di colpo',
     'll.of': 'Durata {life} anni · dal {last}',
@@ -1302,6 +1338,24 @@ export const DICT = {
       + 'verified — 2018, 2022, 2025.',
     'vc.kPlan': 'With the works: {n}% in {y}',
     'vc.kNone': 'Left alone: {n}%',
+    'hz.title': 'Analysis horizons — looking forward from today',
+    'hz.sub': 'As of {now} · none of the three is our choice: the statutory cycle and the physical due dates set them',
+    'hz.say.short': 'No physical life ends inside this window. It is a stretch for measuring, not for building.',
+    'hz.say.mid': 'Fit-out and plant both come due. This is the stretch where work happens, and where the two paths part.',
+    'hz.say.long': 'Structural life falls inside this horizon. Keep or rebuild has to be decided within it.',
+    'hz.plan': 'With works',
+    'hz.none': 'Left alone',
+    'hz.beyond': 'Decision zone',
+    'hz.noLift': 'Nothing comes due in here',
+    'hz.due': 'due',
+    'hz.structure': 'Structural life reached — keep or rebuild',
+    'hz.note':
+      'The values are the mean remaining life of the three layers. No amounts yet — two unit costs '
+      + 'are missing (construction cost per m² by use, and the rebuild rate), so all seventeen cost '
+      + 'lines are empty. The structure is set up below; once the rates arrive these three horizons '
+      + 'fill with figures.\n'
+      + 'The twenty-year horizon runs past the 2039 structural life. How far a major refurbishment '
+      + 'would set that back is not ours to decide, so that stretch is left as a decision zone.',
     'll.title': 'How much physical life is left',
     'll.sub': 'Each layer has its own lifespan — it wears down as it is used, it does not drop suddenly',
     'll.of': 'Life {life} yrs · from {last}',

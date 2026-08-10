@@ -21,6 +21,7 @@ import { useLang } from '../i18n'
 import { eligibleIncentives } from '../lib/constraint'
 import AppFrame from './AppFrame'
 import CostFrame from './CostFrame'
+import Horizons from './Horizons'
 import LifeLeft from './LifeLeft'
 import ValueCurve from './ValueCurve'
 import TwoClocks from './TwoClocks'
@@ -115,6 +116,8 @@ export default function LccView({ site, onStep, onReset }) {
             이용지수(정류장 승하차) 곡선은 걷어냈다. 그건 수요이지 건물 상태가 아니라,
             생애주기 화면에 섞으면 「가치」로 오독된다. 여기 세 그림의 y축은 모두 물리다. */}
         <ValueCurve />
+
+        <Horizons />
 
         <LifeLeft />
 

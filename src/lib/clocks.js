@@ -286,6 +286,25 @@ const ahead = (id, y, plan, before) => {
 
 const mean = (fn) => (PHYSICAL.reduce((a, p) => a + fn(p.id), 0) / PHYSICAL.length)
 
+/**
+ * 분석 지평 — LCC 는 준공부터 훑는 것이 아니라 지금부터 앞을 본다.
+ *
+ * 단기 3년   법이 정한 정기점검 주기와 같다. 이 안에 물리 만기가 하나도 없다.
+ * 중기 10년  내장(2031)과 설비(2034)가 둘 다 들어온다. 두 시계가 겹치는 자리다.
+ * 장기 20년  구조 수명(2039)이 들어온다. 존치냐 재건축이냐를 이 안에서 정해야 한다.
+ *
+ * 셋 다 우리가 고른 숫자가 아니다. 3년은 건축물관리법 제13조③, 10·20년은
+ * 이 건물의 물리 만기가 어디에 떨어지는지를 보고 끊은 것이다.
+ */
+export const HORIZONS = [
+  { n: 3, id: 'short', year: NOW + 3 },
+  { n: 10, id: 'mid', year: NOW + 10 },
+  { n: 20, id: 'long', year: NOW + 20 },
+]
+
+export const HORIZON_END = HORIZONS.at(-1).year
+
+/** 구조 수명이 닿는 해. 여기서부터는 우리가 모델링하지 않는다. */
 export const COMPOSITE_END = BIG.a
 
 /** 지나온 구간 — 주기대로 갈아 온 톱니 */
@@ -305,10 +324,18 @@ export const COMPOSITE_PAST = (() => {
 })()
 
 /** 앞으로의 두 갈래 */
+/**
+ * 앞으로의 두 갈래.
+ *
+ * 손대지 않는 쪽은 20년 지평 끝까지 그린다 — 0 에 닿고 그대로 눕는다.
+ * 판정대로 손대는 쪽은 구조 수명이 닿는 2039 에서 끊는다. 그 뒤는 대수선이
+ * 수명을 얼마나 되돌리는지를 우리가 정해야 하는 구간이고, 그 값이 없다.
+ */
 export const COMPOSITE = ['none', 'plan'].map((key) => {
   const plan = key === 'plan'
+  const stop = plan ? COMPOSITE_END : HORIZON_END
   const pts = []
-  for (let y = NOW; y <= COMPOSITE_END; y += 1) {
+  for (let y = NOW; y <= stop; y += 1) {
     if (plan && Object.values(PLAN_AT).includes(y) && y > NOW) {
       pts.push({ y, v: mean((id) => ahead(id, y, true, true)) })
     }
@@ -317,7 +344,28 @@ export const COMPOSITE = ['none', 'plan'].map((key) => {
   return { key, pts }
 })
 
+/** 그 해에 두 갈래가 각각 어디에 서 있는가 */
+export const valueAt = (key, y) => {
+  const c = COMPOSITE.find((x) => x.key === key)
+  const hit = c.pts.filter((p) => p.y <= y).at(-1)
+  return hit ? hit.v : null
+}
+
 /** 화면에 적을 두 값 — 2039 년에 어디에 서 있는가 */
 export const COMPOSITE_END_V = Object.fromEntries(
-  COMPOSITE.map((c) => [c.key, c.pts.at(-1).v]),
+  COMPOSITE.map((c) => [c.key, valueAt(c.key, COMPOSITE_END)]),
 )
+
+/**
+ * 지평마다 무엇이 들어오는가.
+ * lifts 는 그 지평 안에 떨어지는 물리 만기, decide 는 구조 수명이 들어오는지.
+ */
+export const HORIZON_ROWS = HORIZONS.map((h) => ({
+  ...h,
+  lifts: MEET_YEARS.filter((m) => m.layer !== 'str' && m.a <= h.year),
+  decide: BIG.a <= h.year,
+  plan: valueAt('plan', Math.min(h.year, COMPOSITE_END)),
+  none: valueAt('none', h.year),
+  /** 구조 수명을 넘어선 지평은 물리 상태를 단정하지 않는다 */
+  beyond: h.year > COMPOSITE_END,
+}))

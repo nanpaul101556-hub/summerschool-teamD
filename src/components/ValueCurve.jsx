@@ -20,7 +20,7 @@
 import { BUILT } from '../data/timeline'
 import {
   ACCOUNTING, COMPOSITE, COMPOSITE_END, COMPOSITE_END_V, COMPOSITE_PAST,
-  LAYER_LINES, MEET_YEARS, NOW, residual, span,
+  HORIZONS, HORIZON_END, LAYER_LINES, MEET_YEARS, NOW, residual, span,
 } from '../lib/clocks'
 import { useLang } from '../i18n'
 
@@ -31,7 +31,7 @@ const PW = W - PAD.l - PAD.r
 const PH = H - PAD.t - PAD.b
 
 const X0 = BUILT
-const X1 = 2045
+const X1 = HORIZON_END
 
 const sx = (y) => PAD.l + (PW * (y - X0)) / (X1 - X0)
 const sy = (v) => PAD.t + PH * (1 - v)
@@ -107,6 +107,17 @@ export default function ValueCurve() {
         <text x={sx(COMPOSITE_END) + 5} y={sy(COMPOSITE_END_V.none) + 4} className="vc-endn">
           {pc(COMPOSITE_END_V.none)}
         </text>
+
+        {/* 분석 지평 — LCC 는 지금부터 앞을 본다 */}
+        {HORIZONS.map((h) => (
+          <g key={h.id}>
+            <line x1={sx(h.year)} y1={PAD.t + PH} x2={sx(h.year)} y2={PAD.t + PH + 6}
+              className="vc-hz" />
+            <text x={sx(h.year)} y={PAD.t + PH + 30} className="vc-hzt" textAnchor="middle">
+              +{h.n}{t('tm.yrUnit')}
+            </text>
+          </g>
+        ))}
 
         <line x1={PAD.l} y1={PAD.t + PH} x2={W - PAD.r} y2={PAD.t + PH} className="vc-base" />
         {TICKS.map((y) => (
