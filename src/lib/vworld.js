@@ -2,7 +2,8 @@
  * V-World(국토교통부) 조회.
  *
  * 주소 → 좌표(지오코더), 좌표 → 필지 경계(연속지적도).
- * 두 API 모두 CORS 헤더를 주지 않아 dev 서버 프록시(/vworld)를 경유한다.
+ * 두 API 모두 CORS 헤더를 주지 않아 프록시(/api/vworld)를 경유한다 —
+ * 개발에서는 vite 서버가, 배포에서는 api/vworld.js 가 같은 일을 한다.
  */
 
 /**
@@ -35,7 +36,7 @@ function jibunTx(jibun) {
 }
 
 const KEY = import.meta.env.VITE_VWORLD_KEY
-const API = '/vworld/req'
+const API = '/api/vworld'
 
 export const hasKey = Boolean(KEY)
 
@@ -43,8 +44,8 @@ async function get(path, params, timeout = 12000) {
   const ctl = new AbortController()
   const timer = setTimeout(() => ctl.abort(), timeout)
   try {
-    const qs = new URLSearchParams({ ...params, key: KEY }).toString()
-    const res = await fetch(`${API}/${path}?${qs}`, { signal: ctl.signal })
+    const qs = new URLSearchParams({ p: `req/${path}`, ...params, key: KEY }).toString()
+    const res = await fetch(`${API}?${qs}`, { signal: ctl.signal })
     if (!res.ok) throw new Error(`HTTP ${res.status}`)
     return await res.json()
   } catch (err) {

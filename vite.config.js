@@ -6,7 +6,7 @@ import { defineConfig, loadEnv } from 'vite'
  * 브라우저에서 직접 부를 수 없다. dev 서버가 대신 부른다.
  *
  * 인증키는 발급 시 등록한 도메인에서만 동작하므로 Referer 를 붙여 보낸다.
- * 배포에서는 같은 일을 api/vworld/[...path].js 가 한다 (vercel.json 이 /vworld 를 그리로 보낸다).
+ * 배포에서는 같은 일을 api/vworld.js 가 한다 — 규약을 맞춰 두었다.
  * (타일 이미지는 <img> 로 받으므로 CORS 와 무관하다 — 프록시를 타지 않는다.)
  */
 export default defineConfig(({ mode }) => {
@@ -17,10 +17,16 @@ export default defineConfig(({ mode }) => {
     plugins: [react()],
     server: {
       proxy: {
-        '/vworld': {
+        '/api/vworld': {
           target: 'https://api.vworld.kr',
           changeOrigin: true,
-          rewrite: (p) => p.replace(/^\/vworld/, ''),
+          // 배포 함수와 같은 규약 — 부를 경로는 쿼리 p 에 담겨 온다
+          rewrite: (url) => {
+            const u = new URL(url, 'http://x')
+            const path = (u.searchParams.get('p') ?? '').replace(/^\/+/, '')
+            u.searchParams.delete('p')
+            return `/${path}?${u.searchParams}`
+          },
           headers: { Referer: origin },
         },
       },
