@@ -35,7 +35,7 @@ const LAYERS = [
 const FAIL_THRESHOLD = 4
 
 export default function SiteMap({ site }) {
-  const { t } = useLang()
+  const { t, tx } = useLang()
   const box = useRef(null)
   const map = useRef(null)
   const tiles = useRef(null)
@@ -139,7 +139,7 @@ export default function SiteMap({ site }) {
         interactive: false,
         icon: L.divIcon({
           className: 'sitetag-wrap',
-          html: `<span class="sitetag">${site.name}</span>`,
+          html: `<span class="sitetag">${tx(site.nameTx ?? site.name)}</span>`,
           iconSize: [0, 0],
         }),
       })
@@ -188,7 +188,10 @@ export default function SiteMap({ site }) {
 
       {site.parcel && (
         <div className="mapbadge">
-          {t('map.parcel', { jibun: site.parcel.jibun, gosi: site.parcel.gosi })}
+          {t('map.parcel', {
+            jibun: tx(site.parcel.jibunTx ?? site.parcel.jibun),
+            gosi: site.parcel.gosi,
+          })}
         </div>
       )}
 

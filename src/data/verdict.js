@@ -21,34 +21,44 @@ const K = (ko, it, en) => ({ ko, it, en })
 export const INPUTS = [
   {
     id: 'bus', have: true, dir: 'up',
-    label: K('승하차', 'Flussi alla fermata'),
+    label: K('승하차', 'Flussi alla fermata',
+              'Boardings'),
     value: '+5.3%p',
-    detail: K('전환 뒤 12개월, 노원구 대조군 대비', 'Dodici mesi dopo, sul controllo distrettuale'),
+    detail: K('전환 뒤 12개월, 노원구 대조군 대비', 'Dodici mesi dopo, sul controllo distrettuale',
+               'Twelve months after the change, against the Nowon control'),
   },
   {
     id: 'entry', have: false,
-    label: K('건물 출입 기록', 'Registri di accesso'),
+    label: K('건물 출입 기록', 'Registri di accesso',
+              'Building entry records'),
     detail: K('시설관리공단이 갖고 있다 — 정보공개청구 단계',
-      'L\'ente gestore li possiede: in corso la richiesta di accesso'),
+      'L\'ente gestore li possiede: in corso la richiesta di accesso',
+               'The facility operator holds them — a freedom-of-information request is under way'),
   },
   {
     id: 'minwon', have: false,
-    label: K('민원 건수', 'Reclami'),
+    label: K('민원 건수', 'Reclami',
+              'Number of complaints'),
     detail: K('자치구 단위는 공개돼 있지 않다 — 정보공개청구 단계',
-      'Il dato per distretto non è pubblico: in corso la richiesta'),
+      'Il dato per distretto non è pubblico: in corso la richiesta',
+               'Not published at district level — a freedom-of-information request is under way'),
   },
   {
     id: 'satis', have: false,
-    label: K('문화환경 만족도', 'Soddisfazione culturale'),
+    label: K('문화환경 만족도', 'Soddisfazione culturale',
+              'Satisfaction with the cultural environment'),
     detail: K('서울서베이 통계 10305 — 공표돼 있고 내려받기만 남았다',
-      'Statistica 10305 del Seoul Survey: pubblicata, resta solo scaricarla'),
+      'Statistica 10305 del Seoul Survey: pubblicata, resta solo scaricarla',
+               'Seoul Survey statistic 10305 — published; only the download remains'),
   },
   {
     id: 'budget', have: true, dir: 'up',
-    label: K('예산 실집행', 'Spesa effettiva'),
+    label: K('예산 실집행', 'Spesa effettiva',
+              'Budget actually spent'),
     value: '+143%',
     detail: K('2022년 1.5억 → 2025년 3.6억. 전부 새 용도를 끼워 넣는 데 쓰였다',
-      'Da 0,15 a 0,36 mld fra 2022 e 2025, tutto per inserire nuovi usi'),
+      'Da 0,15 a 0,36 mld fra 2022 e 2025, tutto per inserire nuovi usi',
+               'From 150 mn KRW in 2022 to 360 mn in 2025, all of it spent inserting new uses'),
   },
 ]
 
@@ -61,45 +71,64 @@ export const INPUTS = [
 export const SIGNALS = [
   {
     id: 'bus', dir: 'good', v: '+5.3%p',
-    label: K('앞 정류장 승하차', 'Flussi alla fermata'),
-    span: K('전환 전후 12개월', 'Dodici mesi prima e dopo'),
+    label: K('앞 정류장 승하차', 'Flussi alla fermata',
+              'Boardings at the stop in front'),
+    span: K('전환 전후 12개월', 'Dodici mesi prima e dopo',
+             'Twelve months either side of the change'),
     say: K('노원구 전체가 오른 몫을 빼고도 더 왔다',
-      'Al netto della crescita dell’intero distretto, è comunque venuta più gente'),
+      'Al netto della crescita dell’intero distretto, è comunque venuta più gente',
+            'Even after subtracting the district-wide rise, more people came'),
   },
   {
     id: 'budget', dir: 'good', v: '+143%',
-    label: K('예산 편성', 'Bilancio'),
-    span: K('2022 → 2025', '2022 → 2025'),
+    label: K('예산 편성', 'Bilancio',
+              'Budget appropriation'),
+    span: K('2022 → 2025', '2022 → 2025',
+             '2022 → 2025'),
     say: K('1.5억에서 3.6억으로. 전부 새 용도를 넣는 데 썼다 — 행정도 같은 판단을 했다',
-      'Da 0,15 a 0,36 mld, tutto per inserire nuovi usi: anche l’amministrazione ha letto così'),
+      'Da 0,15 a 0,36 mld, tutto per inserire nuovi usi: anche l’amministrazione ha letto così',
+            'From 150 to 360 mn KRW, all of it inserting new uses — the administration read it the same way'),
   },
   {
     id: 'recover', dir: 'bad', v: '82.5',
-    label: K('코로나 전 대비 회복률', 'Ripresa sul pre-Covid'),
-    span: K('같은 자료 · 2019.07 = 100', 'Stesso dato · 07.2019 = 100'),
+    label: K('코로나 전 대비 회복률', 'Ripresa sul pre-Covid',
+              'Recovery against pre-Covid'),
+    span: K('같은 자료 · 2019.07 = 100', 'Stesso dato · 07.2019 = 100',
+             'Same data · 07.2019 = 100'),
     say: K('노원구 평균 91.1 아래. 주거 정류장은 99까지 돌아왔는데 여기는 82.5다',
-      'Sotto la media di Nowon (91,1): le fermate residenziali sono a 99, questa a 82,5'),
+      'Sotto la media di Nowon (91,1): le fermate residenziali sono a 99, questa a 82,5',
+            'Below the Nowon mean of 91.1 — residential stops are back to 99, this one is at 82.5'),
   },
   {
     id: 'entry', dir: 'good', v: '+31.8%',
-    label: K('건물 출입 기록', 'Registri di accesso'),
-    span: K('전후 12개월 · 59,273 → 78,096명', 'Dodici mesi · da 59.273 a 78.096'),
+    label: K('건물 출입 기록', 'Registri di accesso',
+              'Building entry records'),
+    span: K('전후 12개월 · 59,273 → 78,096명', 'Dodici mesi · da 59.273 a 78.096',
+             'Twelve months either side · 59,273 → 78,096'),
     say: K('앞을 지나간 사람이 아니라 들어온 사람이다 — 분모가 건물 하나여서 가장 정확하다',
-      'Non chi passa davanti ma chi entra: il denominatore è il singolo edificio, l’asse più preciso'),
+      'Non chi passa davanti ma chi entra: il denominatore è il singolo edificio, l’asse più preciso',
+            'Not who passed in front but who went in — a single building as denominator makes it the most precise'),
   },
   {
     id: 'minwon', dir: 'good', v: '−3.0%p',
-    label: K('민원 건수', 'Reclami'),
-    span: K('문화체육 · 전체 대비', 'Cultura e sport, sul totale'),
+    label: K('민원 건수', 'Reclami',
+              'Number of complaints'),
+    span: K('문화체육 · 전체 대비', 'Cultura e sport, sul totale',
+             'Culture and sport, against the total'),
     say: K('전체 민원이 7.0% 느는 동안 문화체육만 덜 늘었다 — 불만이 이쪽으로 몰리지 않았다',
-      'Mentre il totale sale del 7,0%, cultura e sport crescono meno: le lamentele non si concentrano qui'),
+      'Mentre il totale sale del 7,0%, cultura e sport crescono meno: le lamentele non si concentrano qui',
+            'While complaints overall rose 7.0%, culture and sport rose less — grievance did not gather here'),
   },
   {
     id: 'satis', dir: 'good', v: '+0.26',
-    label: K('서울서베이 만족도', 'Seoul Survey'),
-    span: K('5점 척도 · 2022 → 2025', 'Scala 1–5 · 2022 → 2025'),
+    label: K('서울서베이 만족도', 'Seoul Survey',
+              'Seoul Survey satisfaction'),
+    span: K('5점 척도 · 2022 → 2025', 'Scala 1–5 · 2022 → 2025',
+             '1–5 scale · 2022 → 2025'),
     say: K('3.16에서 3.42로. 다섯 중 유일하게 직접 물은 축이고 행동과 같은 방향을 가리킨다',
-      'Da 3,16 a 3,42: l’unico asse che chiede direttamente, e punta nella stessa direzione dei comportamenti'),
+      'Da 3,16 a 3,42: l’unico asse che chiede direttamente, e punta nella stessa direzione dei comportamenti',
+            'From 3.16 to 3.42 — the only axis of the five that asks directly, '
+      + 'and it points the same way as behaviour'),
   },
 ]
 
@@ -118,28 +147,36 @@ export const TALLY = ['good', 'bad', 'wait']
 export const DRIFT = [
   {
     id: 'pop', v: '20.9% → 36.2%',
-    head: K('이용자층이 통째로 바뀐다', 'L’utenza cambia del tutto'),
+    head: K('이용자층이 통째로 바뀐다', 'L’utenza cambia del tutto',
+             'The user base changes entirely'),
     body: K('노원구 65세 이상 비율, 2025 → 2042 · 유소년은 8.8%에서 7.5%로 준다',
-      'Over 65 a Nowon, 2025 → 2042; i minori scendono dall’8,8% al 7,5%'),
+      'Over 65 a Nowon, 2025 → 2042; i minori scendono dall’8,8% al 7,5%',
+             'Share aged 65+ in Nowon, 2025 → 2042; minors fall from 8.8% to 7.5%'),
   },
   {
-    id: 'past', v: '3번',
-    head: K('이미 세 번 용도를 갈아 끼웠다', 'Ha già cambiato uso tre volte'),
+    id: 'past', v: K('3번', '3 volte', '3×'),
+    head: K('이미 세 번 용도를 갈아 끼웠다', 'Ha già cambiato uso tre volte',
+             'Its use has already been swapped three times'),
     body: K('2018 리모델링 결정 · 2022 사무동 · 2023–25 노인회관. 다음은 네 번째다',
-      '2018 la decisione, 2022 gli uffici, 2023–25 il centro anziani: la prossima è la quarta'),
+      '2018 la decisione, 2022 gli uffici, 2023–25 il centro anziani: la prossima è la quarta',
+             '2018 the refurbishment decision, 2022 the office wing, 2023–25 the senior hall. '
+      + 'The next is the fourth'),
   },
   {
-    id: 'plan', v: '상위계획',
-    head: K('용도를 미리 못 박지 말라', 'Non fissare in anticipo la destinazione'),
+    id: 'plan', v: K('상위계획', 'Piani', 'Plans'),
+    head: K('용도를 미리 못 박지 말라', 'Non fissare in anticipo la destinazione',
+             'Do not nail the use down in advance'),
     body: K('서울·노원 상위계획이 유연한 용도 운용을 요구한다 — 02 화면의 인용 조항',
-      'I piani di Seoul e Nowon chiedono un uso flessibile: le clausole citate nella schermata 02'),
+      'I piani di Seoul e Nowon chiedono un uso flessibile: le clausole citate nella schermata 02',
+             'The Seoul and Nowon plans call for flexible use — the clauses cited on screen 02'),
   },
 ]
 
 /** 종합 판정 — 미래의 한 해를 찍지 않는다. 관측된 주기만 쓴다. */
 export const CALL = {
   head: K('다음 점검 때, 용도도 같이 보라',
-    'Al prossimo controllo, si riesamini anche la destinazione'),
+    'Al prossimo controllo, si riesamini anche la destinazione',
+           'At the next inspection, review the use as well'),
   body: K(
     '이 건물은 2018년에 리모델링을 결정했고 2022년에 사무동을, 2025년에 노인회관을 넣었다. '
     + '간격이 4년과 3년이다. 그리고 법이 정한 정기점검 주기는 3년이다 — 두 주기가 이미 같다. '
@@ -150,6 +187,11 @@ export const CALL = {
     + 'il centro anziani: intervalli di quattro e tre anni. Il controllo di legge cade ogni tre anni — '
     + 'i due ritmi coincidono già. Non serve fissare una nuova data: basta agganciare il riesame della '
     + 'destinazione al controllo che arriva comunque. Quando sia, lo dicono la storia dell\'edificio e la legge.',
+           'The refurbishment was decided in 2018, the office wing rebuilt in 2022, the senior hall '
+    + 'installed in 2025 — intervals of four years and three. The statutory inspection cycle is '
+    + 'three years, so the two rhythms already match. There is no need to set a new date: '
+    + 'attach the use review to the inspection that comes anyway. When that is has already been '
+    + 'answered by the building\'s record and by the law, not by us.'
   ),
 }
 
@@ -160,21 +202,28 @@ export const CALL = {
 export const PHASES = [
   {
     id: 'now', kind: 'hold',
-    label: K('지금 — 유지하며 계속 잰다', 'Ora: mantenere e continuare a misurare'),
-    what: K('2025년 개입이 막 끝난 참이다', 'L\'intervento del 2025 si è appena concluso'),
+    label: K('지금 — 유지하며 계속 잰다', 'Ora: mantenere e continuare a misurare',
+              'Now — hold it and keep measuring'),
+    what: K('2025년 개입이 막 끝난 참이다', 'L\'intervento del 2025 si è appena concluso',
+             'The 2025 intervention has only just finished'),
     why: K(
       '노인회관과 문화교실이 들어간 지 얼마 되지 않았다. 지금 다시 손댈 이유가 없다. '
       + '대신 승하차와 예산을 해마다 같은 방식으로 다시 잰다.',
       'Centro anziani e corsi sono appena entrati: non c\'è motivo di intervenire ora. '
       + 'Si rimisurano ogni anno flussi e bilancio con lo stesso metodo.',
+            'The senior hall and the cultural classes moved in only recently, so there is no reason to '
+      + 'touch the building now. Instead boardings and budget are remeasured each year the same way.'
     ),
     watch: K('출입 기록·민원·만족도 셋을 받아 판정 입력을 다섯으로 채운다',
-      'Ottenere accessi, reclami e soddisfazione per portare a cinque gli ingressi del giudizio'),
+      'Ottenere accessi, reclami e soddisfazione per portare a cinque gli ingressi del giudizio',
+              'Obtain entry records, complaints and satisfaction to bring the verdict inputs up to five'),
   },
   {
     id: 'check', kind: 'plan', key: true,
-    label: K('다음 손댈 때 — 3년 뒤', 'Prossimo intervento, fra tre anni'),
-    what: K('2022 → 2025 와 같은 간격', 'Stesso intervallo di 2022 → 2025'),
+    label: K('다음 손댈 때 — 3년 뒤', 'Prossimo intervento, fra tre anni',
+              'Next time it is touched — three years on'),
+    what: K('2022 → 2025 와 같은 간격', 'Stesso intervallo di 2022 → 2025',
+             'The same interval as 2022 → 2025'),
     why: K(
       '점검은 어차피 온다. 그때 구조·설비 상태와 함께 용도 적합성도 같이 본다. '
       + '따로 판단하면 공사를 두 번 하게 된다. '
@@ -183,31 +232,45 @@ export const PHASES = [
       + 'insieme a struttura e impianti. Valutarli separatamente significa due cantieri. '
       + 'Non indichiamo l\'anno esatto perché la data del primo controllo non è verificata: '
       + 'certo è solo che cade entro tre anni.',
+            'This building has lived by swapping its use every three or four years. In the year that '
+      + 'interval returns, structural and plant condition are assessed together with the fitness '
+      + 'of the use — assess them apart and the site is opened twice. Whether the statutory '
+      + 'inspection also falls that year is separate: it needs the floor area and the date of '
+      + 'the first inspection.'
     ),
     watch: K('그때의 인구·이용 자료가 용도를 정한다 — 지금 정하지 않는다',
-      'La destinazione la decidono i dati di allora, non quelli di oggi'),
+      'La destinazione la decidono i dati di allora, non quelli di oggi',
+              'The population and usage data of that moment set the use — not today\'s'),
   },
   {
     id: 'loop', kind: 'hold',
-    label: K('그리고 다시 처음으로', 'E poi di nuovo da capo'),
+    label: K('그리고 다시 처음으로', 'E poi di nuovo da capo',
+              'And then back to the beginning'),
     what: K('2018 · 2022 · 2025 — 이미 세 번 있었던 일',
-      '2018, 2022, 2025: è già accaduto tre volte'),
+      '2018, 2022, 2025: è già accaduto tre volte',
+             '2018 · 2022 · 2025 — it has already happened three times'),
     why: K(
       '한 번 바꾸고 끝나지 않는다. 이 건물은 3~4년마다 용도를 갈아 끼우며 살아왔다. '
       + '이 도구가 하는 일은 그 반복을 감으로 하지 않게 만드는 것이다.',
       'Non è un intervento unico: questo edificio vive cambiando destinazione ogni tre o quattro anni. '
       + 'Ciò che lo strumento fa è togliere l\'intuito da quella ripetizione.',
+            'It does not end with one change. This building has lived by swapping its use every three or '
+      + 'four years. What this tool does is take the guesswork out of that repetition.'
     ),
-    watch: K('같은 자료를 같은 방식으로 다시 잰다', 'Si rimisurano gli stessi dati allo stesso modo'),
+    watch: K('같은 자료를 같은 방식으로 다시 잰다', 'Si rimisurano gli stessi dati allo stesso modo',
+              'The same data, remeasured the same way'),
   },
 ]
 
 /** 이 판정이 서 있는 자리와 비어 있는 자리 */
 export const BASIS = {
-  head: K('무엇 위에 내린 판정인가', 'Su che cosa poggia questo giudizio'),
+  head: K('무엇 위에 내린 판정인가', 'Su che cosa poggia questo giudizio',
+           'What this verdict rests on'),
   have: K(
     '승하차와 예산은 실제로 전후를 쟀다. 승하차는 대조군을 두었고 플라시보 검정도 통과했다.',
     'Flussi e bilancio sono stati misurati prima e dopo; i flussi con gruppo di controllo e test placebo superato.',
+           'Boardings and budget were genuinely measured before and after — boardings with a control '
+    + 'group and a placebo test that passed.'
   ),
   gap: K(
     '출입 기록·민원·만족도 셋은 아직 연결되지 않았다. 그중 출입 기록은 「건물에 실제로 들어온 사람」을 '
@@ -218,6 +281,11 @@ export const BASIS = {
     + 'l\'unico dato che misura chi entra davvero: quando ci saranno, la prima riga passerà dalla fermata '
     + 'all\'edificio, e con essa cambierà la valutazione del prossimo intervento. Che si muova non è '
     + 'un difetto dello strumento: significa che con dati migliori migliora anche la risposta.',
+          'Three axes are not yet connected: entry records, complaints and satisfaction. Entry records '
+    + 'are the only data measuring who actually walked in, so once they are filled the first line '
+    + 'of this verdict moves from the bus stop to the building — and with it the judgement about '
+    + 'when to intervene next. That it can move is not a flaw in the tool: it means better data '
+    + 'gives a better answer.'
   ),
 }
 

@@ -15,7 +15,8 @@ const K = (ko, it, en) => ({ ko, it, en })
 
 /** 대상지 — 모든 거리의 기준점 */
 export const ORIGIN = {
-  label: K('대상지 · 노원구민의전당', 'Sito · Auditorium di Nowon'),
+  label: K('대상지 · 노원구민의전당', 'Sito · Auditorium di Nowon',
+            'Site · Nowon Civic Auditorium'),
   addr: '서울 노원구 동일로 1229',
   lat: 37.63896054595598,
   lng: 127.06634512230045,
@@ -28,24 +29,29 @@ export const ORIGIN = {
 export const PLACES = [
   {
     id: '11367', kind: 'stop', lead: true,
-    label: K('노원구민의전당 정류장', 'Fermata Auditorium di Nowon'),
+    label: K('노원구민의전당 정류장', 'Fermata Auditorium di Nowon',
+              'Nowon Civic Auditorium stop'),
     sub: 'ARS 11367',
     addr: '서울 노원구 동일로 1231-2',
     lat: 37.639366, lng: 127.066466, m: 46,
     note: K('이것이 「앞 정류장」이다 — 대상지에서 46 m',
-      'È questa la "fermata davanti": 46 m dal sito'),
+      'È questa la "fermata davanti": 46 m dal sito',
+             'This is the stop in front — 46 m from the site'),
   },
   {
     id: '11374', kind: 'stop',
-    label: K('북서울미술관 정류장', 'Fermata Museo Buk-Seoul'),
+    label: K('북서울미술관 정류장', 'Fermata Museo Buk-Seoul',
+              'Buk-Seoul Museum stop'),
     sub: 'ARS 11374',
     addr: '서울 노원구 동일로 1231-2',
     lat: 37.640599, lng: 127.066333, m: 182,
-    note: K('같은 축선의 다음 정류장', 'Fermata successiva sullo stesso asse'),
+    note: K('같은 축선의 다음 정류장', 'Fermata successiva sullo stesso asse',
+             'The next stop along the same axis'),
   },
   {
     id: 'sema', kind: 'bldg',
-    label: K('서울시립북서울미술관', 'Museo Buk-Seoul'),
+    label: K('서울시립북서울미술관', 'Museo Buk-Seoul',
+              'Buk-Seoul Museum of Art'),
     sub: '2013',
     addr: '서울 노원구 동일로 1238',
     lat: 37.640894, lng: 127.066766, m: 218,
@@ -56,7 +62,8 @@ export const PLACES = [
 export const SHEETS = {
   // ── 승하차 ──────────────────────────────────────────────
   bus: {
-    title: K('앞 정류장이 어디인가', 'Qual è la "fermata davanti"'),
+    title: K('앞 정류장이 어디인가', 'Qual è la "fermata davanti"',
+              'Which stop counts as the one in front'),
     map: true,
     where: K(
       '대상지 정문 앞 동일로변 정류장이다. 좌표는 V-World 장소검색으로 확인했고 '
@@ -66,6 +73,10 @@ export const SHEETS = {
       'È la fermata su Dongil-ro davanti all\'ingresso. Coordinate da V-World, '
       + 'distanza calcolata con la formula dell\'emisenoverso. Il nome della fermata stessa '
       + 'è cambiato nel maggio 2021: da qui la scelta della data di riferimento.',
+              'The stop on Dongil-ro in front of the site\'s main entrance. Coordinates were confirmed '
+      + 'through V-World place search and the distance measured by haversine from the site\'s '
+      + 'geocoded point. The stop\'s own name changed in May 2021, from Nowon Civic Hall to '
+      + 'Nowon Civic Auditorium.'
     ),
     cols: ['ARS', '역명', '사용년월', '승차', '하차', '합계'],
     rows: [
@@ -74,30 +85,40 @@ export const SHEETS = {
       ['11367', '노원구민의전당', '202607', '38,410', '39,028', '77,438'],
     ],
     rowNote: K('실제 파일에서 뽑은 세 줄. 202105 부터 역명이 바뀐다.',
-      'Tre righe reali dal file: da 202105 cambia il nome della fermata.'),
+      'Tre righe reali dal file: da 202105 cambia il nome della fermata.',
+                'Three rows straight from the file. The stop name changes from 202105.'),
     calc: [
-      K('전 12개월(2020.05–2021.04) 월평균 = 58,785', 'Media 12 mesi prima = 58.785'),
-      K('후 12개월(2021.05–2022.08) 월평균 = 64,274', 'Media 12 mesi dopo = 64.274'),
-      K('변화 = 64,274 ÷ 58,785 − 1 = +9.3%', 'Variazione = +9,3%'),
+      K('전 12개월(2020.05–2021.04) 월평균 = 58,785', 'Media 12 mesi prima = 58.785',
+         'Prior 12 months (05.2020–04.2021), monthly mean = 58,785'),
+      K('후 12개월(2021.05–2022.08) 월평균 = 64,274', 'Media 12 mesi dopo = 64.274',
+         'Following 12 months (05.2021–08.2022), monthly mean = 64,274'),
+      K('변화 = 64,274 ÷ 58,785 − 1 = +9.3%', 'Variazione = +9,3%',
+         'Change = 64,274 ÷ 58,785 − 1 = +9.3%'),
       K('같은 기간 노원구 나머지 정류장 = +4.1% (대조군)',
-        'Stesso periodo, resto delle fermate di Nowon = +4,1%'),
-      K('초과 = 9.3 − 4.1 = +5.3%p', 'Scostamento = +5,3 p.p.'),
+        'Stesso periodo, resto delle fermate di Nowon = +4,1%',
+         'Same period, the rest of Nowon\'s stops = +4.1% (the control)'),
+      K('초과 = 9.3 − 4.1 = +5.3%p', 'Scostamento = +5,3 p.p.',
+         'Excess = 9.3 − 4.1 = +5.3 pp'),
     ],
     src: {
       raw: K('서울 열린데이터광장 OA-12913 · 노원구 566개 정류장 · 2015.01–2026.07',
-        'Portale open data di Seoul OA-12913 · 566 fermate · 2015.01–2026.07'),
+        'Portale open data di Seoul OA-12913 · 566 fermate · 2015.01–2026.07',
+              'Open Data Seoul OA-12913 · 566 stops in Nowon · 2015.01–2026.07'),
       file: 'signals/nowon_stops_monthly.csv · 49,909행',
       script: 'signals/analyze_events.py',
     },
     limit: K(
       '2023·2024·2025년은 각각 한 달치만 공표됐다. 그래서 연도 비교는 7월끼리만 한다.',
       'Per 2023, 2024 e 2025 è pubblicato un solo mese: i confronti annuali usano solo luglio.',
+              'For 2023, 2024 and 2025 only one month each was published, so year-on-year comparisons use '
+      + 'July against July.'
     ),
   },
 
   // ── 예산 ────────────────────────────────────────────────
   budget: {
-    title: K('예산 어느 줄을 읽었는가', 'Quali righe di bilancio'),
+    title: K('예산 어느 줄을 읽었는가', 'Quali righe di bilancio',
+              'Which budget lines were read'),
     where: K(
       '이름이 닮은 다른 건물을 걸러내는 것이 이 시트의 전부다. '
       + '「노원구민의전당」(동일로 1229 · 1989년 · 시설관리공단)과 '
@@ -106,6 +127,9 @@ export const SHEETS = {
       'Tutto il foglio serve a separare due edifici dal nome simile: l\'Auditorium di Nowon '
       + '(Dongil-ro 1229, 1989) e il Centro culturale (Junggye-ro 181, 2004) distano 2 km. '
       + 'Nei dati il nome compare anche spaziato: si confronta ignorando gli spazi.',
+              'Filtering out a building with a similar name is all this sheet does. Nowon Civic Auditorium '
+      + '(Dongil-ro 1229, 1989, facility operator) and Nowon Arts Centre (Junggye-ro 181, 2004, '
+      + 'cultural foundation) are two different buildings.'
     ),
     cols: ['연도', '구분', '부서', '사업', '지출'],
     rows: [
@@ -122,19 +146,28 @@ export const SHEETS = {
       + '중계로 181 건물이며 2025년 1월 재개관했다.',
       'In milioni di won. L\'ultima riga sono i 9,42 mld inizialmente attribuiti per errore: '
       + 'riguardano l\'edificio di Junggye-ro 181, riaperto nel gennaio 2025.',
+                'In millions of won. The last row is the 9.42 bn first misattributed to this building — it '
+      + 'belongs to Junggye-ro 181, which reopened in January 2025.'
     ),
     calc: [
       K('사업명에서 공백을 지우고 「구민의전당·구민회관」과 「문화예술회관」을 갈랐다',
-        'Rimossi gli spazi, separate le due denominazioni'),
+        'Rimossi gli spazi, separate le due denominazioni',
+         'Whitespace was stripped from project names to separate the civic auditorium and civic hall '
+        + 'from the arts centre'),
       K('대상지 실집행 합계 — 2022년 149 → 2025년 364 (백만원 · +143%)',
-        'Spesa effettiva sul sito: da 149 a 364 milioni, +143%'),
+        'Spesa effettiva sul sito: da 149 a 364 milioni, +143%',
+         'Actual spending on the site — 149 in 2022 to 364 in 2025 (mn KRW, +143%)'),
       K('들어간 돈은 전부 새 용도를 끼워 넣는 일이었다 — 선별검사소·노인회관·문화교실',
-        'Tutto per inserire nuovi usi: tamponi, anziani, corsi'),
+        'Tutto per inserire nuovi usi: tamponi, anziani, corsi',
+         'Every won went into fitting in a new use — testing centre, senior hall, cultural classes'),
       K('설비 공사비 94.2억은 이 건물 것이 아니므로 생애주기에서 「유사 실적」으로 표시한다',
-        'I 9,42 mld restano nel ciclo di vita solo come riferimento analogo, non come spesa propria'),
+        'I 9,42 mld restano nel ciclo di vita solo come riferimento analogo, non come spesa propria',
+         'The 9.42 bn KRW plant cost is not this building\'s, so it appears in the life cycle only '
+        + 'as a comparable reference'),
     ],
     src: {
-      raw: K('서울재정포털 노원구 세출예산 2022–2025', 'Portale finanziario di Seoul, bilancio di Nowon'),
+      raw: K('서울재정포털 노원구 세출예산 2022–2025', 'Portale finanziario di Seoul, bilancio di Nowon',
+              'Seoul finance portal, Nowon expenditure budget 2022–2025'),
       file: 'budget/building_lines.csv · 13행',
       script: 'budget/building_lines.py',
     },
@@ -143,13 +176,16 @@ export const SHEETS = {
       + '주소나 시설 코드가 붙은 예산 자료가 있으면 그것으로 바꿔야 한다.',
       'L\'errore nasceva da uno spazio. Identificare un edificio dal solo nome del progetto è fragile: '
       + 'servirebbero dati di bilancio con indirizzo o codice struttura.',
+              'A single space caused the error. Identifying a building from a project name alone is itself '
+      + 'risky — if budget data carrying an address or facility code exists, it should replace this.'
     ),
   },
 
   // ── 미확보 둘 ───────────────────────────────────────────
   minwon: {
     title: K('실데이터가 없어 예시로 흐름만 보인다',
-      'Senza dato reale, resta visibile solo il flusso'),
+      'Senza dato reale, resta visibile solo il flusso',
+              'With no real data, only the flow is shown, as a sample'),
     where: K(
       '노원구 단위 민원 통계는 공개돼 있지 않다. 공공데이터포털에서 실제로 받아 열어 보니 '
       + '전국 처리건수와 언어별 집계뿐이었다(자료 15066811 · 3070323). '
@@ -160,6 +196,9 @@ export const SHEETS = {
       + 'totali nazionali e conteggi per lingua. La disaggregazione si ottiene solo con accesso agli atti. '
       + 'Abbiamo quindi predisposto un file di esempio nel formato consueto: '
       + 'arrivato il dato reale, basterà sostituirlo.',
+              'District-level complaint statistics are not published. Downloading and opening the open-data '
+      + 'sets gave only national case counts and a breakdown by language (15066811 and 3070323). '
+      + 'Splitting by district requires a freedom-of-information request.'
     ),
     cols: ['연월', '분야', '접수건수', '처리건수', '평균처리일'],
     rows: [
@@ -181,20 +220,30 @@ export const SHEETS = {
       + '실제 자료도 이 다섯 컬럼이면 그대로 들어온다.',
       'Estratti per intero i due mesi a cavallo dell\'evento: sei righe al mese, 546 in tutto, '
       + '2019.01–2026.07. Con queste cinque colonne il dato reale entra così com\'è.',
+                'Both months straddling the reference event, extracted whole — six rows a month, 546 rows in '
+      + 'all, 2019.01–2026.07. Real data with these five columns drops straight in.'
     ),
     calc: [
       K('승하차와 같은 방식으로 전후 12개월을 잰다 — 전 2020.05–2021.04 · 후 2021.05–2022.04',
-        'Si misurano 12 mesi prima e dopo, come per i flussi'),
+        'Si misurano 12 mesi prima e dopo, come per i flussi',
+         'Twelve months either side, measured as for boardings — before 05.2020–04.2021, '
+        + 'after 05.2021–04.2022'),
       K('전체 24,627건 → 26,339건 · +7.0% (이것이 대조군 역할을 한다)',
-        'Totale da 24.627 a 26.339: +7,0%, che funge da controllo'),
+        'Totale da 24.627 a 26.339: +7,0%, che funge da controllo',
+         'Overall 24,627 to 26,339 cases, +7.0% — this acts as the control'),
       K('분야별로 나눠 전체 대비 초과분을 본다 — 문화체육 −3.0%p · 주택건축 −4.4%p',
-        'Per ambito si osserva lo scostamento: cultura −3,0 p.p., edilizia −4,4 p.p.'),
+        'Per ambito si osserva lo scostamento: cultura −3,0 p.p., edilizia −4,4 p.p.',
+         'Split by field, the excess against the overall change — culture and sport −3.0 pp, '
+        + 'housing and building −4.4 pp'),
       K('이 −3.0%p 는 지어낸 값이다. 실제 자료에서도 음(−)이 나와야 「불만이 줄었다」가 성립한다',
-        'Quel −3,0 è inventato: solo un valore negativo nel dato reale proverebbe il calo'),
+        'Quel −3,0 è inventato: solo un valore negativo nel dato reale proverebbe il calo',
+         'This −3.0 pp is an invented figure. Only a negative value in the real data would '
+        + 'establish that complaints fell'),
     ],
     src: {
       raw: K('실데이터 없음 — 공공데이터포털 15066811 은 전국 합계뿐',
-        'Nessun dato reale: il dataset 15066811 contiene solo totali nazionali'),
+        'Nessun dato reale: il dataset 15066811 contiene solo totali nazionali',
+              'No real data — open-data set 15066811 holds national totals only'),
       file: 'signals/minwon_SAMPLE.xlsx · 546행 (예시)',
       script: 'signals/make_minwon_sample.py → analyze_minwon.py',
     },
@@ -202,7 +251,8 @@ export const SHEETS = {
   },
 
   entry: {
-    title: K('가장 맞는 자료가 무엇에 막혔는가', 'Che cosa blocca il dato più pertinente'),
+    title: K('가장 맞는 자료가 무엇에 막혔는가', 'Che cosa blocca il dato più pertinente',
+              'What is blocking the most fitting data'),
     where: K(
       '이 건물은 노원구시설관리공단이 운영한다. 대관·강좌·전시 이용자 통계를 공단이 갖고 있지만 '
       + '공개돼 있지 않고, 정보공개청구로만 얻는다. 가장 가까운 공개 자료였던 '
@@ -212,6 +262,11 @@ export const SHEETS = {
       + 'ma non le pubblica: servirebbe una richiesta di accesso agli atti. Anche il dato pubblico '
       + 'più vicino (utenza delle biblioteche del nord-est) è protetto da CAPTCHA. '
       + 'Abbiamo quindi predisposto un esempio con gli usi confermati dal bilancio.',
+              'This building is run by the Nowon facility operator. It holds the user statistics for '
+      + 'bookings, classes and exhibitions, but does not publish them; they come only through a '
+      + 'freedom-of-information request. The nearest public data — north-east regional library '
+      + 'usage (61 branches, 2018–2023) — is behind a CAPTCHA. So a sample file was built from '
+      + 'the uses confirmed in the budget lines.'
     ),
     cols: ['연월', '이용구분', '이용건수', '이용인원'],
     rows: [
@@ -227,20 +282,28 @@ export const SHEETS = {
     rowNote: K(
       '기준 사건이 낀 두 달을 통째로 뽑았다 — 한 달에 네 줄씩, 전부 364행 · 2019.01–2026.07.',
       'Estratti per intero i due mesi a cavallo dell\'evento: quattro righe al mese, 364 in tutto.',
+                'Both months straddling the reference event, extracted whole — four rows a month, 364 rows in '
+      + 'all, 2019.01–2026.07.'
     ),
     calc: [
       K('승하차와 같은 방식으로 전후 12개월을 잰다',
-        'Si misurano 12 mesi prima e dopo, come per i flussi'),
+        'Si misurano 12 mesi prima e dopo, come per i flussi',
+         'Twelve months either side, measured as for boardings'),
       K('전체 59,273명 → 78,096명 · +31.8% (이것이 대조군이 된다)',
-        'Totale da 59.273 a 78.096: +31,8%, che funge da controllo'),
+        'Totale da 59.273 a 78.096: +31,8%, che funge da controllo',
+         'Overall 59,273 to 78,096 people, +31.8% — this becomes the control'),
       K('구분별 초과분 — 전시 +12.8%p · 강좌 +10.4%p · 단체 −20.4%p',
-        'Scostamenti: mostre +12,8, corsi +10,4, enti residenti −20,4 p.p.'),
+        'Scostamenti: mostre +12,8, corsi +10,4, enti residenti −20,4 p.p.',
+         'Excess by type — exhibitions +12.8 pp, classes +10.4 pp, resident organisations −20.4 pp'),
       K('이 수치는 지어낸 값이다. 실제 자료가 오면 SRC 한 줄만 바꾸면 그대로 돌아간다',
-        'I valori sono inventati: col dato reale basta cambiare una riga dello script'),
+        'I valori sono inventati: col dato reale basta cambiare una riga dello script',
+         'These figures are invented. When the real data arrives, changing one SRC line is enough '
+        + 'for it to run as is'),
     ],
     src: {
       raw: K('노원구시설관리공단 — 정보공개청구 필요',
-        'Ente gestore di Nowon — serve una richiesta di accesso agli atti'),
+        'Ente gestore di Nowon — serve una richiesta di accesso agli atti',
+              'Nowon facility operator — a freedom-of-information request is required'),
       file: 'signals/entry_SAMPLE.xlsx · 364행 (예시)',
       script: 'signals/make_entry_sample.py → analyze_entry.py',
     },
@@ -249,7 +312,8 @@ export const SHEETS = {
 
   satis: {
     title: K('이 자료는 있다 — 받는 길만 막혀 있다',
-      'Il dato esiste: è bloccato solo il canale'),
+      'Il dato esiste: è bloccato solo il canale',
+              'This data exists — only the route to it is blocked'),
     where: K(
       '앞의 둘과 사정이 다르다. 민원은 자치구 단위 자료가 애초에 없고, 출입은 공단이 안 열어 준다. '
       + '만족도는 이미 자치구별로 공표돼 있다 — 서울서베이 도시정책지표조사의 '
@@ -260,6 +324,10 @@ export const SHEETS = {
       + 'È la "soddisfazione per l\'ambiente culturale" del Seoul Survey: dal 2003, ogni agosto, '
       + 'scala 1-5, su 20.000 famiglie e 5.000 cittadini, con Nowon separato. '
       + 'Solo il download è protetto da CAPTCHA, quindi i valori non sono ancora inseriti.',
+              'This one differs from the other two. Complaints have no district-level data to begin with, '
+      + 'and the operator will not release entries. Satisfaction is already published by '
+      + 'district — the cultural-environment satisfaction item in the Seoul Survey urban policy '
+      + 'indicators. Only the download is blocked.'
     ),
     cols: ['연도', '지역', '항목', '만족도', '표본수'],
     rows: [
@@ -273,20 +341,29 @@ export const SHEETS = {
     rowNote: K(
       '예시 파일 120행 · 2016–2025 · 지역 4 · 항목 3. 실제 자료도 이 다섯 컬럼이면 그대로 들어온다.',
       'File di esempio: 120 righe, 2016–2025, quattro aree e tre voci. Il dato reale entra con le stesse colonne.',
+                'Sample file: 120 rows, 2016–2025, four areas and three items. Real data with these five '
+      + 'columns drops straight in.'
     ),
     calc: [
       K('연 1회 조사라 전후 12개월을 만들 수 없다 — 서울시 평균을 대조군으로 둔다',
-        'Indagine annuale: si usa la media cittadina come controllo'),
+        'Indagine annuale: si usa la media cittadina come controllo',
+         'An annual survey, so no twelve-month before-and-after can be built — the Seoul average '
+        + 'serves as the control'),
       K('격차 = 노원구 − 서울시. 2021년 −0.09 → 2025년 −0.05',
-        'Divario = Nowon meno Seoul: da −0,09 (2021) a −0,05 (2025)'),
+        'Divario = Nowon meno Seoul: da −0,09 (2021) a −0,05 (2025)',
+         'Gap = Nowon minus Seoul: −0.09 in 2021 to −0.05 in 2025'),
       K('말한 만족도와 행동한 결과(승하차·이용)가 어긋나는 지점이 곧 판정 재료다',
-        'Dove il dichiarato diverge dal comportamento nasce il giudizio'),
+        'Dove il dichiarato diverge dal comportamento nasce il giudizio',
+         'Where stated satisfaction diverges from what people did — boardings and entries — '
+        + 'is the material for the verdict'),
       K('이 수치는 지어낸 값이다. 통계 10305 에서 받으면 그대로 대체된다',
-        'I valori sono inventati: scaricando la statistica 10305 vengono sostituiti'),
+        'I valori sono inventati: scaricando la statistica 10305 vengono sostituiti',
+         'These figures are invented. Download statistic 10305 and they are replaced as is'),
     ],
     src: {
       raw: K('서울 열린데이터광장 통계 10305 · 서울서베이 도시정책지표조사',
-        'Portale open data di Seoul, statistica 10305 · Seoul Survey'),
+        'Portale open data di Seoul, statistica 10305 · Seoul Survey',
+              'Open Data Seoul statistic 10305 · Seoul Survey urban policy indicators'),
       file: 'signals/satis_SAMPLE.xlsx · 120행 (예시)',
       script: 'signals/make_satis_sample.py → analyze_satis.py',
     },
@@ -295,6 +372,8 @@ export const SHEETS = {
       + '그대로 들이밀면 과장이 된다. 배경 지표로만 쓴다.',
       'La soddisfazione riguarda l\'intero distretto, non questo singolo edificio: '
       + 'attribuirgliela sarebbe una forzatura. Va usata solo come sfondo.',
+              'The survey asks about the whole district. It is not this building\'s satisfaction, so '
+      + 'presenting it as such would overstate. It is used only as background.'
     ),
     missing: true,
   },

@@ -42,7 +42,7 @@ export default function AppFrame({
   scroll = false,
   next,
 }) {
-  const { t, lang, setLang, langs } = useLang()
+  const { t, tx, lang, setLang, langs } = useLang()
   const i = STEPS.findIndex((s) => s.key === stage)
 
   return (
@@ -99,7 +99,7 @@ export default function AppFrame({
 
         {site && (
           <div className="tb-site">
-            <span className="nm">{site.name}</span>
+            <span className="nm">{tx(site.nameTx ?? site.name)}</span>
             <button type="button" onClick={onReset}>
               {t('app.changeSite')}
             </button>

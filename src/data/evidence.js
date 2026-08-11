@@ -13,18 +13,23 @@ const K = (ko, it, en) => ({ ko, it, en })
 /** 기준 사건 — 이 건물이 바뀐 시점 */
 export const EVENT = {
   ym: '2021.05',
-  label: K('노원구민회관 → 노원구민의전당', 'Da centro civico a Auditorium di Nowon'),
+  label: K('노원구민회관 → 노원구민의전당', 'Da centro civico a Auditorium di Nowon',
+    'From Nowon Civic Hall to Nowon Civic Auditorium'),
   note: K(
     '정류장 이름이 바뀐 달이다. 뒤이어 2022년 사무동 리모델링이 시작됐고, '
     + '2023–25년에 걸쳐 건물 안에 노인회관이 들어갔다(실집행 5.2억).',
     'È il mese in cui cambia il nome della fermata. Seguono la ristrutturazione degli uffici (2022) '
     + 'e l\'inserimento di un centro anziani fra 2023 e 2025 (0,52 mld effettivi).',
+    'The month the bus stop was renamed. The office wing refurbishment followed in 2022, and '
+    + 'between 2023 and 2025 a senior hall was fitted inside (520 mn KRW actually spent).',
   ),
   why: K(
     '2024년을 기준으로 잡으면 전후 12개월을 만들 수 없다. 2023·2024·2025년은 '
     + '각각 한 달치만 공표됐기 때문이다.',
     'Con il 2024 come riferimento non si formano dodici mesi prima e dopo: '
     + 'per 2023, 2024 e 2025 è pubblicato un solo mese per anno.',
+    'Taking 2024 as the reference makes a twelve-month before-and-after impossible: for 2023, 2024 '
+    + 'and 2025 only one month each has been published.',
   ),
 }
 
@@ -93,7 +98,8 @@ export const CARDS = [
     unit: K('노원구 세출예산 실집행 · 백만원', 'Spesa effettiva di Nowon · milioni di won',
       'Nowon budget actually spent · mn KRW'),
     before: { period: '2022', v: 149, label: K('이 건물 실집행', 'Speso su questo edificio', 'Spent on this building') },
-    after: { period: '2025', v: 364, label: K('이 건물 실집행', 'Speso su questo edificio') },
+    after: { period: '2025', v: 364, label: K('이 건물 실집행', 'Speso su questo edificio',
+                                               'Spent on this building') },
     pct: 143,
     verdict: 'keep',
     moves: [
@@ -223,12 +229,16 @@ export const CARDS = [
       'Did the number of people actually entering rise?'),
     tab: {
       head: K('승하차를 처리한 그 파이프라인이 이 표를 만든다 — 자료를 꽂으면 수치만 바뀐다',
-        'La stessa pipeline dei flussi genera questa tabella: col dato reale cambiano solo i numeri'),
+        'La stessa pipeline dei flussi genera questa tabella: col dato reale cambiano solo i numeri',
+               'The pipeline that handled boardings builds this table — plug in the data and only the numbers change'),
       cols: [
         K('이용구분', 'Tipo', 'Type of use'),
-        K('전 12개월', '12 mesi prima'),
-        K('후 12개월', '12 mesi dopo'),
-        K('초과', 'Scost.'),
+        K('전 12개월', '12 mesi prima',
+           'Prior 12 months'),
+        K('후 12개월', '12 mesi dopo',
+           'Following 12 months'),
+        K('초과', 'Scost.',
+           'Excess'),
       ],
       rows: [
         { label: K('전시', 'Mostre', 'Exhibitions'), before: 7044, after: 10186, d: 12.8 },

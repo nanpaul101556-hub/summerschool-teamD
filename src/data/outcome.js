@@ -92,7 +92,8 @@ export const WHEN = {
   head: K('적합성을 다시 잰다', 'Si rimisura l’idoneità', 'Fitness is remeasured'),
   rows: [
     {
-      id: 'gap', v: `${GAP_MIN}~${GAP_MAX}년`,
+      id: 'gap', v: K(`${GAP_MIN}~${GAP_MAX}년`, `${GAP_MIN}–${GAP_MAX} anni`,
+        `${GAP_MIN}–${GAP_MAX} yrs`),
       k: K('이 건물이 손댄 간격', 'Intervallo fra gli interventi', 'Interval between interventions'),
       d: K('2018 → 2022 → 2025 · 관측 두 번',
         '2018 → 2022 → 2025 · due osservazioni',
@@ -127,6 +128,8 @@ export const OUT_SRC = K(
   + `간격 이 건물 개입 이력(2018·2022·2025)`,
   `Flussi e bilancio: OA-12913, portale finanziario · Ripresa: 07.2019 = 100 · `
   + `Demografia: proiezioni di Nowon · Intervallo: storia degli interventi (2018, 2022, 2025)`,
+  `Boardings and budget: OA-12913, Seoul finance portal · Recovery: 07.2019 = 100 · `
+  + `Population: Nowon projections · Interval: this building's record (2018, 2022, 2025)`,
 )
 
 /**
@@ -143,4 +146,9 @@ export const OUT_CAVEAT = K(
   + `il ${NEXT_FROM}; con quello lungo sarebbe il ${NEXT_TO}. `
   + 'Non è nemmeno una scadenza di legge: il controllo periodico riguarda gli edifici '
   + 'a grande affluenza oltre i 5.000 m² e non abbiamo verificato la superficie.',
+  `Only two intervals were observed, four years and three. The screen takes the shorter one, `
+  + `${NEXT_FROM}; the longer one would give ${NEXT_TO}. `
+  + 'It is not a statutory inspection date either: periodic inspection applies to buildings of '
+  + 'high public occupancy over 5,000 m², and we have not verified this building\'s floor area, '
+  + 'so even eligibility is unconfirmed.',
 )

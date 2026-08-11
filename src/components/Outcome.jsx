@@ -25,7 +25,7 @@ function Col({ cap, v, head, rows, big }) {
       <ul>
         {rows.map((r) => (
           <li key={r.id} className={r.dir || ''}>
-            <b className="num">{r.v}</b>
+            <b className="num">{tx(r.v)}</b>
             <span className="k">{tx(r.k)}</span>
             <span className="d">{typeof r.d === 'string' ? r.d : tx(r.d)}</span>
           </li>

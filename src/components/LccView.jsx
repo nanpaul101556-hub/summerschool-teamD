@@ -43,7 +43,7 @@ export default function LccView({ site, onStep, onReset }) {
         <h3 className="lab">{t('tm.lawTitle')}</h3>
         <blockquote className="tm-q">
           {tx(LAW.quote)}
-          <cite>{LAW.art}</cite>
+          <cite>{tx(LAW.art)}</cite>
         </blockquote>
         <p className="note">{t('tm.lawNote', { n: LAW.cycle })}</p>
       </section>
@@ -52,7 +52,7 @@ export default function LccView({ site, onStep, onReset }) {
         <h3 className="lab">{t('tm.gapTitle')}</h3>
         <blockquote className="tm-q">
           {tx(LAW.gapQuote)}
-          <cite>{LAW.gapArt}</cite>
+          <cite>{tx(LAW.gapArt)}</cite>
         </blockquote>
         <p className="note">{tx(LAW.gap)}</p>
       </section>
@@ -63,9 +63,9 @@ export default function LccView({ site, onStep, onReset }) {
           {incentives.map((inc) => (
             <div key={inc.key}>
               <span className="n">
-                {inc.label}
+                {tx(inc.label)}
                 <br />
-                <span className="sub">{inc.detail}</span>
+                <span className="sub">{tx(inc.detail)}</span>
               </span>
               <span className="m">{t(inc.active ? 'site.applies' : 'site.notApplies')}</span>
             </div>

@@ -21,8 +21,17 @@ import { BUILT } from './timeline'
 const K = (ko, it, en) => ({ ko, it, en })
 
 /**
- * 영상 제원 — 인코딩 결과와 같아야 한다.
- * 1280×720 · 24fps · 241프레임 · 키프레임 4프레임마다(스크럽용).
+ * 영상 제원 — 인코딩 결과와 같아야 한다. 1280×720 · 24fps · 241프레임.
+ *
+ * 스크럽은 키프레임 간격이 전부다. 보통 인코딩(2초마다 키프레임)이면 어느 지점을
+ * 찍든 앞 키프레임까지 되감아 디코딩해야 해서 스크롤이 끈적해진다. 4프레임마다
+ * 박아 두면 어느 프레임이든 10ms 안에 뜬다. 영상을 갈아 끼울 때 같은 옵션을 쓴다:
+ *
+ *   ffmpeg -i <원본> -an -vf scale=1280:720:flags=lanczos \
+ *     -c:v libx264 -profile:v high -pix_fmt yuv420p -crf 23 -preset slow \
+ *     -g 4 -keyint_min 4 -sc_threshold 0 -movflags +faststart public/lifefilm.mp4
+ *
+ * 바꾸면 frames 도 함께 고친다 — ffprobe 의 nb_frames 다.
  */
 export const FILM = {
   src: '/lifefilm.mp4',
@@ -45,12 +54,17 @@ const pc = (v) => Math.round(v * 100)
  * 장(章) — a·b 는 영상에서 차지하는 구간(초)이다.
  * 셋이 영상 전체(0 → 10.04초)를 빈틈없이 나눠 갖는다. 남는 꼬리를 두면
  * 마지막에 아무 말도 없는 스크롤이 생긴다.
+ *
+ * 경계는 초를 균등하게 자른 것이 아니라 화면이 바뀌는 자리에서 끊었다 —
+ * 3.0 에 간판이 들어오고, 5.0 에 외피가 벗겨지며 골조가 드러난다.
+ * 길이가 제각각이어도 스크롤은 장마다 똑같이 한 화면씩 준다(LifeFilm).
+ * 그래야 짧은 장의 자막을 읽기도 전에 지나가 버리지 않는다.
  */
 export const CHAPTERS = [
   {
     id: 'skin',
     a: 0,
-    b: 3.35,
+    b: 3.0,
     kicker: K('축 A · 외피', 'Asse A · Involucro', 'Axis A · Envelope'),
     title: K(
       '창이 가장 먼저 늙는다',
@@ -88,8 +102,8 @@ export const CHAPTERS = [
   },
   {
     id: 'door',
-    a: 3.35,
-    b: 6.7,
+    a: 3.0,
+    b: 5.0,
     kicker: K('노원구민회관 · 1989 준공', 'Centro civico di Nowon · 1989', 'Nowon Civic Hall · built 1989'),
     title: K(
       '문에는 건물 이름이 달려 있다',
@@ -135,8 +149,8 @@ export const CHAPTERS = [
   },
   {
     id: 'bone',
-    a: 6.7,
-    b: 10.04,
+    a: 5.0,
+    b: 10.0417,
     kicker: K('축 A · 구조', 'Asse A · Struttura', 'Axis A · Structure'),
     title: K(
       `${AGE}년이 지나면 층이 아니라 뼈대를 본다`,

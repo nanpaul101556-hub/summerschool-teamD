@@ -19,7 +19,7 @@ export default function SiteView({ site, onStep, onReset, onNext }) {
   const NA = t('site.missing')
   const or = (v) => (v == null ? NA : v)
   const specs = [
-    { k: t('site.jibun'), v: or(p?.jibun) },
+    { k: t('site.jibun'), v: or(p?.jibun ? tx(p.jibunTx ?? p.jibun) : null) },
     {
       k: t('site.parcelArea'),
       v: or(p?.areaM2 ? `${p.areaM2.toLocaleString()} m²` : null),
@@ -30,7 +30,8 @@ export default function SiteView({ site, onStep, onReset, onNext }) {
       v: or(p?.jiga ? `${p.jiga.toLocaleString()} ₩/m²` : null),
       note: p?.gosi,
     },
-    { k: t('site.zoning'), v: or(z?.name), note: z?.name ? SOURCE.zoneApi : null },
+    { k: t('site.zoning'), v: or(z?.name ? tx(z.label ?? z.name) : null),
+      note: z?.name ? SOURCE.zoneApi : null },
     {
       k: t('site.bcr'),
       v: or(z?.bcr != null ? `${z.bcr}%` : null),
@@ -52,8 +53,8 @@ export default function SiteView({ site, onStep, onReset, onNext }) {
     <>
       <div className="side-h">
         <div className="n">Step 01</div>
-        <h2>{site.name}</h2>
-        <p>{site.address}</p>
+        <h2>{tx(site.nameTx ?? site.name)}</h2>
+        <p>{tx(site.addrTx ?? site.address)}</p>
       </div>
 
       <section>

@@ -6,6 +6,7 @@
  */
 
 import { POPULATION } from '../data/population'
+import { useLang } from '../i18n'
 
 const W = 760
 const H = 300
@@ -42,6 +43,8 @@ function curve(pts) {
 const pts = (rows, key) => rows.map((r) => [sx(r.year), sy(r[key])])
 
 export default function PopCurve() {
+  const { t } = useLang()
+
   const measured = POPULATION.filter((r) => !r.est)
   const lastMeasured = measured[measured.length - 1]
   // 추계 구간은 마지막 실측점에서 이어 붙여야 선이 끊기지 않는다
@@ -60,7 +63,7 @@ export default function PopCurve() {
   return (
     <figure className="curve">
       <svg viewBox={`0 0 ${W} ${H}`} role="img"
-        aria-label="노원구 65세 이상과 유소년 인구 비율 추이 2012년부터 2050년">
+        aria-label={t('pop.aria')}>
         <defs>
           <linearGradient id="elderFade" x1="0" y1="0" x2="0" y2="1">
             <stop offset="0%" stopColor="#1A1A1A" stopOpacity="0.09" />
@@ -110,8 +113,8 @@ export default function PopCurve() {
       </svg>
 
       <figcaption className="c-legend">
-        <span><i className="k-elder" />65세 이상</span>
-        <span><i className="k-youth" />유소년</span>
+        <span><i className="k-elder" />{t('region.elder')}</span>
+        <span><i className="k-youth" />{t('region.youth')}</span>
         <span className="c-sep">실선 실측 · 점선 추계</span>
       </figcaption>
     </figure>

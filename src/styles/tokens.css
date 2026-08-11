@@ -3919,10 +3919,11 @@ button,.dl{transition:transform .2s ease,background-color .2s ease,
 
 /* 곡선 전체가 버튼이다 */
 .vc-fig{position:relative}
+/* 칩은 오른쪽 위에 둔다 — 오른쪽 아래는 +20년 눈금 자리다 */
 .vc-open{position:absolute;inset:0;width:100%;background:transparent;border:0;
-  padding:0;cursor:pointer;display:flex;align-items:flex-end;justify-content:flex-end;
+  padding:0;cursor:pointer;display:flex;align-items:flex-start;justify-content:flex-end;
   border-radius:var(--r-md);transition:background .18s}
-.vc-open span{display:inline-flex;align-items:center;gap:7px;margin:0 4px 2px;
+.vc-open span{display:inline-flex;align-items:center;gap:7px;margin:0 2px;
   padding:6px 12px 6px 10px;border-radius:999px;font-family:var(--f);font-size:11.5px;
   font-weight:600;letter-spacing:-.01em;color:var(--ink-2);
   background:rgba(255,255,255,.08);border:1px solid var(--rule);
@@ -3952,8 +3953,8 @@ button,.dl{transition:transform .2s ease,background-color .2s ease,
 .lf-veil{position:absolute;inset:0;pointer-events:none;
   background:
     linear-gradient(180deg,rgba(0,0,0,.62) 0,rgba(0,0,0,0) 22%),
-    linear-gradient(0deg,rgba(0,0,0,.78) 0,rgba(0,0,0,0) 34%),
-    linear-gradient(90deg,rgba(0,0,0,.58) 0,rgba(0,0,0,0) 48%)}
+    linear-gradient(0deg,rgba(0,0,0,.80) 0,rgba(0,0,0,0) 34%),
+    linear-gradient(90deg,rgba(0,0,0,.82) 0,rgba(0,0,0,.56) 26%,rgba(0,0,0,0) 56%)}
 
 /* ── 머리 ─────────────────────────────────────────── */
 .lf-top{position:absolute;top:0;left:0;right:0;display:flex;align-items:flex-start;
@@ -3981,7 +3982,7 @@ button,.dl{transition:transform .2s ease,background-color .2s ease,
   color:var(--blue-on-dark)}
 .lf-cap h3{margin:0;font-size:29px;line-height:1.18;letter-spacing:-.035em;
   font-weight:700;color:var(--ink);text-wrap:balance}
-.lf-cap p{margin:0;font-size:13.5px;line-height:1.72;color:rgba(255,255,255,.78)}
+.lf-cap p{margin:0;font-size:13.5px;line-height:1.72;color:rgba(255,255,255,.85)}
 
 .lf-rows{margin:0;display:grid;grid-template-columns:1fr 1fr;gap:1px;
   background:var(--rule-2);border:1px solid var(--rule-2);border-radius:var(--r-md);
@@ -3995,8 +3996,8 @@ button,.dl{transition:transform .2s ease,background-color .2s ease,
 .lf-rows dd.gap{font-size:12px;font-weight:600;color:var(--warn);letter-spacing:-.01em}
 
 .lf-foot{font-size:11px !important;line-height:1.68 !important;
-  color:rgba(255,255,255,.5) !important;padding-left:11px;
-  border-left:2px solid var(--rule)}
+  color:rgba(255,255,255,.64) !important;padding-left:11px;
+  border-left:2px solid rgba(255,255,255,.22)}
 
 /* ── 발 — 장 이동 · 프레임 · 진행 ──────────────────── */
 .lf-bot{position:absolute;left:var(--s6);right:var(--s6);bottom:var(--s5);
@@ -4035,6 +4036,10 @@ button,.dl{transition:transform .2s ease,background-color .2s ease,
 
 @media (max-width:900px){
   .lf-top{padding:var(--s4)}
+  /* 좁은 화면에서는 자막이 아래로 내려간다 — 어둡게 눌러 둘 자리도 아래다 */
+  .lf-veil{background:
+    linear-gradient(180deg,rgba(0,0,0,.62) 0,rgba(0,0,0,0) 18%),
+    linear-gradient(0deg,rgba(0,0,0,.90) 0,rgba(0,0,0,.62) 42%,rgba(0,0,0,0) 64%)}
   .lf-cap{left:var(--s4);right:var(--s4);width:auto;top:auto;bottom:150px;
     transform:none;gap:var(--s2)}
   @keyframes lf-in{from{opacity:0;transform:translateY(14px)}}

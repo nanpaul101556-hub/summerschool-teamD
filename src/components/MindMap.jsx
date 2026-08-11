@@ -100,7 +100,7 @@ export default function MindMap({ site, onClose }) {
           <foreignObject x={X.site} y={midY - 34} width="150" height="68">
             <div className="mm-site" xmlns="http://www.w3.org/1999/xhtml">
               <span>{t('plan.from')}</span>
-              <b>{site?.name ?? tx({ ko: '대상지', it: 'Sito' })}</b>
+              <b>{tx(site?.nameTx ?? site?.name ?? { ko: '대상지', en: 'Site', it: 'Sito' })}</b>
             </div>
           </foreignObject>
 

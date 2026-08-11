@@ -25,15 +25,15 @@ export const OBSERVED = {
   rank: '조사 6개 공원 중 1위 (2위의 1.85배)',
   src: 'parkUse',
   byTime: [
-    { slot: { ko: '평일 오전 9시', it: 'Feriale, ore 9' }, male: 56, female: 62 },
-    { slot: { ko: '평일 오후 4시', it: 'Feriale, ore 16' }, male: 131, female: 75 },
-    { slot: { ko: '주말 오전 9시', it: 'Festivo, ore 9' }, male: 26, female: 56 },
-    { slot: { ko: '주말 오후 4시', it: 'Festivo, ore 16' }, male: 113, female: 81 },
+    { slot: { ko: '평일 오전 9시', en: 'Weekday, 9 am', it: 'Feriale, ore 9' }, male: 56, female: 62 },
+    { slot: { ko: '평일 오후 4시', en: 'Weekday, 4 pm', it: 'Feriale, ore 16' }, male: 131, female: 75 },
+    { slot: { ko: '주말 오전 9시', en: 'Weekend, 9 am', it: 'Festivo, ore 9' }, male: 26, female: 56 },
+    { slot: { ko: '주말 오후 4시', en: 'Weekend, 4 pm', it: 'Festivo, ore 16' }, male: 113, female: 81 },
   ],
   topActs: [
-    { act: { ko: '걷기', it: 'Camminare' }, n: 319 },
-    { act: { ko: '앉아서 이야기하기', it: 'Sedersi e conversare' }, n: 87 },
-    { act: { ko: '장기·바둑', it: 'Giochi da tavolo' }, n: 51 },
-    { act: { ko: '휠체어 이용', it: 'Uso della carrozzina' }, n: 9 },
+    { act: { ko: '걷기', en: 'Walking', it: 'Camminare' }, n: 319 },
+    { act: { ko: '앉아서 이야기하기', en: 'Sitting and talking', it: 'Sedersi e conversare' }, n: 87 },
+    { act: { ko: '장기·바둑', en: 'Board games', it: 'Giochi da tavolo' }, n: 51 },
+    { act: { ko: '휠체어 이용', en: 'Wheelchair use', it: 'Uso della carrozzina' }, n: 9 },
   ],
 }

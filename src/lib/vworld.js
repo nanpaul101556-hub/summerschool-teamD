@@ -5,6 +5,35 @@
  * 두 API 모두 CORS 헤더를 주지 않아 dev 서버 프록시(/vworld)를 경유한다.
  */
 
+/**
+ * 지목(地目) — V-World 의 jibun 은 「507-3공」처럼 번호 끝에 지목 한 글자를 붙여 준다.
+ * 그 한 글자만 화면 언어로 옮기고 번호는 그대로 둔다.
+ */
+const JIMOK = {
+  전: ['Seminativo', 'Dry field'], 답: ['Risaia', 'Paddy'],
+  과: ['Frutteto', 'Orchard'], 목: ['Pascolo', 'Pasture'],
+  임: ['Bosco', 'Forest'], 대: ['Lotto edificabile', 'Building lot'],
+  장: ['Stabilimento', 'Factory'], 학: ['Scuola', 'School'],
+  차: ['Parcheggio', 'Car park'], 창: ['Magazzino', 'Warehouse'],
+  도: ['Strada', 'Road'], 철: ['Ferrovia', 'Railway'],
+  천: ['Corso d’acqua', 'River'], 구: ['Canale', 'Ditch'],
+  유: ['Bacino', 'Reservoir'], 수: ['Acquedotto', 'Waterworks'],
+  공: ['Parco', 'Park'], 체: ['Impianto sportivo', 'Sports ground'],
+  원: ['Parco divertimenti', 'Amusement park'], 종: ['Luogo di culto', 'Place of worship'],
+  사: ['Sito storico', 'Historic site'], 묘: ['Cimitero', 'Cemetery'],
+  잡: ['Altro', 'Miscellaneous'],
+}
+
+/** 「507-3공」 → { ko: '507-3공', it: '507-3 · Parco', en: '507-3 · Park' } */
+function jibunTx(jibun) {
+  if (!jibun) return null
+  const tail = jibun.slice(-1)
+  const hit = JIMOK[tail]
+  if (!hit) return { ko: jibun, it: jibun, en: jibun }
+  const no = jibun.slice(0, -1)
+  return { ko: jibun, it: `${no} · ${hit[0]}`, en: `${no} · ${hit[1]}` }
+}
+
 const KEY = import.meta.env.VITE_VWORLD_KEY
 const API = '/vworld/req'
 
@@ -72,6 +101,7 @@ export async function parcelAt(lng, lat) {
   return {
     pnu: p.pnu,
     jibun: p.jibun,
+    jibunTx: jibunTx(p.jibun),
     addr: p.addr,
     /** 개별공시지가 원/m² — 고시 시점을 같이 표기할 것 */
     jiga: p.jiga ? Number(p.jiga) : null,

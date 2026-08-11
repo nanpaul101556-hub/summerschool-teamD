@@ -498,6 +498,7 @@ export const DICT = {
     'region.excluded': '일부러 쓰지 않는 자료',
     'region.excludedNote': '목록에서 빠진 것과 빼기로 결정한 것은 다릅니다.',
     'region.excludedTag': '제외',
+    'pop.aria': '노원구 65세 이상과 유소년 인구 비율 추이, 2012년부터 2050년까지',
     'region.elder': '65세 이상',
     'region.youth': '유소년',
 
@@ -1078,6 +1079,7 @@ export const DICT = {
     'region.excluded': 'Dati esclusi per scelta',
     'region.excludedNote': 'Un dato mancante e un dato escluso deliberatamente non sono la stessa cosa.',
     'region.excludedTag': 'escluso',
+    'pop.aria': 'Quota di over 65 e di minori a Nowon, dal 2012 al 2050',
     'region.elder': 'Over 65',
     'region.youth': 'Minori',
 
@@ -1659,6 +1661,7 @@ export const DICT = {
     'region.excluded': 'Data deliberately not used',
     'region.excludedNote': 'What is missing from a list and what was decided against are different things.',
     'region.excludedTag': 'Excluded',
+    'pop.aria': 'Share of residents aged 65+ and of minors in Nowon, 2012 to 2050',
     'region.elder': 'Aged 65+',
     'region.youth': 'Minors',
 

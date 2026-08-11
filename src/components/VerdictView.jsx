@@ -130,7 +130,7 @@ export default function VerdictView({ site, onStep, onReset, onNext }) {
           <ol className="vj-dl">
             {DRIFT.map((d) => (
               <li key={d.id}>
-                <b className="num">{d.v}</b>
+                <b className="num">{tx(d.v)}</b>
                 <span className="h">{tx(d.head)}</span>
                 <span className="d">{tx(d.body)}</span>
               </li>
@@ -149,7 +149,7 @@ export default function VerdictView({ site, onStep, onReset, onNext }) {
           <p className="vj-eq">
             {WHEN.rows.slice(0, 2).map((r) => (
               <span key={r.id}>
-                <b className="num">{r.v}</b>
+                <b className="num">{tx(r.v)}</b>
                 <em>{typeof r.k === 'string' ? r.k : tx(r.k)}</em>
               </span>
             ))}

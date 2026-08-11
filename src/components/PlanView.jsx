@@ -103,7 +103,7 @@ export default function PlanView({ site, onStep, onReset, onNext }) {
       <div className="fn">
         <div className="fn-in">
           <span className="l">{t('plan.from')}</span>
-          <b>{site?.name ?? tx({ ko: '대상지', it: 'Sito' })}</b>
+          <b>{tx(site?.nameTx ?? site?.name ?? { ko: '대상지', en: 'Site', it: 'Sito' })}</b>
         </div>
 
         {LEVELS.map((lv, i) => (
@@ -189,13 +189,13 @@ export default function PlanView({ site, onStep, onReset, onNext }) {
                   series={[
                     {
                       key: 'old',
-                      label: { ko: '65세 이상', it: 'Over 65' },
+                      label: { ko: '65세 이상', en: '65 and over', it: 'Over 65' },
                       lead: true,
                       v: share.map((r) => r.old),
                     },
                     {
                       key: 'young',
-                      label: { ko: '14세 이하', it: 'Under 14' },
+                      label: { ko: '14세 이하', en: '14 and under', it: 'Under 14' },
                       v: share.map((r) => r.young),
                     },
                   ]}

@@ -42,37 +42,59 @@ export const RELIEF = {
       when: K(
         '기반시설 중 도시관리계획으로 설치하는 시설',
         'Infrastrutture realizzate tramite piano urbanistico attuativo',
+        'Infrastructure delivered through an urban management plan',
       ),
       how: K(
         '지구단위계획으로 고시하거나 시도시계획위원회 심의를 거치면 용적률 100%까지',
         'Fino al 100% previo piano attuativo o parere della commissione urbanistica',
+        'Up to 100% floor area ratio with a district unit plan notice or planning committee review',
       ),
     },
     {
       art: '제45조①7',
       bcr: 20,
-      when: K('도시계획시설 중 공원', 'Parchi fra le opere di piano'),
+      when: K('도시계획시설 중 공원', 'Parchi fra le opere di piano',
+        'Parks among urban planning facilities'),
       how: K('공원의 건폐율은 20% 이하 (유원지는 30%)',
-        'Copertura max 20% per i parchi (30% per i parchi ricreativi)'),
+        'Copertura max 20% per i parchi (30% per i parchi ricreativi)',
+        'Coverage up to 20% for parks (30% for amusement parks)'),
     },
   ],
 }
 
 export const SOURCE = {
-  law: K('서울특별시 도시계획 조례', 'Regolamento urbanistico di Seoul'),
-  arts: K('제44조 · 제48조', 'artt. 44 e 48'),
+  law: K('서울특별시 도시계획 조례', 'Regolamento urbanistico di Seoul',
+    'Seoul Urban Planning Ordinance'),
+  arts: K('제44조 · 제48조', 'artt. 44 e 48', 'arts. 44 and 48'),
   date: '2026.07.13',
   url: 'https://www.law.go.kr/DRF/lawService.do?OC=test&target=ordin&MST=2149501&type=HTML',
   zoneApi: 'V-World LT_C_UQ111',
 }
 
 /** 조회된 용도지역명이 조례 표기와 조금씩 다르다 — 앞뒤 군더더기를 떼고 맞춘다 */
+/** 용도지역명은 V-World 가 한국어로 돌려준다 — 화면 언어로 옮기는 표. */
+export const ZONE_TX = {
+  자연녹지지역: K('자연녹지지역', 'Zona verde naturale', 'Natural green area'),
+  보전녹지지역: K('보전녹지지역', 'Zona verde di tutela', 'Conservation green area'),
+  생산녹지지역: K('생산녹지지역', 'Zona verde produttiva', 'Production green area'),
+  제1종일반주거지역: K('제1종일반주거지역', 'Residenziale generale 1', 'General residential I'),
+  제2종일반주거지역: K('제2종일반주거지역', 'Residenziale generale 2', 'General residential II'),
+  제3종일반주거지역: K('제3종일반주거지역', 'Residenziale generale 3', 'General residential III'),
+  준주거지역: K('준주거지역', 'Semi-residenziale', 'Quasi-residential'),
+  일반상업지역: K('일반상업지역', 'Commerciale generale', 'General commercial'),
+  근린상업지역: K('근린상업지역', 'Commerciale di quartiere', 'Neighbourhood commercial'),
+  준공업지역: K('준공업지역', 'Semi-industriale', 'Quasi-industrial'),
+}
+
 export function lookup(name) {
   if (!name) return null
   const key = String(name).replace(/\s/g, '')
-  if (ZONES[key]) return { zone: key, ...ZONES[key], relief: RELIEF[key] ?? null }
+  if (ZONES[key])
+    return { zone: key, label: ZONE_TX[key] ?? key, ...ZONES[key], relief: RELIEF[key] ?? null }
   const hit = Object.keys(ZONES).find((z) => key.includes(z) || z.includes(key))
-  return hit ? { zone: hit, ...ZONES[hit], relief: RELIEF[hit] ?? null } : null
+  return hit
+    ? { zone: hit, label: ZONE_TX[hit] ?? hit, ...ZONES[hit], relief: RELIEF[hit] ?? null }
+    : null
 }
 
 /** 최대 연면적 = 필지면적 × 용적률. 완화가 있으면 그 값도 함께 돌려준다. */

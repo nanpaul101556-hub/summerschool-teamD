@@ -35,6 +35,8 @@ export async function resolveSite(query) {
     return {
       name: SITE.name,
       address: SITE.address,
+      nameTx: SITE.nameTx,
+      addrTx: SITE.addrTx,
       coords: SITE.coords,
       parcel,
       zone: zone?.name ? { ...zone, ...lookup(zone.name) } : null,
@@ -56,6 +58,8 @@ export async function resolveSite(query) {
   return {
     name: curated ? SITE.name : (parcel?.addr ?? hit.refined),
     address: hit.refined,
+    nameTx: curated ? SITE.nameTx : null,
+    addrTx: curated ? SITE.addrTx : null,
     coords: [hit.lat, hit.lng],
     parcel,
     /** 조회된 용도지역과 조례가 정한 건폐율·용적률 */

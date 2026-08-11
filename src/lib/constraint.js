@@ -1,5 +1,7 @@
 /** ① 제도 — 법정 한계를 산정한다. 미확보 항목은 null을 그대로 반환한다. */
 
+const K = (ko, it, en) => ({ ko, it, en })
+
 /**
  * @param {{landArea:number, bcr:number|null, far:number|null, heightLimit:number|null}} site
  */
@@ -32,15 +34,34 @@ export function checkCompliance(limits, plannedTotal) {
 export function eligibleIncentives(site) {
   const list = []
   if (site.carbonPilot) {
-    list.push({ key: 'pilot', label: '탄소중립 선도도시', detail: site.incentive, active: true })
+    list.push({
+      key: 'pilot',
+      label: K('탄소중립 선도도시', 'Città pilota carbon neutral', 'Carbon-neutral pilot city'),
+      detail: K(site.incentive, site.incentive,
+        'Priority review of the maintenance plan where ZEB is applied'),
+      active: true,
+    })
   }
   if (site.greenRemodel) {
-    list.push({ key: 'green', label: '그린리모델링', detail: '국비:지방비 7:3 · 70억 한도', active: true })
+    list.push({
+      key: 'green',
+      label: K('그린리모델링', 'Green remodeling', 'Green remodeling'),
+      detail: K('국비:지방비 7:3 · 70억 한도',
+        'Stato/ente locale 7:3 · tetto 7 mld',
+        'National to local funding 7:3 · capped at 7 bn KRW'),
+      active: true,
+    })
   }
   list.push({
     key: 'zeb',
-    label: 'ZEB 의무',
-    detail: site.zebMandatory ? '의무 대상' : `비대상 (${site.zebNote})`,
+    label: K('ZEB 의무', 'Obbligo ZEB', 'ZEB requirement'),
+    detail: site.zebMandatory
+      ? K('의무 대상', 'Obbligatorio', 'Mandatory')
+      : K(
+          `비대상 (${site.zebNote.ko})`,
+          `Non soggetto (${site.zebNote.it})`,
+          `Not subject (${site.zebNote.en})`,
+        ),
     active: site.zebMandatory,
   })
   return list

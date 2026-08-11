@@ -18,12 +18,15 @@ export const NOW = 2026
 /** 법정 점검 주기 — 조문 그대로 */
 export const LAW = {
   cycle: 3,
-  art: '건축물관리법 제13조③',
+  art: K('건축물관리법 제13조③', 'Legge gestione edifici, art. 13 c.3',
+    'Building Management Act, art. 13(3)'),
   quote: K(
     '정기점검은 해당 건축물의 사용승인일부터 5년 이내에 최초로 실시하고, '
     + '점검을 시작한 날을 기준으로 3년마다 실시하여야 한다.',
     'Il controllo periodico si effettua entro cinque anni dall\'agibilità '
     + 'e successivamente ogni tre anni.',
+            'The periodic inspection shall first be carried out within five years of the date of approval '
+    + 'for use, and every three years thereafter counted from the day inspection began.'
   ),
   /**
    * 3년 주기는 아무 건물에나 걸리지 않는다.
@@ -39,12 +42,18 @@ export const LAW = {
     'Il controllo periodico riguarda gli edifici a grande affluenza: oltre 5.000 m² '
     + 'di superficie per usi culturali e assembleari, oppure almeno 16 piani. '
     + 'Non avendo verificato la superficie, non sappiamo se questo edificio rientri.',
+            'Periodic inspection applies to buildings of high public occupancy — cultural and assembly '
+    + 'uses totalling over 5,000 m² of floor area, or sixteen storeys and above. We have not '
+    + 'verified this building\'s floor area, so we do not know whether it qualifies.'
   ),
-  gapArt: '건축물관리법 제11조①',
+  gapArt: K('건축물관리법 제11조①', 'Legge gestione edifici, art. 11 c.1',
+    'Building Management Act, art. 11(1)'),
   gapQuote: K(
     '사용승인을 받고자 하는 건축물의 건축주는 건축물관리계획을 수립하여 '
     + '사용승인 신청 시 제출하여야 한다.',
     'Chi richiede l\'agibilità deve presentare il piano di gestione dell\'edificio.',
+               'A client seeking approval for use shall draw up a building management plan and submit it '
+    + 'with the application.'
   ),
   gap: K(
     '이 조문은 앞으로 사용승인을 받을 건물에만 걸린다. 1989년에 준공된 이 건물에는 '
@@ -53,6 +62,9 @@ export const LAW = {
     'La norma vale solo per gli edifici che devono ancora ottenere l\'agibilità: '
     + 'un edificio del 1989 non ha alcun piano di gestione, cioè nessun documento che dica '
     + 'quando e che cosa manutenere. È questo vuoto che la piattaforma riempie.',
+          'This clause binds only buildings that have yet to receive approval for use. A building '
+    + 'completed in 1989 has no building management plan — no document saying when and what to '
+    + 'maintain. That gap is what this platform fills.'
   ),
 }
 
@@ -63,47 +75,69 @@ export const LAW = {
 export const PAST = [
   {
     year: 1989, kind: 'built',
-    label: K('대강당 공연장으로 준공', 'Inaugurato come auditorium'),
-    note: K('노원구민회관', 'Centro civico di Nowon'),
+    label: K('대강당 공연장으로 준공', 'Inaugurato come auditorium',
+              'Completed as a performance auditorium'),
+    note: K('노원구민회관', 'Centro civico di Nowon',
+             'Nowon Civic Hall'),
     src: K('노원구의회 제245회 행정재경위 회의록 (2018.08.22)',
-      'Verbale del consiglio distrettuale, 245ª sessione (22.08.2018)'),
+      'Verbale del consiglio distrettuale, 245ª sessione (22.08.2018)',
+            'Nowon district council, 245th administration and finance committee minutes (22 Aug 2018)'),
   },
   {
     year: 2018, kind: 'decide', key: true,
-    label: K('신축을 포기하고 리모델링으로 돌린다', 'Si rinuncia al nuovo e si ristruttura'),
+    label: K('신축을 포기하고 리모델링으로 돌린다', 'Si rinuncia al nuovo e si ristruttura',
+              'A new build is dropped and the project turns to refurbishment'),
     note: K(
       '준공 29년. 2005년부터 신축용으로 쌓아 둔 기금 28억을 리모델링에 돌렸다. '
       + '총사업비 약 50억(기금 28 + 특교세 10 + 시 특별교부금 10), 설계비 2억 추경.',
       'A 29 anni dall\'apertura, i 2,8 mld accantonati dal 2005 per il nuovo edificio '
       + 'vengono dirottati sulla ristrutturazione: circa 5 mld in tutto.',
+             'Twenty-nine years after completion, a 2.8 bn KRW fund accumulated since 2005 for a new build '
+      + 'was turned to refurbishment. Total project cost about 5 bn (2.8 fund + 1.0 special tax '
+      + '+ 1.0 city grant), with 200 mn added for design.'
     ),
     quote: K(
       '“대체부지도 없고 거기가 공원 내에 있어서 증축도 안 되고 여러 가지 제약조건이 있어서”',
       '"Nessun sito alternativo, e trovandosi dentro il parco non è ampliabile"',
+              '\u201cThere is no alternative site, and being inside a park it cannot even be extended — '
+      + 'there are various constraints\u201d'
     ),
-    src: K('같은 회의록', 'Stesso verbale'),
+    src: K('같은 회의록', 'Stesso verbale',
+            'The same minutes'),
   },
   {
     year: 2021, kind: 'use',
-    label: K('노원구민회관 → 노원구민의전당', 'Da centro civico a Auditorium di Nowon'),
+    label: K('노원구민회관 → 노원구민의전당', 'Da centro civico a Auditorium di Nowon',
+              'From Nowon Civic Hall to Nowon Civic Auditorium'),
     note: K('정류장 이름이 바뀐 달. 이후 12개월 승하차가 대조군보다 5.3%p 더 올랐다',
-      'Cambia il nome della fermata; nei 12 mesi seguenti i flussi salgono 5,3 p.p. sopra il controllo'),
-    src: K('서울 열린데이터광장 OA-12913', 'Portale open data di Seoul OA-12913'),
+      'Cambia il nome della fermata; nei 12 mesi seguenti i flussi salgono 5,3 p.p. sopra il controllo',
+             'The month the stop was renamed. Over the following twelve months boardings rose '
+      + '5.3 pp more than the control'),
+    src: K('서울 열린데이터광장 OA-12913', 'Portale open data di Seoul OA-12913',
+            'Open Data Seoul OA-12913'),
   },
   {
     year: 2022, kind: 'work',
-    label: K('사무동 리모델링', 'Ristrutturazione degli uffici'),
+    label: K('사무동 리모델링', 'Ristrutturazione degli uffici',
+              'Office wing refurbishment'),
     note: K('행정지원과 편성 6.5억 · 실집행 0.98억. 임시선별검사소도 이 해에 들어왔다',
-      'Stanziati 0,65 mld, spesi 0,098; nello stesso anno arriva il centro tamponi'),
-    src: K('노원구 세출예산 2022', 'Bilancio di Nowon 2022'),
+      'Stanziati 0,65 mld, spesi 0,098; nello stesso anno arriva il centro tamponi',
+             '650 mn KRW appropriated by the administrative support division, 98 mn actually spent. '
+      + 'The temporary testing centre also arrived this year'),
+    src: K('노원구 세출예산 2022', 'Bilancio di Nowon 2022',
+            'Nowon expenditure budget, 2022'),
   },
   {
     year: 2025, kind: 'work',
-    label: K('노인회관 입주 · 문화교실 상시화', 'Centro anziani e corsi stabili'),
+    label: K('노인회관 입주 · 문화교실 상시화', 'Centro anziani e corsi stabili',
+              'Senior hall moves in · cultural classes become permanent'),
     note: K('2023–25년 실집행 5.2억. 대한노인회·새마을·푸드뱅크가 사무동에 들어왔다',
-      'Spesi 0,52 mld fra 2023 e 2025; associazioni di anziani e volontariato negli uffici'),
+      'Spesi 0,52 mld fra 2023 e 2025; associazioni di anziani e volontariato negli uffici',
+             '520 mn KRW actually spent from 2023 to 2025. The seniors\' association, the Saemaul '
+      + 'movement and the food bank moved into the office wing'),
     src: K('노원구 세출예산 2023–2025 · 프로젝트서울 설계공모',
-      'Bilancio di Nowon 2023–2025 · concorso di progettazione'),
+      'Bilancio di Nowon 2023–2025 · concorso di progettazione',
+            'Nowon expenditure budget 2023–2025 · Project Seoul design competition'),
   },
 ]
 
@@ -120,7 +154,8 @@ export const RHYTHM = {
     { from: 2018, to: 2022 },
     { from: 2022, to: 2025 },
   ],
-  head: K('두 주기가 이미 같다', 'I due ritmi coincidono già'),
+  head: K('두 주기가 이미 같다', 'I due ritmi coincidono già',
+           'The two cycles already coincide'),
   body: K(
     '이 건물은 2018년에 리모델링을 결정하고 2022년에 사무동을, 2025년에 노인회관을 넣었다. '
     + '간격이 4년과 3년이다. 그리고 법이 정한 정기점검 주기는 3년이다. '
@@ -130,12 +165,18 @@ export const RHYTHM = {
     + 'intervalli di quattro e tre anni. Il controllo di legge cade ogni tre anni. '
     + 'Non serve fissare nuove date: agganciare il riesame d\'uso al controllo che arriva comunque '
     + 'è esattamente il modo in cui questo edificio è vissuto finora.',
+           'The refurbishment was decided in 2018, the office wing rebuilt in 2022, the senior hall '
+    + 'installed in 2025 — intervals of four years and three. The statutory inspection cycle is '
+    + 'three years. There is no need to name new dates: attach the use review to the inspection '
+    + 'that comes anyway, which is exactly how this building has lived.'
   ),
   caveat: K(
     '최초 점검일을 확인하지 못해 다음 점검이 몇 년인지는 적지 않는다. '
     + '3년 안에 온다는 것만 법에서 확실하다.',
     'La data del primo controllo non è verificata, quindi non indichiamo l\'anno del prossimo: '
     + 'dalla legge è certo solo che cade entro tre anni.',
+             'The date of the first inspection is unverified, so we do not name the year of the next. '
+    + 'All the law makes certain is that it falls within three years.'
   ),
 }
 
@@ -154,7 +195,8 @@ export function meanGap() {
 
 export const CLOSING = {
   head: K('어차피 손봐야 할 때가 오면, 그때 용도도 같이 바꿔라',
-    'Quando arriva comunque il momento di intervenire, cambia anche la destinazione'),
+    'Quando arriva comunque il momento di intervenire, cambia anche la destinazione',
+           'When the time to intervene comes anyway, change the use at the same moment'),
   body: K(
     '용도를 다시 묻는 일과 건물을 점검하는 일은 이미 같은 주기로 돌고 있다. '
     + '따로 하면 공사를 두 번 하고, 같이 하면 한 번이다. '
@@ -162,6 +204,9 @@ export const CLOSING = {
     'Riesaminare la destinazione e controllare l\'edificio girano già sullo stesso ritmo. '
     + 'Separarli significa due cantieri; unirli, uno solo. Nowon ha la più bassa autonomia finanziaria '
     + 'di Seoul: una coincidenza come questa fa una differenza reale.',
+           'Asking the use question again and inspecting the building already run on the same cycle. '
+    + 'Done apart they mean two jobs; done together, one. Nowon has the lowest fiscal autonomy '
+    + 'in Seoul — a single piece of timing like this makes a large difference.'
   ),
   hook: K(
     '1989년, 이 건물은 공원 안에 지어졌다. 그래서 2018년에 늘릴 수가 없었고, '
@@ -172,12 +217,18 @@ export const CLOSING = {
     + 'e non restava che dirottare sulla ristrutturazione i 2,8 miliardi accantonati per tredici anni. '
     + 'Un edificio che non può crescere può solo cambiare uso. '
     + 'La piattaforma serve a fare quel conto adesso, non quando il controllo sarà già addosso.',
+           'In 1989 this building went up inside a park. That is why it could not be enlarged in 2018, '
+    + 'and why there was no route other than turning a 2.8 bn KRW fund — saved over thirteen '
+    + 'years for a new build — into a refurbishment. A building that cannot grow can only be '
+    + 'converted.'
   ),
   noMoney: K(
     '금액은 말하지 않는다. 단가 두 종을 확보하지 못했고, 없이 계산하면 숫자를 지어내는 것이 된다. '
     + '그래서 지금은 시점만 낸다.',
     'Non diamo importi: mancano due voci di costo unitario e calcolarli senza sarebbe inventare numeri. '
     + 'Per ora, solo le date.',
+              'We do not state amounts. Two unit rates are missing, and calculating without them would mean '
+    + 'inventing numbers. So for now we give only the timing.'
   ),
 }
 
@@ -187,33 +238,51 @@ export const CLOSING = {
  */
 export const SCOPE = {
   head: K('우리가 만드는 LCC는 「금액」이 아니라 「시점」이다',
-    'Il nostro LCC non riguarda gli importi ma le date'),
-  cols: [K('하는 것', 'Ciò che facciamo'), K('하지 않는 것', 'Ciò che non facciamo')],
+    'Il nostro LCC non riguarda gli importi ma le date',
+           'The LCC we build is about timing, not amounts'),
+  cols: [K('하는 것', 'Ciò che facciamo',
+            'What we do'), K('하지 않는 것', 'Ciò che non facciamo',
+                              'What we do not')],
   rows: [
     {
-      k: K('질문', 'Domanda'),
-      a: K('언제 무엇을 손봐야 하는가', 'Quando intervenire e su che cosa'),
-      b: K('50년 총액이 얼마인가', 'Quanto costa in cinquant\'anni'),
+      k: K('질문', 'Domanda',
+            'Question'),
+      a: K('언제 무엇을 손봐야 하는가', 'Quando intervenire e su che cosa',
+            'When to intervene, and on what'),
+      b: K('50년 총액이 얼마인가', 'Quanto costa in cinquant\'anni',
+            'What the fifty-year total comes to'),
     },
     {
-      k: K('산출', 'Risultato'),
-      a: K('연도별 공사 타임라인', 'Cronologia degli interventi'),
-      b: K('NPV · 회수기간', 'VAN e tempo di ritorno'),
+      k: K('산출', 'Risultato',
+            'Output'),
+      a: K('연도별 공사 타임라인', 'Cronologia degli interventi',
+            'A year-by-year timeline of works'),
+      b: K('NPV · 회수기간', 'VAN e tempo di ritorno',
+            'NPV and payback period'),
     },
     {
-      k: K('입력', 'Ingressi'),
-      a: K('준공연도 + 법정 주기', 'Anno di agibilità e ciclo di legge'),
-      b: K('단가 · 할인율 · 확률', 'Costi unitari, tasso di sconto, probabilità'),
+      k: K('입력', 'Ingressi',
+            'Input'),
+      a: K('준공연도 + 법정 주기', 'Anno di agibilità e ciclo di legge',
+            'Year of completion plus the statutory cycle'),
+      b: K('단가 · 할인율 · 확률', 'Costi unitari, tasso di sconto, probabilità',
+            'Unit rates, discount rate, probabilities'),
     },
     {
-      k: K('근거', 'Fondamento'),
-      a: K('건축물관리법 제13조③ — 확정값', 'Art. 13 c.3: valore fissato'),
-      b: K('추정 단가 — 미확보', 'Costi unitari stimati: non reperiti'),
+      k: K('근거', 'Fondamento',
+            'Basis'),
+      a: K('건축물관리법 제13조③ — 확정값', 'Art. 13 c.3: valore fissato',
+            'Building Management Act art. 13(3) — a fixed value'),
+      b: K('추정 단가 — 미확보', 'Costi unitari stimati: non reperiti',
+            'Estimated unit rates — not obtained'),
     },
     {
-      k: K('상태', 'Stato'),
-      a: K('지금 계산된다', 'Calcolabile ora'),
-      b: K('단가 없이는 불가', 'Impossibile senza i costi'),
+      k: K('상태', 'Stato',
+            'Status'),
+      a: K('지금 계산된다', 'Calcolabile ora',
+            'Computable today'),
+      b: K('단가 없이는 불가', 'Impossibile senza i costi',
+            'Impossible without the rates'),
     },
   ],
 }
@@ -223,25 +292,32 @@ export const FORMULA = {
   parts: [
     { t: '금액', k: 'out' },
     { t: '=', k: 'op' },
-    { t: '주기', k: 'have', note: K('법정 확정', 'fissato dalla legge') },
+    { t: '주기', k: 'have', note: K('법정 확정', 'fissato dalla legge',
+                                   'fixed by law') },
     { t: '×', k: 'op' },
-    { t: '물량', k: 'have', note: K('도면에서 산출', 'dal progetto') },
+    { t: '물량', k: 'have', note: K('도면에서 산출', 'dal progetto',
+                                   'from the drawings') },
     { t: '×', k: 'op' },
-    { t: '단가', k: 'miss', note: K('미확보 — 여기서만 막힌다', 'non reperito: è qui che si blocca') },
+    { t: '단가', k: 'miss', note: K('미확보 — 여기서만 막힌다', 'non reperito: è qui che si blocca',
+                                   'not obtained — this is the only blockage') },
   ],
   note: K(
     '주기는 법이 정해 두었고 물량은 도면에서 나온다. 막히는 것은 단가 하나뿐이다. '
     + '그런데 시점을 묻는 데에는 단가가 필요 없다 — 그래서 지금 답할 수 있는 것부터 답한다.',
     'Il ciclo lo fissa la legge e le quantità vengono dal progetto: manca solo il costo unitario. '
     + 'Ma per rispondere sulle date il costo non serve: rispondiamo a ciò a cui si può già rispondere.',
+           'The cycle is fixed by law and the quantities come from the drawings. Only the unit rate is '
+    + 'blocked. But answering when does not need a rate — so we answer what can be answered now.'
   ),
 }
 
 /** 재원 경로 — 총사업비와 구 부담액은 다르다 */
 export const FUNDING = {
-  head: K('총사업비가 아니라 구 부담액이다', 'Non il costo totale, ma la quota a carico del distretto'),
+  head: K('총사업비가 아니라 구 부담액이다', 'Non il costo totale, ma la quota a carico del distretto',
+           'Not the total project cost but the district\'s share'),
   ratio: { gov: 70, gu: 30 },
-  label: K('그린리모델링 국비 : 지방비', 'Green remodeling: Stato / ente locale'),
+  label: K('그린리모델링 국비 : 지방비', 'Green remodeling: Stato / ente locale',
+            'Green remodeling, national : local funding'),
   body: K(
     '구청이 보는 숫자는 총사업비가 아니라 구가 실제로 내는 몫이다. '
     + '그린리모델링을 태우면 국비가 7할을 대므로 구 부담은 3할로 떨어진다. '
@@ -249,25 +325,34 @@ export const FUNDING = {
     'Ciò che conta per il distretto non è il costo totale ma la quota propria. '
     + 'Con il programma di green remodeling lo Stato copre il 70%, lasciandone il 30%. '
     + 'Nowon ha la più bassa autonomia finanziaria di Seoul: è questa proporzione a decidere se si fa o no.',
+           'The number a district looks at is not the total project cost but its own share. Draw on '
+    + 'green remodeling and the state covers seven tenths, dropping the district to three. Nowon '
+    + 'has the lowest fiscal autonomy in Seoul — this one ratio decides whether it happens.'
   ),
 }
 
 /** 왜 이 계산을 지금 하는가 — METHOD §5 */
 export const WHY_NOW = {
-  head: K('제도는 있는데 아무도 안 한다', 'Gli strumenti esistono, ma nessuno li usa'),
+  head: K('제도는 있는데 아무도 안 한다', 'Gli strumenti esistono, ma nessuno li usa',
+           'The programmes exist, but nobody uses them'),
   chain: [
     K('제도는 있다 — 그린리모델링도 ZEB 인센티브도 있다',
-      'Gli strumenti ci sono: green remodeling e incentivi ZEB'),
-    K('계산상 이익도 존재한다', 'E il vantaggio esiste anche sulla carta'),
+      'Gli strumenti ci sono: green remodeling e incentivi ZEB',
+       'The programmes are there — green remodeling and ZEB incentives both'),
+    K('계산상 이익도 존재한다', 'E il vantaggio esiste anche sulla carta',
+       'And on paper the benefit exists too'),
     K('그런데 노원구 ZEB 인증 7건은 전부 공공이고 민간은 0건이다',
-      'Eppure le sette certificazioni ZEB di Nowon sono tutte pubbliche: zero privati'),
+      'Eppure le sette certificazioni ZEB di Nowon sono tutte pubbliche: zero privati',
+       'Yet all seven ZEB certifications in Nowon are public buildings, and none are private'),
   ],
   why: K(
     '설계 전에는 얼마인지 모르고, 알 때쯤이면 도면이 다 그려져 있기 때문이다.',
     'Perché prima di progettare non si sa quanto costi, e quando lo si sa il progetto è già disegnato.',
+          'Because before design nobody knows the cost, and by the time they do the drawings are done.'
   ),
   close: K(
     '그 계산을 도면 앞으로 옮기는 것 — 그것이 이 플랫폼이다.',
     'Spostare quel calcolo prima del disegno: è questo la piattaforma.',
+            'Moving that calculation ahead of the drawings — that is this platform.'
   ),
 }

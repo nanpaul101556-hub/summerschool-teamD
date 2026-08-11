@@ -14,45 +14,51 @@
  */
 
 const K = (ko, it, en) => ({ ko, it, en })
-const leaf = (key, ko, it, timing, extra = {}) => ({ key, label: K(ko, it), timing, ...extra })
+const leaf = (key, ko, it, en, timing, extra = {}) =>
+  ({ key, label: K(ko, it, en), timing, ...extra })
 
 /** 관리주체비용 — 초기공사 + 유지관리 + 에너지 + 해체폐기 */
 const MANAGING = {
   key: 'managing',
-  label: K('관리주체비용', 'Costo del gestore'),
+  label: K('관리주체비용', 'Costo del gestore',
+            'Owner-operator costs'),
   groups: [
     {
-      key: 'initial', label: K('초기공사비', 'Costo iniziale'), timing: 'once',
+      key: 'initial', label: K('초기공사비', 'Costo iniziale',
+                                'Initial construction'), timing: 'once',
       items: [
-        leaf('plan', '계획비', 'Pianificazione', 'once'),
-        leaf('design', '설계비', 'Progettazione', 'once'),
-        leaf('construction', '공사비', 'Costruzione', 'once'),
-        leaf('supervision', '감리비', 'Direzione lavori', 'once'),
+        leaf('plan', '계획비', 'Pianificazione', 'Planning', 'once'),
+        leaf('design', '설계비', 'Progettazione', 'Design', 'once'),
+        leaf('construction', '공사비', 'Costruzione', 'Construction', 'once'),
+        leaf('supervision', '감리비', 'Direzione lavori', 'Supervision', 'once'),
       ],
     },
     {
-      key: 'maintenance', label: K('유지관리비', 'Manutenzione'),
+      key: 'maintenance', label: K('유지관리비', 'Manutenzione',
+                                    'Maintenance'),
       items: [
-        leaf('checkDiagnosis', '점검·진단비', 'Ispezione e diagnosi', 'cycle', { period: 3 }),
-        leaf('generalManagement', '일반관리비', 'Gestione generale', 'annual'),
-        leaf('generalRepair', '일반수선비', 'Riparazioni correnti', 'annual'),
-        leaf('preventive', '예방수선비', 'Manutenzione preventiva', 'annual'),
-        leaf('repairReinforced', '보수·보강비', 'Riparazione e rinforzo', 'cycle', { period: 15 }),
+        leaf('checkDiagnosis', '점검·진단비', 'Ispezione e diagnosi', 'Inspection and diagnosis', 'cycle', { period: 3 }),
+        leaf('generalManagement', '일반관리비', 'Gestione generale', 'General management', 'annual'),
+        leaf('generalRepair', '일반수선비', 'Riparazioni correnti', 'Routine repair', 'annual'),
+        leaf('preventive', '예방수선비', 'Manutenzione preventiva', 'Preventive maintenance', 'annual'),
+        leaf('repairReinforced', '보수·보강비', 'Riparazione e rinforzo', 'Repair and strengthening', 'cycle', { period: 15 }),
       ],
     },
     {
-      key: 'energy', label: K('에너지비용', 'Energia'), timing: 'annual',
+      key: 'energy', label: K('에너지비용', 'Energia',
+                               'Energy'), timing: 'annual',
       items: [
-        leaf('electric', '전기', 'Elettricità', 'annual'),
-        leaf('water', '수도', 'Acqua', 'annual'),
-        leaf('gas', '가스', 'Gas', 'annual'),
+        leaf('electric', '전기', 'Elettricità', 'Electricity', 'annual'),
+        leaf('water', '수도', 'Acqua', 'Water', 'annual'),
+        leaf('gas', '가스', 'Gas', 'Gas', 'annual'),
       ],
     },
     {
-      key: 'demolition', label: K('해체·폐기비', 'Demolizione'), timing: 'once',
+      key: 'demolition', label: K('해체·폐기비', 'Demolizione',
+                                   'Demolition and disposal'), timing: 'once',
       items: [
-        leaf('demolitionCost', '해체비', 'Demolizione', 'once'),
-        leaf('recycling', '재활용비', 'Riciclo', 'once'),
+        leaf('demolitionCost', '해체비', 'Demolizione', 'Demolition', 'once'),
+        leaf('recycling', '재활용비', 'Riciclo', 'Recycling', 'once'),
       ],
     },
   ],
@@ -61,13 +67,15 @@ const MANAGING = {
 /** 위험도비용 — 1989 준공 건물이라 실제 의미가 있다. 논문 식(4)(5) */
 const RISK = {
   key: 'risk',
-  label: K('위험도비용', 'Costo di rischio'),
+  label: K('위험도비용', 'Costo di rischio',
+            'Risk cost'),
   groups: [
     {
-      key: 'riskCost', label: K('기대 위험비용', 'Costo atteso di rischio'), timing: 'event',
+      key: 'riskCost', label: K('기대 위험비용', 'Costo atteso di rischio',
+                                 'Expected risk cost'), timing: 'event',
       items: [
-        leaf('expectRestoration', '기대복구비', 'Ripristino atteso', 'event'),
-        leaf('expectIndirect', '기대간접비', 'Indiretto atteso', 'event'),
+        leaf('expectRestoration', '기대복구비', 'Ripristino atteso', 'Expected restoration', 'event'),
+        leaf('expectIndirect', '기대간접비', 'Indiretto atteso', 'Expected indirect', 'event'),
       ],
     },
   ],
@@ -76,12 +84,14 @@ const RISK = {
 /** 우리만의 항목 — 논문엔 없다(신축 대안 비교라). 용도전환이 이 프로젝트의 핵심 변수다 */
 const CONVERSION = {
   key: 'conversion',
-  label: K('용도전환비', 'Costo di riconversione'),
+  label: K('용도전환비', 'Costo di riconversione',
+            'Conversion cost'),
   groups: [
     {
-      key: 'conversionCost', label: K('용도전환', 'Riconversione'), timing: 'event',
+      key: 'conversionCost', label: K('용도전환', 'Riconversione',
+                                       'Conversion'), timing: 'event',
       items: [
-        leaf('conversion', '개보수 vs 신축·이전 차액', 'Adattivo vs nuovo', 'event'),
+        leaf('conversion', '개보수 vs 신축·이전 차액', 'Adattivo vs nuovo', 'Refurbishment vs new build or relocation, the difference', 'event'),
       ],
     },
   ],

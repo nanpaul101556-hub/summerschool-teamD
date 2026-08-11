@@ -17,13 +17,17 @@ const K = (ko, it, en) => ({ ko, it, en })
 
 /** 대상지 건물 — 이미지(현황분석)와 예산 자료에서 확인한 사실 */
 export const BUILDING = {
-  name: K('노원구민의전당', 'Centro civico di Nowon'),
-  alias: K('노원문화예술회관', 'Auditorium culturale di Nowon'),
+  name: K('노원구민의전당', 'Centro civico di Nowon',
+           'Nowon Civic Auditorium'),
+  alias: K('노원문화예술회관', 'Auditorium culturale di Nowon',
+            'Nowon Arts Centre'),
   built: 1989,
   now: 2026,
   uses: K('대강당(대관·영화상영) · 문화강좌 · 사무실 · 노인회관',
-    'Auditorium, corsi culturali, uffici, centro anziani'),
-  state: K('1~3층 리모델링 관련 미운영', 'Piani 1–3 chiusi per ristrutturazione'),
+    'Auditorium, corsi culturali, uffici, centro anziani',
+           'Main hall (bookings, film screenings), cultural classes, offices, senior hall'),
+  state: K('1~3층 리모델링 관련 미운영', 'Piani 1–3 chiusi per ristrutturazione',
+            'Floors 1–3 closed for refurbishment'),
   age: 2026 - 1989,
 }
 
@@ -34,39 +38,50 @@ export const BUILDING = {
 export const CYCLE = [
   {
     year: 1989, kind: 'built',
-    label: K('준공', 'Costruzione'),
-    note: K('철근콘크리트 · 대강당 중심 문화시설', 'C.a. · struttura culturale con auditorium'),
+    label: K('준공', 'Costruzione',
+              'Completion'),
+    note: K('철근콘크리트 · 대강당 중심 문화시설', 'C.a. · struttura culturale con auditorium',
+             'Reinforced concrete · a cultural facility built around its main hall'),
   },
   {
     // 여기 있던 94.2억·주변정비 6.0억은 중계로 181 의 다른 건물(노원문화예술회관) 값이었다.
     // 띄어쓰기 때문에 예산 검색이 갈렸던 탓이다 — budget/building_lines.py 로 다시 뽑았다.
     year: 2025, kind: 'done',
-    label: K('1차 전환 — 완료', 'Prima riconversione — conclusa'),
+    label: K('1차 전환 — 완료', 'Prima riconversione — conclusa',
+              'First conversion — complete'),
     note: K('노인회관 건립 5.2억 · 문화교실 1.9억 · 사무동 1.0억 · 임시선별검사소 0.4억',
-      'Centro anziani 0,52 mld · corsi 0,19 · uffici 0,10 · centro tamponi 0,04'),
+      'Centro anziani 0,52 mld · corsi 0,19 · uffici 0,10 · centro tamponi 0,04',
+             'Senior hall 520 mn KRW · cultural classes 190 mn · office wing 100 mn · testing centre 40 mn'),
     cost: 850,
     layers: ['space'],
     result: K('앞 정류장 통행 대조군 대비 +5%p — 노원구 전환 사례 중 1위',
-      'Flussi alla fermata +5 p.p. sul controllo: primo fra le riconversioni del distretto'),
+      'Flussi alla fermata +5 p.p. sul controllo: primo fra le riconversioni del distretto',
+               'Flows at the stop in front +5 pp against the control — first among conversions in Nowon'),
   },
   {
     year: 2031, kind: 'due',
-    label: K('내장 주기', 'Ciclo delle finiture'),
-    note: K('Scenery 5~7년 — 마감·가구·실 구성', 'Scenery 5–7 anni: finiture, arredi, layout'),
+    label: K('내장 주기', 'Ciclo delle finiture',
+              'Fit-out cycle'),
+    note: K('Scenery 5~7년 — 마감·가구·실 구성', 'Scenery 5–7 anni: finiture, arredi, layout',
+             'Scenery, 5–7 years: finishes, furniture, room layout'),
     layers: ['space'],
   },
   {
     year: 2039, kind: 'decide',
-    label: K('결정점 — 설비 15년 + 구조 50년', 'Punto di decisione — impianti 15 + struttura 50'),
+    label: K('결정점 — 설비 15년 + 구조 50년', 'Punto di decisione — impianti 15 + struttura 50',
+              'Decision point — plant at 15 years plus structure at 50'),
     note: K('2024년 리모델링에서 15년 · 준공에서 50년이 같은 해에 온다',
-      'Quindici anni dalla ristrutturazione e cinquanta dalla costruzione cadono nello stesso anno'),
+      'Quindici anni dalla ristrutturazione e cinquanta dalla costruzione cadono nello stesso anno',
+             'Fifteen years from the 2024 refurbishment and fifty from completion fall in the same year'),
     layers: ['space', 'services', 'structure'],
     key: true,
   },
   {
     year: 2054, kind: 'due',
-    label: K('설비 주기', 'Ciclo impiantistico'),
-    note: K('Services 15년', 'Services 15 anni'),
+    label: K('설비 주기', 'Ciclo impiantistico',
+              'Plant cycle'),
+    note: K('Services 15년', 'Services 15 anni',
+             'Services, 15 years'),
     layers: ['services'],
   },
 ]
@@ -74,18 +89,24 @@ export const CYCLE = [
 /** 손대는 층 — 위로 갈수록 비싸고 되돌리기 어렵다 */
 export const LAYERS = {
   space: {
-    label: K('실 구성 · 마감', 'Layout e finiture'),
-    life: K('5~7년', '5–7 anni'),
+    label: K('실 구성 · 마감', 'Layout e finiture',
+              'Room layout and finishes'),
+    life: K('5~7년', '5–7 anni',
+             '5–7 yrs'),
     back: 3,
   },
   services: {
-    label: K('설비 · 동선', 'Impianti e percorsi'),
-    life: K('15년', '15 anni'),
+    label: K('설비 · 동선', 'Impianti e percorsi',
+              'Plant and circulation'),
+    life: K('15년', '15 anni',
+             '15 yrs'),
     back: 2,
   },
   structure: {
-    label: K('구조 · 스팬', 'Struttura e luci'),
-    life: K('50년', '50 anni'),
+    label: K('구조 · 스팬', 'Struttura e luci',
+              'Structure and span'),
+    life: K('50년', '50 anni',
+             '50 yrs'),
     back: 1,
   },
 }
@@ -97,45 +118,64 @@ export const LAYERS = {
 export const PROGRAMS = [
   {
     id: 'culture', state: 'taken',
-    label: K('문화 · 전시', 'Cultura ed esposizioni'),
+    label: K('문화 · 전시', 'Cultura ed esposizioni',
+              'Culture and exhibitions'),
     why: K('북서울미술관 196 m (2013) — 그런데 통행은 대조군 대비 −14%p로 전환 검토 대상이다',
-      'Museo Buk-Seoul a 196 m (2013), ma i flussi sono −14 p.p.: già da riconvertire'),
+      'Museo Buk-Seoul a 196 m (2013), ma i flussi sono −14 p.p.: già da riconvertire',
+            'Buk-Seoul Museum at 196 m (2013) — yet its flows are −14 pp against the control, '
+      + 'making it a candidate for conversion itself'),
   },
   {
     id: 'senior', state: 'taken',
-    label: K('어르신 · 돌봄', 'Anziani e assistenza'),
+    label: K('어르신 · 돌봄', 'Anziani e assistenza',
+              'Older people and care'),
     why: K('중계어르신센터 2026년 개관 + 이 건물 안에 노인회관 건립(2023–25). 이미 두 곳이다',
-      'Centro anziani Junggye aperto nel 2026 e centro anziani già inserito qui (2023–25): sono due'),
+      'Centro anziani Junggye aperto nel 2026 e centro anziani già inserito qui (2023–25): sono due',
+            'The Junggye senior centre opened in 2026 and a senior hall was built into this building '
+      + '(2023–25). That is already two'),
   },
   {
     id: 'child', state: 'taken',
-    label: K('아동 · 과학', 'Infanzia e scienza'),
+    label: K('아동 · 과학', 'Infanzia e scienza',
+              'Children and science'),
     why: K('노원천문우주과학관 2017 — 미취학·초등 대상',
-      'Osservatorio astronomico 2017, per prescolare ed elementari'),
+      'Osservatorio astronomico 2017, per prescolare ed elementari',
+            'Nowon Astronomy and Space Science Museum, 2017 — for preschool and primary ages'),
   },
   {
     id: 'learn', state: 'taken',
-    label: K('평생학습', 'Apprendimento permanente'),
+    label: K('평생학습', 'Apprendimento permanente',
+              'Lifelong learning'),
     why: K('노원평생학습관 (1989) — 같은 공원 안',
-      'Centro di apprendimento permanente (1989), nello stesso parco'),
+      'Centro di apprendimento permanente (1989), nello stesso parco',
+            'Nowon Lifelong Learning Centre (1989) — inside the same park'),
   },
   {
     id: 'youth', state: 'taken',
-    label: K('청소년 · 체험', 'Giovani e attività'),
+    label: K('청소년 · 체험', 'Giovani e attività',
+              'Young people and activities'),
     why: K('하계동 252-6 복합지원센터 629 m 2024년 고시 확정 · 상계청소년문화의집은 −22%p',
-      'Polo giovanile a 629 m confermato nel 2024; il centro giovani di Sanggye è a −22 p.p.'),
+      'Polo giovanile a 629 m confermato nel 2024; il centro giovani di Sanggye è a −22 p.p.',
+            'A multi-service centre at Hagye-dong 252-6, 629 m away, confirmed by 2024 notice; '
+      + 'the Sanggye youth centre is at −22 pp'),
   },
   {
     id: 'sport', state: 'open', lead: true, v: '+51%p',
-    label: K('생활체육 · 활동', 'Sport di base e attività'),
+    label: K('생활체육 · 활동', 'Sport di base e attività',
+              'Community sport and activity'),
     why: K('중계구민체육센터가 대조군 대비 +51%p — 노원구 시설 중 최상위 상승',
-      'Il centro sportivo di Junggye è a +51 p.p.: la crescita più alta fra le strutture del distretto'),
+      'Il centro sportivo di Junggye è a +51 p.p.: la crescita più alta fra le strutture del distretto',
+            'Junggye Civic Sports Centre is +51 pp against the control — the steepest rise of any '
+      + 'facility in Nowon'),
   },
   {
     id: 'work', state: 'open', lead: true, v: '+35%p',
-    label: K('창업 · 일자리', 'Impresa e lavoro'),
+    label: K('창업 · 일자리', 'Impresa e lavoro',
+              'Enterprise and jobs'),
     why: K('서울창업디딤터 +35%p · 어르신 일자리 참여가 인근 시설의 실제 프로그램이다',
-      'Il centro startup è a +35 p.p.; il lavoro per anziani è già un programma delle strutture vicine'),
+      'Il centro startup è a +35 p.p.; il lavoro per anziani è già un programma delle strutture vicine',
+            'Seoul Startup Hub is at +35 pp; jobs for older people are already a live programme at '
+      + 'nearby facilities'),
   },
 ]
 
@@ -146,7 +186,8 @@ export const PROGRAMS = [
 export const OPTIONS = [
   {
     key: 'A',
-    label: K('최소 개입 · 실 구성만', 'Intervento minimo · solo layout'),
+    label: K('최소 개입 · 실 구성만', 'Intervento minimo · solo layout',
+              'Minimum intervention · layout only'),
     layers: ['space'],
     program: ['sport'],
     what: K(
@@ -154,15 +195,21 @@ export const OPTIONS = [
       + '생활체육·동호회 활동 공간으로 다시 나눈다.',
       'Al ciclo delle finiture si cambia solo il layout: gli spazi da affitto '
       + 'diventano aree per sport di base e associazioni.',
+             'On the fit-out cycle of five to seven years, only the room layout changes. Space geared to '
+      + 'hall bookings is redivided for community sport and club activity.'
     ),
-    good: K('가장 싸고, 언제든 되돌릴 수 있다', 'Il più economico e sempre reversibile'),
+    good: K('가장 싸고, 언제든 되돌릴 수 있다', 'Il più economico e sempre reversibile',
+             'The cheapest, and reversible at any time'),
     bad: K('대강당의 큰 스팬은 그대로라 활용 폭이 제한된다',
-      'La grande luce dell\'auditorium resta: il ventaglio d\'uso è limitato'),
-    keeps: K('다음 결정을 그대로 남겨 둔다', 'Lascia intatta la decisione successiva'),
+      'La grande luce dell\'auditorium resta: il ventaglio d\'uso è limitato',
+            'The main hall\'s long span stays as it is, so the range of uses is limited'),
+    keeps: K('다음 결정을 그대로 남겨 둔다', 'Lascia intatta la decisione successiva',
+              'It leaves the next decision untouched'),
   },
   {
     key: 'B',
-    label: K('설비까지 · 주기를 맞춘다', 'Fino agli impianti · sincronizzato'),
+    label: K('설비까지 · 주기를 맞춘다', 'Fino agli impianti · sincronizzato',
+              'Down to the plant · timed to the cycle'),
     layers: ['space', 'services'],
     program: ['sport', 'work'],
     lead: true,
@@ -171,17 +218,23 @@ export const OPTIONS = [
       + '체육·활동과 창업·일자리를 한 건물에 넣는다.',
       'Al controllo che arriva comunque si agganciano insieme impianti e destinazione: '
       + 'sport e attività insieme a impresa e lavoro.',
+             'Plant replacement and conversion are both attached to the inspection that comes anyway. '
+      + 'Sport and activity, plus enterprise and jobs, go into one building.'
     ),
     good: K('공사를 한 번만 한다. 2024년에 노원구가 이미 쓴 방식이다',
-      'Un solo cantiere: è il metodo che Nowon ha già usato nel 2024'),
+      'Un solo cantiere: è il metodo che Nowon ha già usato nel 2024',
+             'One cantiere only — the approach Nowon already used in 2024'),
     bad: K('설비를 새로 깔면 다음 15년은 그 배치에 묶인다',
-      'Rifatti gli impianti, i prossimi 15 anni restano legati a quella disposizione'),
+      'Rifatti gli impianti, i prossimi 15 anni restano legati a quella disposizione',
+            'Once the plant is relaid, the next fifteen years are tied to that arrangement'),
     keeps: K('구조는 건드리지 않아 다음에 다시 바꿀 수 있다',
-      'La struttura resta intatta: si potrà ricambiare in futuro'),
+      'La struttura resta intatta: si potrà ricambiare in futuro',
+              'The structure is left alone, so it can be changed again later'),
   },
   {
     key: 'C',
-    label: K('구조까지 · 대수선', 'Fino alla struttura · grande intervento'),
+    label: K('구조까지 · 대수선', 'Fino alla struttura · grande intervento',
+              'Down to the structure · major works'),
     layers: ['space', 'services', 'structure'],
     program: ['sport', 'work'],
     what: K(
@@ -189,12 +242,17 @@ export const OPTIONS = [
       + '앞으로 무엇이 오든 받을 수 있게 연다.',
       'Nel 2039, ai cinquant\'anni della struttura, si interviene su luci e carichi '
       + 'per accogliere qualunque funzione futura.',
+             'In 2039, at fifty years of structural life, span and loading are reworked so the building '
+      + 'can take whatever comes next.'
     ),
-    good: K('전환의 폭이 가장 넓어진다', 'Il ventaglio di riconversione diventa il più ampio'),
+    good: K('전환의 폭이 가장 넓어진다', 'Il ventaglio di riconversione diventa il più ampio',
+             'The widest range of conversions opens up'),
     bad: K('가장 비싸고, 구조를 한 번 고정하면 다음 50년이 거기 묶인다',
-      'Il più costoso: fissata la struttura, i prossimi 50 anni ne dipendono'),
+      'Il più costoso: fissata la struttura, i prossimi 50 anni ne dipendono',
+            'The most expensive: fix the structure once and the next fifty years depend on it'),
     keeps: K('되돌리기 어렵다 — 이번 결정이 다음 전환을 막을 수 있다',
-      'Difficile tornare indietro: questa scelta può bloccare la successiva'),
+      'Difficile tornare indietro: questa scelta può bloccare la successiva',
+              'Hard to undo — this decision can block the next conversion'),
   },
 ]
 
@@ -207,6 +265,9 @@ export const TRIGGER = {
     + '다만 196 m 옆 미술관은 −14%p 로 이미 넘었다.',
     'Il sito è a −4 p.p., ancora entro la soglia (−10). Non è un caso urgente. '
     + 'Il museo a 196 m è però già a −14.',
+           'The site is at −4 pp against the control, still inside the −10 pp threshold. It does not '
+    + 'need changing right now. The museum 196 m away, though, is at −14 pp and has already '
+    + 'crossed it.'
   ),
 }
 

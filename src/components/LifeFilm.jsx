@@ -20,14 +20,48 @@ import { createPortal } from 'react-dom'
 import { CHAPTERS, FILM } from '../data/lifefilm'
 import { useLang } from '../i18n'
 
-const DUR = FILM.frames / FILM.fps
 const LAST_FRAME = FILM.frames - 1
+const N = CHAPTERS.length
 
-/** 그 시각이 어느 장(章)에 속하는가 */
-const chapterAt = (time) => {
-  const i = CHAPTERS.findIndex((c) => time < c.b)
-  return i === -1 ? CHAPTERS.length - 1 : i
+/** 장 하나에 주는 스크롤 길이(dvh). 길수록 프레임 사이가 벌어져 부드럽게 넘어간다 */
+const RAIL_PER_CH = 150
+
+/**
+ * 목표 시각을 쫓아가는 비율. 1이면 스크롤에 딱 붙고(=점프), 낮을수록 미끄러진다.
+ * 휠 한 틱이 열 프레임을 건너뛰어도 그 사이를 훑고 지나가게 하는 값.
+ */
+const EASE = 0.22
+
+/**
+ * 장마다 스크롤을 얼마나 나눠 줄 것인가.
+ *
+ * 똑같이 한 화면씩 주면 짧은 장과 긴 장의 「프레임당 스크롤」이 세 배까지 벌어진다 —
+ * 같은 속도로 굴려도 어떤 장은 뚝뚝 뛰고 어떤 장은 굼뜨다.
+ * 그렇다고 길이에 그대로 비례시키면 짧은 장이 순식간에 지나가 자막을 읽을 틈이 없다.
+ * 둘을 반씩 섞는다 — 자막 읽을 시간은 지키면서 프레임 밀도는 고르게.
+ */
+const MIX = 0.5
+const SPANS = CHAPTERS.map((c) => c.b - c.a)
+const TOTAL = SPANS.reduce((a, b) => a + b, 0)
+const WEIGHTS = SPANS.map((s) => MIX / N + (1 - MIX) * (s / TOTAL))
+
+/** 각 장이 시작하는 스크롤 위치 — [0, w0, w0+w1, …, 1] */
+const EDGES = WEIGHTS.reduce((acc, w) => [...acc, acc[acc.length - 1] + w], [0])
+
+const clamp = (v, lo, hi) => Math.min(Math.max(v, lo), hi)
+
+/** 스크롤 위치(0~1) → 장 번호와 그 장 안에서의 시각(초) */
+const at = (p) => {
+  let i = N - 1
+  for (let k = 0; k < N; k += 1) {
+    if (p < EDGES[k + 1]) { i = k; break }
+  }
+  const c = CHAPTERS[i]
+  const u = clamp((p - EDGES[i]) / WEIGHTS[i], 0, 1)
+  return { i, time: c.a + (c.b - c.a) * u }
 }
+
+const toFrame = (time) => clamp(Math.round(time * FILM.fps - 0.5), 0, LAST_FRAME)
 
 export default function LifeFilm({ onClose }) {
   const { t, tx } = useLang()
@@ -40,6 +74,11 @@ export default function LifeFilm({ onClose }) {
   const frameRef = useRef(-1)
   const pendingRef = useRef(null)
   const rafRef = useRef(0)
+
+  /** 스크롤이 정한 목표 시각과, 지금 실제로 보여 주고 있는 시각 */
+  const targetRef = useRef(0)
+  const curRef = useRef(0)
+  const easeRef = useRef(0)
 
   /** 프레임 숫자는 초당 수십 번 바뀐다 — state 로 두면 그때마다 자막까지 다시 그린다 */
   const counterRef = useRef(null)
@@ -64,6 +103,37 @@ export default function LifeFilm({ onClose }) {
     v.currentTime = time
   }, [])
 
+  /** 지금 시각에 해당하는 프레임을 띄운다. 같은 프레임이면 건드리지 않는다 */
+  const show = useCallback((time) => {
+    const frame = toFrame(time)
+    if (frame === frameRef.current) return
+    frameRef.current = frame
+
+    /** 프레임 중앙 — 경계를 찍으면 앞뒤 프레임이 번갈아 나온다 */
+    seek((frame + 0.5) / FILM.fps)
+    if (counterRef.current) {
+      counterRef.current.textContent = t('lf.frame', { n: frame + 1, total: FILM.frames })
+    }
+  }, [seek, t])
+
+  /**
+   * 목표 시각을 향해 한 프레임씩 다가간다.
+   * 스크롤을 크게 굴려도 그 구간을 훑고 지나가므로 장면이 튀지 않는다.
+   * 한 프레임 안쪽으로 좁혀지면 붙이고 루프를 끝낸다 — 계속 돌 이유가 없다.
+   */
+  const tick = useCallback(() => {
+    easeRef.current = 0
+    const gap = targetRef.current - curRef.current
+
+    if (Math.abs(gap) < 1 / FILM.fps) {
+      curRef.current = targetRef.current
+    } else {
+      curRef.current += gap * EASE
+      easeRef.current = requestAnimationFrame(tick)
+    }
+    show(curRef.current)
+  }, [show])
+
   const apply = useCallback(() => {
     rafRef.current = 0
     const el = scrollRef.current
@@ -71,21 +141,14 @@ export default function LifeFilm({ onClose }) {
     if (!el || !root) return
 
     const max = el.scrollHeight - el.clientHeight
-    const p = max > 0 ? Math.min(Math.max(el.scrollTop / max, 0), 1) : 0
+    const p = max > 0 ? clamp(el.scrollTop / max, 0, 1) : 0
     root.style.setProperty('--p', p.toFixed(4))
 
-    const f = Math.round(p * LAST_FRAME)
-    if (f === frameRef.current) return
-    frameRef.current = f
-
-    /** 프레임 중앙 — 경계를 찍으면 앞뒤 프레임이 번갈아 나온다 */
-    const time = (f + 0.5) / FILM.fps
-    seek(time)
-    setChapter(chapterAt(time))
-    if (counterRef.current) {
-      counterRef.current.textContent = t('lf.frame', { n: f + 1, total: FILM.frames })
-    }
-  }, [seek, t])
+    const { i, time } = at(p)
+    setChapter(i)
+    targetRef.current = time
+    if (!easeRef.current) easeRef.current = requestAnimationFrame(tick)
+  }, [tick])
 
   /**
    * 스크롤은 React 합성 이벤트가 아니라 DOM 에 직접 건다.
@@ -103,18 +166,12 @@ export default function LifeFilm({ onClose }) {
     return () => el.removeEventListener('scroll', onScroll)
   }, [apply])
 
-  /**
-   * 장을 누르면 그 장의 첫 프레임으로 굴러간다.
-   *
-   * 시작 초를 그대로 비율로 바꾸면 한 프레임 못 미쳐 앞 장에 걸린다 — 프레임 중앙을
-   * 찍기 때문이다. 중앙이 경계를 넘는 첫 프레임을 구해 거기로 보낸다.
-   */
+  /** 장의 머리는 그 장에 배분된 몫이 시작되는 자리다 */
   const goto = useCallback((i) => {
     const el = scrollRef.current
     if (!el) return
-    const first = Math.max(0, Math.ceil(CHAPTERS[i].a * FILM.fps - 0.5))
     const max = el.scrollHeight - el.clientHeight
-    el.scrollTo({ top: Math.ceil((first / LAST_FRAME) * max), behavior: 'smooth' })
+    el.scrollTo({ top: Math.ceil(EDGES[i] * max) + (i ? 1 : 0), behavior: 'smooth' })
   }, [])
 
   useEffect(() => {
@@ -126,6 +183,7 @@ export default function LifeFilm({ onClose }) {
     return () => {
       document.removeEventListener('keydown', onKey)
       if (rafRef.current) cancelAnimationFrame(rafRef.current)
+      if (easeRef.current) cancelAnimationFrame(easeRef.current)
     }
   }, [onClose])
 
@@ -148,7 +206,7 @@ export default function LifeFilm({ onClose }) {
   return createPortal(
     <div className="lf" ref={rootRef} role="dialog" aria-modal="true" aria-label={t('lf.title')}>
       <div className="lf-scroll" ref={scrollRef} tabIndex={-1}>
-        <div className="lf-rail" style={{ height: `${(CHAPTERS.length + 1) * 100}dvh` }}>
+        <div className="lf-rail" style={{ height: `${N * RAIL_PER_CH + 100}dvh` }}>
           <div className="lf-stage">
             <video
               ref={videoRef}

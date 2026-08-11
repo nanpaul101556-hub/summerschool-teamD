@@ -6,7 +6,7 @@ import { defineConfig, loadEnv } from 'vite'
  * 브라우저에서 직접 부를 수 없다. dev 서버가 대신 부른다.
  *
  * 인증키는 발급 시 등록한 도메인에서만 동작하므로 Referer 를 붙여 보낸다.
- * 배포할 때는 이 프록시 대신 같은 일을 하는 서버 함수가 필요하다.
+ * 배포에서는 같은 일을 api/vworld/[...path].js 가 한다 (vercel.json 이 /vworld 를 그리로 보낸다).
  * (타일 이미지는 <img> 로 받으므로 CORS 와 무관하다 — 프록시를 타지 않는다.)
  */
 export default defineConfig(({ mode }) => {
