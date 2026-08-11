@@ -9,6 +9,9 @@
  * 이 구성에서 파라미터를 「...slug」로 넘겨 값을 꺼낼 수 없기 때문이다.
  *
  * 인증키는 발급 시 등록한 도메인에서만 동작하므로 Referer 를 붙여 보낸다.
+ *
+ * 이 함수는 서울(icn1)에서 돈다 — vercel.json 의 regions.
+ * 미국 리전에서는 V-World 의 HTTPS 가 소켓을 끊는다(UND_ERR_SOCKET).
  */
 
 const UPSTREAM = 'https://api.vworld.kr'
@@ -46,7 +49,10 @@ export default async function handler(req, res) {
     return res.send(body)
   } catch (err) {
     const timedOut = err.name === 'AbortError'
-    return res.status(timedOut ? 504 : 502).json({ error: timedOut ? 'timeout' : String(err) })
+    return res.status(timedOut ? 504 : 502).json({
+      error: timedOut ? 'timeout' : String(err),
+      code: err.cause?.code ?? null,
+    })
   } finally {
     clearTimeout(timer)
   }
